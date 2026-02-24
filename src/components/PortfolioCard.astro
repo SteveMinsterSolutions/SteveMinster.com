@@ -1,0 +1,38 @@
+---
+interface Props {
+  title: string;
+  category: string;
+  metric: string;
+  metricLabel: string;
+  description: string;
+  slug: string;
+}
+
+const { title, category, metric, metricLabel, description, slug } = Astro.props;
+---
+
+<a href={`/portfolio/${slug}`} class="card group block">
+  <!-- Color accent bar -->
+  <div class="h-1 bg-gradient-to-r from-electric to-lime"></div>
+  
+  <div class="p-6">
+    <!-- Category tag -->
+    <span class="tag mb-4">{category}</span>
+
+    <!-- Title -->
+    <h3 class="font-display font-bold text-h3 text-navy mt-3 mb-2 group-hover:text-electric transition-colors">
+      {title}
+    </h3>
+
+    <!-- Description -->
+    <p class="text-slate text-small mb-6 line-clamp-2">
+      {description}
+    </p>
+
+    <!-- Metric highlight -->
+    <div class="flex items-end gap-2 pt-4 border-t border-gray-100">
+      <span class="font-display font-bold text-h1 text-lime leading-none">{metric}</span>
+      <span class="text-slate-light text-small pb-1">{metricLabel}</span>
+    </div>
+  </div>
+</a>

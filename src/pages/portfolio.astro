@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PortfolioCard from '../components/PortfolioCard.astro';
+
+const projects = [
+  {
+    title: 'Innovation Lab (Ignite)',
+    category: 'Product Innovation',
+    metric: '10',
+    metricLabel: 'lean startup pilots launched',
+    description: 'Built an internal innovation lab using human-centered design and lean startup methodology to deliver scale-ready growth initiatives at The General.',
+    slug: 'ignite-innovation-lab',
+  },
+  {
+    title: 'Omni-Channel Platform',
+    category: 'Automation',
+    metric: '42%',
+    metricLabel: 'increase in new customers',
+    description: 'Launched a unified, omni-choice platform for customer processing and tracking, spanning all channels across the enterprise.',
+    slug: 'omni-channel-platform',
+  },
+  {
+    title: 'Partner Alliance Optimization',
+    category: 'Growth Strategy',
+    metric: '250%',
+    metricLabel: 'year-over-year growth',
+    description: 'Implemented process optimization and partner expansion in online lead programs, growing from 4 to 12 integrated partners.',
+    slug: 'partner-alliance',
+  },
+  {
+    title: 'Mobile-First Insurance Sales',
+    category: 'Digital Transformation',
+    metric: '60%+',
+    metricLabel: 'of sales from mobile',
+    description: 'Led the mobile strategy that made The General the first auto carrier to offer mobile multi-car, multi-driver quotes and sales.',
+    slug: 'mobile-first-sales',
+  },
+  {
+    title: 'MGA Auto Insurance Product',
+    category: 'Product Launch',
+    metric: '3',
+    metricLabel: 'portals built & launched',
+    description: 'Implemented an in-house MGA-owned auto insurance product with consumer portal, agency portal, and API-driven rating connectivity.',
+    slug: 'mga-auto-product',
+  },
+  {
+    title: 'Profitability Turnaround',
+    category: 'Data-Driven Results',
+    metric: '21pt',
+    metricLabel: 'profitability improvement',
+    description: 'Implemented underwriting, process, and rate changes that drove a 21-point improvement in profitability while maintaining premium levels.',
+    slug: 'profitability-turnaround',
+  },
+];
+---
+
+<BaseLayout title="Portfolio — Steve Minster">
+  <Header />
+
+  <!-- Page Header -->
+  <section class="section-dark pt-32 pb-16">
+    <div class="max-w-wide mx-auto px-6">
+      <p class="font-display text-label uppercase tracking-widest text-lime mb-3">Portfolio</p>
+      <h1 class="font-display text-hero text-white mb-4">
+        Insurance products.<br />
+        <span class="text-gray-400">Built, not just planned.</span>
+      </h1>
+      <p class="text-gray-300 text-lg max-w-2xl">
+        Data-driven results and hands-on builds from 20+ years solving complex problems 
+        in insurance and InsurTech.
+      </p>
+    </div>
+  </section>
+
+  <!-- Project Grid -->
+  <section class="section-light py-16">
+    <div class="max-w-wide mx-auto px-6">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {projects.map((project, i) => (
+          <div class="reveal" style={`transition-delay: ${i * 0.08}s`}>
+            <PortfolioCard {...project} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>

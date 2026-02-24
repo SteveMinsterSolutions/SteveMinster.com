@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-body text-body text-slate bg-cloud;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display;
+  }
+
+  ::selection {
+    @apply bg-lime/30 text-navy;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-lime text-navy font-display font-semibold 
+           rounded-lg transition-all duration-300 hover:bg-lime-light hover:shadow-lg 
+           hover:shadow-lime/20 hover:-translate-y-0.5;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-6 py-3 border-2 border-electric text-electric 
+           font-display font-medium rounded-lg transition-all duration-300 
+           hover:bg-electric hover:text-white;
+  }
+
+  .section-dark {
+    @apply bg-navy text-white;
+  }
+
+  .section-light {
+    @apply bg-cloud text-slate;
+  }
+
+  .section-charcoal {
+    @apply bg-charcoal text-white;
+  }
+
+  .tag {
+    @apply inline-block px-3 py-1 text-label font-display uppercase tracking-widest 
+           bg-lime/10 text-lime-dark rounded-full;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden 
+           transition-all duration-300 hover:shadow-md hover:-translate-y-1;
+  }
+
+  .metric {
+    @apply font-display font-bold text-hero text-lime;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-electric to-lime bg-clip-text text-transparent;
+  }
+}
+
+/* Scroll-triggered animation helper */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

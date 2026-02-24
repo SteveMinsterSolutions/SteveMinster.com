@@ -1,0 +1,17 @@
+{
+  "name": "steveminster-com",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Steve Minster - Automate the boring. Build the interesting.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^5.3.0",
+    "@astrojs/tailwind": "^6.0.2",
+    "tailwindcss": "^3.4.17",
+    "sharp": "^0.33.2"
+  }
+}

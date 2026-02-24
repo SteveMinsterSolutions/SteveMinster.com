@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const timeline = [
+  { year: '2002', role: 'Product Manager', company: 'AIG', note: 'Started in insurance. Got hooked on the puzzle of risk.' },
+  { year: '2006', role: 'General Manager', company: 'National Interstate', note: 'First leadership role. Learned that people make or break a product.' },
+  { year: '2011', role: 'Multiple Director Roles', company: 'The General®', note: '9 years, 5 roles — from product management to claims to innovation.' },
+  { year: '2016', role: 'Director of Ignite', company: 'The General®', note: 'Built an innovation lab. Launched 10 lean startup pilots. This is where things got fun.' },
+  { year: '2020', role: 'AVP → CMO', company: 'Insurvia', note: 'Built an MGA auto product from scratch. Then led marketing for 42% customer growth.' },
+  { year: '2022', role: 'Account Executive', company: 'Zywave', note: 'API-focused role. Went deeper into the technical side of InsurTech connectivity.' },
+  { year: '2023', role: 'VP, Insurance Products', company: 'vQuip', note: 'Building an ecosystem of risk management and insurance technologies. Current chapter.' },
+];
+---
+
+<BaseLayout title="About — Steve Minster">
+  <Header />
+
+  <!-- Page Header -->
+  <section class="section-dark pt-32 pb-16">
+    <div class="max-w-wide mx-auto px-6">
+      <p class="font-display text-label uppercase tracking-widest text-lime mb-3">About</p>
+      <h1 class="font-display text-hero text-white mb-4">
+        The short version.
+      </h1>
+    </div>
+  </section>
+
+  <!-- Bio Section -->
+  <section class="section-light py-16">
+    <div class="max-w-wide mx-auto px-6">
+      <div class="grid lg:grid-cols-5 gap-12 items-start">
+        <!-- Photo column -->
+        <div class="lg:col-span-2 reveal">
+          <div class="bg-navy rounded-2xl p-1">
+            <div class="bg-gray-200 rounded-xl aspect-[4/5] flex items-center justify-center">
+              <!-- Headshot placeholder — replace src with your actual photo -->
+              <p class="text-slate text-small text-center px-4">
+                Headshot goes here.<br />
+                Replace with your photo.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bio column -->
+        <div class="lg:col-span-3 reveal" style="transition-delay: 0.1s;">
+          <h2 class="font-display text-h1 text-navy mb-6">
+            I break things down so I can build them better.
+          </h2>
+          <div class="space-y-4 text-body text-slate max-w-content">
+            <p>
+              I've spent 20+ years in insurance — not because it's glamorous, but because 
+              it's full of complex problems that most people walk past. I'm the person who 
+              stops, stares at the broken process, and thinks: "I bet I can automate that."
+            </p>
+            <p>
+              My career has been a winding path through product management, claims analysis, 
+              partner strategy, innovation labs, and marketing leadership. The through line? 
+              I like building things that work and proving it with numbers.
+            </p>
+            <p>
+              I'm currently VP of Insurance Products at vQuip, where we're building an ecosystem 
+              of risk management and insurance technologies. Before that, I spent nearly a decade 
+              at The General, where I got to do some of my most rewarding work — including 
+              creating an innovation lab that launched 10 lean startup pilots and leading the 
+              mobile strategy that put us ahead of every other auto carrier.
+            </p>
+            <p>
+              Outside of insurance, I'm a fan of root cause analysis applied to everything 
+              (yes, even dinner plans), a reader of "Humor, Seriously" (working on bringing 
+              more fun to serious work), and an increasingly dangerous user of Claude Code.
+            </p>
+            <p>
+              I have an MBA from Kennesaw State and a BBA in Risk Management from the 
+              University of Georgia. Go Dawgs.
+            </p>
+          </div>
+
+          <div class="mt-8 flex gap-4">
+            <a href="/contact" class="btn-primary">Get in Touch</a>
+            <a href="https://www.linkedin.com/in/steveminster-54a668" target="_blank" rel="noopener" class="btn-secondary">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section class="section-dark py-24">
+    <div class="max-w-wide mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <p class="font-display text-label uppercase tracking-widest text-lime mb-3">Career</p>
+        <h2 class="font-display text-h1 text-white">The long version.</h2>
+      </div>
+
+      <div class="max-w-3xl mx-auto">
+        {timeline.map((item, i) => (
+          <div class="reveal flex gap-6 pb-10 relative" style={`transition-delay: ${i * 0.08}s`}>
+            {/* Timeline line */}
+            {i < timeline.length - 1 && (
+              <div class="absolute left-[1.15rem] top-10 w-px h-full bg-white/10"></div>
+            )}
+
+            {/* Year dot */}
+            <div class="flex-shrink-0 w-10 h-10 bg-lime rounded-full flex items-center justify-center mt-1 relative z-10">
+              <span class="font-display font-bold text-navy text-xs">{item.year.slice(2)}</span>
+            </div>
+
+            {/* Content */}
+            <div>
+              <h3 class="font-display font-bold text-lg text-white">{item.role}</h3>
+              <p class="font-display text-electric text-small mb-1">{item.company}</p>
+              <p class="text-gray-400 text-small">{item.note}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>

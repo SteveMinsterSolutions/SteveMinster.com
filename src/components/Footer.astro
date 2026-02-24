@@ -1,0 +1,55 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="section-charcoal py-16">
+  <div class="max-w-wide mx-auto px-6">
+    <div class="grid md:grid-cols-3 gap-12 mb-12">
+      <!-- Brand -->
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 bg-lime rounded-lg flex items-center justify-center">
+            <span class="font-display font-bold text-navy text-lg leading-none">SM</span>
+          </div>
+          <span class="font-display font-semibold text-white text-lg">
+            Steve<span class="text-lime">Minster</span>
+          </span>
+        </div>
+        <p class="text-gray-400 text-small max-w-xs">
+          Automate the boring. Build the interesting.
+        </p>
+      </div>
+
+      <!-- Navigation -->
+      <div>
+        <h4 class="font-display text-label uppercase tracking-widest text-lime mb-4">Navigate</h4>
+        <nav class="flex flex-col gap-2">
+          <a href="/portfolio" class="text-gray-400 hover:text-white transition-colors text-small">Portfolio</a>
+          <a href="/sandbox" class="text-gray-400 hover:text-white transition-colors text-small">Sandbox</a>
+          <a href="/about" class="text-gray-400 hover:text-white transition-colors text-small">About</a>
+          <a href="/contact" class="text-gray-400 hover:text-white transition-colors text-small">Contact</a>
+        </nav>
+      </div>
+
+      <!-- Connect -->
+      <div>
+        <h4 class="font-display text-label uppercase tracking-widest text-lime mb-4">Connect</h4>
+        <nav class="flex flex-col gap-2">
+          <a href="mailto:steve@minstersolutions.com" class="text-gray-400 hover:text-white transition-colors text-small">steve@minstersolutions.com</a>
+          <a href="https://www.linkedin.com/in/steveminster-54a668" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors text-small">LinkedIn</a>
+          <a href="https://github.com/SteveMinsterSolutions" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors text-small">GitHub</a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <p class="text-gray-500 text-small">
+        &copy; {currentYear} Steve Minster. Built with curiosity.
+      </p>
+      <p class="text-gray-600 text-small">
+        Mount Juliet, Tennessee
+      </p>
+    </div>
+  </div>
+</footer>

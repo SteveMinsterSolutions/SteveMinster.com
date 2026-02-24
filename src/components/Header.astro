@@ -1,0 +1,88 @@
+---
+const navLinks = [
+  { label: 'Portfolio', href: '/portfolio' },
+  { label: 'Sandbox', href: '/sandbox' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="site-header">
+  <nav class="max-w-wide mx-auto px-6 py-4 flex items-center justify-between">
+    <!-- Logo / Wordmark -->
+    <a href="/" class="flex items-center gap-3 group" aria-label="Home">
+      <div class="w-10 h-10 bg-lime rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+        <span class="font-display font-bold text-navy text-lg leading-none">SM</span>
+      </div>
+      <span class="font-display font-semibold text-white text-lg hidden sm:block">
+        Steve<span class="text-lime">Minster</span>
+      </span>
+    </a>
+
+    <!-- Desktop Nav -->
+    <div class="hidden md:flex items-center gap-8">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class={`font-display text-small uppercase tracking-widest transition-colors duration-200 ${
+            currentPath.startsWith(link.href)
+              ? 'text-lime'
+              : 'text-gray-300 hover:text-lime'
+          }`}
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+
+    <!-- Mobile Menu Toggle -->
+    <button
+      class="md:hidden text-white p-2"
+      id="mobile-menu-btn"
+      aria-label="Toggle menu"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="hidden md:hidden bg-navy-dark/95 backdrop-blur-sm border-t border-white/10" id="mobile-menu">
+    <div class="px-6 py-4 flex flex-col gap-4">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class={`font-display text-sm uppercase tracking-widest py-2 ${
+            currentPath.startsWith(link.href)
+              ? 'text-lime'
+              : 'text-gray-300'
+          }`}
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+  </div>
+</header>
+
+<script>
+  // Header background on scroll
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      header?.classList.add('bg-navy/95', 'backdrop-blur-sm', 'shadow-lg');
+    } else {
+      header?.classList.remove('bg-navy/95', 'backdrop-blur-sm', 'shadow-lg');
+    }
+  });
+
+  // Mobile menu toggle
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  menuBtn?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+  });
+</script>

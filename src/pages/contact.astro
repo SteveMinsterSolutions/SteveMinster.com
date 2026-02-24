@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="Contact — Steve Minster">
+  <Header />
+
+  <!-- Page Header -->
+  <section class="section-dark pt-32 pb-16">
+    <div class="max-w-wide mx-auto px-6">
+      <p class="font-display text-label uppercase tracking-widest text-lime mb-3">Contact</p>
+      <h1 class="font-display text-hero text-white mb-4">
+        Let's talk.
+      </h1>
+      <p class="text-gray-300 text-lg max-w-2xl">
+        Whether you have a project in mind, an interesting problem to solve, or just 
+        want to connect — I'd like to hear from you.
+      </p>
+    </div>
+  </section>
+
+  <!-- Contact Options -->
+  <section class="section-light py-16">
+    <div class="max-w-wide mx-auto px-6">
+      <div class="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+        
+        <!-- Email -->
+        <a href="mailto:steve@minstersolutions.com" class="card group block text-center p-8 reveal">
+          <div class="text-4xl mb-4">📧</div>
+          <h3 class="font-display font-bold text-h3 text-navy mb-2 group-hover:text-electric transition-colors">Email</h3>
+          <p class="text-electric text-small break-all">steve@minstersolutions.com</p>
+        </a>
+
+        <!-- LinkedIn -->
+        <a href="https://www.linkedin.com/in/steveminster-54a668" target="_blank" rel="noopener" class="card group block text-center p-8 reveal" style="transition-delay: 0.1s;">
+          <div class="text-4xl mb-4">💼</div>
+          <h3 class="font-display font-bold text-h3 text-navy mb-2 group-hover:text-electric transition-colors">LinkedIn</h3>
+          <p class="text-electric text-small">Connect with me</p>
+        </a>
+
+        <!-- GitHub -->
+        <a href="https://github.com/SteveMinsterSolutions" target="_blank" rel="noopener" class="card group block text-center p-8 reveal" style="transition-delay: 0.2s;">
+          <div class="text-4xl mb-4">🛠️</div>
+          <h3 class="font-display font-bold text-h3 text-navy mb-2 group-hover:text-electric transition-colors">GitHub</h3>
+          <p class="text-electric text-small">See what I'm building</p>
+        </a>
+
+      </div>
+
+      <!-- Additional context -->
+      <div class="max-w-content mx-auto mt-16 text-center reveal">
+        <p class="text-slate text-body">
+          Based in Mount Juliet, Tennessee. Open to remote collaboration, advisory work, 
+          and interesting problems regardless of geography.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>

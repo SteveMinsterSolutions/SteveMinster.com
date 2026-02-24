@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PortfolioCard from '../components/PortfolioCard.astro';
+
+const featuredProjects = [
+  {
+    title: 'Innovation Lab (Ignite)',
+    category: 'Product Innovation',
+    metric: '10',
+    metricLabel: 'lean startup pilots launched',
+    description: 'Built an internal innovation lab using human-centered design and lean startup methodology to deliver scale-ready growth initiatives.',
+    slug: 'ignite-innovation-lab',
+  },
+  {
+    title: 'Omni-Channel Platform',
+    category: 'Automation',
+    metric: '42%',
+    metricLabel: 'increase in new customers',
+    description: 'Launched a unified, omni-choice platform for customer processing and tracking across the enterprise.',
+    slug: 'omni-channel-platform',
+  },
+  {
+    title: 'Partner Alliance Optimization',
+    category: 'Growth Strategy',
+    metric: '250%',
+    metricLabel: 'year-over-year growth',
+    description: 'Implemented process optimization and partner expansion in lead programs while lowering cost-per-sale by 8%.',
+    slug: 'partner-alliance',
+  },
+];
+
+const pillars = [
+  {
+    icon: '⚙️',
+    title: 'Builder Mindset',
+    description: 'Hands-on problem solving. Not theoretical—tangible outputs, working prototypes, and measurable results.',
+  },
+  {
+    icon: '🔄',
+    title: 'Automation Obsessed',
+    description: 'A relentless focus on finding and eliminating friction. If a process can be automated, it should be.',
+  },
+  {
+    icon: '🔍',
+    title: 'Status Quo Challenger',
+    description: 'Questioning assumptions is the starting point, not the exception. Root cause over band-aids.',
+  },
+  {
+    icon: '😄',
+    title: 'Humor-Infused',
+    description: 'Bringing personality and levity into serious work without undermining credibility.',
+  },
+];
+---
+
+<BaseLayout title="Steve Minster — Automate the boring. Build the interesting.">
+  <Header />
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="section-dark min-h-screen flex items-center relative overflow-hidden">
+    <!-- Subtle background pattern -->
+    <div class="absolute inset-0 opacity-5">
+      <div class="absolute top-20 right-20 w-96 h-96 bg-lime rounded-full blur-3xl"></div>
+      <div class="absolute bottom-20 left-20 w-72 h-72 bg-electric rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="max-w-wide mx-auto px-6 py-32 relative z-10">
+      <div class="max-w-3xl">
+        <p class="font-display text-label uppercase tracking-widest text-lime mb-6 animate-fade-in">
+          InsurTech · Product · Growth
+        </p>
+        <h1 class="font-display text-hero text-white mb-6 animate-slide-up">
+          Automate the boring.<br />
+          <span class="gradient-text">Build the interesting.</span>
+        </h1>
+        <p class="text-gray-300 text-xl max-w-2xl mb-10 animate-slide-up" style="animation-delay: 0.15s;">
+          I'm Steve Minster — an innovation-minded builder with 20+ years in insurance, 
+          focused on solving complex problems through automation, data-driven strategy, 
+          and a healthy disregard for "the way it's always been done."
+        </p>
+        <div class="flex flex-wrap gap-4 animate-slide-up" style="animation-delay: 0.3s;">
+          <a href="/portfolio" class="btn-primary">See My Work</a>
+          <a href="/about" class="btn-secondary">About Me</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ PILLARS ═══════════ -->
+  <section class="section-light py-24">
+    <div class="max-w-wide mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <p class="font-display text-label uppercase tracking-widest text-electric mb-3">How I Work</p>
+        <h2 class="font-display text-h1 text-navy">What drives the work</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {pillars.map((pillar, i) => (
+          <div class="reveal bg-white rounded-xl p-6 border border-gray-100 hover:border-lime/30 transition-all duration-300" style={`transition-delay: ${i * 0.1}s`}>
+            <div class="text-3xl mb-4">{pillar.icon}</div>
+            <h3 class="font-display font-bold text-h3 text-navy mb-2">{pillar.title}</h3>
+            <p class="text-slate text-small">{pillar.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ FEATURED WORK ═══════════ -->
+  <section class="section-dark py-24">
+    <div class="max-w-wide mx-auto px-6">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-12 gap-4 reveal">
+        <div>
+          <p class="font-display text-label uppercase tracking-widest text-lime mb-3">Portfolio</p>
+          <h2 class="font-display text-h1 text-white">Featured projects</h2>
+        </div>
+        <a href="/portfolio" class="text-electric hover:text-lime transition-colors font-display text-small uppercase tracking-widest">
+          View All →
+        </a>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        {featuredProjects.map((project, i) => (
+          <div class="reveal" style={`transition-delay: ${i * 0.1}s`}>
+            <PortfolioCard {...project} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ CTA ═══════════ -->
+  <section class="section-light py-24">
+    <div class="max-w-content mx-auto px-6 text-center reveal">
+      <h2 class="font-display text-h1 text-navy mb-4">Let's build something.</h2>
+      <p class="text-slate text-lg mb-8 max-w-lg mx-auto">
+        Whether you're an InsurTech founder, a team looking for a builder, or just someone who 
+        hates inefficient processes as much as I do — let's talk.
+      </p>
+      <a href="/contact" class="btn-primary">Get in Touch</a>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
