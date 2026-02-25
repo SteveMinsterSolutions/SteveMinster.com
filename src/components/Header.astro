@@ -16,8 +16,8 @@ const currentPath = Astro.url.pathname;
       <div class="w-10 h-10 bg-lime rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
         <span class="font-display font-bold text-navy text-lg leading-none">SM</span>
       </div>
-      <span class="font-display font-semibold text-white text-lg hidden sm:block">
-        Steve<span class="text-lime">Minster</span>
+      <span class="font-display font-semibold text-lg hidden sm:block transition-colors duration-300" id="wordmark">
+        <span class="text-electric transition-colors duration-300" id="wordmark-steve">Steve</span><span class="text-lime">Minster</span>
       </span>
     </a>
 
@@ -71,11 +71,16 @@ const currentPath = Astro.url.pathname;
 <script>
   // Header background on scroll
   const header = document.getElementById('site-header');
+  const steveText = document.getElementById('wordmark-steve');
   window.addEventListener('scroll', () => {
     if (window.scrollY > 50) {
       header?.classList.add('bg-navy/95', 'backdrop-blur-sm', 'shadow-lg');
+      steveText?.classList.remove('text-electric');
+      steveText?.classList.add('text-white');
     } else {
       header?.classList.remove('bg-navy/95', 'backdrop-blur-sm', 'shadow-lg');
+      steveText?.classList.remove('text-white');
+      steveText?.classList.add('text-electric');
     }
   });
 

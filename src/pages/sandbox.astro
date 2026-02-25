@@ -5,6 +5,14 @@ import Footer from '../components/Footer.astro';
 
 const experiments = [
   {
+    title: 'EV Road Trip Tracker',
+    date: 'February 2026',
+    status: 'Live',
+    description: 'A mobile-first, location-aware trip companion for our family road trip from Mt. Juliet to Macedonia. Passcode-gated, with real-time GPS tracking, charging stop details, food options, and Google Maps navigation.',
+    tags: ['Astro', 'Geolocation API', 'Mobile-First', 'EV Charging'],
+    link: '/roadtrip',
+  },
+  {
     title: 'Building This Site',
     date: 'February 2026',
     status: 'In Progress',
@@ -53,6 +61,9 @@ const experiments = [
                     <span class="tag">{tag}</span>
                   ))}
                 </div>
+                {experiment.link && (
+                  <a href={experiment.link} class="btn-primary mt-4 text-sm">View Project →</a>
+                )}
               </div>
             </div>
           ))}

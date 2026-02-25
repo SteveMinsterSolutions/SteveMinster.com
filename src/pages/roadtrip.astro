@@ -1,0 +1,832 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Minster Road Trip Tracker</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #1B2A4A;
+      --navy-light: #253660;
+      --electric: #2D7DD2;
+      --lime: #97D700;
+      --lime-dark: #7AB300;
+      --slate: #4A5568;
+      --charcoal: #1A202C;
+      --cloud: #F7FAFC;
+      --coral: #FF6B6B;
+      --white: #FFFFFF;
+      --gray-100: #F7FAFC;
+      --gray-200: #EDF2F7;
+      --gray-300: #E2E8F0;
+      --gray-400: #CBD5E0;
+      --gray-500: #A0AEC0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--cloud);
+      color: var(--slate);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+
+    .font-display { font-family: 'Space Grotesk', system-ui, sans-serif; }
+
+    /* ── PASSCODE SCREEN ── */
+    #passcode-screen {
+      position: fixed; inset: 0; z-index: 100;
+      background: var(--navy);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 24px; padding: 24px;
+    }
+    #passcode-screen.hidden { display: none; }
+
+    .passcode-logo {
+      width: 64px; height: 64px; background: var(--lime); border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+      font-size: 28px; color: var(--navy);
+    }
+    .passcode-title {
+      font-family: 'Space Grotesk', sans-serif; font-size: 24px;
+      color: var(--white); font-weight: 600; text-align: center;
+    }
+    .passcode-subtitle {
+      color: var(--gray-400); font-size: 14px; text-align: center; max-width: 280px;
+    }
+    .passcode-input {
+      width: 200px; padding: 14px 20px; border-radius: 12px; border: 2px solid var(--navy-light);
+      background: var(--charcoal); color: var(--white); font-size: 24px;
+      text-align: center; letter-spacing: 8px; font-family: 'Space Grotesk', sans-serif;
+      outline: none; transition: border-color 0.2s;
+    }
+    .passcode-input:focus { border-color: var(--lime); }
+    .passcode-input::placeholder { letter-spacing: 4px; font-size: 16px; color: var(--gray-500); }
+    .passcode-error { color: var(--coral); font-size: 13px; min-height: 20px; }
+    .passcode-btn {
+      padding: 14px 48px; border-radius: 12px; border: none;
+      background: var(--lime); color: var(--navy); font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600; font-size: 16px; cursor: pointer; transition: all 0.2s;
+    }
+    .passcode-btn:hover { background: var(--lime-dark); transform: translateY(-1px); }
+
+    /* ── APP SHELL ── */
+    #app { display: none; }
+    #app.active { display: block; }
+
+    .app-header {
+      background: var(--navy); padding: 16px 20px; position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+    .app-header-left { display: flex; align-items: center; gap: 12px; }
+    .app-header .logo {
+      width: 36px; height: 36px; background: var(--lime); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+      font-size: 16px; color: var(--navy);
+    }
+    .app-header h1 {
+      font-family: 'Space Grotesk', sans-serif; font-size: 16px;
+      color: var(--white); font-weight: 600;
+    }
+    .app-header h1 span { color: var(--lime); }
+    .location-status {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; color: var(--gray-400);
+    }
+    .location-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--gray-500); flex-shrink: 0;
+    }
+    .location-dot.active { background: var(--lime); animation: pulse 2s infinite; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* ── ROUTE PROGRESS BAR ── */
+    .route-progress {
+      background: var(--navy-light); padding: 20px;
+    }
+    .progress-header {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
+    }
+    .progress-label { font-size: 11px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 1px; font-family: 'Space Grotesk', sans-serif; }
+    .progress-value { font-family: 'Space Grotesk', sans-serif; font-size: 14px; color: var(--lime); font-weight: 600; }
+    .progress-track {
+      height: 6px; background: var(--charcoal); border-radius: 3px; overflow: hidden; position: relative;
+    }
+    .progress-fill {
+      height: 100%; background: linear-gradient(90deg, var(--electric), var(--lime));
+      border-radius: 3px; transition: width 0.8s ease; width: 0%;
+    }
+    .progress-stops {
+      display: flex; justify-content: space-between; margin-top: 8px; position: relative;
+    }
+    .progress-stop-dot {
+      width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--charcoal);
+      background: var(--gray-500); transition: all 0.3s; position: relative;
+    }
+    .progress-stop-dot.passed { background: var(--lime); border-color: var(--lime); }
+    .progress-stop-dot.current { background: var(--electric); border-color: var(--electric); box-shadow: 0 0 0 4px rgba(45,125,210,0.3); }
+    .progress-stop-label {
+      font-size: 9px; color: var(--gray-500); text-align: center;
+      position: absolute; top: 16px; left: 50%; transform: translateX(-50%); white-space: nowrap;
+    }
+
+    /* ── NEXT STOP BANNER ── */
+    .next-stop-banner {
+      background: linear-gradient(135deg, var(--electric), #1a6bc4);
+      padding: 20px; color: var(--white);
+    }
+    .next-stop-label {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+      font-family: 'Space Grotesk', sans-serif; opacity: 0.8; margin-bottom: 4px;
+    }
+    .next-stop-name {
+      font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; margin-bottom: 2px;
+    }
+    .next-stop-distance {
+      font-size: 14px; opacity: 0.85; margin-bottom: 12px;
+    }
+    .next-stop-meta {
+      display: flex; gap: 16px; flex-wrap: wrap;
+    }
+    .meta-chip {
+      display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.15);
+      padding: 6px 12px; border-radius: 20px; font-size: 12px; backdrop-filter: blur(4px);
+    }
+
+    /* ── STOP CARDS ── */
+    .stops-container { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+
+    .section-label {
+      font-family: 'Space Grotesk', sans-serif; font-size: 13px;
+      text-transform: uppercase; letter-spacing: 1.5px; color: var(--electric);
+      font-weight: 600; margin: 8px 0 4px 4px;
+    }
+
+    .stop-card {
+      background: var(--white); border-radius: 16px; overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid var(--gray-200);
+      transition: all 0.3s;
+    }
+    .stop-card.active {
+      border-color: var(--electric);
+      box-shadow: 0 4px 20px rgba(45,125,210,0.15);
+    }
+    .stop-card.completed { opacity: 0.6; }
+
+    .stop-card-header {
+      padding: 16px; display: flex; align-items: flex-start; gap: 12px; cursor: pointer;
+    }
+    .stop-number {
+      width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 14px;
+    }
+    .stop-number.upcoming { background: var(--gray-200); color: var(--slate); }
+    .stop-number.active { background: var(--electric); color: var(--white); }
+    .stop-number.completed { background: var(--lime); color: var(--navy); }
+    .stop-number.destination { background: var(--navy); color: var(--lime); }
+
+    .stop-card-info { flex: 1; min-width: 0; }
+    .stop-card-title {
+      font-family: 'Space Grotesk', sans-serif; font-size: 16px;
+      font-weight: 600; color: var(--navy); margin-bottom: 2px;
+    }
+    .stop-card-subtitle { font-size: 13px; color: var(--slate); }
+    .stop-card-distance {
+      font-family: 'Space Grotesk', sans-serif; font-size: 13px;
+      color: var(--electric); font-weight: 500;
+    }
+
+    .stop-card-expand { font-size: 20px; color: var(--gray-400); transition: transform 0.3s; padding: 4px; }
+    .stop-card-expand.open { transform: rotate(180deg); }
+
+    .stop-card-details {
+      max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
+    }
+    .stop-card-details.open { max-height: 1200px; }
+
+    .stop-details-inner { padding: 0 16px 16px; }
+
+    .detail-section {
+      padding: 12px 0; border-top: 1px solid var(--gray-200);
+    }
+    .detail-section-title {
+      font-family: 'Space Grotesk', sans-serif; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 1px; color: var(--electric);
+      font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+    }
+
+    .detail-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 4px 0; font-size: 14px;
+    }
+    .detail-label { color: var(--slate); }
+    .detail-value { color: var(--navy); font-weight: 500; text-align: right; }
+
+    .charger-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
+    }
+    .charger-stat {
+      background: var(--gray-100); border-radius: 10px; padding: 10px;
+      text-align: center;
+    }
+    .charger-stat-value {
+      font-family: 'Space Grotesk', sans-serif; font-size: 20px;
+      font-weight: 700; color: var(--navy);
+    }
+    .charger-stat-label { font-size: 11px; color: var(--slate); margin-top: 2px; }
+
+    .food-list { display: flex; flex-wrap: wrap; gap: 6px; }
+    .food-tag {
+      background: var(--gray-100); padding: 6px 12px; border-radius: 20px;
+      font-size: 12px; color: var(--navy); font-weight: 500;
+    }
+
+    .tesla-app-link {
+      display: flex; align-items: center; gap: 8px; padding: 10px 16px;
+      background: linear-gradient(135deg, var(--charcoal), var(--navy));
+      border-radius: 10px; color: var(--white); font-size: 13px;
+      text-decoration: none; margin-top: 8px; transition: opacity 0.2s;
+    }
+    .tesla-app-link:hover { opacity: 0.9; }
+    .tesla-app-link span { color: var(--lime); font-weight: 600; }
+
+    .nav-btn {
+      display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px;
+      background: var(--electric); color: var(--white); border-radius: 10px;
+      font-size: 13px; font-weight: 500; text-decoration: none; margin-top: 8px;
+      transition: all 0.2s; border: none; cursor: pointer; font-family: 'Inter', sans-serif;
+    }
+    .nav-btn:hover { background: #1E5FA3; }
+
+    .restroom-info {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 12px; background: var(--gray-100); border-radius: 10px;
+      font-size: 13px; color: var(--navy);
+    }
+
+    /* ── TIPS SECTION ── */
+    .tips-card {
+      background: var(--white); border-radius: 16px; padding: 20px;
+      border: 1px solid var(--gray-200); margin: 0 16px 16px;
+    }
+    .tips-card h3 {
+      font-family: 'Space Grotesk', sans-serif; font-size: 16px;
+      color: var(--navy); font-weight: 600; margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .tip-item {
+      padding: 8px 0; font-size: 13px; color: var(--slate); line-height: 1.5;
+      display: flex; gap: 8px;
+    }
+    .tip-bullet { color: var(--lime); font-weight: 700; flex-shrink: 0; }
+
+    /* ── FOOTER ── */
+    .app-footer {
+      background: var(--charcoal); padding: 20px; text-align: center;
+      margin-top: 8px;
+    }
+    .app-footer p { font-size: 12px; color: var(--gray-500); }
+    .app-footer a { color: var(--electric); text-decoration: none; }
+
+    /* ── DESTINATION CARD ── */
+    .destination-banner {
+      background: linear-gradient(135deg, var(--navy), var(--charcoal));
+      padding: 24px 16px; text-align: center; margin: 0 16px;
+      border-radius: 16px; border: 1px solid var(--navy-light);
+    }
+    .destination-banner h3 {
+      font-family: 'Space Grotesk', sans-serif; color: var(--white);
+      font-size: 20px; font-weight: 700; margin-bottom: 4px;
+    }
+    .destination-banner p { color: var(--gray-400); font-size: 14px; }
+    .destination-banner .finish-flag { font-size: 36px; margin-bottom: 8px; }
+
+    /* ── NEARBY CHARGING ── */
+    .nearby-card {
+      background: var(--white); border-radius: 16px; overflow: hidden;
+      border: 1px solid var(--gray-200); margin: 16px;
+    }
+    .nearby-header {
+      background: linear-gradient(135deg, #f6ad55, #ed8936);
+      padding: 12px 16px; color: var(--white);
+    }
+    .nearby-header h3 {
+      font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600;
+    }
+
+    @media (min-width: 640px) {
+      .stops-container { max-width: 540px; margin: 0 auto; }
+      .route-progress { max-width: 540px; margin: 0 auto; }
+      .next-stop-banner > div { max-width: 540px; margin: 0 auto; }
+      .tips-card { max-width: 540px; margin: 0 auto 16px; }
+      .destination-banner { max-width: 540px; margin: 0 auto; }
+      .nearby-card { max-width: 540px; margin: 16px auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════ PASSCODE SCREEN ═══════════ -->
+<div id="passcode-screen">
+  <div class="passcode-logo">SM</div>
+  <h2 class="passcode-title">Minster Road Trip</h2>
+  <p class="passcode-subtitle">Mt. Juliet, TN → Macedonia, OH<br>Enter the trip code to continue</p>
+  <input type="text" id="passcode-input" class="passcode-input" placeholder="CODE" maxlength="7" autocomplete="off" />
+  <p id="passcode-error" class="passcode-error"></p>
+  <button id="passcode-btn" class="passcode-btn">Enter</button>
+</div>
+
+<!-- ═══════════ MAIN APP ═══════════ -->
+<div id="app">
+  <!-- Header -->
+  <header class="app-header">
+    <div class="app-header-left">
+      <div class="logo">SM</div>
+      <div>
+        <h1 class="font-display">Road Trip <span>Tracker</span></h1>
+      </div>
+    </div>
+    <div class="location-status">
+      <div class="location-dot" id="location-dot"></div>
+      <span id="location-text">Location off</span>
+    </div>
+  </header>
+
+  <!-- Route Progress -->
+  <div class="route-progress">
+    <div class="progress-header">
+      <span class="progress-label">Trip Progress</span>
+      <span class="progress-value" id="progress-text">0 of 515 mi</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+    <div class="progress-stops">
+      <div style="position:relative; display:flex; flex-direction:column; align-items:center;">
+        <div class="progress-stop-dot passed" id="pdot-start"></div>
+        <span class="progress-stop-label">Start</span>
+      </div>
+      <div style="position:relative; display:flex; flex-direction:column; align-items:center;">
+        <div class="progress-stop-dot" id="pdot-1"></div>
+        <span class="progress-stop-label">Louisville</span>
+      </div>
+      <div style="position:relative; display:flex; flex-direction:column; align-items:center;">
+        <div class="progress-stop-dot" id="pdot-2"></div>
+        <span class="progress-stop-label">Florence</span>
+      </div>
+      <div style="position:relative; display:flex; flex-direction:column; align-items:center;">
+        <div class="progress-stop-dot" id="pdot-3"></div>
+        <span class="progress-stop-label">Columbus</span>
+      </div>
+      <div style="position:relative; display:flex; flex-direction:column; align-items:center;">
+        <div class="progress-stop-dot" id="pdot-end"></div>
+        <span class="progress-stop-label">Macedonia</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Next Stop Banner -->
+  <div class="next-stop-banner" id="next-stop-banner">
+    <div>
+      <div class="next-stop-label">Next Stop</div>
+      <div class="next-stop-name" id="next-stop-name">Louisville, KY</div>
+      <div class="next-stop-distance" id="next-stop-distance">~190 miles ahead</div>
+      <div class="next-stop-meta">
+        <div class="meta-chip">⚡ ~25 min charge</div>
+        <div class="meta-chip">🔌 12 stalls</div>
+        <div class="meta-chip" id="next-stop-food">🍔 Food on-site</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stop Cards -->
+  <div class="stops-container" id="stops-container"></div>
+
+  <!-- Destination -->
+  <div class="destination-banner">
+    <div class="finish-flag">🏁</div>
+    <h3>Macedonia, OH</h3>
+    <p>Final destination · ~515 miles from start</p>
+  </div>
+
+  <!-- Nearby Charging at Destination -->
+  <div class="nearby-card">
+    <div class="nearby-header">
+      <h3>⚠️ Charging Near Macedonia</h3>
+    </div>
+    <div style="padding: 16px;">
+      <div style="background: #FFF5F5; border-radius: 10px; padding: 12px; margin-bottom: 12px;">
+        <div style="font-weight: 600; color: var(--coral); font-size: 13px; font-family: 'Space Grotesk', sans-serif;">Macedonia Commons — NOT Compatible</div>
+        <div style="font-size: 12px; color: var(--slate); margin-top: 4px;">V2 Tesla-only station (120 kW). Does not support non-Tesla vehicles.</div>
+      </div>
+      <div style="background: var(--gray-100); border-radius: 10px; padding: 12px;">
+        <div style="font-weight: 600; color: var(--electric); font-size: 13px; font-family: 'Space Grotesk', sans-serif;">✅ Recommended: Twinsburg Sheetz (~5 mi)</div>
+        <div style="font-size: 12px; color: var(--slate); margin-top: 4px;">2495 East Aurora Rd · V3 Supercharger · 7 stalls · 24/7</div>
+        <div style="font-size: 12px; color: var(--slate); margin-top: 2px;">Sheetz made-to-order food, WiFi, restrooms</div>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=2495+East+Aurora+Road+Twinsburg+OH+44087" target="_blank" class="nav-btn" style="margin-top: 10px; display: inline-flex;">📍 Navigate</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Range Tips -->
+  <div class="tips-card">
+    <h3>💡 Range Tips</h3>
+    <div class="tip-item"><span class="tip-bullet">→</span> Keep speed at or below 70 mph — range drops noticeably above 75</div>
+    <div class="tip-item"><span class="tip-bullet">→</span> Use Eco driving mode on highway legs</div>
+    <div class="tip-item"><span class="tip-bullet">→</span> Heated seats use less energy than the cabin heater</div>
+    <div class="tip-item"><span class="tip-bullet">→</span> Use regen braking paddles on Kentucky's rolling hills</div>
+    <div class="tip-item"><span class="tip-bullet">→</span> If range is tight, drop to 65 mph for 15–20 extra miles</div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <p>Built by Steve Minster · <a href="/">SteveMinster.com</a></p>
+    <p style="margin-top: 4px; font-size: 11px;">Sandbox Project #1 · Feb 2026</p>
+  </footer>
+</div>
+
+<script>
+// ── TRIP DATA ──
+const PASSCODE = "EV9TRIP";
+
+const STOPS = [
+  {
+    id: "start",
+    name: "Mt. Juliet, TN",
+    shortName: "Start",
+    type: "origin",
+    lat: 36.2001, lng: -86.5186,
+    cumulativeMiles: 0,
+  },
+  {
+    id: "stop1",
+    name: "Louisville, KY",
+    shortName: "Louisville",
+    location: "Meijer (Preston Highway)",
+    type: "charge",
+    lat: 38.1164, lng: -85.7147,
+    address: "9500 Preston Highway, Louisville, KY 40229",
+    cumulativeMiles: 190,
+    legMiles: 190,
+    charger: { type: "Tesla Supercharger V3", stalls: 12, maxKw: 250, nacs: true },
+    chargeTarget: "85%",
+    chargeTime: "25–30 min",
+    startPercent: "100%",
+    driveTime: "~3 hrs",
+    food: ["Burger King (on-site)", "Meijer deli & snacks"],
+    restrooms: "Meijer (6 AM–12 AM), Burger King",
+    cost: "$0.34–$0.46/kWh",
+    googleMapsUrl: "https://www.google.com/maps/dir/?api=1&destination=9500+Preston+Highway+Louisville+KY+40229",
+  },
+  {
+    id: "stop2",
+    name: "Florence, KY",
+    shortName: "Florence",
+    location: "Meijer (Houston Road)",
+    type: "charge",
+    lat: 38.9989, lng: -84.6266,
+    address: "4990 Houston Road, Florence, KY 41042",
+    cumulativeMiles: 278,
+    legMiles: 88,
+    charger: { type: "Tesla Supercharger V3", stalls: 12, maxKw: 250, nacs: true },
+    chargeTarget: "80%",
+    chargeTime: "15–20 min",
+    startPercent: "85%",
+    driveTime: "~1.5 hrs",
+    food: ["Chick-fil-A (nearby)", "Meijer deli & snacks", "Shopping nearby"],
+    restrooms: "Meijer",
+    cost: "$0.48/kWh",
+    googleMapsUrl: "https://www.google.com/maps/dir/?api=1&destination=4990+Houston+Road+Florence+KY+41042",
+  },
+  {
+    id: "stop3",
+    name: "Columbus, OH",
+    shortName: "Columbus",
+    location: "E Campus View Blvd",
+    type: "charge",
+    lat: 40.1072, lng: -82.9813,
+    address: "179 E Campus View Blvd, Columbus, OH 43235",
+    cumulativeMiles: 388,
+    legMiles: 110,
+    charger: { type: "Tesla Supercharger V3", stalls: 16, maxKw: 250, nacs: true, layout: "Pull-through" },
+    chargeTarget: "80%",
+    chargeTime: "20–25 min",
+    startPercent: "80%",
+    driveTime: "~1.75 hrs",
+    food: ["Chipotle", "Starbucks", "Chinese restaurant"],
+    restrooms: "Chipotle, Starbucks, nearby restaurants",
+    cost: "$0.40–$0.57/kWh",
+    googleMapsUrl: "https://www.google.com/maps/dir/?api=1&destination=179+E+Campus+View+Blvd+Columbus+OH+43235",
+  },
+  {
+    id: "destination",
+    name: "Macedonia, OH",
+    shortName: "Macedonia",
+    type: "destination",
+    lat: 41.3137, lng: -81.5087,
+    cumulativeMiles: 515,
+    legMiles: 130,
+    driveTime: "~2 hrs",
+    startPercent: "80%",
+  },
+];
+
+const TOTAL_MILES = 515;
+
+// ── PASSCODE LOGIC ──
+const passcodeInput = document.getElementById('passcode-input');
+const passcodeBtn = document.getElementById('passcode-btn');
+const passcodeError = document.getElementById('passcode-error');
+const passcodeScreen = document.getElementById('passcode-screen');
+const app = document.getElementById('app');
+
+// Check if already authenticated
+if (sessionStorage.getItem('trip-auth') === 'true') {
+  passcodeScreen.classList.add('hidden');
+  app.classList.add('active');
+  initApp();
+}
+
+passcodeBtn.addEventListener('click', checkPasscode);
+passcodeInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') checkPasscode(); });
+
+function checkPasscode() {
+  const code = passcodeInput.value.trim().toUpperCase();
+  if (code === PASSCODE) {
+    sessionStorage.setItem('trip-auth', 'true');
+    passcodeScreen.style.transition = 'opacity 0.3s';
+    passcodeScreen.style.opacity = '0';
+    setTimeout(() => {
+      passcodeScreen.classList.add('hidden');
+      app.classList.add('active');
+      initApp();
+    }, 300);
+  } else {
+    passcodeError.textContent = 'Incorrect code. Try again.';
+    passcodeInput.value = '';
+    passcodeInput.focus();
+    passcodeInput.style.borderColor = 'var(--coral)';
+    setTimeout(() => { passcodeInput.style.borderColor = ''; }, 1500);
+  }
+}
+
+// ── APP INITIALIZATION ──
+function initApp() {
+  renderStopCards();
+  requestLocation();
+}
+
+// ── RENDER STOP CARDS ──
+function renderStopCards() {
+  const container = document.getElementById('stops-container');
+  const chargeStops = STOPS.filter(s => s.type === 'charge');
+
+  let html = '<div class="section-label">Charging Stops</div>';
+
+  chargeStops.forEach((stop, i) => {
+    html += `
+      <div class="stop-card" id="card-${stop.id}" data-stop-id="${stop.id}">
+        <div class="stop-card-header" onclick="toggleCard('${stop.id}')">
+          <div class="stop-number upcoming" id="num-${stop.id}">${i + 1}</div>
+          <div class="stop-card-info">
+            <div class="stop-card-title">${stop.name}</div>
+            <div class="stop-card-subtitle">${stop.location}</div>
+            <div class="stop-card-distance">${stop.legMiles} mi from ${i === 0 ? 'start' : 'Stop ' + i} · ${stop.driveTime}</div>
+          </div>
+          <div class="stop-card-expand" id="expand-${stop.id}">▼</div>
+        </div>
+        <div class="stop-card-details" id="details-${stop.id}">
+          <div class="stop-details-inner">
+            <!-- Charger Info -->
+            <div class="detail-section">
+              <div class="detail-section-title">⚡ Charger Info</div>
+              <div class="charger-grid">
+                <div class="charger-stat">
+                  <div class="charger-stat-value">${stop.charger.stalls}</div>
+                  <div class="charger-stat-label">Total Stalls</div>
+                </div>
+                <div class="charger-stat">
+                  <div class="charger-stat-value">${stop.charger.maxKw}</div>
+                  <div class="charger-stat-label">Max kW</div>
+                </div>
+                <div class="charger-stat">
+                  <div class="charger-stat-value">${stop.chargeTime.split('–')[0]}+</div>
+                  <div class="charger-stat-label">Minutes</div>
+                </div>
+                <div class="charger-stat">
+                  <div class="charger-stat-value">${stop.chargeTarget}</div>
+                  <div class="charger-stat-label">Target</div>
+                </div>
+              </div>
+              ${stop.charger.layout ? `<div style="font-size: 12px; color: var(--electric); margin-top: 8px; font-weight: 500;">📐 ${stop.charger.layout} layout</div>` : ''}
+              <div class="detail-row" style="margin-top: 8px;">
+                <span class="detail-label">Type</span>
+                <span class="detail-value">${stop.charger.type}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">NACS Compatible</span>
+                <span class="detail-value" style="color: var(--lime-dark);">✅ Direct plug-in</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Est. Cost</span>
+                <span class="detail-value">${stop.cost}</span>
+              </div>
+              <a href="#" class="tesla-app-link" onclick="return false;">
+                🔋 <span>Check Tesla App</span> for live stall availability
+              </a>
+            </div>
+
+            <!-- Food & Restrooms -->
+            <div class="detail-section">
+              <div class="detail-section-title">🍽️ Food & Drinks</div>
+              <div class="food-list">
+                ${stop.food.map(f => `<span class="food-tag">${f}</span>`).join('')}
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <div class="detail-section-title">🚻 Restrooms</div>
+              <div class="restroom-info">${stop.restrooms}</div>
+            </div>
+
+            <!-- Address & Navigation -->
+            <div class="detail-section">
+              <div class="detail-section-title">📍 Address</div>
+              <div style="font-size: 14px; color: var(--navy); margin-bottom: 8px;">${stop.address}</div>
+              <a href="${stop.googleMapsUrl}" target="_blank" class="nav-btn">📍 Open in Google Maps</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+function toggleCard(stopId) {
+  const details = document.getElementById(`details-${stopId}`);
+  const expand = document.getElementById(`expand-${stopId}`);
+  details.classList.toggle('open');
+  expand.classList.toggle('open');
+}
+
+// ── GEOLOCATION ──
+let userLat = null, userLng = null;
+
+function requestLocation() {
+  if (!navigator.geolocation) {
+    document.getElementById('location-text').textContent = 'Not supported';
+    return;
+  }
+
+  navigator.geolocation.watchPosition(
+    (pos) => {
+      userLat = pos.coords.latitude;
+      userLng = pos.coords.longitude;
+      document.getElementById('location-dot').classList.add('active');
+      document.getElementById('location-text').textContent = 'Tracking';
+      updateTripState();
+    },
+    (err) => {
+      document.getElementById('location-text').textContent = 'Location denied';
+    },
+    { enableHighAccuracy: true, maximumAge: 30000, timeout: 10000 }
+  );
+}
+
+function haversineDistance(lat1, lon1, lat2, lon2) {
+  const R = 3959; // Earth radius in miles
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon/2) * Math.sin(dLon/2);
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function updateTripState() {
+  if (userLat === null) return;
+
+  // Find which stop we're closest to and which is next
+  let closestIdx = 0;
+  let minDist = Infinity;
+
+  STOPS.forEach((stop, i) => {
+    const d = haversineDistance(userLat, userLng, stop.lat, stop.lng);
+    if (d < minDist) { minDist = d; closestIdx = i; }
+  });
+
+  // Determine next stop (the one we haven't reached yet)
+  // If we're within 5 miles of a stop, consider it "reached"
+  let currentStopIdx = 0;
+  for (let i = STOPS.length - 1; i >= 0; i--) {
+    const d = haversineDistance(userLat, userLng, STOPS[i].lat, STOPS[i].lng);
+    if (d < 5) { currentStopIdx = i; break; }
+  }
+
+  // Next stop is the one after current
+  let nextIdx = Math.min(currentStopIdx + 1, STOPS.length - 1);
+
+  // If we're far from any stop, use closest approaching stop
+  if (currentStopIdx === 0 && closestIdx > 0) {
+    // We've passed the start, figure out where we are on the route
+    const distFromStart = haversineDistance(userLat, userLng, STOPS[0].lat, STOPS[0].lng);
+    for (let i = 1; i < STOPS.length; i++) {
+      if (STOPS[i].cumulativeMiles > distFromStart * 0.9) {
+        nextIdx = i; break;
+      }
+    }
+  }
+
+  const nextStop = STOPS[nextIdx];
+  const distToNext = haversineDistance(userLat, userLng, nextStop.lat, nextStop.lng);
+
+  // Update progress
+  const estimatedMilesTraveled = Math.min(
+    haversineDistance(userLat, userLng, STOPS[0].lat, STOPS[0].lng),
+    TOTAL_MILES
+  );
+  const progressPct = Math.min((estimatedMilesTraveled / TOTAL_MILES) * 100, 100);
+
+  document.getElementById('progress-fill').style.width = progressPct + '%';
+  document.getElementById('progress-text').textContent = `~${Math.round(estimatedMilesTraveled)} of ${TOTAL_MILES} mi`;
+
+  // Update progress dots
+  STOPS.forEach((stop, i) => {
+    const dotId = i === 0 ? 'pdot-start' : i === STOPS.length - 1 ? 'pdot-end' : `pdot-${i}`;
+    const dot = document.getElementById(dotId);
+    if (!dot) return;
+    dot.className = 'progress-stop-dot';
+    if (i < nextIdx) dot.classList.add('passed');
+    else if (i === nextIdx) dot.classList.add('current');
+  });
+
+  // Update next stop banner
+  if (nextStop.type === 'destination') {
+    document.getElementById('next-stop-name').textContent = 'Macedonia, OH 🏁';
+    document.getElementById('next-stop-distance').textContent = `~${Math.round(distToNext)} miles to destination`;
+    document.querySelector('.next-stop-banner .next-stop-meta').innerHTML = `
+      <div class="meta-chip">🏠 Final stop</div>
+      <div class="meta-chip">📍 ${Math.round(distToNext)} mi</div>
+    `;
+  } else if (nextStop.type === 'charge') {
+    document.getElementById('next-stop-name').textContent = nextStop.name;
+    document.getElementById('next-stop-distance').textContent = `~${Math.round(distToNext)} miles ahead`;
+    document.querySelector('.next-stop-banner .next-stop-meta').innerHTML = `
+      <div class="meta-chip">⚡ ~${nextStop.chargeTime} charge</div>
+      <div class="meta-chip">🔌 ${nextStop.charger.stalls} stalls</div>
+      <div class="meta-chip">📍 ${Math.round(distToNext)} mi</div>
+    `;
+  }
+
+  // Update card states
+  const chargeStops = STOPS.filter(s => s.type === 'charge');
+  chargeStops.forEach((stop, i) => {
+    const card = document.getElementById(`card-${stop.id}`);
+    const num = document.getElementById(`num-${stop.id}`);
+    if (!card || !num) return;
+
+    const stopIdx = STOPS.indexOf(stop);
+    card.classList.remove('active', 'completed');
+    num.className = 'stop-number';
+
+    if (stopIdx < nextIdx) {
+      card.classList.add('completed');
+      num.classList.add('completed');
+    } else if (stopIdx === nextIdx) {
+      card.classList.add('active');
+      num.classList.add('active');
+      // Auto-expand active card
+      const details = document.getElementById(`details-${stop.id}`);
+      const expand = document.getElementById(`expand-${stop.id}`);
+      if (!details.classList.contains('open')) {
+        details.classList.add('open');
+        expand.classList.add('open');
+      }
+    } else {
+      num.classList.add('upcoming');
+    }
+  });
+}
+</script>
+
+</body>
+</html>
