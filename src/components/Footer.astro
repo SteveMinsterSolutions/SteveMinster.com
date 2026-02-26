@@ -1,4 +1,6 @@
 ---
+import SmLogo from './SmLogo.astro';
+
 const currentYear = new Date().getFullYear();
 ---
 
@@ -8,9 +10,7 @@ const currentYear = new Date().getFullYear();
       <!-- Brand -->
       <div>
         <div class="flex items-center gap-3 mb-4">
-          <div class="w-10 h-10 bg-lime rounded-lg flex items-center justify-center">
-            <span class="font-display font-bold text-navy text-lg leading-none">SM</span>
-          </div>
+          <SmLogo id="footer" size={40} variant="dark" />
           <span class="font-display font-semibold text-white text-lg">
             Steve<span class="text-lime">Minster</span>
           </span>

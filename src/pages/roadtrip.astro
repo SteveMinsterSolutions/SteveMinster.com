@@ -10,6 +10,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>Minster Road Trip Tracker</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -53,10 +56,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     #passcode-screen.hidden { display: none; }
 
     .passcode-logo {
-      width: 64px; height: 64px; background: var(--lime); border-radius: 16px;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Space Grotesk', sans-serif; font-weight: 700;
-      font-size: 28px; color: var(--navy);
+      width: 64px; height: 64px;
+    }
+    .passcode-logo img {
+      width: 100%; height: 100%; object-fit: contain;
     }
     .passcode-title {
       font-family: 'Space Grotesk', sans-serif; font-size: 24px;
@@ -92,10 +95,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
     .app-header-left { display: flex; align-items: center; gap: 12px; }
     .app-header .logo {
-      width: 36px; height: 36px; background: var(--lime); border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Space Grotesk', sans-serif; font-weight: 700;
-      font-size: 16px; color: var(--navy);
+      width: 36px; height: 36px;
+    }
+    .app-header .logo img {
+      width: 100%; height: 100%; object-fit: contain;
     }
     .app-header h1 {
       font-family: 'Space Grotesk', sans-serif; font-size: 16px;
@@ -345,7 +348,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <!-- ═══════════ PASSCODE SCREEN ═══════════ -->
 <div id="passcode-screen">
-  <div class="passcode-logo">SM</div>
+  <div class="passcode-logo"><img src="/images/sm-logo.svg" alt="SM" /></div>
   <h2 class="passcode-title">Minster Road Trip</h2>
   <p class="passcode-subtitle">Mt. Juliet, TN → Macedonia, OH<br>Enter the trip code to continue</p>
   <input type="text" id="passcode-input" class="passcode-input" placeholder="CODE" maxlength="7" autocomplete="off" />
@@ -358,7 +361,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <!-- Header -->
   <header class="app-header">
     <div class="app-header-left">
-      <div class="logo">SM</div>
+      <div class="logo"><img src="/images/sm-logo.svg" alt="SM" /></div>
       <div>
         <h1 class="font-display">Road Trip <span>Tracker</span></h1>
       </div>

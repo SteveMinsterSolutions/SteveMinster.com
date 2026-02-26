@@ -1,4 +1,6 @@
 ---
+import SmLogo from './SmLogo.astro';
+
 const navLinks = [
   { label: 'Portfolio', href: '/portfolio' },
   { label: 'Sandbox', href: '/sandbox' },
@@ -13,9 +15,7 @@ const currentPath = Astro.url.pathname;
   <nav class="max-w-wide mx-auto px-6 py-4 flex items-center justify-between">
     <!-- Logo / Wordmark -->
     <a href="/" class="flex items-center gap-3 group" aria-label="Home">
-      <div class="w-10 h-10 bg-lime rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-        <span class="font-display font-bold text-navy text-lg leading-none">SM</span>
-      </div>
+      <SmLogo id="header" size={40} variant="dark" class="transition-transform duration-300 group-hover:scale-105" />
       <span class="font-display font-semibold text-lg hidden sm:block transition-colors duration-300" id="wordmark">
         <span class="text-electric transition-colors duration-300" id="wordmark-steve">Steve</span><span class="text-lime">Minster</span>
       </span>

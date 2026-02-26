@@ -1,0 +1,60 @@
+---
+interface Props {
+  id: string;
+  size?: number;
+  variant?: 'dark' | 'light';
+  class?: string;
+}
+
+const { id, size = 40, variant = 'dark', class: className = '' } = Astro.props;
+
+const outsideStroke = variant === 'dark' ? '#97D700' : '#1B2A4A';
+---
+
+<svg
+  viewBox="-10 -10 220 220"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  width={size}
+  height={size}
+  class={className}
+  style="overflow: visible;"
+  aria-hidden="true"
+>
+  <defs>
+    <clipPath id={`${id}-box-in`}>
+      <rect x="20" y="20" width="160" height="160" rx="22" />
+    </clipPath>
+    <clipPath id={`${id}-box-out`}>
+      <path d="M-20 -20 H220 V220 H-20 Z M20 42 C20 29.85 29.85 20 42 20 H158 C170.15 20 180 29.85 180 42 V158 C180 170.15 170.15 180 158 180 H42 C29.85 180 20 170.15 20 158 Z" clip-rule="evenodd" />
+    </clipPath>
+  </defs>
+
+  <rect x="20" y="20" width="160" height="160" rx="22" fill="#1B2A4A" />
+
+  <!-- S bolt — inside box (white) -->
+  <g clip-path={`url(#${id}-box-in)`}>
+    <g transform="rotate(10, 45, 100)">
+      <path d="M 58 -8 L 30 72 L 72 50 L 12 204" stroke="#FFFFFF" stroke-width="8" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="30" fill="none" />
+    </g>
+  </g>
+  <!-- S bolt — outside box -->
+  <g clip-path={`url(#${id}-box-out)`}>
+    <g transform="rotate(10, 45, 100)">
+      <path d="M 58 -8 L 30 72 L 72 50 L 12 204" stroke={outsideStroke} stroke-width="8" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="30" fill="none" />
+    </g>
+  </g>
+
+  <!-- M — inside box (white) -->
+  <g clip-path={`url(#${id}-box-in)`}>
+    <g transform="rotate(-10, 134, 110)">
+      <path d="M 84 160 L 106 52 L 125 114 L 144 52 L 182 212" stroke="#FFFFFF" stroke-width="8" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="30" fill="none" />
+    </g>
+  </g>
+  <!-- M — outside box -->
+  <g clip-path={`url(#${id}-box-out)`}>
+    <g transform="rotate(-10, 134, 110)">
+      <path d="M 84 160 L 106 52 L 125 114 L 144 52 L 182 212" stroke={outsideStroke} stroke-width="8" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="30" fill="none" />
+    </g>
+  </g>
+</svg>
