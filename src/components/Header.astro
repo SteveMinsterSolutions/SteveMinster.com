@@ -12,11 +12,21 @@ const currentPath = Astro.url.pathname;
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="site-header">
+  <style>
+    @media (max-width: 767px) {
+      #site-header {
+        background: rgba(17, 28, 51, 0.95);
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      }
+    }
+  </style>
   <nav class="max-w-wide mx-auto px-6 py-4 flex items-center justify-between">
     <!-- Logo / Wordmark -->
     <a href="/" class="flex items-center gap-3 group" aria-label="Home">
       <SmLogo id="header" size={40} variant="dark" class="transition-transform duration-300 group-hover:scale-105" />
-      <span class="font-display font-semibold text-lg hidden sm:block transition-colors duration-300" id="wordmark">
+      <span class="font-display font-semibold text-sm sm:text-lg transition-colors duration-300" id="wordmark">
         <span class="text-electric transition-colors duration-300" id="wordmark-steve">Steve</span><span class="text-lime">Minster</span>
       </span>
     </a>
@@ -39,7 +49,7 @@ const currentPath = Astro.url.pathname;
 
     <!-- Mobile Menu Toggle -->
     <button
-      class="md:hidden text-white p-2"
+      class="md:hidden text-lime p-2"
       id="mobile-menu-btn"
       aria-label="Toggle menu"
     >

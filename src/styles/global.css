@@ -64,8 +64,22 @@
   }
 
   .gradient-text {
-    @apply bg-gradient-to-r from-electric to-lime bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-white to-lime bg-clip-text text-transparent;
   }
+}
+
+/* Rocket "I" in tagline */
+.rocket-i {
+  display: inline-block;
+  vertical-align: baseline;
+}
+.rocket-svg {
+  display: inline-block;
+  width: auto;
+  height: 0.7em;
+  vertical-align: baseline;
+  transform: rotate(-15deg);
+  margin-right: -0.02em;
 }
 
 /* Scroll-triggered animation helper */
