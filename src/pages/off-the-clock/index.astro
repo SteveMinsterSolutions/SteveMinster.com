@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const projects = [
+  {
+    title: '2008 Shelby GT500',
+    date: '2008 – Present',
+    status: 'Ongoing',
+    statusStyle: 'bg-lime/10 text-lime-dark',
+    description: 'Meet Zeus. A black-on-red convertible with 500 horsepower and forty-three days of manufacturing attitude. The car I named before I owned — and tattooed on my shoulder blade even earlier. Supercharged 5.4L V8, 6-speed manual, and an evolving list of mods.',
+    tags: ['Shelby GT500', 'Supercharged V8', 'DIY', 'Garage Build'],
+    link: '/off-the-clock/cobra',
+    dividerColor: '#E53E3E',
+  },
+  {
+    title: 'Home Remodel',
+    date: 'TBD',
+    status: 'Coming Soon',
+    statusStyle: 'bg-gray-200/50 text-gray-400',
+    description: 'Tearing things apart and putting them back together. Documenting the wins, the surprises behind the walls, and the moments when YouTube University meets real life.',
+    tags: ['Renovation', 'DIY', 'Learning'],
+    dividerColor: '#2D7DD2',
+  },
+];
+---
+
+<BaseLayout title="Off the Clock — Steve Minster">
+  <Header />
+
+  <!-- Page Header -->
+  <section class="section-dark pt-32 pb-16">
+    <div class="max-w-wide mx-auto px-6">
+      <p class="font-display text-label uppercase tracking-widest text-lime mb-3">Off the Clock</p>
+      <h1 class="font-display text-hero text-slate mb-4">
+        <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:inline-block;vertical-align:-0.12em;margin-right:1px;"><circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="5" fill="none"/><line x1="50" y1="9" x2="50" y2="19" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><line x1="91" y1="50" x2="81" y2="50" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><line x1="50" y1="91" x2="50" y2="81" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><line x1="9" y1="50" x2="19" y2="50" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><line x1="50" y1="50" x2="50" y2="21" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><line x1="50" y1="50" x2="61" y2="69" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="50" r="3.5" fill="currentColor"/></svg>ff the Clock.
+      </h1>
+      <p class="text-electric text-lg max-w-2xl">
+        Projects, passions, and things I build when no one's asking me to.
+        Cars, houses, and the occasional questionable decision.
+      </p>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="section-light py-8">
+    <div class="max-w-wide mx-auto px-6">
+      <div class="space-y-6">
+        {projects.map((project) => (
+          <div class="card reveal">
+            <div class="h-1" style={`background-color: ${project.dividerColor};`}></div>
+            <div class="p-6 md:p-8">
+              <div class="flex flex-wrap items-center gap-3 mb-3">
+                <span class="text-small text-slate-light font-display">{project.date}</span>
+                <span class={`inline-block px-2 py-0.5 text-xs font-display uppercase tracking-wider rounded-full ${project.statusStyle}`}>
+                  {project.status}
+                </span>
+              </div>
+              <h3 class="font-display font-bold text-h2 text-navy mb-3">{project.title}</h3>
+              <p class="text-slate text-body mb-4 max-w-2xl">{project.description}</p>
+              <div class="flex flex-wrap gap-2">
+                {project.tags.map((tag) => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+              {project.link ? (
+                <a href={project.link} class="btn-primary mt-4 text-sm">View Project →</a>
+              ) : (
+                <span class="inline-block mt-4 text-sm text-gray-400 font-display">Coming Soon</span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
