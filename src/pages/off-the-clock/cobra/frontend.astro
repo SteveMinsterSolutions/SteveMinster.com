@@ -1,0 +1,236 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const mediaBase = '/images/off-the-clock/cobra/front-end';
+
+const partSpecs = [
+  { label: 'Project', value: 'Front Bumper Replacement' },
+  { label: 'Type', value: 'OEM Replacement + Custom Paint Match' },
+  { label: 'Paint Shop', value: 'Classic Auto Painting, Mt. Juliet, TN' },
+  { label: 'Paint Match', value: 'Black Clearcoat (UA) — Ford #M6373' },
+  { label: 'Removal', value: 'DIY — my garage' },
+  { label: 'Install', value: 'DIY — my garage' },
+  { label: 'Install Time', value: '~2 hrs removal, ~2 hrs install' },
+  { label: 'Paint Work', value: 'Professional (Classic Auto Painting)' },
+  { label: 'Difficulty', value: 'Removal/install: Intermediate · Paint: Leave it to the pros' },
+];
+
+const photos = [
+  { src: `${mediaBase}/front-end-during.jpg`, alt: 'Mid-install photo showing the work in progress' },
+  { src: `${mediaBase}/new-bumper-ready.jpg`, alt: 'The freshly painted replacement bumper, ready to install' },
+  { src: `${mediaBase}/old-bumper-recycle.jpg`, alt: 'The old damaged bumper after removal' },
+];
+---
+
+<BaseLayout title="Front End — 2008 Shelby GT500 — Steve Minster">
+  <Header />
+
+  <!-- Hero -->
+  <section class="section-dark pt-32 pb-16">
+    <div class="max-w-wide mx-auto px-6">
+      <nav class="text-sm text-gray-400 mb-6">
+        <a href="/off-the-clock" class="hover:text-lime transition-colors">Off the Clock</a>
+        <span class="mx-2">/</span>
+        <a href="/off-the-clock/cobra" class="hover:text-lime transition-colors">2008 Shelby GT500</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-300">Front End</span>
+      </nav>
+      <p class="font-display text-label uppercase tracking-widest text-lime mb-3">The Build Log</p>
+      <h1 class="font-display text-hero text-slate mb-6">
+        A Little Pre-Loved.
+      </h1>
+      <p class="text-electric text-lg max-w-2xl">
+        Clean CarFax. Cosmetic scars. Time to give Zeus his face back.
+      </p>
+    </div>
+  </section>
+
+  <!-- The Story -->
+  <section class="section-light py-16">
+    <div class="max-w-wide mx-auto px-6">
+      <div class="grid lg:grid-cols-5 gap-12">
+        <!-- Prose (wider) -->
+        <div class="lg:col-span-3 reveal">
+          <!-- The Problem -->
+          <div class="mb-10">
+            <h2 class="font-display font-bold text-h2 text-navy mb-4">The Problem</h2>
+            <div class="space-y-5 text-slate text-body">
+              <p>
+                When I found Zeus, the CarFax was spotless — one owner, 15,763 miles over thirteen years, no accidents, no damage reported. On paper, this was a garage queen from Pennsylvania who'd barely seen rain.
+              </p>
+              <p>
+                But CarFax doesn't catch everything. The front bumper told a different story. Scrapes, scuffs, and the kind of wear that says "I've kissed a parking block or two." For a car this rare — one of 235 with this paint and trim combination — a beat-up front end wasn't going to cut it. Zeus deserved better.
+              </p>
+            </div>
+          </div>
+
+          <!-- The Choice -->
+          <div class="mb-10">
+            <h2 class="font-display font-bold text-h2 text-navy mb-4">The Choice</h2>
+            <div class="space-y-5 text-slate text-body">
+              <p>
+                This was a two-part decision: what to replace, and who does the painting.
+              </p>
+              <p>
+                The bumper itself was a straightforward OEM replacement. But matching Black Clearcoat on a Shelby GT500 — with the factory color code, the right metallic flake, and a finish that blends invisibly with a 15-year-old paint job — that's not a rattle-can-in-the-garage situation.
+              </p>
+              <p>
+                I connected with <strong><a href="https://classicautopaintingtn.com/" target="_blank" rel="noopener" class="text-electric hover:text-lime transition-colors">Classic Auto Painting</a></strong> in Mt. Juliet, Tennessee. Chris and his team have 20+ years of experience with custom and classic car paint work — including a 2024 GM Nationals class-winning Trans Am. They ordered the new bumper and painted it to match. I handled the removal and install myself.
+              </p>
+              <p>
+                This is the "know when to call in the pros" philosophy in action. I can wrench. I can't color-match factory paint on a rare Shelby. Knowing the difference is the whole point.
+              </p>
+            </div>
+          </div>
+
+          <!-- The Install -->
+          <div>
+            <h2 class="font-display font-bold text-h2 text-navy mb-4">The Install</h2>
+            <div class="space-y-5 text-slate text-body">
+              <p>
+                Removing the old bumper was garage-friendly work — disconnect the fog light wiring, pull the fasteners, and slide it off the crash bar. Installing the new painted bumper was the reverse. The most nerve-wracking part wasn't the mechanical work — it was handling a freshly painted bumper without scratching it on the way in.
+              </p>
+              <p>
+                Total time in the garage: about 2 hours for removal, and another 2 hours for the install once the painted bumper came back from Classic Auto Painting.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Part Detail Card (sidebar) -->
+        <div class="lg:col-span-2 reveal">
+          <div class="card lg:sticky lg:top-24">
+            <div class="h-1" style="background-color: #E53E3E;"></div>
+            <div class="p-6">
+              <h3 class="font-display font-bold text-h3 text-navy mb-4">Project Details</h3>
+              <dl class="space-y-3">
+                {partSpecs.map((spec) => (
+                  <div class="flex flex-col">
+                    <dt class="text-xs font-display uppercase tracking-wider text-gray-400">{spec.label}</dt>
+                    <dd class="text-slate font-medium text-sm">{spec.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Before & After -->
+  <section class="section-dark py-16">
+    <div class="max-w-wide mx-auto px-6">
+      <div class="reveal mb-12">
+        <p class="font-display text-label uppercase tracking-widest text-lime mb-3">Before &amp; After</p>
+        <h2 class="font-display font-bold text-h2 text-white mb-4">See the Difference</h2>
+        <p class="text-electric text-body max-w-3xl">
+          The front end transformation — from tired to clean. Same car, same garage, different face.
+        </p>
+      </div>
+
+      <div class="space-y-16">
+        <!-- Before / After comparison -->
+        <div class="reveal">
+          <h3 class="font-display font-bold text-h3 text-white mb-2">Front End Overview</h3>
+          <p class="text-gray-400 text-small mb-6">The full front end before and after. Watch for the clean lines and seamless color match on the new bumper.</p>
+          <div class="grid md:grid-cols-2 gap-6">
+            <!-- Before -->
+            <div>
+              <span class="inline-block px-3 py-1 text-xs font-display uppercase tracking-wider bg-gray-700 text-gray-300 rounded-full mb-3">Before — Damaged</span>
+              <video controls preload="metadata" class="w-full aspect-square rounded-lg bg-black">
+                <source src={`${mediaBase}/front-end-before.mp4`} type="video/mp4" />
+              </video>
+            </div>
+            <!-- After -->
+            <div>
+              <span class="inline-block px-3 py-1 text-xs font-display uppercase tracking-wider bg-lime/20 text-lime rounded-full mb-3">After — Restored</span>
+              <video controls preload="metadata" class="w-full aspect-square rounded-lg bg-black">
+                <source src={`${mediaBase}/front-end-done.mp4`} type="video/mp4" />
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <!-- During the Work -->
+        <div class="reveal">
+          <h3 class="font-display font-bold text-h3 text-white mb-2">During the Work</h3>
+          <p class="text-gray-400 text-small mb-6">Mid-swap in the garage. The old bumper is off and the crash bar is exposed.</p>
+          <div class="max-w-lg">
+            <span class="inline-block px-3 py-1 text-xs font-display uppercase tracking-wider bg-electric/20 text-electric rounded-full mb-3">During — In Progress</span>
+            <video controls preload="metadata" class="w-full aspect-square rounded-lg bg-black">
+              <source src={`${mediaBase}/front-end-during.mp4`} type="video/mp4" />
+            </video>
+          </div>
+        </div>
+
+        <!-- The Old Bumper -->
+        <div class="reveal">
+          <h3 class="font-display font-bold text-h3 text-white mb-2">The Old Bumper's Send-Off</h3>
+          <p class="text-gray-400 text-small mb-6">The original bumper heads to recycling. Thanks for your service.</p>
+          <div class="max-w-lg">
+            <span class="inline-block px-3 py-1 text-xs font-display uppercase tracking-wider bg-gray-700 text-gray-300 rounded-full mb-3">The Old Bumper</span>
+            <video controls preload="metadata" class="w-full aspect-square rounded-lg bg-black">
+              <source src={`${mediaBase}/Bumper%20in%20recycling.mp4`} type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo Gallery -->
+  <section class="section-light py-16">
+    <div class="max-w-wide mx-auto px-6">
+      <div class="reveal mb-10">
+        <p class="font-display text-label uppercase tracking-widest text-lime mb-3">Gallery</p>
+        <h2 class="font-display font-bold text-h2 text-navy mb-4">The Details</h2>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        {photos.map((photo, i) => (
+          <div class="reveal overflow-hidden rounded-lg" style={`transition-delay: ${i * 0.06}s`}>
+            <img
+              src={photo.src}
+              alt={photo.alt}
+              loading="lazy"
+              class="w-full aspect-square object-cover hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- DIY or Pro? + What's Next -->
+  <section class="section-dark py-16">
+    <div class="max-w-wide mx-auto px-6">
+      <div class="max-w-3xl reveal">
+        <h2 class="font-display font-bold text-h2 text-white mb-4">DIY or Pro?</h2>
+        <div class="space-y-5 text-electric text-body">
+          <p>
+            <strong class="text-lime">Verdict: Both.</strong> The removal and install? DIY all day — if you can swap an exhaust, you can swap a bumper. But the paint match? That's where you call in someone who does this for a living. <a href="https://classicautopaintingtn.com/" target="_blank" rel="noopener" class="text-lime hover:text-white transition-colors">Classic Auto Painting</a> in Mt. Juliet nailed the color match on a car that's been in the sun for fifteen years. No orange peel, no shade difference, no evidence it's not the original bumper.
+          </p>
+          <p class="mt-5">&nbsp;</p>
+          <p>
+            The lesson here is the same one I apply at work: know what you're good at, know what requires a specialist, and <span class="text-lime">don't let ego make the decision for you.</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="max-w-3xl mt-16 reveal">
+        <h2 class="font-display font-bold text-h2 text-slate mb-4">What's Next</h2>
+        <div class="space-y-5 text-electric text-body mb-8">
+          <p>
+            Zeus has his voice (the exhaust) and his face (the bumper). Next up: bringing the cabin into the current decade with a radio upgrade.
+          </p>
+        </div>
+        <a href="/off-the-clock/cobra" class="btn-secondary text-sm">← Back to the Cobra</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
