@@ -1,0 +1,2216 @@
+---
+// Bluefields Stealth Project — SDP Discovery Questionnaire
+// Password protected: D3@lers
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bluefields Stealth Project — SteveMinster.com</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── GATE STYLES ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #1B2A4A;
+      --electric: #2D7DD2;
+      --lime: #97D700;
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--navy);
+      margin: 0;
+      padding: 0;
+    }
+
+    #gate {
+      position: fixed;
+      inset: 0;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.4s ease;
+    }
+
+    #gate.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .gate-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .gate-logo {
+      margin-bottom: 28px;
+    }
+
+    .gate-title {
+      font-size: 22px;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 20px;
+      letter-spacing: 0.01em;
+    }
+
+    .gate-subtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 24px;
+      letter-spacing: 0.04em;
+    }
+
+    .gate-input {
+      width: 200px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 16px 20px;
+      font-family: 'Space Grotesk', monospace;
+      font-size: 14px;
+      letter-spacing: 0.18em;
+      color: white;
+      text-align: center;
+      outline: none;
+      caret-color: var(--lime);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      margin-bottom: 16px;
+    }
+
+    .gate-input::placeholder {
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 0.22em;
+    }
+
+    .gate-input:focus {
+      border-color: rgba(255,255,255,0.35);
+      box-shadow: 0 0 0 3px rgba(151,215,0,0.12);
+    }
+
+    .gate-error {
+      font-size: 12px;
+      color: #ff6b6b;
+      margin-bottom: 12px;
+      min-height: 18px;
+      letter-spacing: 0.04em;
+    }
+
+    .gate-btn {
+      background: var(--lime);
+      color: #111;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 14px 48px;
+      border: none;
+      border-radius: 100px;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .gate-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(151,215,0,0.3);
+    }
+
+    .gate-btn:active {
+      transform: translateY(0);
+    }
+
+    /* ── QUESTIONNAIRE CONTENT ───────────────────────────────── */
+    #content {
+      display: none;
+    }
+
+    #content.visible {
+      display: block;
+    }
+
+    :root {
+    --navy: #0C1B33;
+    --navy-mid: #152744;
+    --navy-light: #1E3A5F;
+    --accent: #2E7BFF;
+    --accent-bright: #4D9FFF;
+    --gold: #C9A84C;
+    --white: #FFFFFF;
+    --off-white: #F5F7FA;
+    --light-border: #D6DDE8;
+    --text-dark: #0C1B33;
+    --text-mid: #4A5568;
+    --text-light: #718096;
+    --success: #2F9E6A;
+    --warning: #E6900A;
+    --danger: #C53030;
+    --section-radius: 12px;
+    --input-radius: 6px;
+    --transition: 0.22s ease;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--off-white);
+    color: var(--text-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ──────────────────────────────────────── */
+  .site-header {
+    background: var(--navy);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.35);
+  }
+
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .logo-mark {
+    width: 38px;
+    height: 38px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: white;
+    letter-spacing: -1px;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+
+  .logo-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px;
+    color: var(--white);
+    letter-spacing: 0.02em;
+  }
+
+  .logo-sub {
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+
+  .progress-wrap {
+    flex: 1;
+    max-width: 320px;
+  }
+
+  .progress-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-bar-bg {
+    background: rgba(255,255,255,0.12);
+    border-radius: 100px;
+    height: 5px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+    border-radius: 100px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* ── HERO ────────────────────────────────────────── */
+  .hero {
+    background: linear-gradient(145deg, var(--navy) 0%, var(--navy-light) 100%);
+    padding: 56px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-bright);
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 5vw, 42px);
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 16px;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: rgba(255,255,255,0.65);
+  }
+
+  .hero-desc {
+    color: rgba(255,255,255,0.65);
+    font-size: 15px;
+    max-width: 560px;
+    margin: 0 auto 28px;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-chip {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── SECTION NAV ─────────────────────────────────── */
+  .section-nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--light-border);
+    position: sticky;
+    top: 73px;
+    z-index: 90;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .section-nav-inner {
+    display: flex;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+    gap: 0;
+  }
+
+  .nav-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-light);
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: var(--transition);
+    text-decoration: none;
+  }
+
+  .nav-pill:hover { color: var(--accent); }
+  .nav-pill.complete { color: var(--success); }
+  .nav-pill.complete .nav-dot { background: var(--success); }
+
+  .nav-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--light-border);
+    transition: var(--transition);
+    flex-shrink: 0;
+  }
+
+  /* ── MAIN CONTENT ────────────────────────────────── */
+  .main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  /* ── SECTION CARDS ───────────────────────────────── */
+  .section-card {
+    background: var(--white);
+    border: 1px solid var(--light-border);
+    border-radius: var(--section-radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: box-shadow var(--transition);
+  }
+
+  .section-card:hover { box-shadow: 0 4px 24px rgba(12,27,51,0.07); }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition), background var(--transition);
+  }
+
+  .section-card.open .section-header {
+    border-bottom-color: var(--light-border);
+    background: var(--off-white);
+  }
+
+  .section-num {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: var(--navy);
+    color: white;
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background var(--transition);
+  }
+
+  .section-card.complete .section-num { background: var(--success); }
+
+  .section-title-wrap { flex: 1; }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+
+  .section-subtitle {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 2px;
+  }
+
+  .section-status {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 100px;
+    background: var(--off-white);
+    color: var(--text-light);
+    border: 1px solid var(--light-border);
+    flex-shrink: 0;
+  }
+
+  .section-card.complete .section-status {
+    background: #EDF7F2;
+    color: var(--success);
+    border-color: #B2DFC7;
+  }
+
+  .section-chevron {
+    color: var(--text-light);
+    transition: transform var(--transition);
+    flex-shrink: 0;
+  }
+
+  .section-card.open .section-chevron { transform: rotate(180deg); }
+
+  .section-body {
+    display: none;
+    padding: 28px 24px 24px;
+  }
+
+  .section-card.open .section-body { display: block; }
+
+  .section-helper {
+    background: linear-gradient(135deg, #EEF4FF, #F5F7FA);
+    border: 1px solid #D0E0FF;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--navy-light);
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+
+  /* ── QUESTIONS ───────────────────────────────────── */
+  .question {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--light-border);
+  }
+
+  .question:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .q-label {
+    display: block;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--navy);
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+
+  .q-num {
+    font-family: 'DM Serif Display', serif;
+    color: var(--accent);
+    margin-right: 6px;
+    font-size: 15px;
+  }
+
+  .q-helper {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 10px;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* ── INPUTS ──────────────────────────────────────── */
+  textarea, input[type="text"], input[type="number"], input[type="email"] {
+    width: 100%;
+    border: 1.5px solid var(--light-border);
+    border-radius: var(--input-radius);
+    padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text-dark);
+    background: var(--white);
+    transition: border-color var(--transition), box-shadow var(--transition);
+    outline: none;
+    resize: vertical;
+  }
+
+  textarea:focus, input[type="text"]:focus, input[type="number"]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(46,123,255,0.1);
+  }
+
+  textarea { min-height: 100px; }
+
+  .input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .input-row .field-label {
+    font-size: 12px;
+    color: var(--text-mid);
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+
+  /* ── RADIO / CHECKBOX ────────────────────────────── */
+  .radio-group, .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .radio-opt, .check-opt {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 14px;
+    border: 1.5px solid var(--light-border);
+    border-radius: 100px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text-mid);
+    transition: var(--transition);
+    user-select: none;
+    font-weight: 500;
+  }
+
+  .radio-opt:hover, .check-opt:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(46,123,255,0.04);
+  }
+
+  .radio-opt input, .check-opt input { display: none; }
+
+  .radio-opt.selected, .check-opt.checked {
+    border-color: var(--accent);
+    background: rgba(46,123,255,0.07);
+    color: var(--accent);
+  }
+
+  .radio-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    flex-shrink: 0;
+    transition: var(--transition);
+  }
+
+  .radio-opt.selected .radio-dot {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* ── DRAG RANK ───────────────────────────────────── */
+  .rank-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .rank-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--off-white);
+    border: 1.5px solid var(--light-border);
+    border-radius: var(--input-radius);
+    cursor: grab;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-mid);
+    transition: var(--transition);
+    user-select: none;
+  }
+
+  .rank-item:active { cursor: grabbing; opacity: 0.7; }
+  .rank-item.dragging { opacity: 0.4; background: #EEF4FF; border-color: var(--accent); }
+  .rank-item.drag-over { border-color: var(--accent); background: rgba(46,123,255,0.06); }
+
+  .rank-badge {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .drag-handle {
+    color: var(--light-border);
+    flex-shrink: 0;
+    font-size: 16px;
+    letter-spacing: -2px;
+  }
+
+  /* ── AUTOSAVE BANNER ─────────────────────────────── */
+  .autosave-banner {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--navy);
+    color: white;
+    font-size: 12px;
+    padding: 8px 14px;
+    border-radius: 100px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 200;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .autosave-banner.visible { opacity: 1; }
+
+  /* ── FORM FOOTER ─────────────────────────────────── */
+  .form-footer {
+    background: var(--white);
+    border: 1px solid var(--light-border);
+    border-radius: var(--section-radius);
+    padding: 28px 24px;
+    margin-top: 24px;
+  }
+
+  .footer-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+
+  .footer-desc {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-bottom: 20px;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: var(--transition);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+  }
+
+  .btn-primary:hover { background: #1A6AEE; box-shadow: 0 4px 16px rgba(46,123,255,0.35); }
+
+  .btn-secondary {
+    background: var(--off-white);
+    color: var(--navy);
+    border: 1.5px solid var(--light-border);
+  }
+
+  .btn-secondary:hover { background: #EAF0FA; border-color: var(--accent); color: var(--accent); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text-mid);
+    border: 1.5px solid var(--light-border);
+  }
+
+  .btn-outline:hover { border-color: var(--navy); color: var(--navy); }
+
+  /* ── SUCCESS STATE ───────────────────────────────── */
+  .success-overlay {
+    display: none;
+    background: var(--white);
+    border: 1px solid var(--light-border);
+    border-radius: var(--section-radius);
+    padding: 56px 24px;
+    text-align: center;
+    margin-top: 24px;
+  }
+
+  .success-icon {
+    width: 64px;
+    height: 64px;
+    background: #EDF7F2;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 28px;
+  }
+
+  .success-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+
+  .success-desc {
+    font-size: 14px;
+    color: var(--text-light);
+    max-width: 420px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* ── PRINT STYLES ────────────────────────────────── */
+  @media print {
+    .site-header, .section-nav, .autosave-banner, .btn-group { display: none !important; }
+    .section-body { display: block !important; }
+    .section-card { box-shadow: none !important; border: 1px solid #ccc !important; break-inside: avoid; }
+    body { background: white; }
+    .hero { background: white; color: black; }
+    .hero h1, .hero-desc, .hero-eyebrow { color: black !important; }
+  }
+
+  /* ── RESPONSIVE ──────────────────────────────────── */
+  @media (max-width: 640px) {
+    .header-inner { flex-wrap: wrap; }
+    .progress-wrap { order: 3; width: 100%; max-width: 100%; }
+    .hero { padding: 40px 20px 36px; }
+    .section-header { padding: 16px 18px; gap: 12px; }
+    .section-body { padding: 20px 18px; }
+    .input-row { grid-template-columns: 1fr; }
+    .hero-meta { flex-direction: column; align-items: center; }
+    .section-nav-inner { padding: 0 12px; }
+    .nav-pill { padding: 10px 12px; font-size: 11px; }
+  }
+
+  .char-count { font-size: 11px; color: var(--text-light); text-align: right; margin-top: 4px; }
+
+  .divider { height: 1px; background: var(--light-border); margin: 32px 0; }
+
+  .required-star { color: var(--accent); margin-left: 2px; }
+
+  </style>
+</head>
+
+<body>
+
+<!-- ── PASSWORD GATE ──────────────────────────────────────────── -->
+<div id="gate">
+  <div class="gate-inner">
+    <div class="gate-logo">
+      <!-- SM Logo Mark -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="56" height="64" viewBox="0 0 56 64" fill="none">
+        <!-- Navy container box -->
+        <rect x="0" y="8" width="48" height="48" rx="10" fill="#1B2A4A" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+        <!-- S lightning bolt — inside box (white) -->
+        <polyline points="35,16 21,16 14,32 28,32 21,48 35,48" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#box-clip)"/>
+        <!-- M marks — inside box (white) -->
+        <!-- Clip path for inside-box white strokes -->
+        <defs>
+          <clipPath id="box-clip">
+            <rect x="0" y="8" width="48" height="48" rx="10"/>
+          </clipPath>
+          <clipPath id="outside-clip">
+            <rect x="48" y="0" width="20" height="80"/>
+            <rect x="0" y="0" width="80" height="8"/>
+            <rect x="0" y="56" width="80" height="20"/>
+          </clipPath>
+        </defs>
+        <!-- S bolt full path for lime green outside portion -->
+        <polyline points="35,16 21,16 14,32 28,32 21,48 35,48" fill="none" stroke="#97D700" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#outside-clip)"/>
+      </svg>
+    </div>
+
+    <div class="gate-title">Bluefields Stealth Project</div>
+    <div class="gate-subtitle">Enter the access code to continue</div>
+    <input
+      id="gate-input"
+      class="gate-input"
+      type="password"
+      placeholder="CODE"
+      maxlength="20"
+      autocomplete="off"
+      spellcheck="false"
+    />
+    <div class="gate-error" id="gate-error"></div>
+    <button class="gate-btn" id="gate-btn">Enter</button>
+  </div>
+</div>
+
+<!-- ── QUESTIONNAIRE CONTENT ──────────────────────────────────── -->
+<div id="content">
+
+<!-- STICKY HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#" class="logo-area">
+      <div class="logo-mark">B</div>
+      <div class="logo-text">
+        <span class="logo-brand">Bluefields Specialty</span>
+        <span class="logo-sub">Internal Use Only</span>
+      </div>
+    </a>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Completion</span>
+        <span id="pct-label">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- SECTION NAV -->
+<nav class="section-nav" aria-label="Section navigation">
+  <div class="section-nav-inner">
+    <a class="nav-pill" href="#s1" data-section="s1"><span class="nav-dot"></span>UW Appetite</a>
+    <a class="nav-pill" href="#s2" data-section="s2"><span class="nav-dot"></span>Coverage</a>
+    <a class="nav-pill" href="#s3" data-section="s3"><span class="nav-dot"></span>Rating</a>
+    <a class="nav-pill" href="#s4" data-section="s4"><span class="nav-dot"></span>Distribution</a>
+    <a class="nav-pill" href="#s5" data-section="s5"><span class="nav-dot"></span>Loss Control</a>
+    <a class="nav-pill" href="#s6" data-section="s6"><span class="nav-dot"></span>Competitive</a>
+    <a class="nav-pill" href="#s7" data-section="s7"><span class="nav-dot"></span>Execution</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow">SDP Product Build — Confidential</p>
+  <h1>Specialty Dealers Package<br><em>Discovery Questionnaire</em></h1>
+  <p class="hero-desc">Aaron — your answers here feed directly into the underwriting guidelines, rating framework, coverage architecture, and project sequencing for the SDP launch. Take your time. Partial answers are fine; we'll cover gaps on the call.</p>
+  <div class="hero-meta">
+    <span class="meta-chip">🗓 For: March 4, 2026 Meeting</span>
+    <span class="meta-chip">📋 40 Questions · 7 Sections</span>
+    <span class="meta-chip">🔒 Progress auto-saved locally</span>
+  </div>
+</div>
+
+<!-- MAIN FORM -->
+<main class="main">
+  <form id="sdp-form" novalidate>
+
+    <!-- ── SECTION 1 ── -->
+    <div class="section-card open" id="s1">
+      <div class="section-header" role="button" tabindex="0" aria-expanded="true">
+        <div class="section-num">1</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Underwriting Appetite &amp; Risk Selection</div>
+          <div class="section-subtitle">10 questions</div>
+        </div>
+        <span class="section-status" id="s1-status">Not started</span>
+        <svg class="section-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="section-body">
+        <div class="section-helper">These answers will drive the Underwriting Guidelines, Declination Criteria, and Referral Triggers — all structured as decision logic for the UW Workbench.</div>
+
+        <div class="question">
+          <label class="q-label" for="q1_1"><span class="q-num">1.1</span> What are the hard declination criteria — the absolute "no" list?<span class="required-star">*</span></label>
+          <p class="q-helper">Think about: years in business, loss history thresholds, specific operations, ownership structures, geographic exclusions, financial red flags.</p>
+          <textarea id="q1_1" name="q1_1" placeholder="e.g., Less than 2 years in business, loss ratio exceeding X% in past 3 years, salvage/junkyard operations on premises…" rows="5"></textarea>
+          <div class="char-count" id="cc-q1_1">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q1_2"><span class="q-num">1.2</span> What are the referral triggers — risks requiring senior UW review? What distinguishes a "refer" from a "decline"?</label>
+          <textarea id="q1_2" name="q1_2" placeholder="e.g., Single loss > $X in past 5 years triggers referral but not decline; 3+ losses of any size = decline…" rows="5"></textarea>
+          <div class="char-count" id="cc-q1_2">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q1_3"><span class="q-num">1.3</span> How do you want to segment risk quality?</label>
+          <p class="q-helper">e.g., Preferred / Standard / Substandard tiers, or a scoring model? What variables separate a great dealer risk from a marginal one?</p>
+          <textarea id="q1_3" name="q1_3" placeholder="Describe the tier structure and the key differentiators between tiers…" rows="5"></textarea>
+          <div class="char-count" id="cc-q1_3">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q1_4"><span class="q-num">1.4</span> What is the maximum account size (premium or TIV) we should accept at launch?</label>
+          <p class="q-helper">Is there an upper bound where the risk profile changes materially and we should refer or decline?</p>
+          <textarea id="q1_4" name="q1_4" placeholder="e.g., Max TIV of $X for open lot; refer anything above $Y GWP to senior UW…" rows="3"></textarea>
+          <div class="char-count" id="cc-q1_4">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q1_5"><span class="q-num">1.5</span> For multi-location dealers — any special rules?</label>
+          <p class="q-helper">Max number of locations? Rate each independently or use a consolidated approach?</p>
+          <textarea id="q1_5" name="q1_5" placeholder="e.g., Up to X locations; rate independently per location but aggregate umbrella; >X locations requires referral…" rows="3"></textarea>
+          <div class="char-count" id="cc-q1_5">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q1_6"><span class="q-num">1.6</span> Demo rides and loaners — what specific underwriting requirements should we impose?<span class="required-star">*</span></label>
+          <p class="q-helper">Signed waivers, helmet requirements, rider age/license minimums, territory restrictions, time-of-day limits.</p>
+          <textarea id="q1_6" name="q1_6" placeholder="List specific requirements: waiver format, age minimum, license class required, max distance from dealership, etc…" rows="5"></textarea>
+          <div class="char-count" id="cc-q1_6">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q1_7"><span class="q-num">1.7</span> Are there manufacturer brands you would exclude, restrict, or add to the approved list?</label>
+          <p class="q-helper">Note: K&K approved list is in the reference doc. BRP, Harley, Yamaha, Honda, Suzuki, Polaris are baseline approvals.</p>
+          <textarea id="q1_7" name="q1_7" placeholder="Brands to exclude from coverage (liability restricted to approved list), new brands to add, brands requiring special handling…" rows="4"></textarea>
+          <div class="char-count" id="cc-q1_7">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q1_8"><span class="q-num">1.8</span> Service/repair operations — what's the appetite?</label>
+          <p class="q-helper">Full-service shops vs. light maintenance vs. no service? Does a paint/body shop change the risk profile materially?</p>
+          <textarea id="q1_8" name="q1_8" placeholder="Describe service operation appetite and how it affects rating or eligibility…" rows="4"></textarea>
+          <div class="char-count" id="cc-q1_8">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label"><span class="q-num">1.9</span> How should we handle dealers that also sell marine/watercraft (e.g., Sea-Doo alongside Can-Am)?</label>
+          <div class="radio-group" id="rg-q1_9">
+            <label class="radio-opt"><input type="radio" name="q1_9_radio" value="standard"><span class="radio-dot"></span> Include as standard</label>
+            <label class="radio-opt"><input type="radio" name="q1_9_radio" value="endorsement"><span class="radio-dot"></span> Require endorsement</label>
+            <label class="radio-opt"><input type="radio" name="q1_9_radio" value="restrict"><span class="radio-dot"></span> Restrict / exclude</label>
+            <label class="radio-opt"><input type="radio" name="q1_9_radio" value="other"><span class="radio-dot"></span> Other / conditional</label>
+          </div>
+          <textarea id="q1_9" name="q1_9" placeholder="Additional context, conditions, or sublimit approach…" rows="3"></textarea>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q1_10"><span class="q-num">1.10</span> Any specific financial requirements?</label>
+          <p class="q-helper">Minimum years in business, revenue floors, credit score thresholds, required financial documentation at submission.</p>
+          <textarea id="q1_10" name="q1_10" placeholder="e.g., Minimum 3 years in operation, annual revenue >$X, financials required for accounts >$Y TIV…" rows="4"></textarea>
+          <div class="char-count" id="cc-q1_10">0 characters</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SECTION 2 ── -->
+    <div class="section-card" id="s2">
+      <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+        <div class="section-num">2</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Coverage Architecture &amp; Forms</div>
+          <div class="section-subtitle">10 questions</div>
+        </div>
+        <span class="section-status" id="s2-status">Not started</span>
+        <svg class="section-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="section-body">
+        <div class="section-helper">These answers shape the coverage forms, endorsements, and product structure that Fortegra needs to approve.</div>
+
+        <div class="question">
+          <label class="q-label" for="q2_1"><span class="q-num">2.1</span> Walk us through your ideal package structure — base vs. optional/elective.<span class="required-star">*</span></label>
+          <p class="q-helper">What coverages require others as prerequisites? What should always bundle together?</p>
+          <textarea id="q2_1" name="q2_1" placeholder="Base package: GL + Garage Liability + Property + Crime + …&#10;Optional: Inland Marine, Excess, Professional Liability, …&#10;Prerequisites: Garage Keepers requires Garage Liability, etc." rows="7"></textarea>
+          <div class="char-count" id="cc-q2_1">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label"><span class="q-num">2.2</span> Are there scenarios where we'd offer garage liability limits lower than $1M/$2M?</label>
+          <p class="q-helper">$1M/$2M aggregate is the agreed floor from the Aon call. Any exceptions?</p>
+          <div class="radio-group" id="rg-q2_2">
+            <label class="radio-opt"><input type="radio" name="q2_2_radio" value="yes"><span class="radio-dot"></span> Yes</label>
+            <label class="radio-opt"><input type="radio" name="q2_2_radio" value="no"><span class="radio-dot"></span> No — $1M/$2M is the floor</label>
+            <label class="radio-opt"><input type="radio" name="q2_2_radio" value="conditional"><span class="radio-dot"></span> Conditional</label>
+          </div>
+          <textarea id="q2_2" name="q2_2" placeholder="If yes or conditional, explain the scenarios…" rows="3"></textarea>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q2_3"><span class="q-num">2.3</span> Open lot / dealers physical damage — how should we handle inventory valuation?</label>
+          <p class="q-helper">Blanket, scheduled, or ACV? Monthly reporting vs. annual? How do we handle consignment units and customer units in dealer care?</p>
+          <textarea id="q2_3" name="q2_3" placeholder="Describe the valuation approach, reporting method, and how consignment/customer units are handled…" rows="5"></textarea>
+          <div class="char-count" id="cc-q2_3">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q2_4"><span class="q-num">2.4</span> Garage keepers liability — direct primary vs. excess? Legal liability options? Sublimits for customer vehicles?</label>
+          <textarea id="q2_4" name="q2_4" placeholder="Direct primary or excess over customer's own insurance? Direct legal liability vs. legal liability only? Recommended sublimits?" rows="4"></textarea>
+          <div class="char-count" id="cc-q2_4">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q2_5"><span class="q-num">2.5</span> Professional/management liability — package or separate policy? What limits make sense?</label>
+          <p class="q-helper">Truth in lending, odometer/title E&O, dealer legal defense — how do these fit in the product architecture?</p>
+          <textarea id="q2_5" name="q2_5" placeholder="Should these be bundled in the package or offered as a separate professional liability endorsement/policy? Recommended limits?" rows="4"></textarea>
+          <div class="char-count" id="cc-q2_5">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q2_6"><span class="q-num">2.6</span> Inland marine scope?</label>
+          <p class="q-helper">Tools/equipment, signs, goods in transit, accounts receivable — or limited to dealer-specific exposures like parts/accessories in transit?</p>
+          <textarea id="q2_6" name="q2_6" placeholder="List the inland marine coverages you want in scope and any coverage sublimits…" rows="4"></textarea>
+          <div class="char-count" id="cc-q2_6">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q2_7"><span class="q-num">2.7</span> What endorsements do you anticipate needing at launch?<span class="required-star">*</span></label>
+          <p class="q-helper">Demo ride coverage, seasonal operations, event/show coverage, hired auto, employee use, etc. Which are day-one must-haves?</p>
+          <textarea id="q2_7" name="q2_7" placeholder="List endorsements in priority order: must-have at launch vs. Phase 2…" rows="6"></textarea>
+          <div class="char-count" id="cc-q2_7">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q2_8"><span class="q-num">2.8</span> Coverage features from competitors that are table-stakes or potential differentiators?</label>
+          <p class="q-helper">What would embarrass us if we didn't have it? What would differentiate us if we offered it?</p>
+          <textarea id="q2_8" name="q2_8" placeholder="Table-stakes (must match competitors): …&#10;Differentiators (ours would be better): …" rows="5"></textarea>
+          <div class="char-count" id="cc-q2_8">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q2_9"><span class="q-num">2.9</span> Actual loss sustained for business income — guardrails needed?</label>
+          <p class="q-helper">Max period of restoration, notification requirements, any experience with this basis you'd want to share?</p>
+          <textarea id="q2_9" name="q2_9" placeholder="Recommended max period of restoration, waiting period, notification requirements…" rows="4"></textarea>
+          <div class="char-count" id="cc-q2_9">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q2_10"><span class="q-num">2.10</span> Excess/umbrella structure — what tiers? Follow-form or specific? Exclusions?</label>
+          <p class="q-helper">$5M was discussed. Should we offer $1M/$2M/$3M/$5M tiers? Anything we should specifically exclude from the umbrella beyond standard?</p>
+          <textarea id="q2_10" name="q2_10" placeholder="Recommended tiers, follow-form vs. specific coverage, non-standard exclusions to build in…" rows="4"></textarea>
+          <div class="char-count" id="cc-q2_10">0 characters</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SECTION 3 ── -->
+    <div class="section-card" id="s3">
+      <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+        <div class="section-num">3</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Rating &amp; Pricing Structure</div>
+          <div class="section-subtitle">8 questions</div>
+        </div>
+        <span class="section-status" id="s3-status">Not started</span>
+        <svg class="section-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="section-body">
+        <div class="section-helper">These define what Aon builds and what Quote Wizard implements. Structure and rating factors only — no fabricated rates. These specs feed directly into the actuarial indication model Anthony Papa is building.</div>
+
+        <div class="question">
+          <label class="q-label"><span class="q-num">3.1</span> Rank the primary rating variables by importance — drag to reorder.<span class="required-star">*</span></label>
+          <p class="q-helper">Drag items so #1 = most important rating factor. This becomes the factor hierarchy in Quote Wizard.</p>
+          <ul class="rank-list" id="rank-3-1">
+            <li class="rank-item" draggable="true" data-val="revenue"><span class="drag-handle">⠿</span><span class="rank-badge">1</span> Revenue (annual gross)</li>
+            <li class="rank-item" draggable="true" data-val="inventory"><span class="drag-handle">⠿</span><span class="rank-badge">2</span> Inventory value</li>
+            <li class="rank-item" draggable="true" data-val="units"><span class="drag-handle">⠿</span><span class="rank-badge">3</span> Unit count (new + used)</li>
+            <li class="rank-item" draggable="true" data-val="loss_history"><span class="drag-handle">⠿</span><span class="rank-badge">4</span> Loss history (frequency / severity)</li>
+            <li class="rank-item" draggable="true" data-val="territory"><span class="drag-handle">⠿</span><span class="rank-badge">5</span> Territory / geography</li>
+            <li class="rank-item" draggable="true" data-val="years_biz"><span class="drag-handle">⠿</span><span class="rank-badge">6</span> Years in business</li>
+            <li class="rank-item" draggable="true" data-val="service_ops"><span class="drag-handle">⠿</span><span class="rank-badge">7</span> Service operations (Y/N)</li>
+            <li class="rank-item" draggable="true" data-val="brand_mix"><span class="drag-handle">⠿</span><span class="rank-badge">8</span> Brand mix</li>
+            <li class="rank-item" draggable="true" data-val="employees"><span class="drag-handle">⠿</span><span class="rank-badge">9</span> Number of employees</li>
+            <li class="rank-item" draggable="true" data-val="sqft"><span class="drag-handle">⠿</span><span class="rank-badge">10</span> Square footage</li>
+          </ul>
+          <input type="hidden" id="q3_1" name="q3_1">
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q3_2"><span class="q-num">3.2</span> What experience modification or loss-sensitive rating approach do you want?</label>
+          <p class="q-helper">Schedule rating, loss-rated, or hybrid? Over what period — 3-year or 5-year loss history?</p>
+          <textarea id="q3_2" name="q3_2" placeholder="Describe the preferred experience mod approach and lookback period…" rows="4"></textarea>
+          <div class="char-count" id="cc-q3_2">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q3_3"><span class="q-num">3.3</span> Loss prevention / technology credits — what specific credits do you envision?</label>
+          <p class="q-helper">Camera systems, GPS tracking on demo units, electronic waiver systems, employee training programs, secured lot fencing — give us the list and approximate credit magnitude.</p>
+          <textarea id="q3_3" name="q3_3" placeholder="e.g., Documented waiver system: X% credit; CCTV on lot: Y% credit; GPS on demo units: Z% credit…" rows="5"></textarea>
+          <div class="char-count" id="cc-q3_3">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label"><span class="q-num">3.4</span> New business penalty for dealers with no prior coverage history?</label>
+          <div class="radio-group" id="rg-q3_4">
+            <label class="radio-opt"><input type="radio" name="q3_4_radio" value="yes"><span class="radio-dot"></span> Yes</label>
+            <label class="radio-opt"><input type="radio" name="q3_4_radio" value="no"><span class="radio-dot"></span> No</label>
+            <label class="radio-opt"><input type="radio" name="q3_4_radio" value="conditional"><span class="radio-dot"></span> Conditional</label>
+          </div>
+          <textarea id="q3_4" name="q3_4" placeholder="If yes or conditional, describe the surcharge range and trigger conditions…" rows="3"></textarea>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q3_5"><span class="q-num">3.5</span> Multi-policy / bundling discount philosophy?</label>
+          <p class="q-helper">If a dealer buys the full package vs. just property, is there a bundling discount? What's the philosophy — reward full-package buyers or keep pricing flat?</p>
+          <textarea id="q3_5" name="q3_5" placeholder="Describe the bundling credit structure and the business rationale…" rows="4"></textarea>
+          <div class="char-count" id="cc-q3_5">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q3_6"><span class="q-num">3.6</span> How granular should territory rating be at launch?</label>
+          <p class="q-helper">The Aon call discussed zip-code-to-territory rollup. How many territories are realistic at launch? State-level vs. sub-state groupings?</p>
+          <textarea id="q3_6" name="q3_6" placeholder="e.g., 5-territory model at launch (Southeast, Midwest, Northeast, Mountain, West); expand to 15 territories in Phase 2…" rows="4"></textarea>
+          <div class="char-count" id="cc-q3_6">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q3_7"><span class="q-num">3.7</span> Minimum earned premium or short-rate cancellation provisions?</label>
+          <textarea id="q3_7" name="q3_7" placeholder="Minimum earned premium percentage, short-rate table preference, any state carve-outs…" rows="3"></textarea>
+          <div class="char-count" id="cc-q3_7">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label"><span class="q-num">3.8</span> How should we handle mid-term inventory changes?</label>
+          <div class="radio-group" id="rg-q3_8">
+            <label class="radio-opt"><input type="radio" name="q3_8_radio" value="monthly"><span class="radio-dot"></span> Monthly reporting endorsement</label>
+            <label class="radio-opt"><input type="radio" name="q3_8_radio" value="annual"><span class="radio-dot"></span> Annual audit</label>
+            <label class="radio-opt"><input type="radio" name="q3_8_radio" value="flat_audit"><span class="radio-dot"></span> Flat-rated with audit at expiry</label>
+            <label class="radio-opt"><input type="radio" name="q3_8_radio" value="other"><span class="radio-dot"></span> Other</label>
+          </div>
+          <textarea id="q3_8" name="q3_8" placeholder="Additional context or qualifications…" rows="3"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SECTION 4 ── -->
+    <div class="section-card" id="s4">
+      <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+        <div class="section-num">4</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Distribution &amp; Submission Workflow</div>
+          <div class="section-subtitle">7 questions</div>
+        </div>
+        <span class="section-status" id="s4-status">Not started</span>
+        <svg class="section-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="section-body">
+        <div class="section-helper">These answers shape the Submission Portal experience for agents — what they see, what they enter, and how fast they get a quote.</div>
+
+        <div class="question">
+          <label class="q-label" for="q4_1"><span class="q-num">4.1</span> What information should be required at submission vs. collected at bind?</label>
+          <p class="q-helper">More data upfront = better risk selection but higher agent friction. Where's the right balance for this class?</p>
+          <textarea id="q4_1" name="q4_1" placeholder="At submission (required for quote): …&#10;At bind (required to issue): …" rows="6"></textarea>
+          <div class="char-count" id="cc-q4_1">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q4_2"><span class="q-num">4.2</span> What does a "good submission" look like? What documents do you need to see?</label>
+          <p class="q-helper">Current dec pages, loss runs, inventory schedule, financial statements, photos — what's mandatory vs. preferred?</p>
+          <textarea id="q4_2" name="q4_2" placeholder="Mandatory documents: …&#10;Preferred/helpful: …&#10;For accounts above $X TIV: …" rows="5"></textarea>
+          <div class="char-count" id="cc-q4_2">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q4_3"><span class="q-num">4.3</span> Should we offer indicative pricing (quick-quote) based on minimal inputs?</label>
+          <p class="q-helper">If yes, what are the minimum inputs needed for a quick-quote? This becomes the Quote Wizard "express" flow.</p>
+          <textarea id="q4_3" name="q4_3" placeholder="Yes/No + minimum inputs for quick-quote if applicable…" rows="4"></textarea>
+          <div class="char-count" id="cc-q4_3">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label"><span class="q-num">4.4</span> Target turnaround time?</label>
+          <div class="input-row">
+            <div>
+              <div class="field-label">Submission → Quote</div>
+              <input type="text" id="q4_4a" name="q4_4a" placeholder="e.g., Same day / 24 hours / 48 hours">
+            </div>
+            <div>
+              <div class="field-label">Submission → Bind</div>
+              <input type="text" id="q4_4b" name="q4_4b" placeholder="e.g., 48 hours / 3 business days">
+            </div>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q4_5"><span class="q-num">4.5</span> Biggest pain points agents face when submitting dealer business — and how we fix them?</label>
+          <p class="q-helper">Based on your experience at Ryan Specialty and prior — what would make our process meaningfully better than the status quo?</p>
+          <textarea id="q4_5" name="q4_5" placeholder="Pain points: …&#10;How Bluefields/vQuip should solve each: …" rows="6"></textarea>
+          <div class="char-count" id="cc-q4_5">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q4_6"><span class="q-num">4.6</span> Early adopter brokers/agents — how many producers active in first 90 days? Which states?</label>
+          <p class="q-helper">Any existing relationships you're bringing that can generate early AGWP?</p>
+          <textarea id="q4_6" name="q4_6" placeholder="Estimated producer count, priority states, any existing relationships to flag…" rows="4"></textarea>
+          <div class="char-count" id="cc-q4_6">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label"><span class="q-num">4.7</span> Renewal workflow preference?</label>
+          <div class="radio-group" id="rg-q4_7">
+            <label class="radio-opt"><input type="radio" name="q4_7_radio" value="auto"><span class="radio-dot"></span> Auto-renew with audit</label>
+            <label class="radio-opt"><input type="radio" name="q4_7_radio" value="full"><span class="radio-dot"></span> Full re-underwrite</label>
+            <label class="radio-opt"><input type="radio" name="q4_7_radio" value="hybrid"><span class="radio-dot"></span> Hybrid (auto below threshold, re-UW above)</label>
+          </div>
+          <textarea id="q4_7" name="q4_7" placeholder="Describe the renewal philosophy and any account-size thresholds for different treatment…" rows="3"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SECTION 5 ── -->
+    <div class="section-card" id="s5">
+      <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+        <div class="section-num">5</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Loss Control &amp; Claims</div>
+          <div class="section-subtitle">5 questions</div>
+        </div>
+        <span class="section-status" id="s5-status">Not started</span>
+        <svg class="section-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="section-body">
+        <div class="section-helper">These feed into loss control strategy (Jack Freudenthal owns this) and claims handling expectations with Fortegra. Your claims experience is critical context here.</div>
+
+        <div class="question">
+          <label class="q-label" for="q5_1"><span class="q-num">5.1</span> Top 3–5 loss types by frequency and by severity for this class?<span class="required-star">*</span></label>
+          <textarea id="q5_1" name="q5_1" placeholder="By frequency (most common claims): …&#10;By severity (largest dollar losses): …" rows="6"></textarea>
+          <div class="char-count" id="cc-q5_1">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q5_2"><span class="q-num">5.2</span> Loss control requirements — mandatory vs. recommended?</label>
+          <p class="q-helper">Demo ride waivers, lot security, camera systems, employee background checks, driver training — what's a hard requirement vs. a credit-eligible recommendation?</p>
+          <textarea id="q5_2" name="q5_2" placeholder="Mandatory (required to bind): …&#10;Recommended (credit-eligible): …" rows="6"></textarea>
+          <div class="char-count" id="cc-q5_2">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q5_3"><span class="q-num">5.3</span> Pre-bind inspection required? For all risks or only above a certain size/TIV?</label>
+          <textarea id="q5_3" name="q5_3" placeholder="Threshold for required inspection, acceptable inspection types (vendor, photos, self-inspection)…" rows="3"></textarea>
+          <div class="char-count" id="cc-q5_3">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q5_4"><span class="q-num">5.4</span> Emerging risks or trends to build for now?</label>
+          <p class="q-helper">E-bike/e-scooter liability, lithium battery storage fires, EV charging stations at dealerships — what's on your radar?</p>
+          <textarea id="q5_4" name="q5_4" placeholder="Trends you'd want the coverage forms and rating structure to anticipate…" rows="5"></textarea>
+          <div class="char-count" id="cc-q5_4">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q5_5"><span class="q-num">5.5</span> Claims reporting requirements to impose on insureds?</label>
+          <p class="q-helper">Time limits, documentation standards, reservation of rights triggers — what should the policy conditions say?</p>
+          <textarea id="q5_5" name="q5_5" placeholder="Prompt reporting requirements, documentation standards, any specific triggers for coverage denial…" rows="4"></textarea>
+          <div class="char-count" id="cc-q5_5">0 characters</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SECTION 6 ── -->
+    <div class="section-card" id="s6">
+      <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+        <div class="section-num">6</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Competitive Landscape &amp; Positioning</div>
+          <div class="section-subtitle">5 questions</div>
+        </div>
+        <span class="section-status" id="s6-status">Not started</span>
+        <svg class="section-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="section-body">
+        <div class="section-helper">Help us refine go-to-market positioning and identify where the SDP can win against incumbents. Your market knowledge is the competitive intelligence we don't have yet.</div>
+
+        <div class="question">
+          <label class="q-label" for="q6_1"><span class="q-num">6.1</span> Top 3–5 competitors writing this class — strengths, weaknesses, dealer frustrations?<span class="required-star">*</span></label>
+          <textarea id="q6_1" name="q6_1" placeholder="For each competitor: Name, what they do well, what they do poorly, where dealers are most frustrated with them…" rows="8"></textarea>
+          <div class="char-count" id="cc-q6_1">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q6_2"><span class="q-num">6.2</span> Current market rate range for a typical powersports dealer package?</label>
+          <p class="q-helper">e.g., "a 3-location Polaris/Can-Am dealer with $5M inventory typically pays $X–$Y annually." Note: this is for context only — not to fabricate rates.</p>
+          <textarea id="q6_2" name="q6_2" placeholder="Typical dealer profile + current premium range you've seen in the market…" rows="4"></textarea>
+          <div class="char-count" id="cc-q6_2">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q6_3"><span class="q-num">6.3</span> Coverage gaps or exclusions in competing programs that generate the most agent/dealer complaints?</label>
+          <textarea id="q6_3" name="q6_3" placeholder="Where do agents call you frustrated about what their current program doesn't cover?" rows="5"></textarea>
+          <div class="char-count" id="cc-q6_3">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q6_4"><span class="q-num">6.4</span> How sticky is this business? Typical retention rate and what causes non-renewals?</label>
+          <textarea id="q6_4" name="q6_4" placeholder="Estimated retention rate in this class, primary non-renewal drivers (price, coverage, service, claims disputes)…" rows="4"></textarea>
+          <div class="char-count" id="cc-q6_4">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q6_5"><span class="q-num">6.5</span> NPDA (National Powersports Dealer Association) — any relationship or endorsement opportunity?</label>
+          <p class="q-helper">400+ dealers have publicly cited frustration with their insurance options. A preferred-partner arrangement with the NPDA could be transformative for distribution.</p>
+          <textarea id="q6_5" name="q6_5" placeholder="Existing contacts, likelihood of a preferred provider arrangement, what it would take…" rows="4"></textarea>
+          <div class="char-count" id="cc-q6_5">0 characters</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SECTION 7 ── -->
+    <div class="section-card" id="s7">
+      <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+        <div class="section-num">7</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Project Execution &amp; Sequencing</div>
+          <div class="section-subtitle">5 questions</div>
+        </div>
+        <span class="section-status" id="s7-status">Not started</span>
+        <svg class="section-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="section-body">
+        <div class="section-helper">Alignment on how we build this together — build order, time commitment, and working style. Steve and Manuel need these answers to sequence the project plan.</div>
+
+        <div class="question">
+          <label class="q-label"><span class="q-num">7.1</span> What's the right build order for deliverables? Drag to rank from first-to-build to last.<span class="required-star">*</span></label>
+          <p class="q-helper">What's most critical to get right first? Your sequencing becomes the project plan milestone order.</p>
+          <ul class="rank-list" id="rank-7-1">
+            <li class="rank-item" draggable="true" data-val="uw_guidelines"><span class="drag-handle">⠿</span><span class="rank-badge">1</span> Underwriting guidelines &amp; appetite</li>
+            <li class="rank-item" draggable="true" data-val="rating_algo"><span class="drag-handle">⠿</span><span class="rank-badge">2</span> Rating algorithm &amp; factor tables</li>
+            <li class="rank-item" draggable="true" data-val="coverage_forms"><span class="drag-handle">⠿</span><span class="rank-badge">3</span> Coverage forms &amp; endorsements</li>
+            <li class="rank-item" draggable="true" data-val="application"><span class="drag-handle">⠿</span><span class="rank-badge">4</span> Application / submission form</li>
+            <li class="rank-item" draggable="true" data-val="declination"><span class="drag-handle">⠿</span><span class="rank-badge">5</span> Declination &amp; referral logic</li>
+            <li class="rank-item" draggable="true" data-val="loss_control"><span class="drag-handle">⠿</span><span class="rank-badge">6</span> Loss control requirements</li>
+            <li class="rank-item" draggable="true" data-val="marketing"><span class="drag-handle">⠿</span><span class="rank-badge">7</span> Agent marketing materials (vQuip)</li>
+            <li class="rank-item" draggable="true" data-val="bdx"><span class="drag-handle">⠿</span><span class="rank-badge">8</span> BDX / carrier reporting definitions</li>
+          </ul>
+          <input type="hidden" id="q7_1" name="q7_1">
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q7_2"><span class="q-num">7.2</span> How much time is available in March? What's realistic weekly through June launch?</label>
+          <input type="text" id="q7_2" name="q7_2" placeholder="e.g., 10 hrs/week in March ramping to 20 hrs/week in May; full-time from June 1…">
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q7_3"><span class="q-num">7.3</span> External dependencies or deadlines beyond the August BRP event?</label>
+          <p class="q-helper">State filing timelines, Fortegra review cycles, any hard deadlines we need to build back from?</p>
+          <textarea id="q7_3" name="q7_3" placeholder="List any hard deadlines, filing cycles, or external milestones that constrain the project timeline…" rows="4"></textarea>
+          <div class="char-count" id="cc-q7_3">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="q7_4"><span class="q-num">7.4</span> Do you have templates, forms, or reference documents from prior programs to use as starting points?</label>
+          <p class="q-helper">Sanitized prior program materials, application templates, rating worksheets — anything that accelerates the build.</p>
+          <textarea id="q7_4" name="q7_4" placeholder="List what you have and how to share it; flag anything that needs to be sanitized first…" rows="4"></textarea>
+          <div class="char-count" id="cc-q7_4">0 characters</div>
+        </div>
+
+        <div class="question">
+          <label class="q-label"><span class="q-num">7.5</span> Preferred working style for iteration?</label>
+          <div class="radio-group" id="rg-q7_5">
+            <label class="radio-opt"><input type="radio" name="q7_5_radio" value="weekly"><span class="radio-dot"></span> Weekly review cycles</label>
+            <label class="radio-opt"><input type="radio" name="q7_5_radio" value="async"><span class="radio-dot"></span> Async document comments</label>
+            <label class="radio-opt"><input type="radio" name="q7_5_radio" value="realtime"><span class="radio-dot"></span> Real-time working sessions</label>
+            <label class="radio-opt"><input type="radio" name="q7_5_radio" value="mix"><span class="radio-dot"></span> Mix of all</label>
+          </div>
+          <textarea id="q7_5" name="q7_5" placeholder="Any additional context on how you work best — tools you prefer, meeting cadence, async comms preferences…" rows="3"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── FOOTER ── -->
+    <div class="form-footer">
+      <div class="footer-title">Ready to submit?</div>
+      <p class="footer-desc">Your answers will be emailed directly to Steve Minster (<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5b282f3e2d3e1b363235282f3e292834372e2f3234352875383436">[email&#160;protected]</a>) and will feed into the project plan and scope documents for the SDP launch.</p>
+
+      <div id="submit-error" style="display:none; color:#C53030; font-size:13px; margin-bottom:12px; padding:10px 14px; background:#FFF5F5; border:1px solid #FEB2B2; border-radius:6px;"></div>
+
+      <div class="btn-group">
+        <button type="submit" class="btn btn-primary" id="submit-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+          Submit Answers
+        </button>
+        <button type="button" class="btn btn-secondary" id="save-draft-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Save Draft
+        </button>
+        <button type="button" class="btn btn-outline" id="export-pdf-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Export as PDF
+        </button>
+        <button type="button" class="btn btn-outline" id="clear-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+          Clear Form
+        </button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-overlay" id="success-overlay">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Answers Submitted</div>
+      <p class="success-desc">Your discovery questionnaire has been sent to Steve Minster. It will feed directly into the SDP project plan and the March 4 scoping call agenda. Thanks, Aaron.</p>
+    </div>
+
+  </form>
+</main>
+
+<!-- AUTOSAVE BANNER -->
+<div class="autosave-banner" id="autosave-banner">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+  Draft saved
+</div>
+
+// ──────────────────────────────────────────────────────────────
+// CONFIG — replace FORMSPREE_ID with your actual Formspree form ID
+// ──────────────────────────────────────────────────────────────
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mpqjvkar';
+const STORAGE_KEY = 'bluefields_sdp_draft';
+
+// ──────────────────────────────────────────────────────────────
+// COLLAPSIBLE SECTIONS
+// ──────────────────────────────────────────────────────────────
+document.querySelectorAll('.section-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const card = header.closest('.section-card');
+    const isOpen = card.classList.contains('open');
+    card.classList.toggle('open', !isOpen);
+    header.setAttribute('aria-expanded', String(!isOpen));
+  });
+  header.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); header.click(); }
+  });
+});
+
+// ──────────────────────────────────────────────────────────────
+// RADIO GROUPS
+// ──────────────────────────────────────────────────────────────
+document.querySelectorAll('.radio-opt').forEach(opt => {
+  opt.addEventListener('click', () => {
+    const name = opt.querySelector('input').name;
+    document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+      r.closest('.radio-opt').classList.remove('selected');
+    });
+    opt.classList.add('selected');
+    opt.querySelector('input').checked = true;
+    autoSave();
+  });
+});
+
+// ──────────────────────────────────────────────────────────────
+// DRAG-AND-DROP RANKING
+// ──────────────────────────────────────────────────────────────
+function initRankList(listId, hiddenId) {
+  const list = document.getElementById(listId);
+  if (!list) return;
+  let dragSrc = null;
+
+  list.querySelectorAll('.rank-item').forEach(item => {
+    item.addEventListener('dragstart', e => {
+      dragSrc = item;
+      item.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+      list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
+      updateRankBadges(list, hiddenId);
+      autoSave();
+    });
+    item.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      if (item !== dragSrc) {
+        list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
+        item.classList.add('drag-over');
+      }
+    });
+    item.addEventListener('drop', e => {
+      e.preventDefault();
+      if (dragSrc && item !== dragSrc) {
+        const items = [...list.querySelectorAll('.rank-item')];
+        const srcIdx = items.indexOf(dragSrc);
+        const tgtIdx = items.indexOf(item);
+        if (srcIdx < tgtIdx) list.insertBefore(dragSrc, item.nextSibling);
+        else list.insertBefore(dragSrc, item);
+      }
+    });
+  });
+  updateRankBadges(list, hiddenId);
+}
+
+function updateRankBadges(list, hiddenId) {
+  const items = list.querySelectorAll('.rank-item');
+  const order = [];
+  items.forEach((item, idx) => {
+    item.querySelector('.rank-badge').textContent = idx + 1;
+    order.push(item.dataset.val);
+  });
+  if (hiddenId) document.getElementById(hiddenId).value = order.join(',');
+}
+
+initRankList('rank-3-1', 'q3_1');
+initRankList('rank-7-1', 'q7_1');
+
+// ──────────────────────────────────────────────────────────────
+// CHARACTER COUNTS
+// ──────────────────────────────────────────────────────────────
+document.querySelectorAll('textarea').forEach(ta => {
+  const ccEl = document.getElementById('cc-' + ta.id);
+  if (ccEl) {
+    ta.addEventListener('input', () => { ccEl.textContent = ta.value.length + ' characters'; });
+  }
+});
+
+// ──────────────────────────────────────────────────────────────
+// AUTO-SAVE TO localStorage
+// ──────────────────────────────────────────────────────────────
+let saveTimer;
+function autoSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    const data = collectFormData();
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      showAutosave();
+    } catch(e) {}
+    updateProgress();
+  }, 800);
+}
+
+function showAutosave() {
+  const banner = document.getElementById('autosave-banner');
+  banner.classList.add('visible');
+  setTimeout(() => banner.classList.remove('visible'), 2500);
+}
+
+document.querySelectorAll('textarea, input[type="text"], input[type="number"]').forEach(el => {
+  el.addEventListener('input', autoSave);
+});
+
+// ──────────────────────────────────────────────────────────────
+// COLLECT FORM DATA
+// ──────────────────────────────────────────────────────────────
+function collectFormData() {
+  const data = {};
+  const form = document.getElementById('sdp-form');
+  const els = form.querySelectorAll('textarea, input[type="text"], input[type="number"], input[type="hidden"]');
+  els.forEach(el => { if (el.name) data[el.name] = el.value; });
+  // Radios
+  form.querySelectorAll('input[type="radio"]:checked').forEach(r => { data[r.name] = r.value; });
+  return data;
+}
+
+// ──────────────────────────────────────────────────────────────
+// RESTORE FROM localStorage
+// ──────────────────────────────────────────────────────────────
+function restoreDraft() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    Object.keys(data).forEach(key => {
+      const el = document.querySelector(`[name="${key}"]`);
+      if (!el) return;
+      if (el.type === 'hidden') {
+        el.value = data[key];
+        // Restore rank order
+        if (key === 'q3_1') restoreRankOrder('rank-3-1', data[key], 'q3_1');
+        if (key === 'q7_1') restoreRankOrder('rank-7-1', data[key], 'q7_1');
+      } else if (el.tagName === 'TEXTAREA' || el.type === 'text' || el.type === 'number') {
+        el.value = data[key];
+        const cc = document.getElementById('cc-' + key);
+        if (cc) cc.textContent = el.value.length + ' characters';
+      }
+    });
+    // Restore radios
+    Object.keys(data).forEach(key => {
+      const radio = document.querySelector(`input[type="radio"][name="${key}"][value="${data[key]}"]`);
+      if (radio) {
+        radio.checked = true;
+        radio.closest('.radio-opt').classList.add('selected');
+      }
+    });
+    updateProgress();
+  } catch(e) {}
+}
+
+function restoreRankOrder(listId, orderStr, hiddenId) {
+  if (!orderStr) return;
+  const order = orderStr.split(',');
+  const list = document.getElementById(listId);
+  if (!list) return;
+  order.forEach(val => {
+    const item = list.querySelector(`[data-val="${val}"]`);
+    if (item) list.appendChild(item);
+  });
+  updateRankBadges(list, hiddenId);
+}
+
+// ──────────────────────────────────────────────────────────────
+// PROGRESS CALCULATION
+// ──────────────────────────────────────────────────────────────
+const sectionFields = {
+  s1: ['q1_1','q1_2','q1_3','q1_4','q1_5','q1_6','q1_7','q1_8','q1_9','q1_10'],
+  s2: ['q2_1','q2_2','q2_3','q2_4','q2_5','q2_6','q2_7','q2_8','q2_9','q2_10'],
+  s3: ['q3_1','q3_2','q3_3','q3_4','q3_5','q3_6','q3_7','q3_8'],
+  s4: ['q4_1','q4_2','q4_3','q4_4a','q4_4b','q4_5','q4_6','q4_7'],
+  s5: ['q5_1','q5_2','q5_3','q5_4','q5_5'],
+  s6: ['q6_1','q6_2','q6_3','q6_4','q6_5'],
+  s7: ['q7_1','q7_2','q7_3','q7_4','q7_5'],
+};
+
+function getFieldValue(name) {
+  const el = document.querySelector(`[name="${name}"]`);
+  if (!el) return '';
+  if (el.type === 'radio') {
+    const checked = document.querySelector(`input[name="${name}"]:checked`);
+    return checked ? checked.value : '';
+  }
+  return el.value || '';
+}
+
+function updateProgress() {
+  let total = 0, filled = 0;
+  Object.keys(sectionFields).forEach(sid => {
+    const fields = sectionFields[sid];
+    let secFilled = 0;
+    fields.forEach(f => {
+      total++;
+      const val = getFieldValue(f);
+      if (val && val.trim().length > 0) { filled++; secFilled++; }
+    });
+    const pct = secFilled / fields.length;
+    const statusEl = document.getElementById(sid + '-status');
+    const card = document.getElementById(sid);
+    const navDot = document.querySelector(`[data-section="${sid}"] .nav-dot`);
+    const navPill = document.querySelector(`[data-section="${sid}"]`);
+    if (pct === 0) {
+      statusEl.textContent = 'Not started';
+      card.classList.remove('complete');
+      if (navDot) navDot.style.background = '';
+      if (navPill) navPill.classList.remove('complete');
+    } else if (pct === 1) {
+      statusEl.textContent = 'Complete ✓';
+      card.classList.add('complete');
+      if (navDot) navDot.style.background = 'var(--success)';
+      if (navPill) navPill.classList.add('complete');
+    } else {
+      statusEl.textContent = Math.round(pct * 100) + '% complete';
+      card.classList.remove('complete');
+      if (navPill) navPill.classList.remove('complete');
+    }
+  });
+  const pct = total > 0 ? Math.round((filled / total) * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('pct-label').textContent = pct + '%';
+}
+
+// ──────────────────────────────────────────────────────────────
+// SUBMIT
+// ──────────────────────────────────────────────────────────────
+document.getElementById('sdp-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const errEl = document.getElementById('submit-error');
+  errEl.style.display = 'none';
+
+  const data = collectFormData();
+
+  // Build readable email body
+  const body = buildEmailBody(data);
+  const submitData = { ...data, _subject: 'SDP Discovery Questionnaire — Aaron Krupka', body };
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  try {
+    const resp = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(submitData)
+    });
+    if (resp.ok) {
+      document.getElementById('success-overlay').style.display = 'block';
+      document.querySelector('.form-footer').style.display = 'none';
+      localStorage.removeItem(STORAGE_KEY);
+      window.scrollTo({ top: document.getElementById('success-overlay').offsetTop - 100, behavior: 'smooth' });
+    } else {
+      const json = await resp.json();
+      errEl.textContent = 'Submission failed: ' + (json.error || 'Unknown error. Please try again or email Steve directly.');
+      errEl.style.display = 'block';
+      btn.disabled = false;
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg> Submit Answers';
+    }
+  } catch(err) {
+    errEl.textContent = 'Network error. Your draft has been saved locally. Please try again or contact Steve directly at steve@minstersolutions.com.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg> Submit Answers';
+  }
+});
+
+function buildEmailBody(data) {
+  const labels = {
+    q1_1: '1.1 Hard declination criteria', q1_2: '1.2 Referral triggers', q1_3: '1.3 Risk quality segmentation', q1_4: '1.4 Max account size', q1_5: '1.5 Multi-location rules', q1_6: '1.6 Demo ride requirements', q1_7: '1.7 Manufacturer brand exclusions/approvals', q1_8: '1.8 Service/repair appetite', q1_9_radio: '1.9 Marine/watercraft handling (choice)', q1_9: '1.9 Marine/watercraft (detail)', q1_10: '1.10 Financial requirements',
+    q2_1: '2.1 Package structure', q2_2_radio: '2.2 Lower limits allowed (choice)', q2_2: '2.2 Lower limits (detail)', q2_3: '2.3 Inventory valuation approach', q2_4: '2.4 Garage keepers structure', q2_5: '2.5 Professional/mgmt liability placement', q2_6: '2.6 Inland marine scope', q2_7: '2.7 Endorsements needed at launch', q2_8: '2.8 Competitor table-stakes vs. differentiators', q2_9: '2.9 Business income guardrails', q2_10: '2.10 Excess/umbrella structure',
+    q3_1: '3.1 Rating variable ranking', q3_2: '3.2 Experience mod approach', q3_3: '3.3 Loss prevention credits', q3_4_radio: '3.4 New business penalty (choice)', q3_4: '3.4 New business penalty (detail)', q3_5: '3.5 Bundling discount philosophy', q3_6: '3.6 Territory granularity', q3_7: '3.7 Min earned premium/short-rate', q3_8_radio: '3.8 Mid-term inventory changes (choice)', q3_8: '3.8 Mid-term inventory (detail)',
+    q4_1: '4.1 Submission vs. bind data requirements', q4_2: '4.2 Good submission documents', q4_3: '4.3 Quick-quote / indicative pricing', q4_4a: '4.4 Submission to quote turnaround', q4_4b: '4.4 Submission to bind turnaround', q4_5: '4.5 Agent pain points', q4_6: '4.6 Early adopter producers', q4_7_radio: '4.7 Renewal workflow (choice)', q4_7: '4.7 Renewal workflow (detail)',
+    q5_1: '5.1 Top loss types (frequency/severity)', q5_2: '5.2 Loss control mandatory vs. recommended', q5_3: '5.3 Pre-bind inspection requirements', q5_4: '5.4 Emerging risks', q5_5: '5.5 Claims reporting requirements',
+    q6_1: '6.1 Competitor analysis', q6_2: '6.2 Market rate range', q6_3: '6.3 Coverage gaps in competing programs', q6_4: '6.4 Business stickiness / retention', q6_5: '6.5 NPDA relationship',
+    q7_1: '7.1 Deliverable build order (rank)', q7_2: '7.2 Time availability', q7_3: '7.3 External dependencies', q7_4: '7.4 Reference documents available', q7_5_radio: '7.5 Working style preference (choice)', q7_5: '7.5 Working style (detail)'
+  };
+  let out = 'BLUEFIELDS SDP — AARON KRUPKA DISCOVERY QUESTIONNAIRE\nSubmitted: ' + new Date().toLocaleString() + '\n\n';
+  out += '='.repeat(60) + '\n\n';
+  Object.keys(labels).forEach(key => {
+    const val = data[key] || '(not answered)';
+    out += labels[key] + '\n' + val + '\n\n';
+  });
+  return out;
+}
+
+// ──────────────────────────────────────────────────────────────
+// SAVE DRAFT BUTTON
+// ──────────────────────────────────────────────────────────────
+document.getElementById('save-draft-btn').addEventListener('click', () => {
+  const data = collectFormData();
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    showAutosave();
+  } catch(e) {
+    alert('Could not save draft to local storage. Please try a different browser.');
+  }
+});
+
+// ──────────────────────────────────────────────────────────────
+// EXPORT PDF
+// ──────────────────────────────────────────────────────────────
+document.getElementById('export-pdf-btn').addEventListener('click', () => {
+  document.querySelectorAll('.section-card').forEach(c => c.classList.add('open'));
+  setTimeout(() => window.print(), 200);
+});
+
+// ──────────────────────────────────────────────────────────────
+// CLEAR FORM
+// ──────────────────────────────────────────────────────────────
+document.getElementById('clear-btn').addEventListener('click', () => {
+  if (!confirm('Clear all answers? This cannot be undone.')) return;
+  document.querySelectorAll('textarea, input[type="text"], input[type="number"]').forEach(el => { el.value = ''; });
+  document.querySelectorAll('input[type="radio"]').forEach(r => { r.checked = false; r.closest('.radio-opt').classList.remove('selected'); });
+  document.querySelectorAll('.char-count').forEach(cc => { cc.textContent = '0 characters'; });
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+  updateProgress();
+});
+
+// ──────────────────────────────────────────────────────────────
+// INIT
+// ──────────────────────────────────────────────────────────────
+
+</div>
+
+<!-- ── SCRIPTS ────────────────────────────────────────────────── -->
+<script>
+// ── PASSWORD GATE LOGIC ────────────────────────────────────────
+(function() {
+  const PASS = 'D3@lers';
+  const SESSION_KEY = 'bluefields_stealth_auth';
+
+  function unlock() {
+    document.getElementById('gate').classList.add('hidden');
+    document.getElementById('content').classList.add('visible');
+    try { sessionStorage.setItem(SESSION_KEY, '1'); } catch(e) {}
+    setTimeout(() => {
+      document.getElementById('gate').style.display = 'none';
+    }, 450);
+  }
+
+  // Check if already authenticated this session
+  try {
+    if (sessionStorage.getItem(SESSION_KEY) === '1') {
+      unlock();
+    }
+  } catch(e) {}
+
+  function attempt() {
+    const val = document.getElementById('gate-input').value;
+    if (val === PASS) {
+      unlock();
+    } else {
+      const errEl = document.getElementById('gate-error');
+      errEl.textContent = 'Incorrect code. Try again.';
+      document.getElementById('gate-input').value = '';
+      document.getElementById('gate-input').focus();
+      setTimeout(() => { errEl.textContent = ''; }, 3000);
+    }
+  }
+
+  document.getElementById('gate-btn').addEventListener('click', attempt);
+  document.getElementById('gate-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') attempt();
+  });
+})();
+
+// ── QUESTIONNAIRE LOGIC ────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────
+// CONFIG — replace FORMSPREE_ID with your actual Formspree form ID
+// ──────────────────────────────────────────────────────────────
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mpqjvkar';
+const STORAGE_KEY = 'bluefields_sdp_draft';
+
+// ──────────────────────────────────────────────────────────────
+// COLLAPSIBLE SECTIONS
+// ──────────────────────────────────────────────────────────────
+document.querySelectorAll('.section-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const card = header.closest('.section-card');
+    const isOpen = card.classList.contains('open');
+    card.classList.toggle('open', !isOpen);
+    header.setAttribute('aria-expanded', String(!isOpen));
+  });
+  header.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); header.click(); }
+  });
+});
+
+// ──────────────────────────────────────────────────────────────
+// RADIO GROUPS
+// ──────────────────────────────────────────────────────────────
+document.querySelectorAll('.radio-opt').forEach(opt => {
+  opt.addEventListener('click', () => {
+    const name = opt.querySelector('input').name;
+    document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+      r.closest('.radio-opt').classList.remove('selected');
+    });
+    opt.classList.add('selected');
+    opt.querySelector('input').checked = true;
+    autoSave();
+  });
+});
+
+// ──────────────────────────────────────────────────────────────
+// DRAG-AND-DROP RANKING
+// ──────────────────────────────────────────────────────────────
+function initRankList(listId, hiddenId) {
+  const list = document.getElementById(listId);
+  if (!list) return;
+  let dragSrc = null;
+
+  list.querySelectorAll('.rank-item').forEach(item => {
+    item.addEventListener('dragstart', e => {
+      dragSrc = item;
+      item.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+      list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
+      updateRankBadges(list, hiddenId);
+      autoSave();
+    });
+    item.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      if (item !== dragSrc) {
+        list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
+        item.classList.add('drag-over');
+      }
+    });
+    item.addEventListener('drop', e => {
+      e.preventDefault();
+      if (dragSrc && item !== dragSrc) {
+        const items = [...list.querySelectorAll('.rank-item')];
+        const srcIdx = items.indexOf(dragSrc);
+        const tgtIdx = items.indexOf(item);
+        if (srcIdx < tgtIdx) list.insertBefore(dragSrc, item.nextSibling);
+        else list.insertBefore(dragSrc, item);
+      }
+    });
+  });
+  updateRankBadges(list, hiddenId);
+}
+
+function updateRankBadges(list, hiddenId) {
+  const items = list.querySelectorAll('.rank-item');
+  const order = [];
+  items.forEach((item, idx) => {
+    item.querySelector('.rank-badge').textContent = idx + 1;
+    order.push(item.dataset.val);
+  });
+  if (hiddenId) document.getElementById(hiddenId).value = order.join(',');
+}
+
+initRankList('rank-3-1', 'q3_1');
+initRankList('rank-7-1', 'q7_1');
+
+// ──────────────────────────────────────────────────────────────
+// CHARACTER COUNTS
+// ──────────────────────────────────────────────────────────────
+document.querySelectorAll('textarea').forEach(ta => {
+  const ccEl = document.getElementById('cc-' + ta.id);
+  if (ccEl) {
+    ta.addEventListener('input', () => { ccEl.textContent = ta.value.length + ' characters'; });
+  }
+});
+
+// ──────────────────────────────────────────────────────────────
+// AUTO-SAVE TO localStorage
+// ──────────────────────────────────────────────────────────────
+let saveTimer;
+function autoSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    const data = collectFormData();
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      showAutosave();
+    } catch(e) {}
+    updateProgress();
+  }, 800);
+}
+
+function showAutosave() {
+  const banner = document.getElementById('autosave-banner');
+  banner.classList.add('visible');
+  setTimeout(() => banner.classList.remove('visible'), 2500);
+}
+
+document.querySelectorAll('textarea, input[type="text"], input[type="number"]').forEach(el => {
+  el.addEventListener('input', autoSave);
+});
+
+// ──────────────────────────────────────────────────────────────
+// COLLECT FORM DATA
+// ──────────────────────────────────────────────────────────────
+function collectFormData() {
+  const data = {};
+  const form = document.getElementById('sdp-form');
+  const els = form.querySelectorAll('textarea, input[type="text"], input[type="number"], input[type="hidden"]');
+  els.forEach(el => { if (el.name) data[el.name] = el.value; });
+  // Radios
+  form.querySelectorAll('input[type="radio"]:checked').forEach(r => { data[r.name] = r.value; });
+  return data;
+}
+
+// ──────────────────────────────────────────────────────────────
+// RESTORE FROM localStorage
+// ──────────────────────────────────────────────────────────────
+function restoreDraft() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    Object.keys(data).forEach(key => {
+      const el = document.querySelector(`[name="${key}"]`);
+      if (!el) return;
+      if (el.type === 'hidden') {
+        el.value = data[key];
+        // Restore rank order
+        if (key === 'q3_1') restoreRankOrder('rank-3-1', data[key], 'q3_1');
+        if (key === 'q7_1') restoreRankOrder('rank-7-1', data[key], 'q7_1');
+      } else if (el.tagName === 'TEXTAREA' || el.type === 'text' || el.type === 'number') {
+        el.value = data[key];
+        const cc = document.getElementById('cc-' + key);
+        if (cc) cc.textContent = el.value.length + ' characters';
+      }
+    });
+    // Restore radios
+    Object.keys(data).forEach(key => {
+      const radio = document.querySelector(`input[type="radio"][name="${key}"][value="${data[key]}"]`);
+      if (radio) {
+        radio.checked = true;
+        radio.closest('.radio-opt').classList.add('selected');
+      }
+    });
+    updateProgress();
+  } catch(e) {}
+}
+
+function restoreRankOrder(listId, orderStr, hiddenId) {
+  if (!orderStr) return;
+  const order = orderStr.split(',');
+  const list = document.getElementById(listId);
+  if (!list) return;
+  order.forEach(val => {
+    const item = list.querySelector(`[data-val="${val}"]`);
+    if (item) list.appendChild(item);
+  });
+  updateRankBadges(list, hiddenId);
+}
+
+// ──────────────────────────────────────────────────────────────
+// PROGRESS CALCULATION
+// ──────────────────────────────────────────────────────────────
+const sectionFields = {
+  s1: ['q1_1','q1_2','q1_3','q1_4','q1_5','q1_6','q1_7','q1_8','q1_9','q1_10'],
+  s2: ['q2_1','q2_2','q2_3','q2_4','q2_5','q2_6','q2_7','q2_8','q2_9','q2_10'],
+  s3: ['q3_1','q3_2','q3_3','q3_4','q3_5','q3_6','q3_7','q3_8'],
+  s4: ['q4_1','q4_2','q4_3','q4_4a','q4_4b','q4_5','q4_6','q4_7'],
+  s5: ['q5_1','q5_2','q5_3','q5_4','q5_5'],
+  s6: ['q6_1','q6_2','q6_3','q6_4','q6_5'],
+  s7: ['q7_1','q7_2','q7_3','q7_4','q7_5'],
+};
+
+function getFieldValue(name) {
+  const el = document.querySelector(`[name="${name}"]`);
+  if (!el) return '';
+  if (el.type === 'radio') {
+    const checked = document.querySelector(`input[name="${name}"]:checked`);
+    return checked ? checked.value : '';
+  }
+  return el.value || '';
+}
+
+function updateProgress() {
+  let total = 0, filled = 0;
+  Object.keys(sectionFields).forEach(sid => {
+    const fields = sectionFields[sid];
+    let secFilled = 0;
+    fields.forEach(f => {
+      total++;
+      const val = getFieldValue(f);
+      if (val && val.trim().length > 0) { filled++; secFilled++; }
+    });
+    const pct = secFilled / fields.length;
+    const statusEl = document.getElementById(sid + '-status');
+    const card = document.getElementById(sid);
+    const navDot = document.querySelector(`[data-section="${sid}"] .nav-dot`);
+    const navPill = document.querySelector(`[data-section="${sid}"]`);
+    if (pct === 0) {
+      statusEl.textContent = 'Not started';
+      card.classList.remove('complete');
+      if (navDot) navDot.style.background = '';
+      if (navPill) navPill.classList.remove('complete');
+    } else if (pct === 1) {
+      statusEl.textContent = 'Complete ✓';
+      card.classList.add('complete');
+      if (navDot) navDot.style.background = 'var(--success)';
+      if (navPill) navPill.classList.add('complete');
+    } else {
+      statusEl.textContent = Math.round(pct * 100) + '% complete';
+      card.classList.remove('complete');
+      if (navPill) navPill.classList.remove('complete');
+    }
+  });
+  const pct = total > 0 ? Math.round((filled / total) * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('pct-label').textContent = pct + '%';
+}
+
+// ──────────────────────────────────────────────────────────────
+// SUBMIT
+// ──────────────────────────────────────────────────────────────
+document.getElementById('sdp-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const errEl = document.getElementById('submit-error');
+  errEl.style.display = 'none';
+
+  const data = collectFormData();
+
+  // Build readable email body
+  const body = buildEmailBody(data);
+  const submitData = { ...data, _subject: 'SDP Discovery Questionnaire — Aaron Krupka', body };
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  try {
+    const resp = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(submitData)
+    });
+    if (resp.ok) {
+      document.getElementById('success-overlay').style.display = 'block';
+      document.querySelector('.form-footer').style.display = 'none';
+      localStorage.removeItem(STORAGE_KEY);
+      window.scrollTo({ top: document.getElementById('success-overlay').offsetTop - 100, behavior: 'smooth' });
+    } else {
+      const json = await resp.json();
+      errEl.textContent = 'Submission failed: ' + (json.error || 'Unknown error. Please try again or email Steve directly.');
+      errEl.style.display = 'block';
+      btn.disabled = false;
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg> Submit Answers';
+    }
+  } catch(err) {
+    errEl.textContent = 'Network error. Your draft has been saved locally. Please try again or contact Steve directly at steve@minstersolutions.com.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg> Submit Answers';
+  }
+});
+
+function buildEmailBody(data) {
+  const labels = {
+    q1_1: '1.1 Hard declination criteria', q1_2: '1.2 Referral triggers', q1_3: '1.3 Risk quality segmentation', q1_4: '1.4 Max account size', q1_5: '1.5 Multi-location rules', q1_6: '1.6 Demo ride requirements', q1_7: '1.7 Manufacturer brand exclusions/approvals', q1_8: '1.8 Service/repair appetite', q1_9_radio: '1.9 Marine/watercraft handling (choice)', q1_9: '1.9 Marine/watercraft (detail)', q1_10: '1.10 Financial requirements',
+    q2_1: '2.1 Package structure', q2_2_radio: '2.2 Lower limits allowed (choice)', q2_2: '2.2 Lower limits (detail)', q2_3: '2.3 Inventory valuation approach', q2_4: '2.4 Garage keepers structure', q2_5: '2.5 Professional/mgmt liability placement', q2_6: '2.6 Inland marine scope', q2_7: '2.7 Endorsements needed at launch', q2_8: '2.8 Competitor table-stakes vs. differentiators', q2_9: '2.9 Business income guardrails', q2_10: '2.10 Excess/umbrella structure',
+    q3_1: '3.1 Rating variable ranking', q3_2: '3.2 Experience mod approach', q3_3: '3.3 Loss prevention credits', q3_4_radio: '3.4 New business penalty (choice)', q3_4: '3.4 New business penalty (detail)', q3_5: '3.5 Bundling discount philosophy', q3_6: '3.6 Territory granularity', q3_7: '3.7 Min earned premium/short-rate', q3_8_radio: '3.8 Mid-term inventory changes (choice)', q3_8: '3.8 Mid-term inventory (detail)',
+    q4_1: '4.1 Submission vs. bind data requirements', q4_2: '4.2 Good submission documents', q4_3: '4.3 Quick-quote / indicative pricing', q4_4a: '4.4 Submission to quote turnaround', q4_4b: '4.4 Submission to bind turnaround', q4_5: '4.5 Agent pain points', q4_6: '4.6 Early adopter producers', q4_7_radio: '4.7 Renewal workflow (choice)', q4_7: '4.7 Renewal workflow (detail)',
+    q5_1: '5.1 Top loss types (frequency/severity)', q5_2: '5.2 Loss control mandatory vs. recommended', q5_3: '5.3 Pre-bind inspection requirements', q5_4: '5.4 Emerging risks', q5_5: '5.5 Claims reporting requirements',
+    q6_1: '6.1 Competitor analysis', q6_2: '6.2 Market rate range', q6_3: '6.3 Coverage gaps in competing programs', q6_4: '6.4 Business stickiness / retention', q6_5: '6.5 NPDA relationship',
+    q7_1: '7.1 Deliverable build order (rank)', q7_2: '7.2 Time availability', q7_3: '7.3 External dependencies', q7_4: '7.4 Reference documents available', q7_5_radio: '7.5 Working style preference (choice)', q7_5: '7.5 Working style (detail)'
+  };
+  let out = 'BLUEFIELDS SDP — AARON KRUPKA DISCOVERY QUESTIONNAIRE\nSubmitted: ' + new Date().toLocaleString() + '\n\n';
+  out += '='.repeat(60) + '\n\n';
+  Object.keys(labels).forEach(key => {
+    const val = data[key] || '(not answered)';
+    out += labels[key] + '\n' + val + '\n\n';
+  });
+  return out;
+}
+
+// ──────────────────────────────────────────────────────────────
+// SAVE DRAFT BUTTON
+// ──────────────────────────────────────────────────────────────
+document.getElementById('save-draft-btn').addEventListener('click', () => {
+  const data = collectFormData();
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    showAutosave();
+  } catch(e) {
+    alert('Could not save draft to local storage. Please try a different browser.');
+  }
+});
+
+// ──────────────────────────────────────────────────────────────
+// EXPORT PDF
+// ──────────────────────────────────────────────────────────────
+document.getElementById('export-pdf-btn').addEventListener('click', () => {
+  document.querySelectorAll('.section-card').forEach(c => c.classList.add('open'));
+  setTimeout(() => window.print(), 200);
+});
+
+// ──────────────────────────────────────────────────────────────
+// CLEAR FORM
+// ──────────────────────────────────────────────────────────────
+document.getElementById('clear-btn').addEventListener('click', () => {
+  if (!confirm('Clear all answers? This cannot be undone.')) return;
+  document.querySelectorAll('textarea, input[type="text"], input[type="number"]').forEach(el => { el.value = ''; });
+  document.querySelectorAll('input[type="radio"]').forEach(r => { r.checked = false; r.closest('.radio-opt').classList.remove('selected'); });
+  document.querySelectorAll('.char-count').forEach(cc => { cc.textContent = '0 characters'; });
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+  updateProgress();
+});
+
+// ──────────────────────────────────────────────────────────────
+// INIT
+// ──────────────────────────────────────────────────────────────
+
+</script>
+
+</body>
+</html>

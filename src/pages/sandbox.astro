@@ -5,6 +5,14 @@ import Footer from '../components/Footer.astro';
 
 const experiments = [
   {
+    title: 'Bluefields Stealth Project',
+    date: 'March 2026',
+    status: 'Stealth',
+    description: "I bet you would like to learn more about something called stealth — but telling you would make it not stealth. If you have the magic word, hit the link below to enter it and see if you are among the chosen.",
+    tags: ['InsurTech', 'Bluefields', 'Access Restricted'],
+    link: '/sandbox/stealth1',
+  },
+  {
     title: 'IDA Procurement Hub',
     date: 'March 2026',
     status: 'Live',
@@ -66,7 +74,7 @@ const experiments = [
               <div class="p-6 md:p-8">
                 <div class="flex flex-wrap items-center gap-3 mb-3">
                   <span class="text-small text-slate-light font-display">{experiment.date}</span>
-                  <span class="inline-block px-2 py-0.5 text-xs font-display uppercase tracking-wider bg-lime/10 text-lime-dark rounded-full">
+                  <span class={`inline-block px-2 py-0.5 text-xs font-display uppercase tracking-wider rounded-full ${experiment.status === 'Stealth' ? 'bg-navy text-lime border border-lime/40' : 'bg-lime/10 text-lime-dark'}`}>
                     {experiment.status}
                   </span>
                 </div>
