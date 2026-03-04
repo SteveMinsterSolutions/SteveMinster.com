@@ -1,0 +1,77 @@
+---
+// src/pages/sandbox/ida-procurement.astro
+//
+// Option A: If you have a shared Layout component:
+// import Layout from '../../layouts/Layout.astro';
+//
+// Option B: Standalone (no shared layout needed)
+
+import IDAProcurementHub from '../../components/ida/IDAProcurementHub';
+
+// If you use a Layout, wrap the component in it.
+// If standalone, the hub has its own full-page styling.
+---
+
+<!-- 
+  INTEGRATION INSTRUCTIONS
+  ========================
+  
+  1. Copy the component files:
+     - components/ProcessMap.jsx      → src/components/ida/ProcessMap.jsx
+     - components/SchemaExplorer.jsx  → src/components/ida/SchemaExplorer.jsx
+     - components/BluebeamGuide.jsx   → src/components/ida/BluebeamGuide.jsx
+     - components/IDAProcurementHub.jsx → src/components/ida/IDAProcurementHub.jsx
+  
+  2. Update the import paths in IDAProcurementHub.jsx:
+     The imports should be relative to wherever you place the files:
+       import ProcessMap from "./ProcessMap";
+       import SchemaExplorer from "./SchemaExplorer";
+       import BluebeamGuide from "./BluebeamGuide";
+  
+  3. Copy this page:
+     - ida-procurement.astro → src/pages/sandbox/ida-procurement.astro
+  
+  4. Make sure @astrojs/react is in your integrations (it likely already is
+     since you have other React sandbox projects).
+  
+  5. The page will be live at: steveminster.com/sandbox/ida-procurement
+  
+  LAYOUT OPTIONS
+  ==============
+  
+  Option A — Use your existing site layout (recommended):
+    Wrap the component in your Layout. The hub component has no html/body tags,
+    so it nests cleanly. You may want to add a "Back to Sandbox" link above it.
+  
+  Option B — Standalone page:
+    Use the hub component directly. It renders full-viewport with its own
+    background color and font loading.
+-->
+
+<!-- Option A: With your site layout -->
+<!-- 
+<Layout title="IDA Procurement | Sandbox">
+  <a href="/sandbox" style="display:inline-block;padding:12px 24px;font-size:13px;color:#5A6577;text-decoration:none;">
+    ← Back to Sandbox
+  </a>
+  <IDAProcurementHub client:load />
+</Layout>
+-->
+
+<!-- Option B: Standalone (active by default — swap to Option A when ready) -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>IDA Procurement | Sandbox | SteveMinster.com</title>
+    <meta name="description" content="Interactive tools for streamlining the Design to Procurement FF&E handoff at IDA Associates." />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+      body { background: #F7F8FA; }
+    </style>
+  </head>
+  <body>
+    <IDAProcurementHub client:load />
+  </body>
+</html>
