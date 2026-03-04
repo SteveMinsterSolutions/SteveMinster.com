@@ -3,6 +3,7 @@ import Introduction from "./Introduction";
 import ProcessMap from "./ProcessMap";
 import SchemaExplorer from "./SchemaExplorer";
 import BluebeamGuide from "./BluebeamGuide";
+import ImageDecision from "./ImageDecision";
 import PilotFeedback from "./PilotFeedback";
 
 const COLORS = {
@@ -25,6 +26,13 @@ const tabs = [
     icon: "👋",
     shortLabel: "Intro",
     description: "What we're trying to solve, what we're proposing, and what the pilot looks like.",
+  },
+  {
+    id: "images",
+    label: "Image Decision",
+    icon: "📸",
+    shortLabel: "Images",
+    description: "Quick questionnaire: do product images need per-item tracking, or can they stay informal?",
   },
   {
     id: "process",
@@ -124,8 +132,8 @@ export default function IDAProcurementHub() {
                   onClick={() => navigateToTab(tab.id)}
                   style={{
                     flex: "1 0 auto",
-                    minWidth: 56,
-                    padding: "10px 6px 8px",
+                    minWidth: 50,
+                    padding: "10px 4px 8px",
                     borderRadius: 8,
                     border: "none",
                     cursor: "pointer",
@@ -138,10 +146,10 @@ export default function IDAProcurementHub() {
                     gap: 3,
                   }}
                 >
-                  <span style={{ fontSize: 16 }}>{tab.icon}</span>
+                  <span style={{ fontSize: 15 }}>{tab.icon}</span>
                   <span
                     style={{
-                      fontSize: 10,
+                      fontSize: 9,
                       fontWeight: isActive ? 700 : 500,
                       color: isActive ? COLORS.white : "#7A8699",
                       letterSpacing: "0.01em",
@@ -153,7 +161,7 @@ export default function IDAProcurementHub() {
                   {isActive && (
                     <div
                       style={{
-                        width: 16,
+                        width: 14,
                         height: 2,
                         borderRadius: 1,
                         background: COLORS.lime,
@@ -188,6 +196,7 @@ export default function IDAProcurementHub() {
           {activeTab === "process" && <ProcessMap />}
           {activeTab === "schema" && <SchemaExplorer />}
           {activeTab === "bluebeam" && <BluebeamGuide />}
+          {activeTab === "images" && <ImageDecision />}
           {activeTab === "feedback" && <PilotFeedback />}
         </div>
       </div>
