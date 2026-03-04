@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
 
-  <style>
+  <style is:inline>
     /* ── GATE STYLES ─────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1475,6 +1475,10 @@
   Draft saved
 </div>
 
+</div>
+
+<!-- ── SCRIPTS ────────────────────────────────────────────────── -->
+<script is:inline>
 // ──────────────────────────────────────────────────────────────
 // CONFIG — replace FORMSPREE_ID with your actual Formspree form ID
 // ──────────────────────────────────────────────────────────────
@@ -1819,11 +1823,14 @@ document.getElementById('clear-btn').addEventListener('click', () => {
 // ──────────────────────────────────────────────────────────────
 // INIT
 // ──────────────────────────────────────────────────────────────
+restoreDraft();
+updateProgress();
+</script>
 
 </div>
 
 <!-- ── SCRIPTS ────────────────────────────────────────────────── -->
-<script>
+<script is:inline>
 // ── PASSWORD GATE LOGIC ────────────────────────────────────────
 (function() {
   const PASS = 'D3@lers';
@@ -1863,353 +1870,6 @@ document.getElementById('clear-btn').addEventListener('click', () => {
     if (e.key === 'Enter') attempt();
   });
 })();
-
-// ── QUESTIONNAIRE LOGIC ────────────────────────────────────────
-// ──────────────────────────────────────────────────────────────
-// CONFIG — replace FORMSPREE_ID with your actual Formspree form ID
-// ──────────────────────────────────────────────────────────────
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mpqjvkar';
-const STORAGE_KEY = 'bluefields_sdp_draft';
-
-// ──────────────────────────────────────────────────────────────
-// COLLAPSIBLE SECTIONS
-// ──────────────────────────────────────────────────────────────
-document.querySelectorAll('.section-header').forEach(header => {
-  header.addEventListener('click', () => {
-    const card = header.closest('.section-card');
-    const isOpen = card.classList.contains('open');
-    card.classList.toggle('open', !isOpen);
-    header.setAttribute('aria-expanded', String(!isOpen));
-  });
-  header.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); header.click(); }
-  });
-});
-
-// ──────────────────────────────────────────────────────────────
-// RADIO GROUPS
-// ──────────────────────────────────────────────────────────────
-document.querySelectorAll('.radio-opt').forEach(opt => {
-  opt.addEventListener('click', () => {
-    const name = opt.querySelector('input').name;
-    document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
-      r.closest('.radio-opt').classList.remove('selected');
-    });
-    opt.classList.add('selected');
-    opt.querySelector('input').checked = true;
-    autoSave();
-  });
-});
-
-// ──────────────────────────────────────────────────────────────
-// DRAG-AND-DROP RANKING
-// ──────────────────────────────────────────────────────────────
-function initRankList(listId, hiddenId) {
-  const list = document.getElementById(listId);
-  if (!list) return;
-  let dragSrc = null;
-
-  list.querySelectorAll('.rank-item').forEach(item => {
-    item.addEventListener('dragstart', e => {
-      dragSrc = item;
-      item.classList.add('dragging');
-      e.dataTransfer.effectAllowed = 'move';
-    });
-    item.addEventListener('dragend', () => {
-      item.classList.remove('dragging');
-      list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
-      updateRankBadges(list, hiddenId);
-      autoSave();
-    });
-    item.addEventListener('dragover', e => {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-      if (item !== dragSrc) {
-        list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
-        item.classList.add('drag-over');
-      }
-    });
-    item.addEventListener('drop', e => {
-      e.preventDefault();
-      if (dragSrc && item !== dragSrc) {
-        const items = [...list.querySelectorAll('.rank-item')];
-        const srcIdx = items.indexOf(dragSrc);
-        const tgtIdx = items.indexOf(item);
-        if (srcIdx < tgtIdx) list.insertBefore(dragSrc, item.nextSibling);
-        else list.insertBefore(dragSrc, item);
-      }
-    });
-  });
-  updateRankBadges(list, hiddenId);
-}
-
-function updateRankBadges(list, hiddenId) {
-  const items = list.querySelectorAll('.rank-item');
-  const order = [];
-  items.forEach((item, idx) => {
-    item.querySelector('.rank-badge').textContent = idx + 1;
-    order.push(item.dataset.val);
-  });
-  if (hiddenId) document.getElementById(hiddenId).value = order.join(',');
-}
-
-initRankList('rank-3-1', 'q3_1');
-initRankList('rank-7-1', 'q7_1');
-
-// ──────────────────────────────────────────────────────────────
-// CHARACTER COUNTS
-// ──────────────────────────────────────────────────────────────
-document.querySelectorAll('textarea').forEach(ta => {
-  const ccEl = document.getElementById('cc-' + ta.id);
-  if (ccEl) {
-    ta.addEventListener('input', () => { ccEl.textContent = ta.value.length + ' characters'; });
-  }
-});
-
-// ──────────────────────────────────────────────────────────────
-// AUTO-SAVE TO localStorage
-// ──────────────────────────────────────────────────────────────
-let saveTimer;
-function autoSave() {
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => {
-    const data = collectFormData();
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-      showAutosave();
-    } catch(e) {}
-    updateProgress();
-  }, 800);
-}
-
-function showAutosave() {
-  const banner = document.getElementById('autosave-banner');
-  banner.classList.add('visible');
-  setTimeout(() => banner.classList.remove('visible'), 2500);
-}
-
-document.querySelectorAll('textarea, input[type="text"], input[type="number"]').forEach(el => {
-  el.addEventListener('input', autoSave);
-});
-
-// ──────────────────────────────────────────────────────────────
-// COLLECT FORM DATA
-// ──────────────────────────────────────────────────────────────
-function collectFormData() {
-  const data = {};
-  const form = document.getElementById('sdp-form');
-  const els = form.querySelectorAll('textarea, input[type="text"], input[type="number"], input[type="hidden"]');
-  els.forEach(el => { if (el.name) data[el.name] = el.value; });
-  // Radios
-  form.querySelectorAll('input[type="radio"]:checked').forEach(r => { data[r.name] = r.value; });
-  return data;
-}
-
-// ──────────────────────────────────────────────────────────────
-// RESTORE FROM localStorage
-// ──────────────────────────────────────────────────────────────
-function restoreDraft() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
-    const data = JSON.parse(raw);
-    Object.keys(data).forEach(key => {
-      const el = document.querySelector(`[name="${key}"]`);
-      if (!el) return;
-      if (el.type === 'hidden') {
-        el.value = data[key];
-        // Restore rank order
-        if (key === 'q3_1') restoreRankOrder('rank-3-1', data[key], 'q3_1');
-        if (key === 'q7_1') restoreRankOrder('rank-7-1', data[key], 'q7_1');
-      } else if (el.tagName === 'TEXTAREA' || el.type === 'text' || el.type === 'number') {
-        el.value = data[key];
-        const cc = document.getElementById('cc-' + key);
-        if (cc) cc.textContent = el.value.length + ' characters';
-      }
-    });
-    // Restore radios
-    Object.keys(data).forEach(key => {
-      const radio = document.querySelector(`input[type="radio"][name="${key}"][value="${data[key]}"]`);
-      if (radio) {
-        radio.checked = true;
-        radio.closest('.radio-opt').classList.add('selected');
-      }
-    });
-    updateProgress();
-  } catch(e) {}
-}
-
-function restoreRankOrder(listId, orderStr, hiddenId) {
-  if (!orderStr) return;
-  const order = orderStr.split(',');
-  const list = document.getElementById(listId);
-  if (!list) return;
-  order.forEach(val => {
-    const item = list.querySelector(`[data-val="${val}"]`);
-    if (item) list.appendChild(item);
-  });
-  updateRankBadges(list, hiddenId);
-}
-
-// ──────────────────────────────────────────────────────────────
-// PROGRESS CALCULATION
-// ──────────────────────────────────────────────────────────────
-const sectionFields = {
-  s1: ['q1_1','q1_2','q1_3','q1_4','q1_5','q1_6','q1_7','q1_8','q1_9','q1_10'],
-  s2: ['q2_1','q2_2','q2_3','q2_4','q2_5','q2_6','q2_7','q2_8','q2_9','q2_10'],
-  s3: ['q3_1','q3_2','q3_3','q3_4','q3_5','q3_6','q3_7','q3_8'],
-  s4: ['q4_1','q4_2','q4_3','q4_4a','q4_4b','q4_5','q4_6','q4_7'],
-  s5: ['q5_1','q5_2','q5_3','q5_4','q5_5'],
-  s6: ['q6_1','q6_2','q6_3','q6_4','q6_5'],
-  s7: ['q7_1','q7_2','q7_3','q7_4','q7_5'],
-};
-
-function getFieldValue(name) {
-  const el = document.querySelector(`[name="${name}"]`);
-  if (!el) return '';
-  if (el.type === 'radio') {
-    const checked = document.querySelector(`input[name="${name}"]:checked`);
-    return checked ? checked.value : '';
-  }
-  return el.value || '';
-}
-
-function updateProgress() {
-  let total = 0, filled = 0;
-  Object.keys(sectionFields).forEach(sid => {
-    const fields = sectionFields[sid];
-    let secFilled = 0;
-    fields.forEach(f => {
-      total++;
-      const val = getFieldValue(f);
-      if (val && val.trim().length > 0) { filled++; secFilled++; }
-    });
-    const pct = secFilled / fields.length;
-    const statusEl = document.getElementById(sid + '-status');
-    const card = document.getElementById(sid);
-    const navDot = document.querySelector(`[data-section="${sid}"] .nav-dot`);
-    const navPill = document.querySelector(`[data-section="${sid}"]`);
-    if (pct === 0) {
-      statusEl.textContent = 'Not started';
-      card.classList.remove('complete');
-      if (navDot) navDot.style.background = '';
-      if (navPill) navPill.classList.remove('complete');
-    } else if (pct === 1) {
-      statusEl.textContent = 'Complete ✓';
-      card.classList.add('complete');
-      if (navDot) navDot.style.background = 'var(--success)';
-      if (navPill) navPill.classList.add('complete');
-    } else {
-      statusEl.textContent = Math.round(pct * 100) + '% complete';
-      card.classList.remove('complete');
-      if (navPill) navPill.classList.remove('complete');
-    }
-  });
-  const pct = total > 0 ? Math.round((filled / total) * 100) : 0;
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('pct-label').textContent = pct + '%';
-}
-
-// ──────────────────────────────────────────────────────────────
-// SUBMIT
-// ──────────────────────────────────────────────────────────────
-document.getElementById('sdp-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const errEl = document.getElementById('submit-error');
-  errEl.style.display = 'none';
-
-  const data = collectFormData();
-
-  // Build readable email body
-  const body = buildEmailBody(data);
-  const submitData = { ...data, _subject: 'SDP Discovery Questionnaire — Aaron Krupka', body };
-
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = true;
-  btn.textContent = 'Submitting…';
-
-  try {
-    const resp = await fetch(FORMSPREE_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(submitData)
-    });
-    if (resp.ok) {
-      document.getElementById('success-overlay').style.display = 'block';
-      document.querySelector('.form-footer').style.display = 'none';
-      localStorage.removeItem(STORAGE_KEY);
-      window.scrollTo({ top: document.getElementById('success-overlay').offsetTop - 100, behavior: 'smooth' });
-    } else {
-      const json = await resp.json();
-      errEl.textContent = 'Submission failed: ' + (json.error || 'Unknown error. Please try again or email Steve directly.');
-      errEl.style.display = 'block';
-      btn.disabled = false;
-      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg> Submit Answers';
-    }
-  } catch(err) {
-    errEl.textContent = 'Network error. Your draft has been saved locally. Please try again or contact Steve directly at steve@minstersolutions.com.';
-    errEl.style.display = 'block';
-    btn.disabled = false;
-    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg> Submit Answers';
-  }
-});
-
-function buildEmailBody(data) {
-  const labels = {
-    q1_1: '1.1 Hard declination criteria', q1_2: '1.2 Referral triggers', q1_3: '1.3 Risk quality segmentation', q1_4: '1.4 Max account size', q1_5: '1.5 Multi-location rules', q1_6: '1.6 Demo ride requirements', q1_7: '1.7 Manufacturer brand exclusions/approvals', q1_8: '1.8 Service/repair appetite', q1_9_radio: '1.9 Marine/watercraft handling (choice)', q1_9: '1.9 Marine/watercraft (detail)', q1_10: '1.10 Financial requirements',
-    q2_1: '2.1 Package structure', q2_2_radio: '2.2 Lower limits allowed (choice)', q2_2: '2.2 Lower limits (detail)', q2_3: '2.3 Inventory valuation approach', q2_4: '2.4 Garage keepers structure', q2_5: '2.5 Professional/mgmt liability placement', q2_6: '2.6 Inland marine scope', q2_7: '2.7 Endorsements needed at launch', q2_8: '2.8 Competitor table-stakes vs. differentiators', q2_9: '2.9 Business income guardrails', q2_10: '2.10 Excess/umbrella structure',
-    q3_1: '3.1 Rating variable ranking', q3_2: '3.2 Experience mod approach', q3_3: '3.3 Loss prevention credits', q3_4_radio: '3.4 New business penalty (choice)', q3_4: '3.4 New business penalty (detail)', q3_5: '3.5 Bundling discount philosophy', q3_6: '3.6 Territory granularity', q3_7: '3.7 Min earned premium/short-rate', q3_8_radio: '3.8 Mid-term inventory changes (choice)', q3_8: '3.8 Mid-term inventory (detail)',
-    q4_1: '4.1 Submission vs. bind data requirements', q4_2: '4.2 Good submission documents', q4_3: '4.3 Quick-quote / indicative pricing', q4_4a: '4.4 Submission to quote turnaround', q4_4b: '4.4 Submission to bind turnaround', q4_5: '4.5 Agent pain points', q4_6: '4.6 Early adopter producers', q4_7_radio: '4.7 Renewal workflow (choice)', q4_7: '4.7 Renewal workflow (detail)',
-    q5_1: '5.1 Top loss types (frequency/severity)', q5_2: '5.2 Loss control mandatory vs. recommended', q5_3: '5.3 Pre-bind inspection requirements', q5_4: '5.4 Emerging risks', q5_5: '5.5 Claims reporting requirements',
-    q6_1: '6.1 Competitor analysis', q6_2: '6.2 Market rate range', q6_3: '6.3 Coverage gaps in competing programs', q6_4: '6.4 Business stickiness / retention', q6_5: '6.5 NPDA relationship',
-    q7_1: '7.1 Deliverable build order (rank)', q7_2: '7.2 Time availability', q7_3: '7.3 External dependencies', q7_4: '7.4 Reference documents available', q7_5_radio: '7.5 Working style preference (choice)', q7_5: '7.5 Working style (detail)'
-  };
-  let out = 'BLUEFIELDS SDP — AARON KRUPKA DISCOVERY QUESTIONNAIRE\nSubmitted: ' + new Date().toLocaleString() + '\n\n';
-  out += '='.repeat(60) + '\n\n';
-  Object.keys(labels).forEach(key => {
-    const val = data[key] || '(not answered)';
-    out += labels[key] + '\n' + val + '\n\n';
-  });
-  return out;
-}
-
-// ──────────────────────────────────────────────────────────────
-// SAVE DRAFT BUTTON
-// ──────────────────────────────────────────────────────────────
-document.getElementById('save-draft-btn').addEventListener('click', () => {
-  const data = collectFormData();
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    showAutosave();
-  } catch(e) {
-    alert('Could not save draft to local storage. Please try a different browser.');
-  }
-});
-
-// ──────────────────────────────────────────────────────────────
-// EXPORT PDF
-// ──────────────────────────────────────────────────────────────
-document.getElementById('export-pdf-btn').addEventListener('click', () => {
-  document.querySelectorAll('.section-card').forEach(c => c.classList.add('open'));
-  setTimeout(() => window.print(), 200);
-});
-
-// ──────────────────────────────────────────────────────────────
-// CLEAR FORM
-// ──────────────────────────────────────────────────────────────
-document.getElementById('clear-btn').addEventListener('click', () => {
-  if (!confirm('Clear all answers? This cannot be undone.')) return;
-  document.querySelectorAll('textarea, input[type="text"], input[type="number"]').forEach(el => { el.value = ''; });
-  document.querySelectorAll('input[type="radio"]').forEach(r => { r.checked = false; r.closest('.radio-opt').classList.remove('selected'); });
-  document.querySelectorAll('.char-count').forEach(cc => { cc.textContent = '0 characters'; });
-  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
-  updateProgress();
-});
-
-// ──────────────────────────────────────────────────────────────
-// INIT
-// ──────────────────────────────────────────────────────────────
-
 </script>
 
 </body>
