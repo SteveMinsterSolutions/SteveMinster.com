@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CustomerLedgerApp from '../../components/CustomerLedger/CustomerLedgerApp.jsx';
+---
+
+<BaseLayout
+  title="Startup Customer Ledger | vQuip | Steve Minster"
+  description="Ad-hoc policy and customer ledger generator for vQuip insurance accounting and billing reconciliation."
+>
+  <CustomerLedgerApp client:load />
+</BaseLayout>
