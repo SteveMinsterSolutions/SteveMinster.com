@@ -176,7 +176,7 @@ async function generateExcel(form) {
   const CL_HEADERS = [
     '', 'Policy Number', 'Insured',
     'Transaction Annual Premium', 'Surplus Lines Tax', 'Stamping Fee',
-    'Technology Fee 1 (vQuip)', 'Technology Fee 2', 'Technology Fee 3',
+    'Technology Fee 1 (Bluefields)', 'Technology Fee 2', 'Technology Fee 3',
     'Policy Eff Date', 'Policy Exp Date',
     'Transaction Effective Date', 'Transaction Processed Date',
     'Transaction', 'Pay Plan', 'Down Pay Pct',
@@ -297,23 +297,19 @@ async function generateExcel(form) {
   if (planObj.installments > 0) {
     const remainingPrem = r2(premium - downPremDue);
     const instPremBase  = r2(remainingPrem / planObj.installments);
-    let accInstPrem     = 0;
 
-    for (let i = 1; i <= planObj.installments; i++) {
-      const isLast    = i === planObj.installments;
-      const instPrem  = isLast ? r2(remainingPrem - accInstPrem) : instPremBase;
-      accInstPrem     = r2(accInstPrem + instPremBase);
-
-      const instEffDate  = addMonthsToDate(form.policyEffDate, i);
-      const instInvId    = `${form.policyNumber}-INST${i}`;
-      const instLabel    = `Installment ${i}`;
+    for (let i = 0; i < planObj.installments; i++) {
+      const isLast = i === planObj.installments - 1;
+      const instPrem = isLast ? r2(remainingPrem - instPremBase * (planObj.installments - 1)) : instPremBase;
+      const instDueDate = addMonthsToDate(form.policyEffDate, i + 1);
+      const instInvId   = `${form.policyNumber}-INST${i + 1}`;
 
       // PremiumBilled
       clRows.push([
-        ...baseFields(0, 0, 0, 0, instEffDate, addMonthsToDate(form.policyEffDate, i - 1)),
-        instLabel, form.payPlan, planObj.downPct,
+        ...baseFields(0, 0, 0, 0, toJSDate(form.policyEffDate), instDueDate),
+        `Installment ${i + 1}`, form.payPlan, planObj.downPct,
         instInvId, 'PremiumBilled',
-        instEffDate, addMonthsToDate(form.policyEffDate, i - 1),
+        instDueDate, instDueDate,
         instPrem, 0, premBal,
         0, 0, taxBal,
         0, 0, stampBal,
@@ -327,17 +323,17 @@ async function generateExcel(form) {
       const instPay = nextPayment();
       const instCollected = instPay ? r2(parseFloat(instPay.amount)) : 0;
       if (instPay) {
-        premBal  = r2(premBal - instCollected);
+        premBal  = r2(premBal - instPrem);
         totalBal = r2(totalBal - instCollected);
       }
 
       clRows.push([
-        ...baseFields(0, 0, 0, 0, instEffDate, instPay ? toJSDate(instPay.date) : instEffDate),
-        instLabel, form.payPlan, planObj.downPct,
+        ...baseFields(0, 0, 0, 0, toJSDate(form.policyEffDate), instPay ? toJSDate(instPay.date) : instDueDate),
+        `Installment ${i + 1}`, form.payPlan, planObj.downPct,
         instPay ? instPay.invoiceNumber || instInvId : instInvId,
         'PremiumCollected',
-        instEffDate, instPay ? toJSDate(instPay.date) : instEffDate,
-        0, instPay ? -instCollected : 0, premBal,
+        instDueDate, instPay ? toJSDate(instPay.date) : instDueDate,
+        0, instPay ? -instPrem : 0, premBal,
         0, 0, taxBal,
         0, 0, stampBal,
         0, 0, feeBal,
@@ -348,31 +344,22 @@ async function generateExcel(form) {
     }
   }
 
-  // ── Policy Change Rows ────────────────────────────────────────────────────────
-  form.changes.forEach((chg, idx) => {
+  // ── Change Rows ─────────────────────────────────────────────────────────────
+  form.changes.forEach((chg, ci) => {
     const chgPrem  = r2(parseFloat(chg.premiumImpact) || 0);
     const { surplusTax: cTax, stampingFee: cStamp } = calcTaxes(chgPrem, form.policyState, isSL);
-    const chgTotal = r2(chgPrem + cTax + cStamp);
-    const chgEffDate  = toJSDate(chg.changeEffDate);
-    const chgTypeLabel = chg.changeType;
-    const isCancOrCredit = chgTotal < 0;
 
-    const suffix = chg.changeType === 'Cancellation'
-      ? `CANC${idx + 1}`
-      : `ENDR${idx + 1}`;
-    const chgInvId = `${form.policyNumber}-${suffix}`;
-
-    // Record row — update running exposure
     premBal  = r2(premBal + chgPrem);
     taxBal   = r2(taxBal + cTax);
     stampBal = r2(stampBal + cStamp);
-    if (isCancOrCredit) totalBal = r2(totalBal + chgTotal); // refunds reduce balance immediately
+    totalBal = r2(totalBal + chgPrem + cTax + cStamp);
 
     clRows.push([
-      ...baseFields(chgPrem, cTax, cStamp, 0, chgEffDate, chgEffDate),
-      chgTypeLabel, form.payPlan, planObj.downPct,
-      null, `${chgTypeLabel} Issued`,
-      chgEffDate, chgEffDate,
+      ...baseFields(chgPrem, cTax, cStamp, 0,
+        toJSDate(chg.changeEffDate), toJSDate(chg.changeEffDate)),
+      chg.changeType, form.payPlan, planObj.downPct,
+      null, chg.changeType,
+      toJSDate(chg.changeEffDate), toJSDate(chg.changeEffDate),
       0, 0, premBal,
       0, 0, taxBal,
       0, 0, stampBal,
@@ -382,68 +369,47 @@ async function generateExcel(form) {
       0, 0, totalBal,
     ]);
 
-    // PremiumBilled
+    // Change billing
+    const chgTotal = r2(chgPrem + cTax + cStamp);
+    const chgInvId = `${form.policyNumber}-CHG${ci + 1}`;
     clRows.push([
-      ...baseFields(0, 0, 0, 0, chgEffDate, chgEffDate),
-      chgTypeLabel, form.payPlan, planObj.downPct,
+      ...baseFields(0, 0, 0, 0, toJSDate(chg.changeEffDate), toJSDate(chg.changeEffDate)),
+      chg.changeType, form.payPlan, planObj.downPct,
       chgInvId, 'PremiumBilled',
-      chgEffDate, chgEffDate,
-      chgPrem > 0 ? chgPrem : 0, 0, premBal,
-      cTax > 0 ? cTax : 0, 0, taxBal,
-      cStamp > 0 ? cStamp : 0, 0, stampBal,
+      toJSDate(chg.changeEffDate), toJSDate(chg.changeEffDate),
+      chgPrem, 0, premBal,
+      cTax, 0, taxBal,
+      cStamp, 0, stampBal,
       0, 0, feeBal,
       0, 0, 0,
       0, 0, 0,
-      chgTotal > 0 ? chgTotal : 0, 0, totalBal,
+      chgTotal, 0, totalBal,
     ]);
 
-    // PremiumCollected
-    const chgPay = !isCancOrCredit ? nextPayment() : null;
-    const chgCollected = chgPay ? r2(parseFloat(chgPay.amount)) : 0;
+    const chgPay = nextPayment();
+    const amt = chgPay ? r2(parseFloat(chgPay.amount)) : 0;
     if (chgPay) {
-      premBal  = r2(premBal - chgCollected);
-      totalBal = r2(totalBal - chgCollected);
+      premBal  = r2(premBal - chgPrem);
+      taxBal   = r2(taxBal - cTax);
+      stampBal = r2(stampBal - cStamp);
+      totalBal = r2(totalBal - amt);
     }
 
     clRows.push([
-      ...baseFields(0, 0, 0, 0, chgEffDate, chgPay ? toJSDate(chgPay.date) : chgEffDate),
-      chgTypeLabel, form.payPlan, planObj.downPct,
+      ...baseFields(0, 0, 0, 0, toJSDate(chg.changeEffDate), chgPay ? toJSDate(chgPay.date) : toJSDate(chg.changeEffDate)),
+      chg.changeType, form.payPlan, planObj.downPct,
       chgPay ? chgPay.invoiceNumber || chgInvId : chgInvId,
       'PremiumCollected',
-      chgEffDate, chgPay ? toJSDate(chgPay.date) : chgEffDate,
-      0, chgPay ? -chgCollected : (isCancOrCredit ? chgPrem : 0), premBal,
-      0, isCancOrCredit ? cTax : 0, taxBal,
-      0, isCancOrCredit ? cStamp : 0, stampBal,
-      0, 0, feeBal,
-      0, 0, 0,
-      0, 0, 0,
-      0, isCancOrCredit ? chgTotal : (chgPay ? -chgCollected : 0), totalBal,
-    ]);
-  });
-
-  // Any remaining unmatched payments
-  while (payIdx < payQueue.length) {
-    const p = payQueue[payIdx++];
-    const amt = r2(parseFloat(p.amount));
-    premBal  = r2(premBal - amt);
-    totalBal = r2(totalBal - amt);
-    clRows.push([
-      '', form.policyNumber, form.customerName,
-      0, 0, 0, 0, 0, 0,
-      toJSDate(form.policyEffDate), policyExpDate,
-      toJSDate(p.date), toJSDate(p.date),
-      'Payment Applied', form.payPlan, planObj.downPct,
-      p.invoiceNumber || '', 'PremiumCollected',
-      toJSDate(p.date), toJSDate(p.date),
-      0, -amt, premBal,
-      0, 0, taxBal,
-      0, 0, stampBal,
+      toJSDate(chg.changeEffDate), chgPay ? toJSDate(chgPay.date) : toJSDate(chg.changeEffDate),
+      0, chgPay ? -chgPrem : 0, premBal,
+      0, chgPay ? -cTax : 0, taxBal,
+      0, chgPay ? -cStamp : 0, stampBal,
       0, 0, feeBal,
       0, 0, 0,
       0, 0, 0,
       0, -amt, totalBal,
     ]);
-  }
+  });
 
   // ── SUMMARY SHEET ────────────────────────────────────────────────────────────
   const totalPremBilled  = r2(premium + form.changes.reduce((s, c) => s + (parseFloat(c.premiumImpact) || 0), 0));
@@ -475,7 +441,7 @@ async function generateExcel(form) {
     ['Net Premium', totalPremBilled, totalAllReceived > 0 ? '(see below)' : 0, totalPremBilled],
     ['Surplus Lines Tax', totalTaxBilled, '', totalTaxBilled],
     ['Stamping Fee', totalStampBilled, '', totalStampBilled],
-    ['vQuip Technology Fee', totalFeeBilled, '', totalFeeBilled],
+    ['Bluefields Technology Fee', totalFeeBilled, '', totalFeeBilled],
     ['TOTAL', totalAllBilled, totalAllReceived, totalBalance],
     [],
     ['State Tax Rate:', `${((STATE_TAXES[form.policyState]?.taxRate || 0) * 100).toFixed(4)}%`],
@@ -541,16 +507,66 @@ async function generateExcel(form) {
   URL.revokeObjectURL(url);
 }
 
+// ─── Warning Banner ──────────────────────────────────────────────────────────
+function BFWarningBanner() {
+  return (
+    <div
+      className="bf-warning-banner"
+      role="alert"
+      aria-live="polite"
+      style={{
+        backgroundColor: '#0B0E0E',
+        color: '#ffffff',
+        fontFamily: '"Public Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+        fontSize: '0.875rem',
+        letterSpacing: '0.04em',
+        padding: '0.75rem 1.5rem',
+        textAlign: 'center',
+        width: '100%',
+        boxSizing: 'border-box',
+      }}
+    >
+      <span style={{ fontWeight: 800, textTransform: 'uppercase', marginRight: '0.5rem' }}>
+        WARNING:
+      </span>
+      <span style={{ fontWeight: 500, textTransform: 'none', letterSpacing: '0.01em' }}>
+        The items on this page are demonstration-only wireframes and are{' '}
+        <strong>not</strong> connected to any Bluefields Specialty Insurance systems
+        or data. This page operates entirely outside of any proprietary systems.
+        No information used in these examples is stored in any database belonging
+        to Bluefields Specialty Insurance or Minster Solutions.
+      </span>
+    </div>
+  );
+}
+
+// ─── BF CSS tokens (inline style objects) ─────────────────────────────────────
+const bf = {
+  backgroundSoft:  '#EDF3F5',
+  backgroundAlt:   '#D6E3E8',
+  borderSubtle:    '#BDCDD2',
+  accentSoft:      '#8FC9D2',
+  accentPrimary:   '#00869B',
+  accentDark:      '#005367',
+  textMuted:       '#516266',
+  textBody:        '#31484D',
+  textStrong:      '#172D32',
+  textInverse:     '#FFFFFF',
+  nearBlack:       '#0B0E0E',
+  fontDisplay:     '"Public Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+  fontBody:        '"Public Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+};
+
 // ─── Shared Input Styles ──────────────────────────────────────────────────────
-const inputCls  = 'w-full bg-[#0D1B35] border border-[#2D7DD2]/40 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#2D7DD2] focus:ring-1 focus:ring-[#2D7DD2] placeholder-white/30';
+const inputCls  = 'w-full bg-white border border-[#BDCDD2] text-[#31484D] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#00869B] focus:ring-1 focus:ring-[#00869B] placeholder-[#516266]/50';
 const selectCls = `${inputCls} cursor-pointer`;
-const labelCls  = 'block text-xs font-semibold uppercase tracking-widest text-[#97D700] mb-1';
+const labelCls  = 'block text-xs font-semibold uppercase tracking-widest text-[#00869B] mb-1';
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 function FormField({ label, children }) {
   return (
     <div>
-      <label className={labelCls}>{label}</label>
+      <label className={labelCls} style={{ fontFamily: bf.fontBody }}>{label}</label>
       {children}
     </div>
   );
@@ -559,12 +575,13 @@ function FormField({ label, children }) {
 function SectionHeader({ icon, title, subtitle }) {
   return (
     <div className="flex items-start gap-3 mb-5">
-      <div className="w-8 h-8 rounded-lg bg-[#2D7DD2]/20 border border-[#2D7DD2]/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-        <span className="text-[#2D7DD2] text-sm">{icon}</span>
+      <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+        style={{ backgroundColor: `${bf.accentPrimary}20`, border: `1px solid ${bf.accentPrimary}40` }}>
+        <span className="text-sm" style={{ color: bf.accentPrimary }}>{icon}</span>
       </div>
       <div>
-        <h3 className="text-white font-semibold text-base leading-tight">{title}</h3>
-        {subtitle && <p className="text-white/40 text-xs mt-0.5">{subtitle}</p>}
+        <h3 className="font-semibold text-base leading-tight" style={{ color: bf.textStrong, fontFamily: bf.fontDisplay }}>{title}</h3>
+        {subtitle && <p className="text-xs mt-0.5" style={{ color: bf.textMuted }}>{subtitle}</p>}
       </div>
     </div>
   );
@@ -586,30 +603,27 @@ function AuthGate({ onSuccess }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B1525] flex items-center justify-center px-4">
-      {/* Background grid */}
-      <div className="fixed inset-0 opacity-5 pointer-events-none"
-        style={{
-          backgroundImage: 'linear-gradient(#2D7DD2 1px, transparent 1px), linear-gradient(90deg, #2D7DD2 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }} />
+    <div className="min-h-screen flex items-center justify-center px-4"
+      style={{ background: `linear-gradient(135deg, ${bf.backgroundSoft}, ${bf.backgroundAlt})` }}>
       <div className="relative z-10 w-full max-w-md">
         {/* Logo / Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#2D7DD2] to-[#1B2A4A] border border-[#2D7DD2]/40 flex items-center justify-center">
-              <span className="text-[#97D700] font-bold text-lg" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>L</span>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{ background: `linear-gradient(135deg, ${bf.accentPrimary}, ${bf.accentDark})`, border: `1px solid ${bf.accentPrimary}66` }}>
+              <span className="font-bold text-lg" style={{ fontFamily: bf.fontDisplay, color: bf.textInverse }}>B</span>
             </div>
-            <span className="text-white/60 text-sm tracking-widest uppercase font-medium" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>vQuip</span>
+            <span className="text-sm tracking-widest uppercase font-medium" style={{ fontFamily: bf.fontDisplay, color: bf.accentDark }}>Bluefields</span>
           </div>
-          <h1 className="text-2xl font-bold text-white mb-1" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
+          <h1 className="text-2xl font-bold mb-1" style={{ fontFamily: bf.fontDisplay, color: bf.textStrong }}>
             Customer Ledger
           </h1>
-          <p className="text-white/40 text-sm">Authorized access only</p>
+          <p className="text-sm" style={{ color: bf.textMuted }}>Authorized access only</p>
         </div>
 
         {/* Card */}
-        <div className="bg-[#1B2A4A]/80 border border-[#2D7DD2]/20 rounded-2xl p-8 backdrop-blur-sm">
+        <div className="rounded-2xl p-8 backdrop-blur-sm"
+          style={{ backgroundColor: '#ffffff', border: `1px solid ${bf.borderSubtle}`, boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
           <FormField label="Access Code">
             <input
               type="password"
@@ -620,26 +634,34 @@ function AuthGate({ onSuccess }) {
               autoFocus
               placeholder="Enter passcode"
               className={inputCls}
+              style={{ fontFamily: bf.fontBody }}
             />
           </FormField>
 
           {error && (
-            <p className="mt-3 text-red-400 text-xs bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2">
+            <p className="mt-3 text-xs rounded-lg px-3 py-2"
+              style={{ color: '#b91c1c', backgroundColor: '#fef2f2', border: '1px solid #fecaca' }}>
               {error}
             </p>
           )}
 
           <button
             onClick={handleSubmit}
-            className="mt-5 w-full bg-[#2D7DD2] hover:bg-[#2D7DD2]/80 text-white font-semibold py-2.5 px-4 rounded-lg transition-all text-sm tracking-wide"
-            style={{ fontFamily: 'Space Grotesk, sans-serif' }}
+            className="mt-5 w-full font-semibold py-2.5 px-4 rounded-full transition-all text-sm tracking-wide border-none cursor-pointer"
+            style={{
+              fontFamily: bf.fontBody,
+              backgroundColor: bf.accentPrimary,
+              color: bf.textInverse,
+            }}
+            onMouseEnter={e => e.currentTarget.style.backgroundColor = bf.accentDark}
+            onMouseLeave={e => e.currentTarget.style.backgroundColor = bf.accentPrimary}
           >
-            Access Ledger Tool →
+            Access Ledger Tool
           </button>
         </div>
 
-        <p className="text-center text-white/20 text-xs mt-6" style={{ fontFamily: 'Inter, sans-serif' }}>
-          This tool is for authorized vQuip accounting team use only.
+        <p className="text-center text-xs mt-6" style={{ fontFamily: bf.fontBody, color: bf.textMuted }}>
+          This tool is for authorized Bluefields accounting team use only.
         </p>
       </div>
     </div>
@@ -649,21 +671,25 @@ function AuthGate({ onSuccess }) {
 // ─── Change Row ───────────────────────────────────────────────────────────────
 function ChangeRow({ chg, idx, onChange, onRemove }) {
   return (
-    <div className="bg-[#0D1B35]/60 border border-[#2D7DD2]/20 rounded-xl p-4">
+    <div className="rounded-xl p-4"
+      style={{ backgroundColor: bf.backgroundSoft, border: `1px solid ${bf.borderSubtle}` }}>
       <div className="flex items-center justify-between mb-3">
-        <span className="text-[#97D700] text-xs font-bold uppercase tracking-widest">
+        <span className="text-xs font-bold uppercase tracking-widest"
+          style={{ color: bf.accentPrimary, fontFamily: bf.fontBody }}>
           Change #{idx + 1}
         </span>
         <button
           onClick={onRemove}
-          className="text-white/30 hover:text-red-400 transition-colors text-xs"
+          className="hover:text-red-500 transition-colors text-xs"
+          style={{ color: bf.textMuted }}
         >
-          ✕ Remove
+          Remove
         </button>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <FormField label="Change Type">
-          <select value={chg.changeType} onChange={e => onChange('changeType', e.target.value)} className={selectCls}>
+          <select value={chg.changeType} onChange={e => onChange('changeType', e.target.value)} className={selectCls}
+            style={{ fontFamily: bf.fontBody }}>
             {CHANGE_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
           </select>
         </FormField>
@@ -675,6 +701,7 @@ function ChangeRow({ chg, idx, onChange, onRemove }) {
             onChange={e => onChange('premiumImpact', e.target.value)}
             placeholder="e.g. -450.00"
             className={inputCls}
+            style={{ fontFamily: bf.fontBody }}
           />
         </FormField>
         <FormField label="Change Effective Date">
@@ -683,6 +710,7 @@ function ChangeRow({ chg, idx, onChange, onRemove }) {
             value={chg.changeEffDate}
             onChange={e => onChange('changeEffDate', e.target.value)}
             className={inputCls}
+            style={{ fontFamily: bf.fontBody }}
           />
         </FormField>
       </div>
@@ -693,16 +721,19 @@ function ChangeRow({ chg, idx, onChange, onRemove }) {
 // ─── Payment Row ──────────────────────────────────────────────────────────────
 function PaymentRow({ pay, idx, onChange, onRemove }) {
   return (
-    <div className="bg-[#0D1B35]/60 border border-[#97D700]/20 rounded-xl p-4">
+    <div className="rounded-xl p-4"
+      style={{ backgroundColor: bf.backgroundSoft, border: `1px solid ${bf.accentSoft}` }}>
       <div className="flex items-center justify-between mb-3">
-        <span className="text-[#97D700] text-xs font-bold uppercase tracking-widest">
+        <span className="text-xs font-bold uppercase tracking-widest"
+          style={{ color: bf.accentDark, fontFamily: bf.fontBody }}>
           Payment #{idx + 1}
         </span>
         <button
           onClick={onRemove}
-          className="text-white/30 hover:text-red-400 transition-colors text-xs"
+          className="hover:text-red-500 transition-colors text-xs"
+          style={{ color: bf.textMuted }}
         >
-          ✕ Remove
+          Remove
         </button>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -712,6 +743,7 @@ function PaymentRow({ pay, idx, onChange, onRemove }) {
             value={pay.date}
             onChange={e => onChange('date', e.target.value)}
             className={inputCls}
+            style={{ fontFamily: bf.fontBody }}
           />
         </FormField>
         <FormField label="Invoice Number">
@@ -721,6 +753,7 @@ function PaymentRow({ pay, idx, onChange, onRemove }) {
             onChange={e => onChange('invoiceNumber', e.target.value)}
             placeholder="e.g. in_1SfPSO..."
             className={inputCls}
+            style={{ fontFamily: bf.fontBody }}
           />
         </FormField>
         <FormField label="Amount Received ($)">
@@ -732,6 +765,7 @@ function PaymentRow({ pay, idx, onChange, onRemove }) {
             onChange={e => onChange('amount', e.target.value)}
             placeholder="0.00"
             className={inputCls}
+            style={{ fontFamily: bf.fontBody }}
           />
         </FormField>
       </div>
@@ -745,32 +779,34 @@ function TaxPreview({ premium, state, isSurplusLines = true }) {
   const p = parseFloat(premium) || 0;
   if (p <= 0) return null;
   if (!isSurplusLines) return (
-    <div className="mt-3 bg-[#0D1B35]/60 border border-[#97D700]/20 rounded-lg p-3 text-xs">
-      <p className="text-[#97D700] font-semibold uppercase tracking-widest mb-2">Tax Preview — {state}</p>
-      <p className="text-white/60">Not a surplus lines policy — no SL taxes or stamping fees apply.</p>
+    <div className="mt-3 rounded-lg p-3 text-xs"
+      style={{ backgroundColor: bf.backgroundSoft, border: `1px solid ${bf.borderSubtle}` }}>
+      <p className="font-semibold uppercase tracking-widest mb-2" style={{ color: bf.accentPrimary }}>Tax Preview — {state}</p>
+      <p style={{ color: bf.textMuted }}>Not a surplus lines policy — no SL taxes or stamping fees apply.</p>
     </div>
   );
   const { surplusTax, stampingFee } = calcTaxes(p, state, true);
   const sd = STATE_TAXES[state];
   return (
-    <div className="mt-3 bg-[#0D1B35]/60 border border-[#97D700]/20 rounded-lg p-3 text-xs">
-      <p className="text-[#97D700] font-semibold uppercase tracking-widest mb-2">Tax Preview — {state}</p>
-      <div className="space-y-1 text-white/60">
+    <div className="mt-3 rounded-lg p-3 text-xs"
+      style={{ backgroundColor: bf.backgroundSoft, border: `1px solid ${bf.accentSoft}` }}>
+      <p className="font-semibold uppercase tracking-widest mb-2" style={{ color: bf.accentPrimary }}>Tax Preview — {state}</p>
+      <div className="space-y-1" style={{ color: bf.textMuted }}>
         <div className="flex justify-between">
           <span>Surplus Lines Tax ({(sd.taxRate * 100).toFixed(4)}%)</span>
-          <span className="text-white font-medium">${surplusTax.toFixed(2)}</span>
+          <span className="font-medium" style={{ color: bf.textStrong }}>${surplusTax.toFixed(2)}</span>
         </div>
         {stampingFee !== 0 && (
           <div className="flex justify-between">
             <span>{sd.secondaryType}{sd.flatFee ? ' (flat)' : ` (${(sd.secondary * 100).toFixed(4)}%)`}</span>
-            <span className="text-white font-medium">${Math.abs(stampingFee).toFixed(2)}</span>
+            <span className="font-medium" style={{ color: bf.textStrong }}>${Math.abs(stampingFee).toFixed(2)}</span>
           </div>
         )}
-        <div className="flex justify-between border-t border-white/10 pt-1 mt-1">
-          <span className="text-white/80">Total Taxes & Fees</span>
-          <span className="text-[#97D700] font-bold">${r2(surplusTax + stampingFee).toFixed(2)}</span>
+        <div className="flex justify-between pt-1 mt-1" style={{ borderTop: `1px solid ${bf.borderSubtle}` }}>
+          <span style={{ color: bf.textBody }}>Total Taxes & Fees</span>
+          <span className="font-bold" style={{ color: bf.accentPrimary }}>${r2(surplusTax + stampingFee).toFixed(2)}</span>
         </div>
-        <div className="text-white/30 mt-1">
+        <div className="mt-1" style={{ color: bf.textMuted }}>
           Rounding: {sd.rounding === 'dollar' ? 'Round up to dollar (min $1)' : 'Round up to next penny'}
         </div>
       </div>
@@ -825,69 +861,68 @@ function LedgerForm() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B1525] px-4 py-10" style={{ fontFamily: 'Inter, sans-serif' }}>
-      {/* Background grid */}
-      <div className="fixed inset-0 opacity-5 pointer-events-none"
-        style={{
-          backgroundImage: 'linear-gradient(#2D7DD2 1px, transparent 1px), linear-gradient(90deg, #2D7DD2 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }} />
+    <div className="min-h-screen px-4 py-10"
+      style={{ fontFamily: bf.fontBody, background: `linear-gradient(135deg, ${bf.backgroundSoft}, ${bf.backgroundAlt})` }}>
 
       <div className="relative z-10 max-w-4xl mx-auto">
         {/* Page Header */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-3">
-            <span className="text-[#97D700] text-xs font-bold uppercase tracking-widest">vQuip</span>
-            <span className="text-white/20 text-xs">›</span>
-            <span className="text-white/40 text-xs uppercase tracking-widest">Customer Ledger Tool</span>
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: bf.accentPrimary }}>Bluefields</span>
+            <span className="text-xs" style={{ color: bf.borderSubtle }}>&rsaquo;</span>
+            <span className="text-xs uppercase tracking-widest" style={{ color: bf.textMuted }}>Customer Ledger Tool</span>
           </div>
-          <h1 className="text-3xl font-bold text-white" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
+          <h1 className="text-3xl font-bold" style={{ fontFamily: bf.fontDisplay, color: bf.textStrong }}>
             Generate Policy Ledger
           </h1>
-          <p className="text-white/40 text-sm mt-1">
+          <p className="text-sm mt-1" style={{ color: bf.textMuted }}>
             Enter policy details below to generate a downloadable Excel ledger with Summary, Policy Ledger, and Customer Ledger tabs.
           </p>
         </div>
 
         {/* ── Section 1: Policy Information ────────────────────────────────── */}
-        <div className="bg-[#1B2A4A]/60 border border-[#2D7DD2]/20 rounded-2xl p-6 mb-5">
+        <div className="rounded-2xl p-6 mb-5"
+          style={{ backgroundColor: '#ffffff', border: `1px solid ${bf.borderSubtle}`, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <SectionHeader icon="📋" title="Policy Information" subtitle="Core policy details and initial billing setup" />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Customer Name *">
               <input type="text" value={form.customerName} onChange={e => setField('customerName', e.target.value)}
-                placeholder="e.g. Acme Rentals LLC" className={inputCls} />
+                placeholder="e.g. Acme Rentals LLC" className={inputCls} style={{ fontFamily: bf.fontBody }} />
             </FormField>
             <FormField label="Policy Number *">
               <input type="text" value={form.policyNumber} onChange={e => setField('policyNumber', e.target.value)}
-                placeholder="e.g. AABA30000001-00" className={inputCls} />
+                placeholder="e.g. AABA30000001-00" className={inputCls} style={{ fontFamily: bf.fontBody }} />
             </FormField>
             <FormField label="Policy Effective Date *">
               <input type="date" value={form.policyEffDate} onChange={e => setField('policyEffDate', e.target.value)}
-                className={inputCls} />
+                className={inputCls} style={{ fontFamily: bf.fontBody }} />
             </FormField>
             <FormField label="Initial Annual Premium ($) *">
               <input type="number" step="0.01" min="0" value={form.initialPremium}
                 onChange={e => setField('initialPremium', e.target.value)}
-                placeholder="0.00" className={inputCls} />
+                placeholder="0.00" className={inputCls} style={{ fontFamily: bf.fontBody }} />
             </FormField>
             <FormField label="Policy State *">
-              <select value={form.policyState} onChange={e => setField('policyState', e.target.value)} className={selectCls}>
+              <select value={form.policyState} onChange={e => setField('policyState', e.target.value)} className={selectCls}
+                style={{ fontFamily: bf.fontBody }}>
                 {STATES.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </FormField>
-            <FormField label="vQuip Fee — Total ($) *">
+            <FormField label="Bluefields Technology Fee — Total ($) *">
               <input type="number" step="0.01" min="0" value={form.vquipFee}
                 onChange={e => setField('vquipFee', e.target.value)}
-                placeholder="0.00" className={inputCls} />
+                placeholder="0.00" className={inputCls} style={{ fontFamily: bf.fontBody }} />
             </FormField>
             <FormField label="Initial Pay Plan *">
-              <select value={form.payPlan} onChange={e => setField('payPlan', e.target.value)} className={selectCls}>
+              <select value={form.payPlan} onChange={e => setField('payPlan', e.target.value)} className={selectCls}
+                style={{ fontFamily: bf.fontBody }}>
                 {PAY_PLAN_OPTIONS.map(p => <option key={p.label} value={p.label}>{p.label}</option>)}
               </select>
             </FormField>
             <FormField label="Is the Policy Surplus Lines? *">
-              <select value={form.isSurplusLines} onChange={e => setField('isSurplusLines', e.target.value)} className={selectCls}>
+              <select value={form.isSurplusLines} onChange={e => setField('isSurplusLines', e.target.value)} className={selectCls}
+                style={{ fontFamily: bf.fontBody }}>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
               </select>
@@ -899,12 +934,14 @@ function LedgerForm() {
         </div>
 
         {/* ── Section 2: Policy Changes ─────────────────────────────────────── */}
-        <div className="bg-[#1B2A4A]/60 border border-[#2D7DD2]/20 rounded-2xl p-6 mb-5">
+        <div className="rounded-2xl p-6 mb-5"
+          style={{ backgroundColor: '#ffffff', border: `1px solid ${bf.borderSubtle}`, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <SectionHeader icon="📝" title="Policy Changes" subtitle="Endorsements and cancellations after the initial issuance" />
 
           <div className="space-y-3">
             {changes.length === 0 && (
-              <p className="text-white/30 text-sm text-center py-4 border border-dashed border-white/10 rounded-xl">
+              <p className="text-sm text-center py-4 rounded-xl"
+                style={{ color: bf.textMuted, border: `1px dashed ${bf.borderSubtle}` }}>
                 No changes yet. Add an endorsement or cancellation below.
               </p>
             )}
@@ -919,7 +956,10 @@ function LedgerForm() {
 
           <button
             onClick={addChange}
-            className="mt-4 flex items-center gap-2 text-[#2D7DD2] hover:text-[#97D700] text-sm font-semibold transition-colors"
+            className="mt-4 flex items-center gap-2 text-sm font-semibold transition-colors"
+            style={{ color: bf.accentPrimary }}
+            onMouseEnter={e => e.currentTarget.style.color = bf.accentDark}
+            onMouseLeave={e => e.currentTarget.style.color = bf.accentPrimary}
           >
             <span className="w-5 h-5 rounded-full border border-current flex items-center justify-center text-xs leading-none">+</span>
             Add Policy Change
@@ -927,12 +967,14 @@ function LedgerForm() {
         </div>
 
         {/* ── Section 3: Payments Received ──────────────────────────────────── */}
-        <div className="bg-[#1B2A4A]/60 border border-[#97D700]/20 rounded-2xl p-6 mb-5">
+        <div className="rounded-2xl p-6 mb-5"
+          style={{ backgroundColor: '#ffffff', border: `1px solid ${bf.accentSoft}`, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <SectionHeader icon="💳" title="Payments Received" subtitle="Record payments collected from the customer. Applied in chronological order to billing events." />
 
           <div className="space-y-3">
             {payments.length === 0 && (
-              <p className="text-white/30 text-sm text-center py-4 border border-dashed border-white/10 rounded-xl">
+              <p className="text-sm text-center py-4 rounded-xl"
+                style={{ color: bf.textMuted, border: `1px dashed ${bf.borderSubtle}` }}>
                 No payments entered. Add received payments below.
               </p>
             )}
@@ -947,17 +989,20 @@ function LedgerForm() {
 
           <button
             onClick={addPayment}
-            className="mt-4 flex items-center gap-2 text-[#97D700] hover:text-white text-sm font-semibold transition-colors"
+            className="mt-4 flex items-center gap-2 text-sm font-semibold transition-colors"
+            style={{ color: bf.accentDark }}
+            onMouseEnter={e => e.currentTarget.style.color = bf.accentPrimary}
+            onMouseLeave={e => e.currentTarget.style.color = bf.accentDark}
           >
             <span className="w-5 h-5 rounded-full border border-current flex items-center justify-center text-xs leading-none">+</span>
             Add Payment Received
           </button>
 
           {payments.length > 0 && (
-            <div className="mt-4 pt-4 border-t border-white/10">
+            <div className="mt-4 pt-4" style={{ borderTop: `1px solid ${bf.borderSubtle}` }}>
               <div className="flex justify-between text-sm">
-                <span className="text-white/50">Total Payments Entered:</span>
-                <span className="text-[#97D700] font-bold">
+                <span style={{ color: bf.textMuted }}>Total Payments Entered:</span>
+                <span className="font-bold" style={{ color: bf.accentPrimary }}>
                   ${r2(payments.reduce((s, p) => s + (parseFloat(p.amount) || 0), 0)).toFixed(2)}
                 </span>
               </div>
@@ -967,7 +1012,8 @@ function LedgerForm() {
 
         {/* ── Error ────────────────────────────────────────────────────────────── */}
         {error && (
-          <div className="mb-4 bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 text-red-400 text-sm">
+          <div className="mb-4 rounded-xl px-4 py-3 text-sm"
+            style={{ color: '#b91c1c', backgroundColor: '#fef2f2', border: '1px solid #fecaca' }}>
             {error}
           </div>
         )}
@@ -976,13 +1022,20 @@ function LedgerForm() {
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full bg-[#97D700] hover:bg-[#97D700]/90 disabled:opacity-50 disabled:cursor-not-allowed text-[#0B1525] font-bold py-4 px-6 rounded-xl transition-all text-base tracking-wide shadow-lg shadow-[#97D700]/20"
-          style={{ fontFamily: 'Space Grotesk, sans-serif' }}
+          className="w-full font-bold py-4 px-6 rounded-full transition-all text-base tracking-wide border-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          style={{
+            fontFamily: bf.fontDisplay,
+            backgroundColor: bf.accentPrimary,
+            color: bf.textInverse,
+            boxShadow: '0 4px 14px rgba(0,134,155,0.3)',
+          }}
+          onMouseEnter={e => { if (!loading) e.currentTarget.style.backgroundColor = bf.accentDark; }}
+          onMouseLeave={e => { if (!loading) e.currentTarget.style.backgroundColor = bf.accentPrimary; }}
         >
-          {loading ? '⏳ Generating Ledger...' : '⬇ Submit for Ledger'}
+          {loading ? 'Generating Ledger...' : 'Submit for Ledger'}
         </button>
 
-        <p className="text-center text-white/20 text-xs mt-4" style={{ fontFamily: 'Inter, sans-serif' }}>
+        <p className="text-center text-xs mt-4" style={{ fontFamily: bf.fontBody, color: bf.textMuted }}>
           Generates a .xlsx file with Summary, Policy Ledger, and Customer Ledger tabs.
         </p>
       </div>
@@ -997,8 +1050,20 @@ export default function CustomerLedgerApp() {
   );
 
   if (!authed) {
-    return <AuthGate onSuccess={() => setAuthed(true)} />;
+    return (
+      <div>
+        <BFWarningBanner />
+        <AuthGate onSuccess={() => setAuthed(true)} />
+        <BFWarningBanner />
+      </div>
+    );
   }
 
-  return <LedgerForm />;
+  return (
+    <div>
+      <BFWarningBanner />
+      <LedgerForm />
+      <BFWarningBanner />
+    </div>
+  );
 }
