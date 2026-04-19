@@ -134,39 +134,6 @@
     margin-bottom: 36px;
   }
 
-  .quadrant-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 12px;
-    margin-top: 14px;
-  }
-
-  .quadrant-axis-label-x {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    text-align: center;
-    margin-top: 4px;
-  }
-
-  .axis-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .axis-label-y {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    white-space: nowrap;
-  }
-
   .quadrant {
     border: 1px solid var(--rule);
     padding: 16px;
@@ -253,7 +220,10 @@
   .tag-escalating { background: #f5d5d0; color: var(--urgent); }
   .tag-rock { background: #e8e0f0; color: #4a2080; }
   .tag-kids { background: #d5e8f0; color: #1a5070; }
-  .tag-new { background: #d5eadc; color: var(--accent); }
+  .tag-overdue { background: #f5d5d0; color: var(--urgent); }
+  .tag-travel { background: #e0e8f5; color: #1a3070; }
+  .tag-family { background: #d5eadc; color: var(--accent); }
+  .tag-deadline { background: #f5e8d0; color: var(--amber); }
 
   /* Watch-outs */
   .watchouts {
@@ -270,25 +240,24 @@
   .watchout-number {
     font-family: 'Playfair Display', serif;
     font-size: 28px;
+    font-weight: 600;
     color: var(--rule);
-    line-height: 1;
     flex-shrink: 0;
     width: 32px;
+    line-height: 1;
   }
 
-  .watchout-content {}
-
   .watchout-title {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
     margin-bottom: 4px;
+    color: var(--ink);
   }
 
   .watchout-detail {
     font-size: 13px;
     color: var(--muted);
-    line-height: 1.6;
-    max-width: 580px;
+    line-height: 1.65;
   }
 
   /* Action cards */
@@ -297,31 +266,29 @@
   }
 
   .action-card {
-    border: 1px solid var(--rule);
-    padding: 16px 20px;
-    margin-bottom: 10px;
     display: flex;
-    justify-content: space-between;
+    gap: 16px;
     align-items: flex-start;
-    gap: 20px;
-    background: white;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--rule);
   }
 
-  .action-content {}
+  .action-content { flex: 1; }
 
   .action-label {
     font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.12em;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--muted);
     margin-bottom: 6px;
   }
 
   .action-text {
-    font-size: 14px;
-    line-height: 1.6;
-    max-width: 560px;
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--ink);
   }
 
   .action-btn {
