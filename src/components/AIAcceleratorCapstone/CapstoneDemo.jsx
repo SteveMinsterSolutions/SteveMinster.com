@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
+import * as chrono from 'chrono-node';
 import styles from './CapstoneDemo.module.css';
 
 const WEBHOOK_URL = 'https://hook.us2.make.com/x23cyf4relpj14j5mu72gf8mkqp7aoj5';
+const FETCH_RECENT_URL = '/api/recent-events';
+const POLL_INTERVAL_MS = 5000;
 
 // Load Google Fonts for the newspaper aesthetic
 function useFonts() {
@@ -162,6 +165,43 @@ function CapstonePage() {
   const [quickAddStatus, setQuickAddStatus] = useState(null);
   // values: null | 'sending' | 'sent' | 'error'
   const [votes, setVotes] = useState([null, null, null, null]);
+  const [justInEvents, setJustInEvents] = useState([]);
+  const [seenEventIds, setSeenEventIds] = useState(new Set());
+
+  useEffect(() => {
+    let cancelled = false;
+    let timeoutId;
+
+    const poll = async () => {
+      try {
+        const res = await fetch(FETCH_RECENT_URL);
+        if (!res.ok) throw new Error(`Status ${res.status}`);
+        const events = await res.json();
+        if (cancelled || !Array.isArray(events)) return;
+
+        setSeenEventIds(prevSeen => {
+          const incoming = events.filter(e => e.id && !prevSeen.has(e.id));
+          if (incoming.length > 0) {
+            setJustInEvents(prev => [...incoming, ...prev].slice(0, 10));
+            const next = new Set(prevSeen);
+            incoming.forEach(e => next.add(e.id));
+            return next;
+          }
+          return prevSeen;
+        });
+      } catch (err) {
+        console.warn('[Just In] poll failed:', err.message);
+      } finally {
+        if (!cancelled) timeoutId = setTimeout(poll, POLL_INTERVAL_MS);
+      }
+    };
+
+    poll();
+    return () => {
+      cancelled = true;
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, []);
 
   const toggleAt = (setter) => (i) => setter(prev => {
     const next = [...prev];
@@ -185,10 +225,13 @@ function CapstonePage() {
       return;
     }
 
+    const parsedDate = chrono.parseDate(text, new Date(), { forwardDate: true });
+    const timestamp = parsedDate ? parsedDate.toISOString() : new Date().toISOString();
+
     const submission = {
       text,
       importance: importance || 'medium',
-      timestamp: new Date().toISOString()
+      timestamp
     };
 
     // Optimistic UI: clear the form immediately so the demo feels snappy
@@ -265,6 +308,35 @@ function CapstonePage() {
             </ul>
           </div>
         </div>
+
+        {/* JUST IN — live calendar feed */}
+        {justInEvents.length > 0 && (
+          <section className={styles.justInSection}>
+            <h2 className={styles.justInHeader}>📥 Just In</h2>
+            <ul className={styles.justInList}>
+              {justInEvents.map((event, idx) => (
+                <li
+                  key={event.id}
+                  className={cx(
+                    styles.justInItem,
+                    styles[`importance-${event.importance || 'medium'}`],
+                    idx === 0 && styles.justInNew
+                  )}
+                >
+                  <div className={styles.justInTitle}>{event.title}</div>
+                  <div className={styles.justInTime}>
+                    {new Date(event.start).toLocaleString('en-US', {
+                      timeZone: 'America/Chicago',
+                      weekday: 'short',
+                      hour: 'numeric',
+                      minute: '2-digit'
+                    })}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {/* EISENHOWER 2x2 */}
         <div className={styles.dashboard}>
@@ -373,7 +445,7 @@ function CapstonePage() {
             <input
               className={styles['quick-add-input']}
               type="text"
-              placeholder="What came up? (e.g. Coffee with Dave tomorrow 8am)"
+              placeholder="e.g., Coffee with Lu at 3pm tomorrow"
               value={quickAddText}
               onChange={e => setQuickAddText(e.target.value)}
             />
