@@ -200,7 +200,8 @@ function CapstonePage() {
       await fetch(WEBHOOK_URL, {
         method: 'POST',
         mode: 'no-cors', // Make.com doesn't return CORS headers; opaque response is fine
-        body: JSON.stringify(submission)
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(submission)
       });
       // With mode: 'no-cors' we can't read the response, so we assume success.
       // The Make.com scenario logs will show actual failures.
