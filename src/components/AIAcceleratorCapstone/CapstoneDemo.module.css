@@ -601,3 +601,15 @@
   flex-wrap: wrap;
   gap: 4px;
 }
+
+.quick-add-status {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 8px;
+  letter-spacing: 0.05em;
+}
+
+.quick-add-status-sent {
+  color: var(--accent);
+}

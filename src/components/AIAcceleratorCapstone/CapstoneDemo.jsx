@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import styles from './CapstoneDemo.module.css';
 
+const WEBHOOK_URL = 'https://hook.us2.make.com/x23cyf4relpj14j5mu72gf8mkqp7aoj5';
+
 // Load Google Fonts for the newspaper aesthetic
 function useFonts() {
   useEffect(() => {
@@ -157,6 +159,8 @@ function CapstonePage() {
   const [actionApproved, setActionApproved] = useState([false, false, false]);
   const [quickAddText, setQuickAddText] = useState('');
   const [importance, setImportance] = useState(null);
+  const [quickAddStatus, setQuickAddStatus] = useState(null);
+  // values: null | 'sending' | 'sent' | 'error'
   const [votes, setVotes] = useState([null, null, null, null]);
 
   const toggleAt = (setter) => (i) => setter(prev => {
@@ -174,16 +178,44 @@ function CapstonePage() {
     return next;
   });
 
-  const handleQuickAdd = () => {
+  const handleQuickAdd = async () => {
     const text = quickAddText.trim();
     if (!text) {
       alert('What came up?');
       return;
     }
-    const level = importance || 'medium';
-    alert('Added: "' + text + '" (' + level + ' importance)\n\nIn Phase 2, this pushes directly to your calendar via Make.com.');
+
+    const submission = {
+      text,
+      importance: importance || 'medium',
+      timestamp: new Date().toISOString()
+    };
+
+    // Optimistic UI: clear the form immediately so the demo feels snappy
     setQuickAddText('');
     setImportance(null);
+    setQuickAddStatus('sending');
+
+    try {
+      await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Make.com doesn't return CORS headers; opaque response is fine
+        body: JSON.stringify(submission)
+      });
+      // With mode: 'no-cors' we can't read the response, so we assume success.
+      // The Make.com scenario logs will show actual failures.
+      setQuickAddStatus('sent');
+      setTimeout(() => setQuickAddStatus(null), 3000);
+    } catch (err) {
+      // Network failure (offline, DNS, etc.) — graceful fallback so the demo never breaks
+      console.error('Quick Add webhook failed:', err);
+      setQuickAddStatus('error');
+      alert(
+        `Added: "${submission.text}" (${submission.importance} importance)\n\n` +
+        `Note: live calendar integration unavailable — falling back to local demo mode.`
+      );
+      setTimeout(() => setQuickAddStatus(null), 3000);
+    }
   };
 
   const castVote = (itemIndex, type) => setVotes(prev => {
@@ -358,6 +390,14 @@ function CapstonePage() {
             <button className={styles['quick-add-submit']} onClick={handleQuickAdd}>
               Add to Calendar &rarr;
             </button>
+            {quickAddStatus === 'sending' && (
+              <div className={styles['quick-add-status']}>Sending to calendar&hellip;</div>
+            )}
+            {quickAddStatus === 'sent' && (
+              <div className={cx(styles['quick-add-status'], styles['quick-add-status-sent'])}>
+                &#10003; Added to your calendar
+              </div>
+            )}
           </div>
         </div>
 
