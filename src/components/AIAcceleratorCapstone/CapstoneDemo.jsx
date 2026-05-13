@@ -395,8 +395,8 @@ function CapstonePage() {
           </div>
 
           <div className={styles['axis-x']}>
-            <div>&larr; not urgent</div>
-            <div>urgent &rarr;</div>
+            <div>&larr; urgent</div>
+            <div>not urgent &rarr;</div>
           </div>
         </div>
 
