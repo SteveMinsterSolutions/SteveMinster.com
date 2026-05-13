@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import * as chrono from 'chrono-node';
 import styles from './CapstoneDemo.module.css';
 
 const WEBHOOK_URL = 'https://hook.us2.make.com/x23cyf4relpj14j5mu72gf8mkqp7aoj5';
@@ -225,8 +224,14 @@ function CapstonePage() {
       return;
     }
 
-    const parsedDate = chrono.parseDate(text, new Date(), { forwardDate: true });
-    const timestamp = parsedDate ? parsedDate.toISOString() : new Date().toISOString();
+    let timestamp = new Date().toISOString();
+    try {
+      const chrono = await import('chrono-node');
+      const parsedDate = chrono.parseDate(text, new Date(), { forwardDate: true });
+      if (parsedDate) timestamp = parsedDate.toISOString();
+    } catch (err) {
+      console.warn('chrono-node failed to load, using current time:', err);
+    }
 
     const submission = {
       text,
