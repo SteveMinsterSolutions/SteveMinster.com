@@ -650,7 +650,7 @@
 .importance-low { border-left-color: #2980b9; }
 
 .justInNew {
-  animation: slideDown 0.4s ease-out, justInPulse 2s ease-out;
+  animation: slideDown 0.7s ease-out forwards, justInPulse 2s ease-out forwards;
 }
 
 .justInTitle {
@@ -666,11 +666,13 @@
 }
 
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(-20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes justInPulse {
-  0%, 100% { background: var(--cream); }
-  20% { background: rgba(192, 57, 43, 0.12); }
+  0% { background: var(--cream); }
+  15% { background: rgba(192, 57, 43, 0.35); }
+  45% { background: rgba(192, 57, 43, 0.20); }
+  100% { background: var(--cream); }
 }
