@@ -16,8 +16,8 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
  */
 
 // ---------- CONFIG: drop in real make.com URLs to leave demo mode ------------
-const WRITE_WEBHOOK_URL = ''; // e.g. 'https://hook.us2.make.com/abc123...'
-const READ_WEBHOOK_URL  = ''; // e.g. 'https://hook.us2.make.com/xyz789...'
+const WRITE_WEBHOOK_URL = 'https://hook.us2.make.com/h07bpdpx4djhdjhowyzxns2l5b2afjw1';
+const READ_WEBHOOK_URL  = 'https://hook.us2.make.com/enf5bvyhli0lsvzch6xc1pktj6p9f3lk';
 const POLL_INTERVAL_MS  = 8000;
 
 // ---------- EVENT CONFIG (edit per movie night) ------------------------------
@@ -142,6 +142,43 @@ function dedupeByName(votes) {
   return Array.from(byName.values());
 }
 
+// Normalize a raw row from make.com into the shape the matching engine expects.
+// Handles three quirks of the make.com -> Google Sheets pipeline:
+//   1. Positional keys ("0", "1", ...) when the Array Aggregator uses Custom
+//      target structure without a downstream schema.
+//   2. Array fields stored as comma-separated strings in the sheet.
+//   3. Booleans stored as the strings "TRUE" / "FALSE".
+// Sheet column order: name, formats, earliest, latest, theaters, wantsFood, submittedAt.
+function normalizeRow(row) {
+  const isPositional = '0' in row && !('name' in row);
+  const base = isPositional ? {
+    name:        row['0'],
+    formats:     row['1'],
+    earliest:    row['2'],
+    latest:      row['3'],
+    theaters:    row['4'],
+    wantsFood:   row['5'],
+    submittedAt: row['6'],
+  } : row;
+
+  const toArray = (v) => typeof v === 'string'
+    ? v.split(',').map(s => s.trim()).filter(Boolean)
+    : (Array.isArray(v) ? v : []);
+  const toBool = (v) => typeof v === 'string'
+    ? v.trim().toLowerCase() === 'true'
+    : Boolean(v);
+
+  return {
+    name:        (base.name || '').trim(),
+    formats:     toArray(base.formats),
+    earliest:    base.earliest,
+    latest:      base.latest,
+    theaters:    toArray(base.theaters),
+    wantsFood:   toBool(base.wantsFood),
+    submittedAt: base.submittedAt,
+  };
+}
+
 async function fetchVotes() {
   if (!isLive()) {
     try {
@@ -155,7 +192,8 @@ async function fetchVotes() {
   const res = await fetch(READ_WEBHOOK_URL, { method: 'GET' });
   if (!res.ok) throw new Error(`Read failed: ${res.status}`);
   const data = await res.json();
-  return dedupeByName(Array.isArray(data) ? data : []);
+  const arr = Array.isArray(data) ? data : [];
+  return dedupeByName(arr.map(normalizeRow));
 }
 
 async function submitVote(vote) {
