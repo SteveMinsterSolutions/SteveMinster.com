@@ -143,11 +143,13 @@ function dedupeByName(votes) {
 }
 
 // Normalize a raw row from make.com into the shape the matching engine expects.
-// Handles three quirks of the make.com -> Google Sheets pipeline:
+// Handles four quirks of the make.com -> Google Sheets pipeline:
 //   1. Positional keys ("0", "1", ...) when the Array Aggregator uses Custom
 //      target structure without a downstream schema.
 //   2. Array fields stored as comma-separated strings in the sheet.
 //   3. Booleans stored as the strings "TRUE" / "FALSE".
+//   4. Time fields auto-converted to Google Sheets time fractions (0.6666...)
+//      when the sheet column isn't formatted as plain text.
 // Sheet column order: name, formats, earliest, latest, theaters, wantsFood, submittedAt.
 function normalizeRow(row) {
   const isPositional = '0' in row && !('name' in row);
@@ -167,12 +169,25 @@ function normalizeRow(row) {
   const toBool = (v) => typeof v === 'string'
     ? v.trim().toLowerCase() === 'true'
     : Boolean(v);
+  const toTime = (v) => {
+    // Already in HH:MM form
+    if (typeof v === 'string' && /^\d{1,2}:\d{2}$/.test(v)) return v;
+    // Google Sheets time-of-day stored as a fraction of a day
+    const num = Number(v);
+    if (Number.isFinite(num) && num >= 0 && num < 1) {
+      const minutes = Math.round(num * 24 * 60);
+      const h = Math.floor(minutes / 60);
+      const m = minutes % 60;
+      return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+    }
+    return '00:00';
+  };
 
   return {
     name:        (base.name || '').trim(),
     formats:     toArray(base.formats),
-    earliest:    base.earliest,
-    latest:      base.latest,
+    earliest:    toTime(base.earliest),
+    latest:      toTime(base.latest),
     theaters:    toArray(base.theaters),
     wantsFood:   toBool(base.wantsFood),
     submittedAt: base.submittedAt,
