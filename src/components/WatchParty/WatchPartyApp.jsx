@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
 /**
  * WatchPartyApp — SteveMinster.com / Minster Solutions
@@ -306,16 +306,21 @@ export default function WatchPartyApp() {
     return () => clearInterval(id);
   }, [loadVotes]);
 
-  // prefill form when current name already has a vote on file
+  // Prefill the form once per name when the voter has an existing row on file.
+  // Without the ref guard, every 8s poll would re-run this effect and clobber
+  // any selections the user has made since the prefill happened.
+  const prefilledFor = useRef('');
   useEffect(() => {
-    if (!name) return;
-    const mine = votes.find((v) => v.name.toLowerCase() === name.toLowerCase());
+    const key = name.trim().toLowerCase();
+    if (!key || prefilledFor.current === key) return;
+    const mine = votes.find((v) => v.name.toLowerCase() === key);
     if (mine) {
       setFormats(mine.formats);
       setEarliest(mine.earliest);
       setLatest(mine.latest);
       setTheaters(mine.theaters);
       setWantsFood(Boolean(mine.wantsFood));
+      prefilledFor.current = key;
     }
   }, [name, votes]);
 
