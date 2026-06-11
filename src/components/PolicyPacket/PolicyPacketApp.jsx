@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import packetConfig from '../../sandbox/policy-packet/packet-config.json';
+import Questionnaire from './Questionnaire.jsx';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const PASSCODE = 'OGPol!cyP@ck3t';
@@ -150,45 +150,6 @@ function AuthGate({ onSuccess }) {
   );
 }
 
-// ─── Placeholder Body (Phase 1 — proves the config loaded) ────────────────────
-function PolicyPacketScaffold() {
-  const questions    = packetConfig.questions    ?? [];
-  const formOrder    = packetConfig.formOrder     ?? [];
-  const calculations = packetConfig.calculations  ?? [];
-
-  return (
-    <div className="min-h-screen px-4 py-12"
-      style={{ background: `linear-gradient(135deg, ${bf.backgroundSoft}, ${bf.backgroundAlt})` }}>
-      <div className="max-w-2xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 mb-4">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-              style={{ background: `linear-gradient(135deg, ${bf.accentPrimary}, ${bf.accentDark})`, border: `1px solid ${bf.accentPrimary}66` }}>
-              <span className="font-bold text-lg" style={{ fontFamily: bf.fontDisplay, color: bf.textInverse }}>B</span>
-            </div>
-            <span className="text-sm tracking-widest uppercase font-medium" style={{ fontFamily: bf.fontDisplay, color: bf.accentDark }}>Bluefields</span>
-          </div>
-          <h1 className="text-2xl font-bold mb-1" style={{ fontFamily: bf.fontDisplay, color: bf.textStrong }}>
-            Policy Packet Generator
-          </h1>
-          <p className="text-sm" style={{ color: bf.textMuted }}>Phase 1 — scaffold</p>
-        </div>
-
-        {/* Config-loaded proof panel */}
-        <div className="rounded-2xl p-8"
-          style={{ backgroundColor: '#ffffff', border: `1px solid ${bf.borderSubtle}`, boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
-          <p className="text-base" style={{ fontFamily: bf.fontBody, color: bf.textBody }}>
-            Loaded <strong style={{ color: bf.accentPrimary }}>{questions.length}</strong> questions,{' '}
-            <strong style={{ color: bf.accentPrimary }}>{formOrder.length}</strong> forms,{' '}
-            <strong style={{ color: bf.accentPrimary }}>{calculations.length}</strong> calculations.
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // ─── Root ─────────────────────────────────────────────────────────────────────
 export default function PolicyPacketApp() {
   const [authed, setAuthed] = useState(
@@ -208,7 +169,7 @@ export default function PolicyPacketApp() {
   return (
     <div>
       <BFWarningBanner />
-      <PolicyPacketScaffold />
+      <Questionnaire />
       <BFWarningBanner />
     </div>
   );
