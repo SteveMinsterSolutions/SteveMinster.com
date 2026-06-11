@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PolicyPacketApp from '../../components/PolicyPacket/PolicyPacketApp.jsx';
+---
+
+<BaseLayout
+  title="Policy Packet | Bluefields | Steve Minster"
+  description="Ad-hoc policy packet generator for Bluefields Specialty Insurance."
+>
+  <PolicyPacketApp client:load />
+</BaseLayout>
