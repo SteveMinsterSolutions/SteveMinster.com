@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import packetConfig from '../../sandbox/policy-packet/packet-config.json';
 import { evaluateRule } from './evaluateRule.js';
 
@@ -42,6 +42,110 @@ function formatMoney(raw) {
 
 const isEmpty = (v) => v == null || String(v).trim() === '';
 
+// ─── Currency-dropdown combobox ───────────────────────────────────────────────
+// A "currency dropdown" is a dropdown whose every option is "Excluded", "None",
+// or a "$1,234"-style amount. These render as a typeable combobox (so number
+// keys filter) instead of a native <select>. The committed value is always
+// exactly one of q.options (the formatted string) — never free text — so
+// nothing downstream changes.
+const CURRENCY_SPECIAL = new Set(['Excluded', 'None']);
+const digitsOnly = (s) => String(s).replace(/\D/g, '');
+
+export function isCurrencyDropdown(q) {
+  return (
+    q.type === 'dropdown' &&
+    Array.isArray(q.options) &&
+    q.options.length > 0 &&
+    q.options.every((o) => o === 'Excluded' || o === 'None' || /^\$[\d,]+/.test(o))
+  );
+}
+
+function CurrencyCombobox({ q, value, onChange, invalid }) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const [hi, setHi] = useState(0);
+  const boxRef = useRef(null);
+
+  // Excluded/None always visible at the top; amounts filtered by digit-substring.
+  const special = q.options.filter((o) => CURRENCY_SPECIAL.has(o));
+  const money = q.options.filter((o) => !CURRENCY_SPECIAL.has(o));
+  const typed = digitsOnly(query);
+  const filteredMoney = typed === '' ? money : money.filter((o) => digitsOnly(o).includes(typed));
+  const list = [...special, ...filteredMoney];
+
+  // Keep the highlight within the current (possibly narrowed) list.
+  useEffect(() => { setHi((h) => Math.min(h, Math.max(0, list.length - 1))); }, [list.length]);
+
+  const commit = (opt) => {
+    onChange(q.id, opt); // opt is guaranteed to be one of q.options
+    setOpen(false);
+    setQuery('');
+  };
+
+  const openList = () => {
+    setOpen(true);
+    setQuery('');
+    const idx = q.options.indexOf(value);
+    setHi(idx >= 0 ? Math.min(idx, q.options.length - 1) : 0);
+  };
+
+  const onKeyDown = (e) => {
+    if (!open && (e.key === 'ArrowDown' || e.key === 'Enter')) { e.preventDefault(); openList(); return; }
+    if (e.key === 'ArrowDown') { e.preventDefault(); setHi((h) => Math.min(list.length - 1, h + 1)); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setHi((h) => Math.max(0, h - 1)); }
+    else if (e.key === 'Enter') { e.preventDefault(); if (list[hi] != null) commit(list[hi]); }
+    else if (e.key === 'Escape') { setOpen(false); setQuery(''); }
+  };
+
+  return (
+    <div
+      ref={boxRef}
+      className="relative"
+      onBlur={(e) => { if (!boxRef.current?.contains(e.relatedTarget)) { setOpen(false); setQuery(''); } }}
+    >
+      <input
+        type="text"
+        role="combobox"
+        aria-expanded={open}
+        inputMode="numeric"
+        placeholder="— Select —"
+        value={open ? query : (value ?? '')}
+        onFocus={openList}
+        onChange={(e) => { setQuery(e.target.value); setOpen(true); setHi(0); }}
+        onKeyDown={onKeyDown}
+        className={`${inputCls} cursor-text`}
+        style={{ fontFamily: bf.fontBody, borderColor: invalid ? bf.danger : undefined }}
+      />
+      {open && list.length > 0 && (
+        <ul
+          role="listbox"
+          className="absolute z-20 mt-1 w-full rounded-lg overflow-auto m-0 p-0 list-none"
+          style={{ maxHeight: 220, backgroundColor: '#ffffff', border: `1px solid ${bf.borderSubtle}`, boxShadow: '0 6px 20px rgba(0,0,0,0.12)' }}
+        >
+          {list.map((opt, i) => (
+            <li
+              key={opt}
+              role="option"
+              aria-selected={i === hi}
+              onMouseDown={(e) => { e.preventDefault(); commit(opt); }}
+              onMouseEnter={() => setHi(i)}
+              className="px-3 py-1.5 text-sm cursor-pointer"
+              style={{
+                fontFamily: bf.fontBody,
+                backgroundColor: i === hi ? bf.backgroundSoft : '#ffffff',
+                color: CURRENCY_SPECIAL.has(opt) ? bf.textMuted : bf.textBody,
+                fontWeight: opt === value ? 700 : 400,
+              }}
+            >
+              {opt}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 // ─── Build the section model from config (no hardcoded questions) ─────────────
 function buildSections(questions) {
   const order = [];
@@ -83,7 +187,9 @@ function QuestionField({ q, value, onChange, invalid, required }) {
   };
 
   let control;
-  if (q.type === 'dropdown' && Array.isArray(q.options) && q.options.length > 0) {
+  if (isCurrencyDropdown(q)) {
+    control = <CurrencyCombobox q={q} value={value} onChange={onChange} invalid={invalid} />;
+  } else if (q.type === 'dropdown' && Array.isArray(q.options) && q.options.length > 0) {
     control = (
       <select {...common} className={`${inputCls} cursor-pointer`}>
         <option value="">— Select —</option>

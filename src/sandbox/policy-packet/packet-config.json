@@ -116,7 +116,7 @@
       "id": "Location_1_Address_2",
       "label": "What is the location 1 address address line 2?",
       "type": "text",
-      "required": "always",
+      "required": "optional",
       "options": [],
       "showIf": null,
       "showIfRaw": "None - Always Ask"
@@ -490,7 +490,12 @@
         "Excluded",
         "$5,000",
         "$10,000",
-        "$25,000"
+        "$25,000",
+        "$50,000",
+        "$100,000",
+        "$250,000",
+        "$500,000",
+        "$1,000,000"
       ],
       "showIf": null,
       "showIfRaw": "None - Always Ask"
