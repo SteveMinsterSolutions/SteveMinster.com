@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import packetConfig from '../../sandbox/policy-packet/packet-config.json';
 import { evaluateRule } from './evaluateRule.js';
 import { runCalculations, resolveManifest } from './resolveEngine.js';
+import PrefillUpload from './PrefillUpload.jsx';
 
 // ─── BF CSS tokens (inline style objects) ─────────────────────────────────────
 const bf = {
@@ -166,7 +167,7 @@ function buildSections(questions) {
 }
 
 // ─── Single field renderer ────────────────────────────────────────────────────
-function QuestionField({ q, value, onChange, invalid, required }) {
+function QuestionField({ q, value, onChange, invalid, required, prefilled }) {
   // derived: reserve the id, render no input (computed in Phase 3).
   if (q.type === 'derived') {
     return (
@@ -223,6 +224,12 @@ function QuestionField({ q, value, onChange, invalid, required }) {
       <label className={labelCls} style={{ fontFamily: bf.fontBody }}>
         {q.label}
         {required && <span style={{ color: bf.danger, marginLeft: 4 }}>*</span>}
+        {prefilled && (
+          <span className="ml-2 inline-flex items-center text-[9px] font-bold uppercase tracking-wider rounded-full px-1.5 py-0.5 align-middle"
+            style={{ backgroundColor: `${bf.accentPrimary}20`, color: bf.accentDark, border: `1px solid ${bf.accentPrimary}55` }}>
+            ✦ AI-prefilled
+          </span>
+        )}
       </label>
       {control}
       {invalid && (
@@ -407,6 +414,8 @@ export default function Questionnaire() {
   const [answers, setAnswers] = useState({});
   const [activeIdx, setActiveIdx] = useState(0);
   const [view, setView] = useState('form'); // 'form' | 'manifest'
+  const [step, setStep] = useState('upload'); // 'upload' | 'verify'
+  const [prefilledIds, setPrefilledIds] = useState([]);
 
   const setAnswer = (id, val) => setAnswers((prev) => ({ ...prev, [id]: val }));
 
@@ -460,6 +469,20 @@ export default function Questionnaire() {
   const active = sections[activeIdx];
   const visibleQuestions = active.questions.filter(isVisible);
 
+  // Phase 4: upload + prefill step precedes the questionnaire (= the Verify screen).
+  if (step === 'upload') {
+    return (
+      <PrefillUpload
+        onPrefilled={(prefill, ids) => {
+          setAnswers((prev) => ({ ...prev, ...prefill }));
+          setPrefilledIds(ids);
+          setStep('verify');
+        }}
+        onSkip={() => { setPrefilledIds([]); setStep('verify'); }}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen px-4 py-8"
       style={{ background: `linear-gradient(135deg, ${bf.backgroundSoft}, ${bf.backgroundAlt})` }}>
@@ -474,11 +497,16 @@ export default function Questionnaire() {
             <span className="text-sm tracking-widest uppercase font-medium" style={{ fontFamily: bf.fontDisplay, color: bf.accentDark }}>Bluefields</span>
           </div>
           <h1 className="text-2xl font-bold mb-1" style={{ fontFamily: bf.fontDisplay, color: bf.textStrong }}>
-            Policy Packet Questionnaire
+            Verify — Policy Packet
           </h1>
           <p className="text-sm" style={{ color: bf.textMuted }}>
             {sections.length} sections · {visibleTotal} questions visible · {engine.manifest.length} forms resolved
           </p>
+          {prefilledIds.length > 0 && (
+            <p className="text-xs mt-1" style={{ color: bf.accentDark, fontFamily: bf.fontBody }}>
+              ✦ {prefilledIds.length} field{prefilledIds.length === 1 ? '' : 's'} AI-prefilled — review the highlighted values.
+            </p>
+          )}
         </div>
 
         <div className="flex flex-col md:flex-row gap-6">
@@ -544,6 +572,7 @@ export default function Questionnaire() {
                     onChange={setAnswer}
                     invalid={isInvalid(q)}
                     required={isRequired(q) && q.type !== 'derived'}
+                    prefilled={prefilledIds.includes(q.id)}
                   />
                 ))}
               </div>
