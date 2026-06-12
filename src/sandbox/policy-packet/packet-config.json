@@ -831,9 +831,14 @@
       "seq": 2,
       "id": "Minimum_Earned",
       "label": "What is the Minimum Earned Percentage?",
-      "type": "number",
+      "type": "dropdown",
       "required": "conditional",
-      "options": [],
+      "options": [
+        "25%",
+        "50%",
+        "75%",
+        "100%"
+      ],
       "showIf": {
         "all": [
           {
