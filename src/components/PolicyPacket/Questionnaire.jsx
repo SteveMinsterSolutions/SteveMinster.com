@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import packetConfig from '../../sandbox/policy-packet/packet-config.json';
 import { evaluateRule } from './evaluateRule.js';
 import { runCalculations, resolveManifest } from './resolveEngine.js';
+import { addOneYear } from './lib/dateHelpers';
 import PrefillUpload from './PrefillUpload.jsx';
 
 // ─── BF CSS tokens (inline style objects) ─────────────────────────────────────
@@ -416,8 +417,32 @@ export default function Questionnaire() {
   const [view, setView] = useState('form'); // 'form' | 'manifest'
   const [step, setStep] = useState('upload'); // 'upload' | 'verify'
   const [prefilledIds, setPrefilledIds] = useState([]);
+  // Once the user edits expiration by hand (or it arrives prefilled from the PDF),
+  // stop auto-syncing it to effective + 1 year. Flipped true ONLY by real user
+  // input via handleUserChange / a prefilled expiration — never by a programmatic set.
+  const [expirationTouched, setExpirationTouched] = useState(false);
 
   const setAnswer = (id, val) => setAnswers((prev) => ({ ...prev, [id]: val }));
+
+  // User-initiated field edits. Distinct from programmatic sets (the effective→
+  // expiration auto-sync below) so the auto-sync never marks itself as touched.
+  const handleUserChange = (id, val) => {
+    if (id === 'Policy_Expiration_Date') setExpirationTouched(true);
+    setAnswer(id, val);
+  };
+
+  // Overridable default: expiration = effective + 1 year. Keyed on the effective
+  // value so it fires on BOTH paths that change it — a manual edit and the prefill
+  // merge. Skips once expiration is user-owned, and leaves expiration untouched if
+  // the effective value is blank/unparseable (addOneYear returns '').
+  useEffect(() => {
+    if (expirationTouched) return;
+    const next = addOneYear(answers.Policy_Effective_Date ?? '');
+    if (next === '') return;
+    setAnswers((prev) =>
+      prev.Policy_Expiration_Date === next ? prev : { ...prev, Policy_Expiration_Date: next }
+    );
+  }, [answers.Policy_Effective_Date, expirationTouched]);
 
   const isVisible = (q) => q.showIf == null || evaluateRule(q.showIf, answers);
 
@@ -476,6 +501,9 @@ export default function Questionnaire() {
         onPrefilled={(prefill, ids) => {
           setAnswers((prev) => ({ ...prev, ...prefill }));
           setPrefilledIds(ids);
+          // A date the PDF gave us is authoritative — mark expiration touched so the
+          // effective→expiration auto-sync never overwrites an extracted value.
+          if (!isEmpty(prefill?.Policy_Expiration_Date)) setExpirationTouched(true);
           setStep('verify');
         }}
         onSkip={() => { setPrefilledIds([]); setStep('verify'); }}
@@ -569,7 +597,7 @@ export default function Questionnaire() {
                     key={q.id}
                     q={q}
                     value={answers[q.id]}
-                    onChange={setAnswer}
+                    onChange={handleUserChange}
                     invalid={isInvalid(q)}
                     required={isRequired(q) && q.type !== 'derived'}
                     prefilled={prefilledIds.includes(q.id)}
