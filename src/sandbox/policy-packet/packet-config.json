@@ -3484,7 +3484,7 @@
       "id": "CG_20_12_Name_1",
       "label": "Insert State or Governmental Agency or Subdivision or Political Subdivision Name Line 1",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -3528,7 +3528,7 @@
       "id": "CG_20_12_Address_1",
       "label": "Insert State or Governmental Agency or Subdivision or Political Subdivision Address Line 1",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -3572,7 +3572,7 @@
       "id": "CG_20_12_City",
       "label": "Insert State or Governmental Agency or Subdivision or Political Subdivision City",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -3594,7 +3594,7 @@
       "id": "CG_20_12_ST",
       "label": "Insert State or Governmental Agency or Subdivision or Political Subdivision State",
       "type": "dropdown",
-      "required": "conditional",
+      "required": "optional",
       "options": [
         "AL",
         "AK",
@@ -3670,7 +3670,7 @@
       "id": "CG_20_12_Zip",
       "label": "Insert State or Governmental Agency or Subdivision or Political Subdivision Zip",
       "type": "number",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -3707,7 +3707,7 @@
       "id": "CG_20_13_Name_1",
       "label": "Insert State or Governmental Agency or Subdivision or Political Subdivision Name Line 1",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -3751,7 +3751,7 @@
       "id": "CG_20_13_Address_1",
       "label": "Insert State or Governmental Agency or Subdivision or Political Subdivision Address Line 1",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -3795,7 +3795,7 @@
       "id": "CG_20_13_City",
       "label": "Insert State or Governmental Agency or Subdivision or Political Subdivision City",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -3817,7 +3817,7 @@
       "id": "CG_20_13_ST",
       "label": "Insert State or Governmental Agency or Subdivision or Political Subdivision State",
       "type": "dropdown",
-      "required": "conditional",
+      "required": "optional",
       "options": [
         "AL",
         "AK",
@@ -3893,7 +3893,7 @@
       "id": "CG_20_13_Zip",
       "label": "Insert State or Governmental Agency or Subdivision or Political Subdivision Zip",
       "type": "number",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
