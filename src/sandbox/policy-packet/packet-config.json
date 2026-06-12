@@ -3917,6 +3917,7 @@
       "type": "dropdown",
       "required": "always",
       "options": [
+        "None",
         "1",
         "2",
         "3",
@@ -6524,725 +6525,319 @@
   ],
   "calculations": [
     {
+      "kind": "arith",
       "section": 3,
       "seq": 2,
       "target": "CA_SL_Tax",
-      "sourceField": "CA_SL_Tax",
-      "formula": "roundup(3%*{{TTL_Premium}},2)"
+      "expr": "roundup(0.03*TTL_Premium,2)",
+      "when": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "CA"
+            ]
+          }
+        ]
+      },
+      "default": "0"
     },
     {
+      "kind": "arith",
       "section": 3,
       "seq": 3,
       "target": "CA_Stamp",
-      "sourceField": "CA_Stamp",
-      "formula": "roundup(0.18%*{{TTL_Premium}},2)"
+      "expr": "roundup(0.0018*TTL_Premium,2)",
+      "when": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "CA"
+            ]
+          }
+        ]
+      },
+      "default": "0"
     },
     {
+      "kind": "arith",
       "section": 3,
       "seq": 5,
       "target": "TTL_Cost",
-      "sourceField": "TTL_Cost",
-      "formula": "sum({{TTL_Premium}}+{{TTL_Ins_Taxes_Fees}}+{{CA_SL_Tax}}+{{CA_Stamp}})"
+      "expr": "TTL_Premium+TTL_Ins_Taxes_Fees+CA_SL_Tax+CA_Stamp"
     },
     {
+      "kind": "indexFromCount",
       "section": 8,
       "seq": 1,
       "target": "DLA_1",
-      "sourceField": "DLA_Count",
-      "formula": "If {{DLA_Count}} ≠\"None\", then {{DLA_1}} =\"1\""
+      "countField": "DLA_Count",
+      "index": 1
     },
     {
+      "kind": "indexFromCount",
       "section": 8,
       "seq": 1,
       "target": "DLA_2",
-      "sourceField": "DLA_Count",
-      "formula": "If {{DLA_Count}} =\"2\" OR \"3\" OR \"4\" OR \"5\" OR \"6\" OR \"7\" OR \"8\" OR \"9\" OR \"10\", then {{DLA_2}} =\"2\""
+      "countField": "DLA_Count",
+      "index": 2
     },
     {
+      "kind": "indexFromCount",
       "section": 8,
       "seq": 1,
       "target": "DLA_3",
-      "sourceField": "DLA_Count",
-      "formula": "If {{DLA_Count}} =\"3\" OR \"4\" OR \"5\" OR \"6\" OR \"7\" OR \"8\" OR \"9\" OR \"10\", then {{DLA_3}} =\"3\""
+      "countField": "DLA_Count",
+      "index": 3
     },
     {
+      "kind": "indexFromCount",
       "section": 8,
       "seq": 1,
       "target": "DLA_4",
-      "sourceField": "DLA_Count",
-      "formula": "If {{DLA_Count}} =\"4\" OR \"5\" OR \"6\" OR \"7\" OR \"8\" OR \"9\" OR \"10\", then {{DLA_4}} =\"4\""
+      "countField": "DLA_Count",
+      "index": 4
     },
     {
+      "kind": "indexFromCount",
       "section": 8,
       "seq": 1,
       "target": "DLA_5",
-      "sourceField": "DLA_Count",
-      "formula": "If {{DLA_Count}} =\"5\" OR \"6\" OR \"7\" OR \"8\" OR \"9\" OR \"10\", then {{DLA_5}} =\"5\""
+      "countField": "DLA_Count",
+      "index": 5
     },
     {
+      "kind": "indexFromCount",
       "section": 8,
       "seq": 1,
       "target": "DLA_6",
-      "sourceField": "DLA_Count",
-      "formula": "If {{DLA_Count}} =\"6\" OR \"7\" OR \"8\" OR \"9\" OR \"10\", then {{DLA_6}} =\"6\""
+      "countField": "DLA_Count",
+      "index": 6
     },
     {
+      "kind": "indexFromCount",
       "section": 8,
       "seq": 1,
       "target": "DLA_7",
-      "sourceField": "DLA_Count",
-      "formula": "If {{DLA_Count}} =\"7\" OR \"8\" OR \"9\" OR \"10\", then {{DLA_7}} =\"7\""
+      "countField": "DLA_Count",
+      "index": 7
     },
     {
+      "kind": "indexFromCount",
       "section": 8,
       "seq": 1,
       "target": "DLA_8",
-      "sourceField": "DLA_Count",
-      "formula": "If {{DLA_Count}} =\"8\" OR \"9\" OR \"10\", then {{DLA_8}} =\"8\""
+      "countField": "DLA_Count",
+      "index": 8
     },
     {
+      "kind": "indexFromCount",
       "section": 8,
       "seq": 1,
       "target": "DLA_9",
-      "sourceField": "DLA_Count",
-      "formula": "If {{DLA_Count}} =\"9\" OR \"10\", then {{DLA_9}} =\"9\""
+      "countField": "DLA_Count",
+      "index": 9
     },
     {
+      "kind": "indexFromCount",
       "section": 8,
       "seq": 1,
       "target": "DLA_10",
-      "sourceField": "DLA_Count",
-      "formula": "If {{DLA_Count}} =\"10\", then {{DLA_10}} =\"10\""
+      "countField": "DLA_Count",
+      "index": 10
     },
     {
+      "kind": "lookup",
       "section": 9,
       "seq": 35,
       "target": "Policy_Interest_1_Interest",
       "sourceField": "Policy_Interest_1_Interest_Type",
-      "formula": "If {{Policy_Interest_1_Interest_Type}} = \"Additional Insured — Designated Person or Organization\", then {{Policy_Interest_1_Interest}} = \"See Form CG 20 26\""
+      "cases": {
+        "Additional Insured — Designated Person or Organization": "See Form CG 20 26",
+        "Additional Insured — Managers or Lessors of Premises": "See Form CG 20 11",
+        "Additional Insured — State or Governmental Agency (Permits/Authorizations)": "See Form CG 20 12",
+        "Additional Insured — State or Governmental Agency (premises)": "See Form CG 20 13",
+        "Additional Insured — Lessor of Leased Equipment": "See Form BFOG 01 07",
+        "Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)": "See Form BFOG 00 09",
+        "Primary and Non-Contributory for Additional Insureds": "See Form BFOG 00 10",
+        "Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)": "See Form CG 24 04",
+        "Earlier Notice of Cancellation Provided by Us": "See Form CG 02 24"
+      },
+      "default": ""
     },
     {
-      "section": 9,
-      "seq": 35,
-      "target": "Policy_Interest_1_Interest",
-      "sourceField": "Policy_Interest_1_Interest_Type",
-      "formula": "If {{Policy_Interest_1_Interest_Type}} = \"Additional Insured — Managers or Lessors of Premises\", then {{Policy_Interest_1_Interest}} = \"See Form CG 20 11\""
-    },
-    {
-      "section": 9,
-      "seq": 35,
-      "target": "Policy_Interest_1_Interest",
-      "sourceField": "Policy_Interest_1_Interest_Type",
-      "formula": "If {{Policy_Interest_1_Interest_Type}} = \"Additional Insured — State or Governmental Agency (Permits/Authorizations)\", then {{Policy_Interest_1_Interest}} = \"See Form CG 20 12\""
-    },
-    {
-      "section": 9,
-      "seq": 35,
-      "target": "Policy_Interest_1_Interest",
-      "sourceField": "Policy_Interest_1_Interest_Type",
-      "formula": "If {{Policy_Interest_1_Interest_Type}} = \"Additional Insured — State or Governmental Agency (premises)\", then {{Policy_Interest_1_Interest}} = \"See Form CG 20 13\""
-    },
-    {
-      "section": 9,
-      "seq": 35,
-      "target": "Policy_Interest_1_Interest",
-      "sourceField": "Policy_Interest_1_Interest_Type",
-      "formula": "If {{Policy_Interest_1_Interest_Type}} = \"Additional Insured — Lessor of Leased Equipment\", then {{Policy_Interest_1_Interest}} = \"See Form BFOG 01 07\""
-    },
-    {
-      "section": 9,
-      "seq": 35,
-      "target": "Policy_Interest_1_Interest",
-      "sourceField": "Policy_Interest_1_Interest_Type",
-      "formula": "If {{Policy_Interest_1_Interest_Type}} = \"Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)\", then {{Policy_Interest_1_Interest}} = \"See Form BFOG 00 09\""
-    },
-    {
-      "section": 9,
-      "seq": 35,
-      "target": "Policy_Interest_1_Interest",
-      "sourceField": "Policy_Interest_1_Interest_Type",
-      "formula": "If {{Policy_Interest_1_Interest_Type}} = \"Primary and Non-Contributory for Additional Insureds\", then {{Policy_Interest_1_Interest}} = \"See Form BFOG 00 10\""
-    },
-    {
-      "section": 9,
-      "seq": 35,
-      "target": "Policy_Interest_1_Interest",
-      "sourceField": "Policy_Interest_1_Interest_Type",
-      "formula": "If {{Policy_Interest_1_Interest_Type}} = \"Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)\", then {{Policy_Interest_1_Interest}} = \"See Form CG 24 04\""
-    },
-    {
-      "section": 9,
-      "seq": 35,
-      "target": "Policy_Interest_1_Interest",
-      "sourceField": "Policy_Interest_1_Interest_Type",
-      "formula": "If {{Policy_Interest_1_Interest_Type}} = \"Earlier Notice of Cancellation Provided by Us\", then {{Policy_Interest_1_Interest}} = \"See Form CG 02 24\""
-    },
-    {
+      "kind": "lookup",
       "section": 9,
       "seq": 42,
       "target": "Policy_Interest_2_Interest",
       "sourceField": "Policy_Interest_2_Interest_Type",
-      "formula": "If {{Policy_Interest_2_Interest_Type}} = \"Additional Insured — Designated Person or Organization\", then {{Policy_Interest_2_Interest}} = \"See Form CG 20 26\""
+      "cases": {
+        "Additional Insured — Designated Person or Organization": "See Form CG 20 26",
+        "Additional Insured — Managers or Lessors of Premises": "See Form CG 20 11",
+        "Additional Insured — State or Governmental Agency (Permits/Authorizations)": "See Form CG 20 12",
+        "Additional Insured — State or Governmental Agency (premises)": "See Form CG 20 13",
+        "Additional Insured — Lessor of Leased Equipment": "See Form BFOG 01 07",
+        "Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)": "See Form BFOG 00 09",
+        "Primary and Non-Contributory for Additional Insureds": "See Form BFOG 00 10",
+        "Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)": "See Form CG 24 04",
+        "Earlier Notice of Cancellation Provided by Us": "See Form CG 02 24"
+      },
+      "default": ""
     },
     {
-      "section": 9,
-      "seq": 42,
-      "target": "Policy_Interest_2_Interest",
-      "sourceField": "Policy_Interest_2_Interest_Type",
-      "formula": "If {{Policy_Interest_2_Interest_Type}} = \"Additional Insured — Managers or Lessors of Premises\", then {{Policy_Interest_2_Interest}} = \"See Form CG 20 11\""
-    },
-    {
-      "section": 9,
-      "seq": 42,
-      "target": "Policy_Interest_2_Interest",
-      "sourceField": "Policy_Interest_2_Interest_Type",
-      "formula": "If {{Policy_Interest_2_Interest_Type}} = \"Additional Insured — State or Governmental Agency (Permits/Authorizations)\", then {{Policy_Interest_2_Interest}} = \"See Form CG 20 12\""
-    },
-    {
-      "section": 9,
-      "seq": 42,
-      "target": "Policy_Interest_2_Interest",
-      "sourceField": "Policy_Interest_2_Interest_Type",
-      "formula": "If {{Policy_Interest_2_Interest_Type}} = \"Additional Insured — State or Governmental Agency (premises)\", then {{Policy_Interest_2_Interest}} = \"See Form CG 20 13\""
-    },
-    {
-      "section": 9,
-      "seq": 42,
-      "target": "Policy_Interest_2_Interest",
-      "sourceField": "Policy_Interest_2_Interest_Type",
-      "formula": "If {{Policy_Interest_2_Interest_Type}} = \"Additional Insured — Lessor of Leased Equipment\", then {{Policy_Interest_2_Interest}} = \"See Form BFOG 01 07\""
-    },
-    {
-      "section": 9,
-      "seq": 42,
-      "target": "Policy_Interest_2_Interest",
-      "sourceField": "Policy_Interest_2_Interest_Type",
-      "formula": "If {{Policy_Interest_2_Interest_Type}} = \"Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)\", then {{Policy_Interest_2_Interest}} = \"See Form BFOG 00 09\""
-    },
-    {
-      "section": 9,
-      "seq": 42,
-      "target": "Policy_Interest_2_Interest",
-      "sourceField": "Policy_Interest_2_Interest_Type",
-      "formula": "If {{Policy_Interest_2_Interest_Type}} = \"Primary and Non-Contributory for Additional Insureds\", then {{Policy_Interest_2_Interest}} = \"See Form BFOG 00 10\""
-    },
-    {
-      "section": 9,
-      "seq": 42,
-      "target": "Policy_Interest_2_Interest",
-      "sourceField": "Policy_Interest_2_Interest_Type",
-      "formula": "If {{Policy_Interest_2_Interest_Type}} = \"Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)\", then {{Policy_Interest_2_Interest}} = \"See Form CG 24 04\""
-    },
-    {
-      "section": 9,
-      "seq": 42,
-      "target": "Policy_Interest_2_Interest",
-      "sourceField": "Policy_Interest_2_Interest_Type",
-      "formula": "If {{Policy_Interest_2_Interest_Type}} = \"Earlier Notice of Cancellation Provided by Us\", then {{Policy_Interest_2_Interest}} = \"See Form CG 02 24\""
-    },
-    {
+      "kind": "lookup",
       "section": 9,
       "seq": 49,
       "target": "Policy_Interest_3_Interest",
       "sourceField": "Policy_Interest_3_Interest_Type",
-      "formula": "If {{Policy_Interest_3_Interest_Type}} = \"Additional Insured — Designated Person or Organization\", then {{Policy_Interest_3_Interest}} = \"See Form CG 20 26\""
+      "cases": {
+        "Additional Insured — Designated Person or Organization": "See Form CG 20 26",
+        "Additional Insured — Managers or Lessors of Premises": "See Form CG 20 11",
+        "Additional Insured — State or Governmental Agency (Permits/Authorizations)": "See Form CG 20 12",
+        "Additional Insured — State or Governmental Agency (premises)": "See Form CG 20 13",
+        "Additional Insured — Lessor of Leased Equipment": "See Form BFOG 01 07",
+        "Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)": "See Form BFOG 00 09",
+        "Primary and Non-Contributory for Additional Insureds": "See Form BFOG 00 10",
+        "Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)": "See Form CG 24 04",
+        "Earlier Notice of Cancellation Provided by Us": "See Form CG 02 24"
+      },
+      "default": ""
     },
     {
-      "section": 9,
-      "seq": 49,
-      "target": "Policy_Interest_3_Interest",
-      "sourceField": "Policy_Interest_3_Interest_Type",
-      "formula": "If {{Policy_Interest_3_Interest_Type}} = \"Additional Insured — Managers or Lessors of Premises\", then {{Policy_Interest_3_Interest}} = \"See Form CG 20 11\""
-    },
-    {
-      "section": 9,
-      "seq": 49,
-      "target": "Policy_Interest_3_Interest",
-      "sourceField": "Policy_Interest_3_Interest_Type",
-      "formula": "If {{Policy_Interest_3_Interest_Type}} = \"Additional Insured — State or Governmental Agency (Permits/Authorizations)\", then {{Policy_Interest_3_Interest}} = \"See Form CG 20 12\""
-    },
-    {
-      "section": 9,
-      "seq": 49,
-      "target": "Policy_Interest_3_Interest",
-      "sourceField": "Policy_Interest_3_Interest_Type",
-      "formula": "If {{Policy_Interest_3_Interest_Type}} = \"Additional Insured — State or Governmental Agency (premises)\", then {{Policy_Interest_3_Interest}} = \"See Form CG 20 13\""
-    },
-    {
-      "section": 9,
-      "seq": 49,
-      "target": "Policy_Interest_3_Interest",
-      "sourceField": "Policy_Interest_3_Interest_Type",
-      "formula": "If {{Policy_Interest_3_Interest_Type}} = \"Additional Insured — Lessor of Leased Equipment\", then {{Policy_Interest_3_Interest}} = \"See Form BFOG 01 07\""
-    },
-    {
-      "section": 9,
-      "seq": 49,
-      "target": "Policy_Interest_3_Interest",
-      "sourceField": "Policy_Interest_3_Interest_Type",
-      "formula": "If {{Policy_Interest_3_Interest_Type}} = \"Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)\", then {{Policy_Interest_3_Interest}} = \"See Form BFOG 00 09\""
-    },
-    {
-      "section": 9,
-      "seq": 49,
-      "target": "Policy_Interest_3_Interest",
-      "sourceField": "Policy_Interest_3_Interest_Type",
-      "formula": "If {{Policy_Interest_3_Interest_Type}} = \"Primary and Non-Contributory for Additional Insureds\", then {{Policy_Interest_3_Interest}} = \"See Form BFOG 00 10\""
-    },
-    {
-      "section": 9,
-      "seq": 49,
-      "target": "Policy_Interest_3_Interest",
-      "sourceField": "Policy_Interest_3_Interest_Type",
-      "formula": "If {{Policy_Interest_3_Interest_Type}} = \"Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)\", then {{Policy_Interest_3_Interest}} = \"See Form CG 24 04\""
-    },
-    {
-      "section": 9,
-      "seq": 49,
-      "target": "Policy_Interest_3_Interest",
-      "sourceField": "Policy_Interest_3_Interest_Type",
-      "formula": "If {{Policy_Interest_3_Interest_Type}} = \"Earlier Notice of Cancellation Provided by Us\", then {{Policy_Interest_3_Interest}} = \"See Form CG 02 24\""
-    },
-    {
+      "kind": "lookup",
       "section": 9,
       "seq": 56,
       "target": "Policy_Interest_4_Interest",
       "sourceField": "Policy_Interest_4_Interest_Type",
-      "formula": "If {{Policy_Interest_4_Interest_Type}} = \"Additional Insured — Designated Person or Organization\", then {{Policy_Interest_4_Interest}} = \"See Form CG 20 26\""
+      "cases": {
+        "Additional Insured — Designated Person or Organization": "See Form CG 20 26",
+        "Additional Insured — Managers or Lessors of Premises": "See Form CG 20 11",
+        "Additional Insured — State or Governmental Agency (Permits/Authorizations)": "See Form CG 20 12",
+        "Additional Insured — State or Governmental Agency (premises)": "See Form CG 20 13",
+        "Additional Insured — Lessor of Leased Equipment": "See Form BFOG 01 07",
+        "Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)": "See Form BFOG 00 09",
+        "Primary and Non-Contributory for Additional Insureds": "See Form BFOG 00 10",
+        "Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)": "See Form CG 24 04",
+        "Earlier Notice of Cancellation Provided by Us": "See Form CG 02 24"
+      },
+      "default": ""
     },
     {
-      "section": 9,
-      "seq": 56,
-      "target": "Policy_Interest_4_Interest",
-      "sourceField": "Policy_Interest_4_Interest_Type",
-      "formula": "If {{Policy_Interest_4_Interest_Type}} = \"Additional Insured — Managers or Lessors of Premises\", then {{Policy_Interest_4_Interest}} = \"See Form CG 20 11\""
-    },
-    {
-      "section": 9,
-      "seq": 56,
-      "target": "Policy_Interest_4_Interest",
-      "sourceField": "Policy_Interest_4_Interest_Type",
-      "formula": "If {{Policy_Interest_4_Interest_Type}} = \"Additional Insured — State or Governmental Agency (Permits/Authorizations)\", then {{Policy_Interest_4_Interest}} = \"See Form CG 20 12\""
-    },
-    {
-      "section": 9,
-      "seq": 56,
-      "target": "Policy_Interest_4_Interest",
-      "sourceField": "Policy_Interest_4_Interest_Type",
-      "formula": "If {{Policy_Interest_4_Interest_Type}} = \"Additional Insured — State or Governmental Agency (premises)\", then {{Policy_Interest_4_Interest}} = \"See Form CG 20 13\""
-    },
-    {
-      "section": 9,
-      "seq": 56,
-      "target": "Policy_Interest_4_Interest",
-      "sourceField": "Policy_Interest_4_Interest_Type",
-      "formula": "If {{Policy_Interest_4_Interest_Type}} = \"Additional Insured — Lessor of Leased Equipment\", then {{Policy_Interest_4_Interest}} = \"See Form BFOG 01 07\""
-    },
-    {
-      "section": 9,
-      "seq": 56,
-      "target": "Policy_Interest_4_Interest",
-      "sourceField": "Policy_Interest_4_Interest_Type",
-      "formula": "If {{Policy_Interest_4_Interest_Type}} = \"Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)\", then {{Policy_Interest_4_Interest}} = \"See Form BFOG 00 09\""
-    },
-    {
-      "section": 9,
-      "seq": 56,
-      "target": "Policy_Interest_4_Interest",
-      "sourceField": "Policy_Interest_4_Interest_Type",
-      "formula": "If {{Policy_Interest_4_Interest_Type}} = \"Primary and Non-Contributory for Additional Insureds\", then {{Policy_Interest_4_Interest}} = \"See Form BFOG 00 10\""
-    },
-    {
-      "section": 9,
-      "seq": 56,
-      "target": "Policy_Interest_4_Interest",
-      "sourceField": "Policy_Interest_4_Interest_Type",
-      "formula": "If {{Policy_Interest_4_Interest_Type}} = \"Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)\", then {{Policy_Interest_4_Interest}} = \"See Form CG 24 04\""
-    },
-    {
-      "section": 9,
-      "seq": 56,
-      "target": "Policy_Interest_4_Interest",
-      "sourceField": "Policy_Interest_4_Interest_Type",
-      "formula": "If {{Policy_Interest_4_Interest_Type}} = \"Earlier Notice of Cancellation Provided by Us\", then {{Policy_Interest_4_Interest}} = \"See Form CG 02 24\""
-    },
-    {
+      "kind": "lookup",
       "section": 9,
       "seq": 63,
       "target": "Policy_Interest_5_Interest",
       "sourceField": "Policy_Interest_5_Interest_Type",
-      "formula": "If {{Policy_Interest_5_Interest_Type}} = \"Additional Insured — Designated Person or Organization\", then {{Policy_Interest_5_Interest}} = \"See Form CG 20 26\""
+      "cases": {
+        "Additional Insured — Designated Person or Organization": "See Form CG 20 26",
+        "Additional Insured — Managers or Lessors of Premises": "See Form CG 20 11",
+        "Additional Insured — State or Governmental Agency (Permits/Authorizations)": "See Form CG 20 12",
+        "Additional Insured — State or Governmental Agency (premises)": "See Form CG 20 13",
+        "Additional Insured — Lessor of Leased Equipment": "See Form BFOG 01 07",
+        "Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)": "See Form BFOG 00 09",
+        "Primary and Non-Contributory for Additional Insureds": "See Form BFOG 00 10",
+        "Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)": "See Form CG 24 04",
+        "Earlier Notice of Cancellation Provided by Us": "See Form CG 02 24"
+      },
+      "default": ""
     },
     {
-      "section": 9,
-      "seq": 63,
-      "target": "Policy_Interest_5_Interest",
-      "sourceField": "Policy_Interest_5_Interest_Type",
-      "formula": "If {{Policy_Interest_5_Interest_Type}} = \"Additional Insured — Managers or Lessors of Premises\", then {{Policy_Interest_5_Interest}} = \"See Form CG 20 11\""
-    },
-    {
-      "section": 9,
-      "seq": 63,
-      "target": "Policy_Interest_5_Interest",
-      "sourceField": "Policy_Interest_5_Interest_Type",
-      "formula": "If {{Policy_Interest_5_Interest_Type}} = \"Additional Insured — State or Governmental Agency (Permits/Authorizations)\", then {{Policy_Interest_5_Interest}} = \"See Form CG 20 12\""
-    },
-    {
-      "section": 9,
-      "seq": 63,
-      "target": "Policy_Interest_5_Interest",
-      "sourceField": "Policy_Interest_5_Interest_Type",
-      "formula": "If {{Policy_Interest_5_Interest_Type}} = \"Additional Insured — State or Governmental Agency (premises)\", then {{Policy_Interest_5_Interest}} = \"See Form CG 20 13\""
-    },
-    {
-      "section": 9,
-      "seq": 63,
-      "target": "Policy_Interest_5_Interest",
-      "sourceField": "Policy_Interest_5_Interest_Type",
-      "formula": "If {{Policy_Interest_5_Interest_Type}} = \"Additional Insured — Lessor of Leased Equipment\", then {{Policy_Interest_5_Interest}} = \"See Form BFOG 01 07\""
-    },
-    {
-      "section": 9,
-      "seq": 63,
-      "target": "Policy_Interest_5_Interest",
-      "sourceField": "Policy_Interest_5_Interest_Type",
-      "formula": "If {{Policy_Interest_5_Interest_Type}} = \"Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)\", then {{Policy_Interest_5_Interest}} = \"See Form BFOG 00 09\""
-    },
-    {
-      "section": 9,
-      "seq": 63,
-      "target": "Policy_Interest_5_Interest",
-      "sourceField": "Policy_Interest_5_Interest_Type",
-      "formula": "If {{Policy_Interest_5_Interest_Type}} = \"Primary and Non-Contributory for Additional Insureds\", then {{Policy_Interest_5_Interest}} = \"See Form BFOG 00 10\""
-    },
-    {
-      "section": 9,
-      "seq": 63,
-      "target": "Policy_Interest_5_Interest",
-      "sourceField": "Policy_Interest_5_Interest_Type",
-      "formula": "If {{Policy_Interest_5_Interest_Type}} = \"Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)\", then {{Policy_Interest_5_Interest}} = \"See Form CG 24 04\""
-    },
-    {
-      "section": 9,
-      "seq": 63,
-      "target": "Policy_Interest_5_Interest",
-      "sourceField": "Policy_Interest_5_Interest_Type",
-      "formula": "If {{Policy_Interest_5_Interest_Type}} = \"Earlier Notice of Cancellation Provided by Us\", then {{Policy_Interest_5_Interest}} = \"See Form CG 02 24\""
-    },
-    {
+      "kind": "lookup",
       "section": 9,
       "seq": 70,
       "target": "Policy_Interest_6_Interest",
       "sourceField": "Policy_Interest_6_Interest_Type",
-      "formula": "If {{Policy_Interest_6_Interest_Type}} = \"Additional Insured — Designated Person or Organization\", then {{Policy_Interest_6_Interest}} = \"See Form CG 20 26\""
+      "cases": {
+        "Additional Insured — Designated Person or Organization": "See Form CG 20 26",
+        "Additional Insured — Managers or Lessors of Premises": "See Form CG 20 11",
+        "Additional Insured — State or Governmental Agency (Permits/Authorizations)": "See Form CG 20 12",
+        "Additional Insured — State or Governmental Agency (premises)": "See Form CG 20 13",
+        "Additional Insured — Lessor of Leased Equipment": "See Form BFOG 01 07",
+        "Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)": "See Form BFOG 00 09",
+        "Primary and Non-Contributory for Additional Insureds": "See Form BFOG 00 10",
+        "Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)": "See Form CG 24 04",
+        "Earlier Notice of Cancellation Provided by Us": "See Form CG 02 24"
+      },
+      "default": ""
     },
     {
-      "section": 9,
-      "seq": 70,
-      "target": "Policy_Interest_6_Interest",
-      "sourceField": "Policy_Interest_6_Interest_Type",
-      "formula": "If {{Policy_Interest_6_Interest_Type}} = \"Additional Insured — Managers or Lessors of Premises\", then {{Policy_Interest_6_Interest}} = \"See Form CG 20 11\""
-    },
-    {
-      "section": 9,
-      "seq": 70,
-      "target": "Policy_Interest_6_Interest",
-      "sourceField": "Policy_Interest_6_Interest_Type",
-      "formula": "If {{Policy_Interest_6_Interest_Type}} = \"Additional Insured — State or Governmental Agency (Permits/Authorizations)\", then {{Policy_Interest_6_Interest}} = \"See Form CG 20 12\""
-    },
-    {
-      "section": 9,
-      "seq": 70,
-      "target": "Policy_Interest_6_Interest",
-      "sourceField": "Policy_Interest_6_Interest_Type",
-      "formula": "If {{Policy_Interest_6_Interest_Type}} = \"Additional Insured — State or Governmental Agency (premises)\", then {{Policy_Interest_6_Interest}} = \"See Form CG 20 13\""
-    },
-    {
-      "section": 9,
-      "seq": 70,
-      "target": "Policy_Interest_6_Interest",
-      "sourceField": "Policy_Interest_6_Interest_Type",
-      "formula": "If {{Policy_Interest_6_Interest_Type}} = \"Additional Insured — Lessor of Leased Equipment\", then {{Policy_Interest_6_Interest}} = \"See Form BFOG 01 07\""
-    },
-    {
-      "section": 9,
-      "seq": 70,
-      "target": "Policy_Interest_6_Interest",
-      "sourceField": "Policy_Interest_6_Interest_Type",
-      "formula": "If {{Policy_Interest_6_Interest_Type}} = \"Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)\", then {{Policy_Interest_6_Interest}} = \"See Form BFOG 00 09\""
-    },
-    {
-      "section": 9,
-      "seq": 70,
-      "target": "Policy_Interest_6_Interest",
-      "sourceField": "Policy_Interest_6_Interest_Type",
-      "formula": "If {{Policy_Interest_6_Interest_Type}} = \"Primary and Non-Contributory for Additional Insureds\", then {{Policy_Interest_6_Interest}} = \"See Form BFOG 00 10\""
-    },
-    {
-      "section": 9,
-      "seq": 70,
-      "target": "Policy_Interest_6_Interest",
-      "sourceField": "Policy_Interest_6_Interest_Type",
-      "formula": "If {{Policy_Interest_6_Interest_Type}} = \"Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)\", then {{Policy_Interest_6_Interest}} = \"See Form CG 24 04\""
-    },
-    {
-      "section": 9,
-      "seq": 70,
-      "target": "Policy_Interest_6_Interest",
-      "sourceField": "Policy_Interest_6_Interest_Type",
-      "formula": "If {{Policy_Interest_6_Interest_Type}} = \"Earlier Notice of Cancellation Provided by Us\", then {{Policy_Interest_6_Interest}} = \"See Form CG 02 24\""
-    },
-    {
+      "kind": "lookup",
       "section": 9,
       "seq": 77,
       "target": "Policy_Interest_7_Interest",
       "sourceField": "Policy_Interest_7_Interest_Type",
-      "formula": "If {{Policy_Interest_7_Interest_Type}} = \"Additional Insured — Designated Person or Organization\", then {{Policy_Interest_7_Interest}} = \"See Form CG 20 26\""
+      "cases": {
+        "Additional Insured — Designated Person or Organization": "See Form CG 20 26",
+        "Additional Insured — Managers or Lessors of Premises": "See Form CG 20 11",
+        "Additional Insured — State or Governmental Agency (Permits/Authorizations)": "See Form CG 20 12",
+        "Additional Insured — State or Governmental Agency (premises)": "See Form CG 20 13",
+        "Additional Insured — Lessor of Leased Equipment": "See Form BFOG 01 07",
+        "Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)": "See Form BFOG 00 09",
+        "Primary and Non-Contributory for Additional Insureds": "See Form BFOG 00 10",
+        "Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)": "See Form CG 24 04",
+        "Earlier Notice of Cancellation Provided by Us": "See Form CG 02 24"
+      },
+      "default": ""
     },
     {
-      "section": 9,
-      "seq": 77,
-      "target": "Policy_Interest_7_Interest",
-      "sourceField": "Policy_Interest_7_Interest_Type",
-      "formula": "If {{Policy_Interest_7_Interest_Type}} = \"Additional Insured — Managers or Lessors of Premises\", then {{Policy_Interest_7_Interest}} = \"See Form CG 20 11\""
-    },
-    {
-      "section": 9,
-      "seq": 77,
-      "target": "Policy_Interest_7_Interest",
-      "sourceField": "Policy_Interest_7_Interest_Type",
-      "formula": "If {{Policy_Interest_7_Interest_Type}} = \"Additional Insured — State or Governmental Agency (Permits/Authorizations)\", then {{Policy_Interest_7_Interest}} = \"See Form CG 20 12\""
-    },
-    {
-      "section": 9,
-      "seq": 77,
-      "target": "Policy_Interest_7_Interest",
-      "sourceField": "Policy_Interest_7_Interest_Type",
-      "formula": "If {{Policy_Interest_7_Interest_Type}} = \"Additional Insured — State or Governmental Agency (premises)\", then {{Policy_Interest_7_Interest}} = \"See Form CG 20 13\""
-    },
-    {
-      "section": 9,
-      "seq": 77,
-      "target": "Policy_Interest_7_Interest",
-      "sourceField": "Policy_Interest_7_Interest_Type",
-      "formula": "If {{Policy_Interest_7_Interest_Type}} = \"Additional Insured — Lessor of Leased Equipment\", then {{Policy_Interest_7_Interest}} = \"See Form BFOG 01 07\""
-    },
-    {
-      "section": 9,
-      "seq": 77,
-      "target": "Policy_Interest_7_Interest",
-      "sourceField": "Policy_Interest_7_Interest_Type",
-      "formula": "If {{Policy_Interest_7_Interest_Type}} = \"Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)\", then {{Policy_Interest_7_Interest}} = \"See Form BFOG 00 09\""
-    },
-    {
-      "section": 9,
-      "seq": 77,
-      "target": "Policy_Interest_7_Interest",
-      "sourceField": "Policy_Interest_7_Interest_Type",
-      "formula": "If {{Policy_Interest_7_Interest_Type}} = \"Primary and Non-Contributory for Additional Insureds\", then {{Policy_Interest_7_Interest}} = \"See Form BFOG 00 10\""
-    },
-    {
-      "section": 9,
-      "seq": 77,
-      "target": "Policy_Interest_7_Interest",
-      "sourceField": "Policy_Interest_7_Interest_Type",
-      "formula": "If {{Policy_Interest_7_Interest_Type}} = \"Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)\", then {{Policy_Interest_7_Interest}} = \"See Form CG 24 04\""
-    },
-    {
-      "section": 9,
-      "seq": 77,
-      "target": "Policy_Interest_7_Interest",
-      "sourceField": "Policy_Interest_7_Interest_Type",
-      "formula": "If {{Policy_Interest_7_Interest_Type}} = \"Earlier Notice of Cancellation Provided by Us\", then {{Policy_Interest_7_Interest}} = \"See Form CG 02 24\""
-    },
-    {
+      "kind": "lookup",
       "section": 9,
       "seq": 84,
       "target": "Policy_Interest_8_Interest",
       "sourceField": "Policy_Interest_8_Interest_Type",
-      "formula": "If {{Policy_Interest_8_Interest_Type}} = \"Additional Insured — Designated Person or Organization\", then {{Policy_Interest_8_Interest}} = \"See Form CG 20 26\""
+      "cases": {
+        "Additional Insured — Designated Person or Organization": "See Form CG 20 26",
+        "Additional Insured — Managers or Lessors of Premises": "See Form CG 20 11",
+        "Additional Insured — State or Governmental Agency (Permits/Authorizations)": "See Form CG 20 12",
+        "Additional Insured — State or Governmental Agency (premises)": "See Form CG 20 13",
+        "Additional Insured — Lessor of Leased Equipment": "See Form BFOG 01 07",
+        "Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)": "See Form BFOG 00 09",
+        "Primary and Non-Contributory for Additional Insureds": "See Form BFOG 00 10",
+        "Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)": "See Form CG 24 04",
+        "Earlier Notice of Cancellation Provided by Us": "See Form CG 02 24"
+      },
+      "default": ""
     },
     {
-      "section": 9,
-      "seq": 84,
-      "target": "Policy_Interest_8_Interest",
-      "sourceField": "Policy_Interest_8_Interest_Type",
-      "formula": "If {{Policy_Interest_8_Interest_Type}} = \"Additional Insured — Managers or Lessors of Premises\", then {{Policy_Interest_8_Interest}} = \"See Form CG 20 11\""
-    },
-    {
-      "section": 9,
-      "seq": 84,
-      "target": "Policy_Interest_8_Interest",
-      "sourceField": "Policy_Interest_8_Interest_Type",
-      "formula": "If {{Policy_Interest_8_Interest_Type}} = \"Additional Insured — State or Governmental Agency (Permits/Authorizations)\", then {{Policy_Interest_8_Interest}} = \"See Form CG 20 12\""
-    },
-    {
-      "section": 9,
-      "seq": 84,
-      "target": "Policy_Interest_8_Interest",
-      "sourceField": "Policy_Interest_8_Interest_Type",
-      "formula": "If {{Policy_Interest_8_Interest_Type}} = \"Additional Insured — State or Governmental Agency (premises)\", then {{Policy_Interest_8_Interest}} = \"See Form CG 20 13\""
-    },
-    {
-      "section": 9,
-      "seq": 84,
-      "target": "Policy_Interest_8_Interest",
-      "sourceField": "Policy_Interest_8_Interest_Type",
-      "formula": "If {{Policy_Interest_8_Interest_Type}} = \"Additional Insured — Lessor of Leased Equipment\", then {{Policy_Interest_8_Interest}} = \"See Form BFOG 01 07\""
-    },
-    {
-      "section": 9,
-      "seq": 84,
-      "target": "Policy_Interest_8_Interest",
-      "sourceField": "Policy_Interest_8_Interest_Type",
-      "formula": "If {{Policy_Interest_8_Interest_Type}} = \"Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)\", then {{Policy_Interest_8_Interest}} = \"See Form BFOG 00 09\""
-    },
-    {
-      "section": 9,
-      "seq": 84,
-      "target": "Policy_Interest_8_Interest",
-      "sourceField": "Policy_Interest_8_Interest_Type",
-      "formula": "If {{Policy_Interest_8_Interest_Type}} = \"Primary and Non-Contributory for Additional Insureds\", then {{Policy_Interest_8_Interest}} = \"See Form BFOG 00 10\""
-    },
-    {
-      "section": 9,
-      "seq": 84,
-      "target": "Policy_Interest_8_Interest",
-      "sourceField": "Policy_Interest_8_Interest_Type",
-      "formula": "If {{Policy_Interest_8_Interest_Type}} = \"Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)\", then {{Policy_Interest_8_Interest}} = \"See Form CG 24 04\""
-    },
-    {
-      "section": 9,
-      "seq": 84,
-      "target": "Policy_Interest_8_Interest",
-      "sourceField": "Policy_Interest_8_Interest_Type",
-      "formula": "If {{Policy_Interest_8_Interest_Type}} = \"Earlier Notice of Cancellation Provided by Us\", then {{Policy_Interest_8_Interest}} = \"See Form CG 02 24\""
-    },
-    {
+      "kind": "lookup",
       "section": 9,
       "seq": 91,
       "target": "Policy_Interest_9_Interest",
       "sourceField": "Policy_Interest_9_Interest_Type",
-      "formula": "If {{Policy_Interest_9_Interest_Type}} = \"Additional Insured — Designated Person or Organization\", then {{Policy_Interest_9_Interest}} = \"See Form CG 20 26\""
+      "cases": {
+        "Additional Insured — Designated Person or Organization": "See Form CG 20 26",
+        "Additional Insured — Managers or Lessors of Premises": "See Form CG 20 11",
+        "Additional Insured — State or Governmental Agency (Permits/Authorizations)": "See Form CG 20 12",
+        "Additional Insured — State or Governmental Agency (premises)": "See Form CG 20 13",
+        "Additional Insured — Lessor of Leased Equipment": "See Form BFOG 01 07",
+        "Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)": "See Form BFOG 00 09",
+        "Primary and Non-Contributory for Additional Insureds": "See Form BFOG 00 10",
+        "Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)": "See Form CG 24 04",
+        "Earlier Notice of Cancellation Provided by Us": "See Form CG 02 24"
+      },
+      "default": ""
     },
     {
-      "section": 9,
-      "seq": 91,
-      "target": "Policy_Interest_9_Interest",
-      "sourceField": "Policy_Interest_9_Interest_Type",
-      "formula": "If {{Policy_Interest_9_Interest_Type}} = \"Additional Insured — Managers or Lessors of Premises\", then {{Policy_Interest_9_Interest}} = \"See Form CG 20 11\""
-    },
-    {
-      "section": 9,
-      "seq": 91,
-      "target": "Policy_Interest_9_Interest",
-      "sourceField": "Policy_Interest_9_Interest_Type",
-      "formula": "If {{Policy_Interest_9_Interest_Type}} = \"Additional Insured — State or Governmental Agency (Permits/Authorizations)\", then {{Policy_Interest_9_Interest}} = \"See Form CG 20 12\""
-    },
-    {
-      "section": 9,
-      "seq": 91,
-      "target": "Policy_Interest_9_Interest",
-      "sourceField": "Policy_Interest_9_Interest_Type",
-      "formula": "If {{Policy_Interest_9_Interest_Type}} = \"Additional Insured — State or Governmental Agency (premises)\", then {{Policy_Interest_9_Interest}} = \"See Form CG 20 13\""
-    },
-    {
-      "section": 9,
-      "seq": 91,
-      "target": "Policy_Interest_9_Interest",
-      "sourceField": "Policy_Interest_9_Interest_Type",
-      "formula": "If {{Policy_Interest_9_Interest_Type}} = \"Additional Insured — Lessor of Leased Equipment\", then {{Policy_Interest_9_Interest}} = \"See Form BFOG 01 07\""
-    },
-    {
-      "section": 9,
-      "seq": 91,
-      "target": "Policy_Interest_9_Interest",
-      "sourceField": "Policy_Interest_9_Interest_Type",
-      "formula": "If {{Policy_Interest_9_Interest_Type}} = \"Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)\", then {{Policy_Interest_9_Interest}} = \"See Form BFOG 00 09\""
-    },
-    {
-      "section": 9,
-      "seq": 91,
-      "target": "Policy_Interest_9_Interest",
-      "sourceField": "Policy_Interest_9_Interest_Type",
-      "formula": "If {{Policy_Interest_9_Interest_Type}} = \"Primary and Non-Contributory for Additional Insureds\", then {{Policy_Interest_9_Interest}} = \"See Form BFOG 00 10\""
-    },
-    {
-      "section": 9,
-      "seq": 91,
-      "target": "Policy_Interest_9_Interest",
-      "sourceField": "Policy_Interest_9_Interest_Type",
-      "formula": "If {{Policy_Interest_9_Interest_Type}} = \"Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)\", then {{Policy_Interest_9_Interest}} = \"See Form CG 24 04\""
-    },
-    {
-      "section": 9,
-      "seq": 91,
-      "target": "Policy_Interest_9_Interest",
-      "sourceField": "Policy_Interest_9_Interest_Type",
-      "formula": "If {{Policy_Interest_9_Interest_Type}} = \"Earlier Notice of Cancellation Provided by Us\", then {{Policy_Interest_9_Interest}} = \"See Form CG 02 24\""
-    },
-    {
+      "kind": "lookup",
       "section": 9,
       "seq": 98,
       "target": "Policy_Interest_10_Interest",
       "sourceField": "Policy_Interest_10_Interest_Type",
-      "formula": "If {{Policy_Interest_10_Interest_Type}} = \"Additional Insured — Designated Person or Organization\", then {{Policy_Interest_10_Interest}} = \"See Form CG 20 26\""
-    },
-    {
-      "section": 9,
-      "seq": 98,
-      "target": "Policy_Interest_10_Interest",
-      "sourceField": "Policy_Interest_10_Interest_Type",
-      "formula": "If {{Policy_Interest_10_Interest_Type}} = \"Additional Insured — Managers or Lessors of Premises\", then {{Policy_Interest_10_Interest}} = \"See Form CG 20 11\""
-    },
-    {
-      "section": 9,
-      "seq": 98,
-      "target": "Policy_Interest_10_Interest",
-      "sourceField": "Policy_Interest_10_Interest_Type",
-      "formula": "If {{Policy_Interest_10_Interest_Type}} = \"Additional Insured — State or Governmental Agency (Permits/Authorizations)\", then {{Policy_Interest_10_Interest}} = \"See Form CG 20 12\""
-    },
-    {
-      "section": 9,
-      "seq": 98,
-      "target": "Policy_Interest_10_Interest",
-      "sourceField": "Policy_Interest_10_Interest_Type",
-      "formula": "If {{Policy_Interest_10_Interest_Type}} = \"Additional Insured — State or Governmental Agency (premises)\", then {{Policy_Interest_10_Interest}} = \"See Form CG 20 13\""
-    },
-    {
-      "section": 9,
-      "seq": 98,
-      "target": "Policy_Interest_10_Interest",
-      "sourceField": "Policy_Interest_10_Interest_Type",
-      "formula": "If {{Policy_Interest_10_Interest_Type}} = \"Additional Insured — Lessor of Leased Equipment\", then {{Policy_Interest_10_Interest}} = \"See Form BFOG 01 07\""
-    },
-    {
-      "section": 9,
-      "seq": 98,
-      "target": "Policy_Interest_10_Interest",
-      "sourceField": "Policy_Interest_10_Interest_Type",
-      "formula": "If {{Policy_Interest_10_Interest_Type}} = \"Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)\", then {{Policy_Interest_10_Interest}} = \"See Form BFOG 00 09\""
-    },
-    {
-      "section": 9,
-      "seq": 98,
-      "target": "Policy_Interest_10_Interest",
-      "sourceField": "Policy_Interest_10_Interest_Type",
-      "formula": "If {{Policy_Interest_10_Interest_Type}} = \"Primary and Non-Contributory for Additional Insureds\", then {{Policy_Interest_10_Interest}} = \"See Form BFOG 00 10\""
-    },
-    {
-      "section": 9,
-      "seq": 98,
-      "target": "Policy_Interest_10_Interest",
-      "sourceField": "Policy_Interest_10_Interest_Type",
-      "formula": "If {{Policy_Interest_10_Interest_Type}} = \"Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)\", then {{Policy_Interest_10_Interest}} = \"See Form CG 24 04\""
-    },
-    {
-      "section": 9,
-      "seq": 98,
-      "target": "Policy_Interest_10_Interest",
-      "sourceField": "Policy_Interest_10_Interest_Type",
-      "formula": "If {{Policy_Interest_10_Interest_Type}} = \"Earlier Notice of Cancellation Provided by Us\", then {{Policy_Interest_10_Interest}} = \"See Form CG 02 24\""
+      "cases": {
+        "Additional Insured — Designated Person or Organization": "See Form CG 20 26",
+        "Additional Insured — Managers or Lessors of Premises": "See Form CG 20 11",
+        "Additional Insured — State or Governmental Agency (Permits/Authorizations)": "See Form CG 20 12",
+        "Additional Insured — State or Governmental Agency (premises)": "See Form CG 20 13",
+        "Additional Insured — Lessor of Leased Equipment": "See Form BFOG 01 07",
+        "Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)": "See Form BFOG 00 09",
+        "Primary and Non-Contributory for Additional Insureds": "See Form BFOG 00 10",
+        "Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)": "See Form CG 24 04",
+        "Earlier Notice of Cancellation Provided by Us": "See Form CG 02 24"
+      },
+      "default": ""
     }
   ],
   "formOrder": [

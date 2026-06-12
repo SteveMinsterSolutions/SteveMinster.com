@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import packetConfig from '../../sandbox/policy-packet/packet-config.json';
 import { evaluateRule } from './evaluateRule.js';
+import { runCalculations, resolveManifest } from './resolveEngine.js';
 
 // ─── BF CSS tokens (inline style objects) ─────────────────────────────────────
 const bf = {
@@ -291,11 +292,121 @@ function DevPreview({ resolved, visibleCount }) {
   );
 }
 
+// ─── Library badge ────────────────────────────────────────────────────────────
+const LIBRARY_COLORS = {
+  surplus: { bg: '#FDECEC', fg: '#9B2C2C' },
+  static:  { bg: '#EDF3F5', fg: '#005367' },
+  dynamic: { bg: '#E5F4E8', fg: '#1F6E3A' },
+};
+function LibraryBadge({ library }) {
+  const c = LIBRARY_COLORS[library] || { bg: bf.backgroundSoft, fg: bf.textMuted };
+  return (
+    <span className="text-[10px] font-bold uppercase tracking-wider rounded px-1.5 py-0.5"
+      style={{ backgroundColor: c.bg, color: c.fg }}>{library}</span>
+  );
+}
+
+// ─── Computed calculation values (collapsible) ────────────────────────────────
+function CalcValuesPanel({ calcValues }) {
+  const [open, setOpen] = useState(true);
+  const money = (v) => (isEmpty(v) ? '—' : formatMoney(v));
+  const row = (label, val) => (
+    <div className="flex items-center justify-between py-1 text-sm" style={{ fontFamily: bf.fontBody }}>
+      <span style={{ color: bf.textMuted }}>{label}</span>
+      <span className="font-semibold" style={{ color: bf.textStrong }}>{val}</span>
+    </div>
+  );
+  const dla = Object.keys(calcValues).filter((k) => /^DLA_\d+$/.test(k) && !isEmpty(calcValues[k]));
+  const interests = Object.keys(calcValues).filter((k) => /^Policy_Interest_\d+_Interest$/.test(k) && !isEmpty(calcValues[k]));
+
+  return (
+    <div className="rounded-xl mb-6 overflow-hidden" style={{ border: `1px solid ${bf.borderSubtle}` }}>
+      <button onClick={() => setOpen((o) => !o)}
+        className="w-full text-left px-4 py-2.5 flex items-center justify-between border-none cursor-pointer"
+        style={{ backgroundColor: bf.backgroundSoft, fontFamily: bf.fontBody }}>
+        <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: bf.accentDark }}>
+          Computed calculation values
+        </span>
+        <span style={{ color: bf.accentDark }}>{open ? '▾' : '▸'}</span>
+      </button>
+      {open && (
+        <div className="px-4 py-3" style={{ backgroundColor: '#ffffff' }}>
+          {row('CA Surplus Lines Tax (CA_SL_Tax)', money(calcValues.CA_SL_Tax))}
+          {row('CA Stamping Fee (CA_Stamp)', money(calcValues.CA_Stamp))}
+          {row('Total Cost (TTL_Cost)', money(calcValues.TTL_Cost))}
+          <div className="text-[10px] font-bold uppercase tracking-wider mt-3 mb-1" style={{ color: bf.accentPrimary }}>
+            Designated locations (CG 25 04)
+          </div>
+          {dla.length ? dla.map((k) => row(k, calcValues[k])) : <p className="text-xs italic" style={{ color: bf.textMuted }}>none active</p>}
+          <div className="text-[10px] font-bold uppercase tracking-wider mt-3 mb-1" style={{ color: bf.accentPrimary }}>
+            Policy interest derived values
+          </div>
+          {interests.length ? interests.map((k) => row(k, calcValues[k])) : <p className="text-xs italic" style={{ color: bf.textMuted }}>none set</p>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Resolved form manifest ───────────────────────────────────────────────────
+function ManifestView({ manifest, total, calcValues }) {
+  return (
+    <div className="rounded-2xl p-6 md:p-8"
+      style={{ backgroundColor: '#ffffff', border: `1px solid ${bf.borderSubtle}`, boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
+      <div className="mb-6">
+        <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: bf.accentPrimary }}>
+          Resolve output
+        </p>
+        <h2 className="text-xl font-bold" style={{ fontFamily: bf.fontDisplay, color: bf.textStrong }}>
+          Resolved Form Manifest
+        </h2>
+        <p className="text-xs mt-1" style={{ color: bf.textMuted }}>
+          {manifest.length} of {total} forms included · All Form Order sequence
+        </p>
+      </div>
+
+      <CalcValuesPanel calcValues={calcValues} />
+
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm border-collapse" style={{ fontFamily: bf.fontBody }}>
+          <thead>
+            <tr style={{ borderBottom: `2px solid ${bf.borderSubtle}` }}>
+              {['Seq', 'Form #', 'Name', 'Library', 'Dynamic'].map((h) => (
+                <th key={h} className="text-left py-2 px-2 text-[11px] font-semibold uppercase tracking-wider"
+                  style={{ color: bf.accentDark }}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {manifest.map((f, i) => (
+              <tr key={`${f.formNumber}-${f.seq}-${i}`} style={{ borderBottom: `1px solid ${bf.backgroundAlt}` }}>
+                <td className="py-1.5 px-2 tabular-nums" style={{ color: bf.textMuted }}>{f.seq}</td>
+                <td className="py-1.5 px-2 font-semibold" style={{ color: bf.textStrong }}>{f.formNumber}</td>
+                <td className="py-1.5 px-2" style={{ color: bf.textBody }}>{f.name}</td>
+                <td className="py-1.5 px-2"><LibraryBadge library={f.library} /></td>
+                <td className="py-1.5 px-2">{f.isDynamic
+                  ? <span style={{ color: bf.accentPrimary, fontWeight: 700 }}>● dynamic</span>
+                  : <span style={{ color: bf.textMuted }}>—</span>}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {manifest.length === 0 && (
+          <p className="text-sm italic py-6 text-center" style={{ color: bf.textMuted }}>
+            No forms included yet — answer the questionnaire to resolve the manifest.
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ─── Questionnaire ────────────────────────────────────────────────────────────
 export default function Questionnaire() {
   const sections = useMemo(() => buildSections(packetConfig.questions ?? []), []);
   const [answers, setAnswers] = useState({});
   const [activeIdx, setActiveIdx] = useState(0);
+  const [view, setView] = useState('form'); // 'form' | 'manifest'
 
   const setAnswer = (id, val) => setAnswers((prev) => ({ ...prev, [id]: val }));
 
@@ -337,6 +448,14 @@ export default function Questionnaire() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sections, answers]);
 
+  // Phase 3 resolve engine: calculations override visible answers, then formRules
+  // decide inclusion → resolved manifest. Recomputes whenever answers change.
+  const engine = useMemo(() => {
+    const { resolved: postCalc, calcValues } = runCalculations(packetConfig.calculations, resolved);
+    const manifest = resolveManifest(packetConfig.formOrder, packetConfig.formRules, postCalc);
+    return { calcValues, manifest };
+  }, [resolved]);
+
   const visibleTotal = Object.keys(resolved).length;
   const active = sections[activeIdx];
   const visibleQuestions = active.questions.filter(isVisible);
@@ -358,7 +477,7 @@ export default function Questionnaire() {
             Policy Packet Questionnaire
           </h1>
           <p className="text-sm" style={{ color: bf.textMuted }}>
-            {sections.length} sections · {visibleTotal} questions currently visible
+            {sections.length} sections · {visibleTotal} questions visible · {engine.manifest.length} forms resolved
           </p>
         </div>
 
@@ -371,17 +490,37 @@ export default function Questionnaire() {
                 <NavItem
                   key={sec.section}
                   sec={sec}
-                  active={idx === activeIdx}
+                  active={view === 'form' && idx === activeIdx}
                   incomplete={stats[idx].incomplete}
                   visibleCount={stats[idx].visibleCount}
-                  onClick={() => setActiveIdx(idx)}
+                  onClick={() => { setView('form'); setActiveIdx(idx); }}
                 />
               ))}
+              <div className="my-2" style={{ borderTop: `1px solid ${bf.borderSubtle}` }} />
+              <button
+                onClick={() => setView('manifest')}
+                className="w-full text-left rounded-lg px-3 py-2 transition-all border-none cursor-pointer flex items-center justify-between gap-2"
+                style={{
+                  fontFamily: bf.fontBody,
+                  backgroundColor: view === 'manifest' ? bf.accentPrimary : 'transparent',
+                  color: view === 'manifest' ? bf.textInverse : bf.textBody,
+                }}
+              >
+                <span className="text-sm font-semibold">▦ Resolved Manifest</span>
+                <span className="text-[10px] font-bold rounded-full px-1.5 py-0.5"
+                  style={{ backgroundColor: view === 'manifest' ? bf.textInverse : bf.accentSoft, color: view === 'manifest' ? bf.accentPrimary : bf.accentDark }}>
+                  {engine.manifest.length}
+                </span>
+              </button>
             </div>
           </nav>
 
           {/* Active section */}
           <section className="flex-1 min-w-0">
+            {view === 'manifest' && (
+              <ManifestView manifest={engine.manifest} total={packetConfig.formOrder.length} calcValues={engine.calcValues} />
+            )}
+            {view === 'form' && (
             <div className="rounded-2xl p-6 md:p-8"
               style={{ backgroundColor: '#ffffff', border: `1px solid ${bf.borderSubtle}`, boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
               <div className="mb-6">
@@ -430,6 +569,7 @@ export default function Questionnaire() {
                 </button>
               </div>
             </div>
+            )}
           </section>
         </div>
       </div>
