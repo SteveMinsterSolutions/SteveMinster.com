@@ -1,0 +1,1132 @@
+{
+  "Aggregate_Limit": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "BFOG_00_01": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "BFOG_00_02": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "BFOG_00_03": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "BFOG_00_04": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "BFOG_00_05": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "BFOG_00_06": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "BFOG_00_07": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "BFSC_00_02": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "BFSC_00_03": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "BFSC_00_04": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "BFSC_Tier": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Blanket_AI": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "CA_SL_Tax": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Currency",
+    "behavior": "currency_cents"
+  },
+  "CA_Stamp": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Currency",
+    "behavior": "currency_cents"
+  },
+  "CG_20_11": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "CG_20_11_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "CG_20_11_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "CG_20_11_Name": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "CG_20_11_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "CG_20_11_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "CG_20_12": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "CG_20_12_Address_1": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "CG_20_12_Address_2": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "CG_20_12_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "CG_20_12_Name_1": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "CG_20_12_Name_2": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "CG_20_12_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "CG_20_12_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "CG_20_13": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "CG_20_13_Address_1": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "CG_20_13_Address_2": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "CG_20_13_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "CG_20_13_Name_1": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "CG_20_13_Name_2": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "CG_20_13_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "CG_20_13_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "CG_20_26": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Claimant_Sublimit": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Coverage_Territory": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "DLA_1": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "DLA_10": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "DLA_10_Add": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_10_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_10_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "DLA_10_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "DLA_1_Add": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_1_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_1_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "DLA_1_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "DLA_2": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "DLA_2_Add": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_2_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_2_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "DLA_2_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "DLA_3": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "DLA_3_Add": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_3_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_3_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "DLA_3_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "DLA_4": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "DLA_4_Add": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_4_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_4_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "DLA_4_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "DLA_5": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "DLA_5_Add": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_5_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_5_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "DLA_5_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "DLA_6": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "DLA_6_Add": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_6_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_6_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "DLA_6_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "DLA_7": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "DLA_7_Add": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_7_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_7_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "DLA_7_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "DLA_8": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "DLA_8_Add": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_8_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_8_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "DLA_8_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "DLA_9": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "DLA_9_Add": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_9_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "DLA_9_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "DLA_9_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "DLA_Count": {
+    "tokenFormat": "Numeric",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Days_Notice": {
+    "tokenFormat": "Numeric",
+    "answerType": "Number",
+    "behavior": "integer"
+  },
+  "Early_Notice_By_Us": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Excepted_Country_1": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Excepted_Country_2": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Excepted_Country_3": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Excepted_Country_4": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Excluded_Operation_1": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Excluded_Operation_2": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Excluded_Operation_3": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Excluded_Operation_4": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Excluded_Operation_5": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Excluded_Operation_6": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Excluded_Operations": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Firearms_Exclusion": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "HNOA_Limit": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Is_Mountaineering": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "L_1_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "L_1_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "L_1_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "L_2_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "L_2_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "L_2_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "Liability_Deductible": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Liquor_Agg_Limit": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Liquor_Each_Limit": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Liquor_Liability_Type": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Location_1_Address_1": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Location_1_Address_2": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Location_2_Address_1": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Location_2_Address_2": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Location_2_Exist": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Med_Limit": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Minimum_Earned": {
+    "tokenFormat": "Percent",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Minimum_Premium": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Named_Insured": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "O_G_Loss_Control": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "O_G_Program": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Occurrence_Limit": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Pers_Ad_Limit": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Effective_Date": {
+    "tokenFormat": "YYYY-MM-DD",
+    "answerType": "Date",
+    "behavior": "date_iso"
+  },
+  "Policy_Expiration_Date": {
+    "tokenFormat": "YYYY-MM-DD",
+    "answerType": "Date",
+    "behavior": "date_iso"
+  },
+  "Policy_Interest_10_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_10_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_10_Interest": {
+    "tokenFormat": "Text",
+    "answerType": "Derived",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_10_Interest_Type": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_10_Name": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_10_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_10_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "Policy_Interest_1_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_1_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_1_Interest": {
+    "tokenFormat": "Text",
+    "answerType": "Derived",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_1_Interest_Type": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_1_Name": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_1_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_1_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "Policy_Interest_2_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_2_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_2_Interest": {
+    "tokenFormat": "Text",
+    "answerType": "Derived",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_2_Interest_Type": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_2_Name": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_2_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_2_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "Policy_Interest_3_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_3_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_3_Interest": {
+    "tokenFormat": "Text",
+    "answerType": "Derived",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_3_Interest_Type": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_3_Name": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_3_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_3_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "Policy_Interest_4_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_4_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_4_Interest": {
+    "tokenFormat": "Text",
+    "answerType": "Derived",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_4_Interest_Type": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_4_Name": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_4_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_4_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "Policy_Interest_5_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_5_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_5_Interest": {
+    "tokenFormat": "Text",
+    "answerType": "Derived",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_5_Interest_Type": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_5_Name": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_5_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_5_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "Policy_Interest_6_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_6_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_6_Interest": {
+    "tokenFormat": "Text",
+    "answerType": "Derived",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_6_Interest_Type": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_6_Name": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_6_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_6_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "Policy_Interest_7_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_7_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_7_Interest": {
+    "tokenFormat": "Text",
+    "answerType": "Derived",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_7_Interest_Type": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_7_Name": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_7_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_7_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "Policy_Interest_8_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_8_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_8_Interest": {
+    "tokenFormat": "Text",
+    "answerType": "Derived",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_8_Interest_Type": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_8_Name": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_8_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_8_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "Policy_Interest_9_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_9_City": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_9_Interest": {
+    "tokenFormat": "Text",
+    "answerType": "Derived",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_9_Interest_Type": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_9_Name": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_9_ST": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Interest_9_Zip": {
+    "tokenFormat": "#####",
+    "answerType": "Number",
+    "behavior": "zip5"
+  },
+  "Policy_Interest_Count": {
+    "tokenFormat": "Numeric",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Policy_Number": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Prem_Dam_Limit": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Premises_Rented_Deductible": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Primary_NonContributory": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Prod_Ops_Limit": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Rental_User_Sublimit": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "SAM_Aggregate": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "SAM_Type": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "SAM_per_person": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Season_End_Mo": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Season_Start_Mo": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Specified_Country_1": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Specified_Country_2": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Specified_Country_3": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "Specified_Country_4": {
+    "tokenFormat": "Text",
+    "answerType": "Text",
+    "behavior": "passthrough"
+  },
+  "TRIA_Optional": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "TRIA_Premium": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Currency",
+    "behavior": "currency_whole"
+  },
+  "TTL_Cost": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Currency",
+    "behavior": "currency_cents"
+  },
+  "TTL_Ins_Taxes_Fees": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Currency",
+    "behavior": "currency_cents"
+  },
+  "TTL_Premium": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Currency",
+    "behavior": "currency_cents"
+  },
+  "Today_Date": {
+    "tokenFormat": "YYYY-MM-DD",
+    "answerType": "Date",
+    "behavior": "date_iso"
+  },
+  "Waiver_of_Subrogation": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "Watercraft_Liability": {
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  }
+}

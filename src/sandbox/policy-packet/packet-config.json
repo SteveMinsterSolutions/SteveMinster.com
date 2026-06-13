@@ -17,7 +17,8 @@
       "BFG 00 09 -> BFOG 00 09",
       "SAM_aggregate -> SAM_Aggregate",
       "South Dakpta -> South Dakota",
-      "FieldMapping PWR numbers remapped: 00 16->00 18, 00 09->00 16, 01 09->01 16"
+      "FieldMapping PWR numbers remapped: 00 16->00 18, 00 09->00 16, 01 09->01 16",
+      "LMA5389 fieldMapping added: [TRIA_Premium]"
     ]
   },
   "questions": [
@@ -10285,7 +10286,6 @@
       "Premises_Rented_Deductible"
     ],
     "BFOG 01 08": [
-      "HNOA_Limit",
       "HNOA_Limit"
     ],
     "BFOG 02 15": [
@@ -10319,15 +10319,9 @@
       "Liquor_Each_Limit",
       "Liquor_Agg_Limit",
       "HNOA_Limit",
-      "HNOA_Limit",
       "Claimant_Sublimit",
       "Rental_User_Sublimit",
       "Liability_Deductible",
-      "Location_1_Address_1",
-      "Location_1_Address_2",
-      "L_1_City",
-      "L_1_ST",
-      "L_1_Zip",
       "Location_2_Address_1",
       "Location_2_Address_2",
       "L_2_City",
@@ -10423,6 +10417,7 @@
       "TTL_Premium",
       "TTL_Ins_Taxes_Fees",
       "TTL_Cost",
+      "Minimum_Earned",
       "Today_Date"
     ],
     "CG 25 04": [
@@ -10627,6 +10622,9 @@
       "Policy_Interest_10_Zip",
       "Policy_Interest_10_Interest_Type",
       "Policy_Interest_10_Interest"
+    ],
+    "LMA5389": [
+      "TRIA_Premium"
     ]
   }
 }
