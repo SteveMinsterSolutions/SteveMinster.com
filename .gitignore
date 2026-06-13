@@ -3,3 +3,10 @@ node_modules/
 .claude/
 package-lock.json
 dist/
+build/
+
+docs/policy-packet/
+.vercel
+
+.env
+.env*.local
