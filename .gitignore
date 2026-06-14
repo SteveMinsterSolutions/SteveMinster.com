@@ -10,3 +10,9 @@ docs/policy-packet/
 
 .env
 .env*.local
+
+# Untracked planning/infra-mapping scratch docs — public repo, never sweep into history
+*_UPDATE_*.md
+*-handoff.md
+*-delta.md
+phase5-*.md
