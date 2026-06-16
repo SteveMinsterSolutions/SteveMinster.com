@@ -1,0 +1,42 @@
+# bf-gotenberg — Gotenberg (LibreOffice-only) for the Policy Packet Generator.
+#
+# Convert-only service: docx -> PDF via POST /forms/libreoffice/convert (multipart).
+# NO Chromium routes are used or exposed (SSRF advisory GO-2026-4990 affects only those).
+#
+# Config option names verified 2026-06-14 against https://gotenberg.dev/docs/configuration.
+# Image tag verified present on Docker Hub: gotenberg/gotenberg:8.33.0-libreoffice
+#   (pushed 2026-05-29, digest sha256:6664d471...).
+#
+# SECRETS ARE NOT IN THIS FILE. Set them once via:
+#   fly secrets set GOTENBERG_API_BASIC_AUTH_USERNAME=... GOTENBERG_API_BASIC_AUTH_PASSWORD=... -a bf-gotenberg
+
+app = "bf-gotenberg"
+primary_region = "iad"   # near Vercel us-east to cut convert latency
+
+[build]
+  image = "gotenberg/gotenberg:8.33.0-libreoffice"
+
+[env]
+  API_ENABLE_BASIC_AUTH = "true"   # creds supplied via fly secrets (env vars below)
+  API_TIMEOUT = "120s"             # well above the 30s default for a batched multi-form convert
+  LIBREOFFICE_AUTO_START = "false" # lazy-start: API comes up immediately, LibreOffice inits on first convert (avoids boot-deadline crash loop)
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_start_machines = true
+  auto_stop_machines = false       # demo reliability — keep it warm
+  min_machines_running = 1
+
+  # /health is exempt from basic auth in Gotenberg, so Fly can health-check without creds.
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "15s"
+    method = "GET"
+    path = "/health"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 2
+  memory = "2gb"                   # LibreOffice batch convert is memory-hungry; 2GB headroom

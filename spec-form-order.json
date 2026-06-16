@@ -1,0 +1,687 @@
+{
+  "source": "Specifications_for_Policy_Widget.xlsx — All Form Order tab",
+  "extractedRows": 136,
+  "note": "Canonical spec form list as of the rename. For one-time spec->config reconcile. Config remains source of truth after sync.",
+  "forms": [
+    {
+      "formNumber": "BFSD 01 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Alabama"
+    },
+    {
+      "formNumber": "BFSD 02 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Alaska"
+    },
+    {
+      "formNumber": "BFSD 03 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Arizona"
+    },
+    {
+      "formNumber": "BFSD 04 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Arkansas"
+    },
+    {
+      "formNumber": "BFSD 06 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Colorado"
+    },
+    {
+      "formNumber": "BFSD 07 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Connecticut"
+    },
+    {
+      "formNumber": "BFSD 08 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Delaware"
+    },
+    {
+      "formNumber": "BFSD 09 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Florida"
+    },
+    {
+      "formNumber": "BFSD 10 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Georgia"
+    },
+    {
+      "formNumber": "BFSD 11 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Hawaii"
+    },
+    {
+      "formNumber": "BFSD 12 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Idaho"
+    },
+    {
+      "formNumber": "BFSD 13 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Illinois"
+    },
+    {
+      "formNumber": "BFSD 15 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Iowa"
+    },
+    {
+      "formNumber": "BFSD 16 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Kansas"
+    },
+    {
+      "formNumber": "BFSD 17 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Kentucky"
+    },
+    {
+      "formNumber": "BFSD 18 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Louisiana"
+    },
+    {
+      "formNumber": "BFSD 19 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Maine"
+    },
+    {
+      "formNumber": "BFSD 20 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Maryland"
+    },
+    {
+      "formNumber": "BFSD 21 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Massachusetts"
+    },
+    {
+      "formNumber": "BFSD 22 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Michigan"
+    },
+    {
+      "formNumber": "BFSD 23 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Minnesota"
+    },
+    {
+      "formNumber": "BFSD 24 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Mississippi"
+    },
+    {
+      "formNumber": "BFSD 25 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Missouri"
+    },
+    {
+      "formNumber": "BFSD 26 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Montana"
+    },
+    {
+      "formNumber": "BFSD 27 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Nebraska"
+    },
+    {
+      "formNumber": "BFSD 28 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Nevada"
+    },
+    {
+      "formNumber": "BFSD 29 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - New Hampshire"
+    },
+    {
+      "formNumber": "BFSD 30 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - New Jersey"
+    },
+    {
+      "formNumber": "BFSD 31 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - New Mexico"
+    },
+    {
+      "formNumber": "BFSD 32 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - New York"
+    },
+    {
+      "formNumber": "BFSD 33 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - North Carolina"
+    },
+    {
+      "formNumber": "BFSD 34 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - North Dakota"
+    },
+    {
+      "formNumber": "BFSD 35 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Ohio"
+    },
+    {
+      "formNumber": "BFSD 36 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Oklahoma"
+    },
+    {
+      "formNumber": "BFSD 37 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Oregon"
+    },
+    {
+      "formNumber": "BFSD 38 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Pennsylvania"
+    },
+    {
+      "formNumber": "BFSD 39 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Rhode Island"
+    },
+    {
+      "formNumber": "BFSD 40 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - South Carolina"
+    },
+    {
+      "formNumber": "BFSD 41 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - South Dakota"
+    },
+    {
+      "formNumber": "BFSD 42 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Tennessee"
+    },
+    {
+      "formNumber": "BFSD 43 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Texas"
+    },
+    {
+      "formNumber": "BFSD 44 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Utah"
+    },
+    {
+      "formNumber": "BFSD 45 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Vermont"
+    },
+    {
+      "formNumber": "BFSD 46 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Virginia"
+    },
+    {
+      "formNumber": "BFSD 47 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Washington"
+    },
+    {
+      "formNumber": "BFSD 50 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Wisconsin"
+    },
+    {
+      "formNumber": "BFSD 51 01",
+      "edition": "06 26",
+      "formName": "Surplus Lines Disclosure Statement - Wyoming"
+    },
+    {
+      "formNumber": "SLC-3 USA NMA2868",
+      "edition": "01 26",
+      "formName": "Lloyd's Certificate (Non-CA)"
+    },
+    {
+      "formNumber": "SLC-3 (COR) LMA3102B",
+      "edition": "12 19",
+      "formName": "Lloyd's Certificate — California"
+    },
+    {
+      "formNumber": "BGL 00 02",
+      "edition": "06 26",
+      "formName": "Commercial General Liability Declarations"
+    },
+    {
+      "formNumber": "PWR 00 04",
+      "edition": "10 23",
+      "formName": "Schedule of Lloyd's Security"
+    },
+    {
+      "formNumber": "IL 00 17",
+      "edition": "11 98",
+      "formName": "Common Policy Conditions"
+    },
+    {
+      "formNumber": "CG 00 01",
+      "edition": "04 13",
+      "formName": "Commercial General Liability Coverage Form"
+    },
+    {
+      "formNumber": "IL 02 28",
+      "edition": "09 07",
+      "formName": "CO Changes — Cancellation and Nonrenewal"
+    },
+    {
+      "formNumber": "IL 01 25",
+      "edition": "11 13",
+      "formName": "CO Changes — Civil Union"
+    },
+    {
+      "formNumber": "PN049909",
+      "edition": "10 25",
+      "formName": "Illinois Notice to Policyholders"
+    },
+    {
+      "formNumber": "BFOG 00 01",
+      "edition": "12 25",
+      "formName": "Non-Motorized Adventure Equipment Endorsement"
+    },
+    {
+      "formNumber": "BFOG 00 02",
+      "edition": "05 26",
+      "formName": "Non-Motorized Adventure Rental Endorsement"
+    },
+    {
+      "formNumber": "BFOG 00 13",
+      "edition": "05 26",
+      "formName": "Rental User Sublimit of Insurance Endorsement"
+    },
+    {
+      "formNumber": "BFOG 00 03",
+      "edition": "12 25",
+      "formName": "Adventure Sports Product Liability Endorsement"
+    },
+    {
+      "formNumber": "BFOG 00 04",
+      "edition": "12 25",
+      "formName": "Adventure Sports Premises Liability Endorsement"
+    },
+    {
+      "formNumber": "BFOG 00 05",
+      "edition": "12 25",
+      "formName": "Adventure Sports Participant Injury Endorsement"
+    },
+    {
+      "formNumber": "BFOG 00 06",
+      "edition": "12 25",
+      "formName": "Adventure Sports Professional Services Endorsement"
+    },
+    {
+      "formNumber": "BFSC 00 02",
+      "edition": "02 26",
+      "formName": "Athletic and Sports Participants Coverage Modification Endorsement"
+    },
+    {
+      "formNumber": "BFSC 00 03",
+      "edition": "02 26",
+      "formName": "Facility Operations and Safety Conditions Endorsement"
+    },
+    {
+      "formNumber": "BFSC 00 04",
+      "edition": "02 26",
+      "formName": "Professional Instruction and Training Liability Endorsement"
+    },
+    {
+      "formNumber": "BFOG 01 20",
+      "edition": "03 26",
+      "formName": "WCOT NonMountaineering None Endorsement"
+    },
+    {
+      "formNumber": "BFOG 01 21",
+      "edition": "03 26",
+      "formName": "WCOT NonMountaineering Limited Endorsement"
+    },
+    {
+      "formNumber": "BFOG 01 22",
+      "edition": "03 26",
+      "formName": "WCOT NonMountaineering Standard Endorsement"
+    },
+    {
+      "formNumber": "BFOG 01 23",
+      "edition": "03 26",
+      "formName": "WCOT NonMountaineering Enhanced Endorsement"
+    },
+    {
+      "formNumber": "BFOG 01 24",
+      "edition": "03 26",
+      "formName": "WCOT NonMountaineering Comprehensive Endorsement"
+    },
+    {
+      "formNumber": "BFOG 01 25",
+      "edition": "03 26",
+      "formName": "WCOT Mountaineering None Endorsement"
+    },
+    {
+      "formNumber": "BFOG 01 26",
+      "edition": "03 26",
+      "formName": "WCOT Mountaineering Limited Endorsement"
+    },
+    {
+      "formNumber": "BFOG 01 27",
+      "edition": "03 26",
+      "formName": "WCOT Mountaineering Standard Endorsement"
+    },
+    {
+      "formNumber": "BFOG 01 28",
+      "edition": "03 26",
+      "formName": "WCOT Mountaineering Enhanced Endorsement"
+    },
+    {
+      "formNumber": "BFOG 01 29",
+      "edition": "03 26",
+      "formName": "WCOT Mountaineering Comprehensive Endorsement"
+    },
+    {
+      "formNumber": "BFSC 01 08",
+      "edition": "03 26",
+      "formName": "Warranty of Compliance — Tier 1 (Studios & Low-Impact)"
+    },
+    {
+      "formNumber": "BFSC 03 08",
+      "edition": "03 26",
+      "formName": "Warranty of Compliance — Tier 2 (Standard Facilities)"
+    },
+    {
+      "formNumber": "BFSC 05 08",
+      "edition": "03 26",
+      "formName": "Warranty of Compliance — Tier 3 (High-Intensity & Contact)"
+    },
+    {
+      "formNumber": "BFSC 07 08",
+      "edition": "03 26",
+      "formName": "Warranty of Compliance — Tier 4 (Maximum Hazard Operations)"
+    },
+    {
+      "formNumber": "BFVQ 00 01",
+      "edition": "02 26",
+      "formName": "Bluefields/vQuip Fraud Warning Statements"
+    },
+    {
+      "formNumber": "CG 03 00",
+      "edition": "01 96",
+      "formName": "Deductible Liability Insurance"
+    },
+    {
+      "formNumber": "BFOG 00 20",
+      "edition": "05 26",
+      "formName": "Damage to Premises Rented to You – Deductible Endorsement"
+    },
+    {
+      "formNumber": "CG 25 04",
+      "edition": "05 09",
+      "formName": "DESIGNATED LOCATION(S) GENERAL AGGREGATE LIMIT"
+    },
+    {
+      "formNumber": "CG 21 53",
+      "edition": "01 96",
+      "formName": "EXCLUSION – DESIGNATED ONGOING OPERATIONS"
+    },
+    {
+      "formNumber": "BFOG 00 12",
+      "edition": "02 26",
+      "formName": "Each Claimant Sublimit of Liability Endorsement"
+    },
+    {
+      "formNumber": "BFOG 00 11",
+      "edition": "02 26",
+      "formName": "Watercraft Liability Endorsement"
+    },
+    {
+      "formNumber": "CG 40 28",
+      "edition": "09 22",
+      "formName": "Broad Abuse or Molestation Exclusion"
+    },
+    {
+      "formNumber": "BFOG 03 15",
+      "edition": "02 26",
+      "formName": "Abuse or Molestation Coverage — Claims-Made"
+    },
+    {
+      "formNumber": "BFOG 02 15",
+      "edition": "02 26",
+      "formName": "Abuse or Molestation Coverage — Per Occurrence"
+    },
+    {
+      "formNumber": "BFOG 01 08",
+      "edition": "01 26",
+      "formName": "Hired Auto and Non-Owned Auto Liability"
+    },
+    {
+      "formNumber": "CA 04 55",
+      "edition": "12 23",
+      "formName": "Communicable Disease Exclusion for Covered Autos Liability Exposure"
+    },
+    {
+      "formNumber": "NMA2920",
+      "edition": "08 01",
+      "formName": "Terrorism Exclusion Endorsement — Auto Liability"
+    },
+    {
+      "formNumber": "CG 24 22",
+      "edition": "04 13",
+      "formName": "Amendment of Coverage Territory – Worldwide Coverage"
+    },
+    {
+      "formNumber": "CG 24 23",
+      "edition": "04 13",
+      "formName": "Amendment of Coverage Territory – Additional Scheduled Countries"
+    },
+    {
+      "formNumber": "CG 24 24",
+      "edition": "04 13",
+      "formName": "Amendment of Coverage Territory – Worldwide Coverage with Specified Exceptions"
+    },
+    {
+      "formNumber": "CG 00 33",
+      "edition": "04 13",
+      "formName": "Liquor Liability Coverage Form"
+    },
+    {
+      "formNumber": "CG 24 08",
+      "edition": "10 93",
+      "formName": "Liquor Liability (CGL Endorsement)"
+    },
+    {
+      "formNumber": "CG 24 06",
+      "edition": "04 13",
+      "formName": "Liquor Liability Bring Your Own Alcohol Establishments"
+    },
+    {
+      "formNumber": "BFSC 00 08",
+      "edition": "05 26",
+      "formName": "Exclusion – Collapse of Temporary Structures"
+    },
+    {
+      "formNumber": "CG 21 42",
+      "edition": "12 04",
+      "formName": "Exclusion — Explosion, Collapse and Underground Property Damage"
+    },
+    {
+      "formNumber": "BFOG 00 16",
+      "edition": "01 26",
+      "formName": "Firearms Exclusion"
+    },
+    {
+      "formNumber": "BFOG 00 17",
+      "edition": "01 26",
+      "formName": "Cannabis Exclusion"
+    },
+    {
+      "formNumber": "CG 21 09",
+      "edition": "06 15",
+      "formName": "Exclusion — Unmanned Aircraft"
+    },
+    {
+      "formNumber": "CG 40 32",
+      "edition": "05 23",
+      "formName": "Exclusion — PFAS"
+    },
+    {
+      "formNumber": "CG 21 49",
+      "edition": "09 99",
+      "formName": "Total Pollution Exclusion"
+    },
+    {
+      "formNumber": "CG 21 06",
+      "edition": "12 23",
+      "formName": "Exclusion — Access or Disclosure of Confidential or Personal Information"
+    },
+    {
+      "formNumber": "LMA5389",
+      "edition": "01 20",
+      "formName": "US TRIA — New & Renewal Business Endorsement"
+    },
+    {
+      "formNumber": "LMA5390",
+      "edition": "01 20",
+      "formName": "US TRIA — Not Purchased Clause"
+    },
+    {
+      "formNumber": "SP 4 159",
+      "edition": "01 15",
+      "formName": "Exclusion of Other Than Certified Acts of Terrorism"
+    },
+    {
+      "formNumber": "CG 21 73",
+      "edition": "01 15",
+      "formName": "Exclusion of Certified Acts of Terrorism"
+    },
+    {
+      "formNumber": "NMA0464",
+      "edition": "01 38",
+      "formName": "War and Civil War Exclusion Clause"
+    },
+    {
+      "formNumber": "NMA1256",
+      "edition": "10 01",
+      "formName": "Nuclear Incident Exclusion Clause — Liability — Direct (Broad)"
+    },
+    {
+      "formNumber": "LMA5496",
+      "edition": "12 20",
+      "formName": "Cyber Exclusion (US Professional Indemnity)"
+    },
+    {
+      "formNumber": "CL0370",
+      "edition": "10 03",
+      "formName": "Institute Radioactive Contamination, Chemical, Biological, Bio-Chemical and Electromagnetic Weapons Exclusion Clause"
+    },
+    {
+      "formNumber": "LMA5289",
+      "edition": "06 17",
+      "formName": "Nuclear and Radioactive Contamination Exclusion (Liability)"
+    },
+    {
+      "formNumber": "LMA3100A",
+      "edition": "10 23",
+      "formName": "Sanctions Limitation and Exclusion Clause"
+    },
+    {
+      "formNumber": "LMA5500",
+      "edition": "05 20",
+      "formName": "Infectious or Contagious Disease Exclusion during a PHEIC"
+    },
+    {
+      "formNumber": "NMA2962",
+      "edition": "",
+      "formName": "Biological or Chemical Materials Exclusion"
+    },
+    {
+      "formNumber": "CG 21 32",
+      "edition": "05 09",
+      "formName": "Communicable Disease Exclusion"
+    },
+    {
+      "formNumber": "LMA5020A",
+      "edition": "",
+      "formName": "Service of Suit Clause (USA)"
+    },
+    {
+      "formNumber": "LSW1001",
+      "edition": "08 94",
+      "formName": "Several Liability Notice"
+    },
+    {
+      "formNumber": "NMA1331",
+      "edition": "",
+      "formName": "Cancellation Clause"
+    },
+    {
+      "formNumber": "PWR 00 18",
+      "edition": "06 26",
+      "formName": "Minimum Earned Premium Endorsement"
+    },
+    {
+      "formNumber": "PWR 00 17",
+      "edition": "11 25",
+      "formName": "Seasonal Business Disclosure Endorsement"
+    },
+    {
+      "formNumber": "CG 20 26",
+      "edition": "12 19",
+      "formName": "Additional Insured — Designated Person or Organization"
+    },
+    {
+      "formNumber": "CG 20 11",
+      "edition": "04 13",
+      "formName": "Additional Insured — Managers or Lessors of Premises"
+    },
+    {
+      "formNumber": "CG 20 12",
+      "edition": "04 13",
+      "formName": "Additional Insured — State or Governmental Agency (Permits/Authorizations)"
+    },
+    {
+      "formNumber": "CG 20 13",
+      "edition": "04 13",
+      "formName": "Additional Insured — State or Governmental Agency"
+    },
+    {
+      "formNumber": "BFOG 00 07",
+      "edition": "12 25",
+      "formName": "Additional Insured — Lessor of Leased Equipment"
+    },
+    {
+      "formNumber": "BFOG 00 09",
+      "edition": "01 26",
+      "formName": "Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)"
+    },
+    {
+      "formNumber": "BFOG 00 10",
+      "edition": "01 26",
+      "formName": "Primary and Non-Contributory for Additional Insureds"
+    },
+    {
+      "formNumber": "CG 24 04",
+      "edition": "12 19",
+      "formName": "Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)"
+    },
+    {
+      "formNumber": "CG 02 24",
+      "edition": "10 93",
+      "formName": "Earlier Notice of Cancellation Provided by Us"
+    },
+    {
+      "formNumber": "PWR 00 16",
+      "edition": "11 26",
+      "formName": "Policy Interest Schedule"
+    },
+    {
+      "formNumber": "PWR 01 16",
+      "edition": "06 26",
+      "formName": "Policy Interest Schedule — with Blanket AI Language"
+    }
+  ]
+}
