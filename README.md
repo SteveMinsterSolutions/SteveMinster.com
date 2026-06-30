@@ -42,3 +42,5 @@ src/
 ## Deployment
 
 Pushes to `main` branch auto-deploy to production via Vercel.
+
+<!-- deploy-trigger: verify hu5a main auto-deploy 2026-06-29 -->
