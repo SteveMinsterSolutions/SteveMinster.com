@@ -45,6 +45,55 @@ function formatMoney(raw) {
 
 const isEmpty = (v) => v == null || String(v).trim() === '';
 
+// ─── Build Packet download helpers ────────────────────────────────────────────
+// The /api/assemble success response is a binary PDF stream (NOT JSON). These
+// reuse the in-repo conventions: createObjectURL + <a download> (RoadTripTracker)
+// and the server's packetFilename naming (src/lib/policyPacket/mergePacket.js).
+function sanitizeFilename(s) {
+  // Mirror packetFilename: strip path/control chars, then trailing spaces/dots.
+  return String(s).replace(/[<>:"/\\|?*\x00-\x1f]/g, '_').replace(/[ .]+$/, '');
+}
+// Prefer Content-Disposition filename*=UTF-8'' , else quoted filename="", else
+// reconstruct `${Named_Insured} ${Policy_Number}.pdf` the way the server does
+// (note the SPACE between the two values).
+function filenameFromResponse(res, resolved) {
+  const cd = res.headers.get('content-disposition') || '';
+  const star = cd.match(/filename\*=UTF-8''([^;]+)/i);
+  if (star) {
+    try { return decodeURIComponent(star[1].trim()); } catch { /* fall through */ }
+  }
+  const quoted = cd.match(/filename="([^"]+)"/i);
+  if (quoted && quoted[1]) return quoted[1];
+  return `${sanitizeFilename(`${resolved.Named_Insured} ${resolved.Policy_Number}`)}.pdf`;
+}
+// createObjectURL → a.download → click → remove → revoke (RoadTripTracker.jsx).
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+// Turn a non-OK /api/assemble JSON body into a readable message. The only key
+// guaranteed across all error shapes is `error`; missing[]/failedGates/forms are
+// surfaced when present (do NOT assume a fixed 500 shape).
+function formatBuildError(data, status) {
+  if (Array.isArray(data?.missing) && data.missing.length) {
+    return `Missing required fields: ${data.missing.join(', ')}`;
+  }
+  let msg = data?.error || `Packet build failed (HTTP ${status}).`;
+  if (Array.isArray(data?.failedGates) && data.failedGates.length) {
+    msg += '\n' + data.failedGates.map((g) => `• ${g.gate}: ${g.detail}`).join('\n');
+  }
+  if (Array.isArray(data?.forms) && data.forms.length) {
+    msg += '\n' + data.forms.map((f) => `• ${f.formNumber}${f.detail ? `: ${f.detail}` : ''}`).join('\n');
+  }
+  return msg;
+}
+
 // ─── Currency-dropdown combobox ───────────────────────────────────────────────
 // A "currency dropdown" is a dropdown whose every option is "Excluded", "None",
 // or a "$1,234"-style amount. These render as a typeable combobox (so number
@@ -409,6 +458,55 @@ function ManifestView({ manifest, total, calcValues }) {
   );
 }
 
+// ─── Build Packet action bar (production — NOT dev-gated) ─────────────────────
+function BuildPacketBar({ building, buildErr, buildDone, formCount, onBuild }) {
+  return (
+    <div className="rounded-2xl p-6 md:p-8 mt-6"
+      style={{ backgroundColor: '#ffffff', border: `1px solid ${bf.borderSubtle}`, boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: bf.accentPrimary }}>
+            Assemble
+          </p>
+          <h3 className="text-lg font-bold" style={{ fontFamily: bf.fontDisplay, color: bf.textStrong }}>
+            Build Packet
+          </h3>
+          <p className="text-xs mt-1" style={{ color: bf.textMuted, fontFamily: bf.fontBody }}>
+            Streams a single merged PDF of all {formCount} resolved form{formCount === 1 ? '' : 's'}.
+            Filling, converting, and merging can take a number of seconds.
+          </p>
+        </div>
+        <button
+          onClick={onBuild}
+          disabled={building}
+          className="font-semibold py-2.5 px-6 rounded-full text-sm border-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+          style={{ fontFamily: bf.fontBody, backgroundColor: bf.accentPrimary, color: bf.textInverse }}
+        >
+          {building ? 'Building packet…' : 'Build Packet'}
+        </button>
+      </div>
+
+      {building && (
+        <p className="mt-4 text-xs" style={{ color: bf.accentDark, fontFamily: bf.fontBody }}>
+          Building packet… filling dynamics, converting to PDF, and merging. Please don’t close this tab.
+        </p>
+      )}
+      {buildErr && (
+        <div className="mt-4 text-sm rounded-lg px-3 py-2"
+          style={{ color: bf.danger, backgroundColor: '#fef2f2', border: '1px solid #fecaca', fontFamily: bf.fontBody, whiteSpace: 'pre-wrap' }}>
+          {buildErr}
+        </div>
+      )}
+      {buildDone && !buildErr && (
+        <p className="mt-4 text-sm rounded-lg px-3 py-2"
+          style={{ color: '#1F6E3A', backgroundColor: '#E5F4E8', border: '1px solid #bfe3c9', fontFamily: bf.fontBody }}>
+          ✓ Packet downloaded.
+        </p>
+      )}
+    </div>
+  );
+}
+
 // ─── Questionnaire ────────────────────────────────────────────────────────────
 export default function Questionnaire() {
   const sections = useMemo(() => buildSections(packetConfig.questions ?? []), []);
@@ -489,6 +587,40 @@ export default function Questionnaire() {
     const manifest = resolveManifest(packetConfig.formOrder, packetConfig.formRules, postCalc);
     return { calcValues, manifest };
   }, [resolved]);
+
+  // ── Build Packet: POST the resolved memo (pre-calc; the endpoint re-derives
+  //    calcs itself) to /api/assemble and download the streamed PDF. Mirrors the
+  //    busy/err/finally convention from PrefillUpload.jsx.
+  const [building, setBuilding] = useState(false);
+  const [buildErr, setBuildErr] = useState(null);
+  const [buildDone, setBuildDone] = useState(false);
+
+  const buildPacket = async () => {
+    setBuildErr(null);
+    setBuildDone(false);
+    setBuilding(true);
+    try {
+      const res = await fetch('/api/assemble', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ resolved }), // resolved memo — NEVER engine/manifest
+      });
+      // Success is a binary PDF stream — branch on res.ok BEFORE parsing.
+      if (res.ok) {
+        const blob = await res.blob();
+        downloadBlob(blob, filenameFromResponse(res, resolved));
+        setBuildDone(true);
+      } else {
+        let data = null;
+        try { data = await res.json(); } catch { /* non-JSON error body */ }
+        throw new Error(formatBuildError(data, res.status));
+      }
+    } catch (e) {
+      setBuildErr(e?.message || 'Something went wrong building the packet.');
+    } finally {
+      setBuilding(false);
+    }
+  };
 
   const visibleTotal = Object.keys(resolved).length;
   const active = sections[activeIdx];
@@ -574,7 +706,16 @@ export default function Questionnaire() {
           {/* Active section */}
           <section className="flex-1 min-w-0">
             {view === 'manifest' && (
-              <ManifestView manifest={engine.manifest} total={packetConfig.formOrder.length} calcValues={engine.calcValues} />
+              <div>
+                <ManifestView manifest={engine.manifest} total={packetConfig.formOrder.length} calcValues={engine.calcValues} />
+                <BuildPacketBar
+                  building={building}
+                  buildErr={buildErr}
+                  buildDone={buildDone}
+                  formCount={engine.manifest.length}
+                  onBuild={buildPacket}
+                />
+              </div>
             )}
             {view === 'form' && (
             <div className="rounded-2xl p-6 md:p-8"
