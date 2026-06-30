@@ -624,6 +624,7 @@ export default function Questionnaire() {
 
   const visibleTotal = Object.keys(resolved).length;
   const active = sections[activeIdx];
+  const isLastPage = activeIdx === sections.length - 1;
   const visibleQuestions = active.questions.filter(isVisible);
 
   // Phase 4: upload + prefill step precedes the questionnaire (= the Verify screen).
@@ -758,12 +759,13 @@ export default function Questionnaire() {
                 </button>
                 <span className="text-xs" style={{ color: bf.textMuted }}>{active.name}</span>
                 <button
-                  onClick={() => setActiveIdx((i) => Math.min(sections.length - 1, i + 1))}
-                  disabled={activeIdx === sections.length - 1}
+                  onClick={() => isLastPage
+                    ? setView('manifest')                              // last page → Resolved Manifest (same as left-menu item)
+                    : setActiveIdx((i) => Math.min(sections.length - 1, i + 1))}
                   className="font-semibold py-2 px-4 rounded-full text-sm border-none cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                   style={{ fontFamily: bf.fontBody, backgroundColor: bf.accentPrimary, color: bf.textInverse }}
                 >
-                  Next →
+                  {isLastPage ? 'Review →' : 'Next →'}
                 </button>
               </div>
             </div>
