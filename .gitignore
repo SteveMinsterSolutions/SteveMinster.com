@@ -16,3 +16,6 @@ docs/policy-packet/
 *-handoff.md
 *-delta.md
 phase5-*.md
+
+test-fixtures/
+.env*
