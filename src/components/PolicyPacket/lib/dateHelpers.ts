@@ -6,6 +6,24 @@
 // format it was handed and returns the same format, so it can be used to default
 // expiration = effective + 1 year without reformatting whatever the field holds.
 
+// Normalize a date string to canonical YYYY-MM-DD for storage + display. A native
+// <input type="date"> only renders strict YYYY-MM-DD, so prefilled dates must be
+// coerced to that shape on write. Idempotent on already-ISO input; accepts US
+// MM/DD/YYYY and ISO-with-time (e.g. '2026-01-01T00:00:00'). An unrecognized value
+// is returned verbatim — surfaces a bad extraction rather than crashing.
+export function normalizeToIso(dateStr: string): string {
+  if (!dateStr) return dateStr;
+  const s = dateStr.trim();
+  const iso = /^(\d{4})-(\d{2})-(\d{2})(?:[T ].*)?$/.exec(s); // ISO date, optional time
+  if (iso) return `${iso[1]}-${iso[2]}-${iso[3]}`;
+  const us = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(s); // US MM/DD/YYYY
+  if (us) {
+    const p = (n: string) => n.padStart(2, '0');
+    return `${us[3]}-${p(us[1])}-${p(us[2])}`;
+  }
+  return dateStr; // unrecognized -> leave as-is (blank input + lit badge flags it)
+}
+
 // addOneYear('01/15/2026') -> '01/15/2027'; preserves MM/DD/YYYY or YYYY-MM-DD; clamps 02/29 -> 02/28
 export function addOneYear(dateStr: string): string {
   if (!dateStr) return '';

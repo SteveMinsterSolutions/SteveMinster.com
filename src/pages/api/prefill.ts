@@ -1,6 +1,7 @@
 // src/pages/api/prefill.ts
 import type { APIRoute } from 'astro';
 import packetConfig from '../../sandbox/policy-packet/packet-config.json';
+import { normalizeToIso } from '../../components/PolicyPacket/lib/dateHelpers';
 
 export const prerender = false;
 
@@ -22,6 +23,9 @@ const schema = (packetConfig.questions as Q[])
     return row;
   });
 const knownIds = new Set(schema.map((q) => q.id as string));
+// Date-typed ids — their prefilled values are normalized to canonical YYYY-MM-DD
+// on write so the native <input type="date"> can render them (MM/DD/YYYY shows blank).
+const dateIds = new Set(schema.filter((q) => q.type === 'date').map((q) => q.id as string));
 
 function clamp(s: unknown): string {
   const t = typeof s === 'string' ? s : '';
@@ -53,7 +57,7 @@ export const POST: APIRoute = async ({ request }) => {
     '- Include a field ONLY if you find a confident value in the text. OMIT anything uncertain — never guess.',
     '- type "dropdown": the value MUST be EXACTLY one of that field\'s "options" strings, or omit the field.',
     '- type "Currency" / currency values: format as "$1,234" (leading $, thousands commas, no cents unless present).',
-    '- type "date": prefer MM/DD/YYYY.',
+    '- type "date": use ISO format YYYY-MM-DD.',
     '- Do NOT include derived/computed fields, totals, or taxes — those are recalculated downstream.',
     '- All values are strings.',
   ].join('\n');
@@ -124,7 +128,7 @@ export const POST: APIRoute = async ({ request }) => {
   const cleaned: Record<string, string> = {};
   for (const [k, v] of Object.entries(parsed)) {
     if (!knownIds.has(k) || v === null || v === undefined) continue;
-    cleaned[k] = String(v);
+    cleaned[k] = dateIds.has(k) ? normalizeToIso(String(v)) : String(v);
   }
 
   // -00 policy-number rule: append when read from upload and not already suffixed.
