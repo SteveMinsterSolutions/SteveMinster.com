@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BFSOR Specimen Packet Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;400;500;600;700;900&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<style>
+:root{
+  --bf-background-soft:#EDF3F5; --bf-background-alt:#D6E3E8; --bf-border-subtle:#BDCDD2;
+  --bf-accent-soft:#8FC9D2; --bf-accent-primary:#00869B; --bf-accent-dark:#005367;
+  --bf-text-muted:#516266; --bf-text-body:#31484D; --bf-text-strong:#172D32;
+  --bf-text-inverse:#FFFFFF; --bf-near-black:#0B0E0E;
+  --bf-font-display:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --bf-font-body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --bf-warn:#B23A2E; --bf-warn-soft:#FBEDEA;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:#fff;color:var(--bf-text-body);font-family:var(--bf-font-body);}
+body{display:flex;flex-direction:column;min-height:100vh;}
+
+/* Warning banner (required) */
+.bf-warning-banner{background:var(--bf-near-black);color:#fff;font-family:var(--bf-font-display);
+  font-size:.8rem;letter-spacing:.03em;padding:.7rem 1.5rem;text-align:center;width:100%;}
+.bf-warning-label{font-weight:800;text-transform:uppercase;margin-right:.5rem;}
+.bf-warning-body{font-weight:500;letter-spacing:.01em;}
+
+.bf-main{flex:1 0 auto;width:100%;}
+.wrap{max-width:1080px;margin:0 auto;padding:1.5rem;}
+
+/* Top bar */
+.topbar{background:linear-gradient(135deg,var(--bf-accent-dark),var(--bf-accent-primary));color:#fff;}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-top:1.1rem;padding-bottom:1.1rem;}
+.brand{display:flex;align-items:center;gap:.75rem;}
+.brand-mark{width:34px;height:34px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;
+  color:var(--bf-accent-dark);font-family:var(--bf-font-display);font-weight:900;font-size:1.05rem;}
+.brand-name{font-family:var(--bf-font-display);font-weight:800;letter-spacing:.02em;font-size:1.05rem;line-height:1;}
+.brand-sub{font-size:.72rem;opacity:.85;font-weight:500;letter-spacing:.04em;text-transform:uppercase;margin-top:.15rem;}
+.steps{display:flex;gap:.4rem;font-size:.72rem;font-weight:600;}
+.steps .st{opacity:.55;display:flex;align-items:center;gap:.4rem;}
+.steps .st.active{opacity:1;}
+.steps .dot{width:20px;height:20px;border-radius:999px;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:.7rem;}
+.steps .st.active .dot{background:#fff;color:var(--bf-accent-dark);}
+
+/* Views */
+.view{display:none;}
+.view.active{display:block;}
+
+/* Gate */
+.gate{max-width:420px;margin:5vh auto;background:var(--bf-background-soft);border:1px solid var(--bf-border-subtle);
+  border-radius:14px;padding:2.25rem;text-align:center;}
+.gate h1{font-family:var(--bf-font-display);color:var(--bf-text-strong);font-size:1.4rem;margin:.2rem 0 .4rem;}
+.gate p{color:var(--bf-text-muted);font-size:.9rem;margin:0 0 1.4rem;}
+.gate input{width:100%;padding:.75rem .9rem;border:1px solid var(--bf-border-subtle);border-radius:10px;font-size:1rem;
+  font-family:var(--bf-font-body);margin-bottom:.8rem;}
+.gate input:focus{outline:2px solid var(--bf-accent-soft);border-color:var(--bf-accent-primary);}
+.gate .err{color:var(--bf-warn);font-size:.82rem;min-height:1.1rem;margin-bottom:.4rem;}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.7rem 1.4rem;border-radius:999px;border:none;
+  background:var(--bf-accent-primary);color:#fff;font-family:var(--bf-font-body);font-weight:600;font-size:.92rem;cursor:pointer;
+  transition:background .15s ease;text-decoration:none;}
+.btn:hover{background:var(--bf-accent-dark);}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+.btn-outline{background:transparent;border:2px solid var(--bf-accent-primary);color:var(--bf-accent-primary);}
+.btn-outline:hover{background:var(--bf-accent-primary);color:#fff;}
+.btn-lg{padding:.85rem 1.8rem;font-size:1rem;}
+
+/* Start screen */
+.start-head{text-align:center;margin:1.5rem 0 2rem;}
+.start-head h1{font-family:var(--bf-font-display);color:var(--bf-text-strong);font-size:1.7rem;margin:.2rem 0;}
+.start-head p{color:var(--bf-text-muted);max-width:560px;margin:.3rem auto 0;}
+.start-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;max-width:820px;margin:0 auto;}
+@media(max-width:720px){.start-grid{grid-template-columns:1fr;}}
+.opt{background:var(--bf-background-soft);border:1px solid var(--bf-border-subtle);border-radius:14px;padding:1.6rem;
+  display:flex;flex-direction:column;gap:.6rem;}
+.opt h3{font-family:var(--bf-font-display);color:var(--bf-text-strong);margin:.1rem 0;font-size:1.15rem;}
+.opt p{color:var(--bf-text-muted);font-size:.88rem;margin:0;flex:1;}
+.dropzone{border:2px dashed var(--bf-accent-soft);border-radius:12px;padding:1.4rem;text-align:center;cursor:pointer;
+  background:#fff;transition:all .15s ease;color:var(--bf-text-muted);font-size:.85rem;}
+.dropzone:hover,.dropzone.drag{background:var(--bf-background-alt);border-color:var(--bf-accent-primary);}
+.dropzone .big{font-size:1.6rem;line-height:1;margin-bottom:.4rem;}
+.filechip{display:none;align-items:center;gap:.5rem;background:var(--bf-accent-soft);color:var(--bf-accent-dark);
+  padding:.4rem .7rem;border-radius:999px;font-size:.82rem;font-weight:600;margin-top:.4rem;width:fit-content;}
+.detect-note{font-size:.8rem;color:var(--bf-accent-dark);margin-top:.4rem;min-height:1rem;font-weight:600;}
+
+/* Picker */
+.picker-head{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem;justify-content:space-between;margin:.5rem 0 1rem;}
+.picker-head h1{font-family:var(--bf-font-display);color:var(--bf-text-strong);font-size:1.4rem;margin:0;}
+.searchrow{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem;}
+.search{flex:1;min-width:220px;position:relative;}
+.search input{width:100%;padding:.65rem .9rem .65rem 2.2rem;border:1px solid var(--bf-border-subtle);border-radius:10px;font-size:.92rem;font-family:var(--bf-font-body);}
+.search input:focus{outline:2px solid var(--bf-accent-soft);border-color:var(--bf-accent-primary);}
+.search .ico{position:absolute;left:.75rem;top:50%;transform:translateY(-50%);color:var(--bf-text-muted);}
+.count-pill{background:var(--bf-accent-dark);color:#fff;border-radius:999px;padding:.5rem .95rem;font-size:.82rem;font-weight:700;white-space:nowrap;}
+.mini{background:none;border:1px solid var(--bf-border-subtle);color:var(--bf-text-muted);border-radius:8px;padding:.5rem .8rem;font-size:.8rem;cursor:pointer;font-family:var(--bf-font-body);font-weight:600;}
+.mini:hover{background:var(--bf-background-alt);}
+
+/* Divergence banner */
+.diverge{display:none;background:var(--bf-warn-soft);border:1px solid #E7B7AF;border-left:4px solid var(--bf-warn);
+  color:#7a281f;border-radius:10px;padding:.85rem 1rem;margin-bottom:1rem;font-size:.88rem;display:none;align-items:flex-start;gap:.6rem;}
+.diverge.show{display:flex;}
+.diverge b{color:var(--bf-warn);}
+
+/* Sections */
+.section{border:1px solid var(--bf-border-subtle);border-radius:12px;margin-bottom:.7rem;overflow:hidden;background:#fff;}
+.section.hidden{display:none;}
+.sec-head{display:flex;align-items:center;gap:.7rem;padding:.8rem 1rem;cursor:pointer;background:var(--bf-background-soft);user-select:none;}
+.sec-head:hover{background:var(--bf-background-alt);}
+.caret{transition:transform .15s ease;color:var(--bf-text-muted);font-size:.8rem;width:1rem;text-align:center;}
+.section.open .caret{transform:rotate(90deg);}
+.sec-title{font-family:var(--bf-font-display);font-weight:700;color:var(--bf-text-strong);font-size:.98rem;flex:1;}
+.sec-badge{font-size:.75rem;font-weight:700;color:var(--bf-accent-dark);background:var(--bf-accent-soft);border-radius:999px;padding:.15rem .6rem;}
+.sec-badge.zero{background:var(--bf-background-alt);color:var(--bf-text-muted);}
+.sec-selall{font-size:.74rem;color:var(--bf-accent-primary);font-weight:600;cursor:pointer;padding:.2rem .4rem;border-radius:6px;}
+.sec-selall:hover{background:var(--bf-background-alt);}
+.sec-body{display:none;padding:.3rem .4rem .5rem;}
+.section.open .sec-body{display:block;}
+.formrow{display:flex;align-items:center;gap:.7rem;padding:.5rem .7rem;border-radius:8px;}
+.formrow:hover{background:var(--bf-background-soft);}
+.formrow.hidden{display:none;}
+.formrow input[type=checkbox]{width:18px;height:18px;accent-color:var(--bf-accent-primary);cursor:pointer;flex:none;}
+.fn{font-family:"SFMono-Regular",Consolas,monospace;font-weight:600;color:var(--bf-accent-dark);font-size:.85rem;min-width:118px;}
+.ed{color:var(--bf-text-muted);font-size:.78rem;min-width:44px;}
+.nm{color:var(--bf-text-body);font-size:.88rem;flex:1;}
+.noresults{text-align:center;color:var(--bf-text-muted);padding:2rem;display:none;}
+
+/* Sticky action bar */
+.actionbar{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--bf-border-subtle);
+  padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;box-shadow:0 -6px 18px rgba(0,0,0,.06);}
+.actionbar .info{font-size:.86rem;color:var(--bf-text-muted);}
+.actionbar .info b{color:var(--bf-text-strong);}
+
+/* Assemble modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(11,14,14,.55);z-index:50;align-items:center;justify-content:center;padding:1.5rem;}
+.modal-bg.show{display:flex;}
+.modal{background:#fff;border-radius:14px;max-width:640px;width:100%;max-height:82vh;display:flex;flex-direction:column;overflow:hidden;}
+.modal-head{padding:1.2rem 1.4rem;background:var(--bf-background-soft);border-bottom:1px solid var(--bf-border-subtle);}
+.modal-head h2{font-family:var(--bf-font-display);color:var(--bf-text-strong);margin:0 0 .2rem;font-size:1.2rem;}
+.modal-head p{margin:0;color:var(--bf-text-muted);font-size:.85rem;}
+.modal-body{padding:1rem 1.4rem;overflow:auto;}
+.mrow{display:flex;gap:.6rem;padding:.35rem 0;border-bottom:1px dashed var(--bf-border-subtle);font-size:.85rem;}
+.mrow .idx{color:var(--bf-text-muted);min-width:1.7rem;}
+.mrow .mfn{font-family:monospace;font-weight:600;color:var(--bf-accent-dark);min-width:120px;}
+.mrow .mnm{color:var(--bf-text-body);flex:1;}
+.note{background:var(--bf-background-alt);border-radius:10px;padding:.8rem 1rem;font-size:.82rem;color:var(--bf-text-body);margin-top:.8rem;}
+.modal-foot{padding:1rem 1.4rem;border-top:1px solid var(--bf-border-subtle);display:flex;justify-content:flex-end;gap:.6rem;}
+.tag{display:inline-block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:.1rem .45rem;border-radius:5px;background:var(--bf-accent-soft);color:var(--bf-accent-dark);margin-left:.4rem;}
+.tag.excess{background:#DDE7C9;color:#4a5a29;}
+#prog{max-height:46vh;overflow:auto;font-size:.84rem;}
+.pline{padding:.28rem .2rem;border-bottom:1px dashed var(--bf-border-subtle);color:var(--bf-text-muted);display:flex;align-items:center;gap:.5rem;}
+.pline.ok{color:var(--bf-text-body);}
+.pline.ok::before{content:"✓";color:var(--bf-accent-primary);font-weight:800;}
+.pline.err{color:var(--bf-warn);font-weight:600;}
+.pline.err::before{content:"✕";font-weight:800;}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid var(--bf-accent-soft);border-top-color:var(--bf-accent-primary);border-radius:50%;animation:sp .7s linear infinite;}
+@keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div class="bf-warning-banner" role="alert" aria-live="polite">
+  <span class="bf-warning-label">WARNING:</span>
+  <span class="bf-warning-body">The items on this page are demonstration-only wireframes and are <strong>not</strong> connected to any Bluefields Specialty Insurance systems or data. This page operates entirely outside of any proprietary systems. No information used in these examples is stored in any database belonging to Bluefields Specialty Insurance or Minster Solutions.</span>
+</div>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <div class="brand-mark">B</div>
+      <div>
+        <div class="brand-name">Bluefields Specialty</div>
+        <div class="brand-sub">Specimen Packet Builder · BFSOR</div>
+      </div>
+    </div>
+    <div class="steps" id="steps">
+      <div class="st" data-step="gate"><span class="dot">1</span>Access</div>
+      <div class="st" data-step="start"><span class="dot">2</span>Quote</div>
+      <div class="st" data-step="picker"><span class="dot">3</span>Forms</div>
+    </div>
+  </div>
+</div>
+
+<div class="bf-main">
+
+  <!-- GATE -->
+  <div class="view" id="view-gate">
+    <div class="gate">
+      <div class="brand-mark" style="margin:0 auto .8rem;width:44px;height:44px;font-size:1.4rem;background:var(--bf-accent-primary);color:#fff;">B</div>
+      <h1>Specimen Packet Builder</h1>
+      <p>Enter the access password to continue.</p>
+      <input type="password" id="pw" placeholder="Password" autocomplete="off" />
+      <div class="err" id="pwerr"></div>
+      <button class="btn btn-lg" style="width:100%;" id="pwbtn">Enter</button>
+    </div>
+  </div>
+
+  <!-- START -->
+  <div class="view" id="view-start">
+    <div class="wrap">
+      <div class="start-head">
+        <h1>Start a specimen packet</h1>
+        <p>Upload a current quote to auto-select its scheduled forms, or skip and choose forms manually from the catalog.</p>
+      </div>
+      <div class="start-grid">
+        <div class="opt">
+          <h3>Upload current quote</h3>
+          <p>We read the quote's Forms &amp; Endorsements Schedule and pre-select the matching specimen forms. You can adjust the selection on the next screen.</p>
+          <div class="dropzone" id="dz">
+            <div class="big">⬆</div>
+            <div><b>Click to upload</b> or drop a quote PDF here</div>
+          </div>
+          <input type="file" id="file" accept="application/pdf" style="display:none" />
+          <div class="filechip" id="filechip"><span>📄</span><span id="filename"></span></div>
+          <div class="detect-note" id="detectnote"></div>
+          <button class="btn" id="uploadcontinue" style="margin-top:.4rem;display:none;">Continue to forms →</button>
+        </div>
+        <div class="opt">
+          <h3>Select forms manually</h3>
+          <p>Skip the upload and build the packet by hand from the full BFSOR catalog — all 167 CGL &amp; Excess forms, grouped by section.</p>
+          <div style="flex:1"></div>
+          <button class="btn btn-outline" id="skipbtn">Skip &amp; select manually →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PICKER -->
+  <div class="view" id="view-picker">
+    <div class="wrap">
+      <div class="picker-head">
+        <h1>Select forms for the packet</h1>
+        <button class="mini" id="backstart">← Back</button>
+      </div>
+      <div class="diverge" id="diverge">
+        <span>⚠️</span>
+        <span><b>You are altering the forms from the uploaded list.</b> Please be certain to generate a new forms list incorporating these changes.</span>
+      </div>
+      <div class="searchrow">
+        <div class="search">
+          <span class="ico">🔍</span>
+          <input type="text" id="search" placeholder="Search by form number or name…" />
+        </div>
+        <button class="mini" id="expandall">Expand all</button>
+        <button class="mini" id="collapseall">Collapse all</button>
+        <button class="mini" id="clearall">Clear selection</button>
+        <span class="count-pill"><span id="selcount">0</span> of <span id="totalcount">0</span> selected</span>
+      </div>
+      <div id="sections"></div>
+      <div class="noresults" id="noresults">No forms match your search.</div>
+    </div>
+    <div class="actionbar">
+      <div class="info"><b id="ab-count">0</b> forms selected&nbsp;·&nbsp;<span id="ab-mode">manual selection</span></div>
+      <button class="btn btn-lg" id="assemble">Assemble Specimen Packet</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Assemble modal -->
+<div class="modal-bg" id="modalbg">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="modaltitle">Assembling packet…</h2>
+      <p id="modalsub"></p>
+    </div>
+    <div class="modal-body" id="modalbody"></div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" id="modaldownload">Save form list (.txt)</button>
+      <button class="btn" id="modalclose">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="bf-warning-banner" role="alert" aria-live="polite">
+  <span class="bf-warning-label">WARNING:</span>
+  <span class="bf-warning-body">The items on this page are demonstration-only wireframes and are <strong>not</strong> connected to any Bluefields Specialty Insurance systems or data. This page operates entirely outside of any proprietary systems. No information used in these examples is stored in any database belonging to Bluefields Specialty Insurance or Minster Solutions.</span>
+</div>
+
+<script>
+const CONFIG = [{"formNumber": "BFSD 01 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Alabama", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 10, "specimenFile": "BFSD 01 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2001%2001%2006%2026.pdf"}, {"formNumber": "BFSD 02 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Alaska", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 20, "specimenFile": "BFSD 02 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2002%2001%2006%2026.pdf"}, {"formNumber": "BFSD 03 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Arizona", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 30, "specimenFile": "BFSD 03 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2003%2001%2006%2026.pdf"}, {"formNumber": "BFSD 04 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Arkansas", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 40, "specimenFile": "BFSD 04 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2004%2001%2006%2026.pdf"}, {"formNumber": "BFSD 06 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Colorado", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 50, "specimenFile": "BFSD 06 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2006%2001%2006%2026.pdf"}, {"formNumber": "BFSD 07 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Connecticut", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 60, "specimenFile": "BFSD 07 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2007%2001%2006%2026.pdf"}, {"formNumber": "BFSD 08 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Delaware", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 70, "specimenFile": "BFSD 08 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2008%2001%2006%2026.pdf"}, {"formNumber": "BFSD 09 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Florida", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 80, "specimenFile": "BFSD 09 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2009%2001%2006%2026.pdf"}, {"formNumber": "BFSD 10 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Georgia", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 90, "specimenFile": "BFSD 10 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2010%2001%2006%2026.pdf"}, {"formNumber": "BFSD 11 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Hawaii", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 100, "specimenFile": "BFSD 11 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2011%2001%2006%2026.pdf"}, {"formNumber": "BFSD 12 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Idaho", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 110, "specimenFile": "BFSD 12 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2012%2001%2006%2026.pdf"}, {"formNumber": "BFSD 13 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Illinois", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 120, "specimenFile": "BFSD 13 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2013%2001%2006%2026.pdf"}, {"formNumber": "BFSD 15 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Iowa", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 130, "specimenFile": "BFSD 15 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2015%2001%2006%2026.pdf"}, {"formNumber": "BFSD 16 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Kansas", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 140, "specimenFile": "BFSD 16 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2016%2001%2006%2026.pdf"}, {"formNumber": "BFSD 17 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Kentucky", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 150, "specimenFile": "BFSD 17 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2017%2001%2006%2026.pdf"}, {"formNumber": "BFSD 18 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Louisiana", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 160, "specimenFile": "BFSD 18 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2018%2001%2006%2026.pdf"}, {"formNumber": "BFSD 19 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Maine", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 170, "specimenFile": "BFSD 19 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2019%2001%2006%2026.pdf"}, {"formNumber": "BFSD 20 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Maryland", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 180, "specimenFile": "BFSD 20 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2020%2001%2006%2026.pdf"}, {"formNumber": "BFSD 21 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Massachusetts", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 190, "specimenFile": "BFSD 21 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2021%2001%2006%2026.pdf"}, {"formNumber": "BFSD 22 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Michigan", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 200, "specimenFile": "BFSD 22 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2022%2001%2006%2026.pdf"}, {"formNumber": "BFSD 23 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Minnesota", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 210, "specimenFile": "BFSD 23 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2023%2001%2006%2026.pdf"}, {"formNumber": "BFSD 24 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Mississippi", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 220, "specimenFile": "BFSD 24 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2024%2001%2006%2026.pdf"}, {"formNumber": "BFSD 25 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Missouri", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 230, "specimenFile": "BFSD 25 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2025%2001%2006%2026.pdf"}, {"formNumber": "BFSD 26 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Montana", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 240, "specimenFile": "BFSD 26 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2026%2001%2006%2026.pdf"}, {"formNumber": "BFSD 27 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Nebraska", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 250, "specimenFile": "BFSD 27 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2027%2001%2006%2026.pdf"}, {"formNumber": "BFSD 28 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Nevada", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 260, "specimenFile": "BFSD 28 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2028%2001%2006%2026.pdf"}, {"formNumber": "BFSD 29 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - New Hampshire", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 270, "specimenFile": "BFSD 29 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2029%2001%2006%2026.pdf"}, {"formNumber": "BFSD 30 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - New Jersey", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 280, "specimenFile": "BFSD 30 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2030%2001%2006%2026.pdf"}, {"formNumber": "BFSD 31 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - New Mexico", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 290, "specimenFile": "BFSD 31 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2031%2001%2006%2026.pdf"}, {"formNumber": "BFSD 32 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - New York", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 300, "specimenFile": "BFSD 32 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2032%2001%2006%2026.pdf"}, {"formNumber": "BFSD 33 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - North Carolina", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 310, "specimenFile": "BFSD 33 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2033%2001%2006%2026.pdf"}, {"formNumber": "BFSD 34 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - North Dakota", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 320, "specimenFile": "BFSD 34 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2034%2001%2006%2026.pdf"}, {"formNumber": "BFSD 35 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Ohio", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 330, "specimenFile": "BFSD 35 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2035%2001%2006%2026.pdf"}, {"formNumber": "BFSD 36 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Oklahoma", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 340, "specimenFile": "BFSD 36 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2036%2001%2006%2026.pdf"}, {"formNumber": "BFSD 37 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Oregon", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 350, "specimenFile": "BFSD 37 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2037%2001%2006%2026.pdf"}, {"formNumber": "BFSD 38 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Pennsylvania", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 360, "specimenFile": "BFSD 38 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2038%2001%2006%2026.pdf"}, {"formNumber": "BFSD 39 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Rhode Island", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 370, "specimenFile": "BFSD 39 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2039%2001%2006%2026.pdf"}, {"formNumber": "BFSD 40 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - South Carolina", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 380, "specimenFile": "BFSD 40 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2040%2001%2006%2026.pdf"}, {"formNumber": "BFSD 41 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - South Dakota", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 390, "specimenFile": "BFSD 41 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2041%2001%2006%2026.pdf"}, {"formNumber": "BFSD 42 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Tennessee", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 400, "specimenFile": "BFSD 42 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2042%2001%2006%2026.pdf"}, {"formNumber": "BFSD 43 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Texas", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 410, "specimenFile": "BFSD 43 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2043%2001%2006%2026.pdf"}, {"formNumber": "BFSD 44 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Utah", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 420, "specimenFile": "BFSD 44 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2044%2001%2006%2026.pdf"}, {"formNumber": "BFSD 45 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Vermont", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 430, "specimenFile": "BFSD 45 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2045%2001%2006%2026.pdf"}, {"formNumber": "BFSD 46 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Virginia", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 440, "specimenFile": "BFSD 46 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2046%2001%2006%2026.pdf"}, {"formNumber": "BFSD 47 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Washington", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 450, "specimenFile": "BFSD 47 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2047%2001%2006%2026.pdf"}, {"formNumber": "BFSD 50 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Wisconsin", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 460, "specimenFile": "BFSD 50 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2050%2001%2006%2026.pdf"}, {"formNumber": "BFSD 51 01", "edition": "06 26", "formName": "Surplus Lines Disclosure Statement - Wyoming", "program": "CGL", "section": "Surplus Lines Disclosure Statements", "sortOrder": 470, "specimenFile": "BFSD 51 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSD%2051%2001%2006%2026.pdf"}, {"formNumber": "SLC-3 USA NMA2868", "edition": "01 26", "formName": "Lloyd's Certificate (Non-CA)", "program": "CGL", "section": "Lloyd's Certificates", "sortOrder": 480, "specimenFile": "SLC-3 USA NMA2868.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/SLC-3%20USA%20NMA2868.pdf"}, {"formNumber": "SLC-3 (COR) LMA3102B", "edition": "12 19", "formName": "Lloyd's Certificate — California", "program": "CGL", "section": "Lloyd's Certificates", "sortOrder": 490, "specimenFile": "SLC-3 (COR) California LMA3102B.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/SLC-3%20%28COR%29%20California%20LMA3102B.pdf"}, {"formNumber": "BGL 00 02", "edition": "06 26", "formName": "Commercial General Liability Declarations", "program": "CGL", "section": "Declarations", "sortOrder": 500, "specimenFile": "BGL 00 02 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BGL%2000%2002%2006%2026.pdf"}, {"formNumber": "PWR 00 04", "edition": "10 23", "formName": "Schedule of Lloyd's Security", "program": "CGL", "section": "Schedules", "sortOrder": 510, "specimenFile": "PWR 00 04 10 23.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/PWR%2000%2004%2010%2023.pdf"}, {"formNumber": "BFPI 00 01", "edition": "06 26", "formName": "Premium Installment Schedule", "program": "CGL", "section": "Schedules", "sortOrder": 520, "specimenFile": "BFPI 00 01 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFPI%2000%2001%2006%2026.pdf"}, {"formNumber": "IL 00 17", "edition": "11 98", "formName": "Common Policy Conditions", "program": "CGL", "section": "Policy Conditions", "sortOrder": 530, "specimenFile": "IL 00 17 11 98.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/IL%2000%2017%2011%2098.pdf"}, {"formNumber": "CG 00 01", "edition": "04 13", "formName": "Commercial General Liability Coverage Form", "program": "CGL", "section": "Coverage Form", "sortOrder": 540, "specimenFile": "CG 00 01 04 13.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2000%2001%2004%2013.pdf"}, {"formNumber": "IL 02 28", "edition": "09 07", "formName": "CO Changes — Cancellation and Nonrenewal", "program": "CGL", "section": "State Specific Forms", "sortOrder": 550, "specimenFile": "IL 02 28 09 07.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/IL%2002%2028%2009%2007.pdf"}, {"formNumber": "IL 01 25", "edition": "11 13", "formName": "CO Changes — Civil Union", "program": "CGL", "section": "State Specific Forms", "sortOrder": 560, "specimenFile": "IL 01 25 11 13.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/IL%2001%2025%2011%2013.pdf"}, {"formNumber": "PN049909", "edition": "10 25", "formName": "Illinois Notice to Policyholders", "program": "CGL", "section": "State Specific Forms", "sortOrder": 570, "specimenFile": "PN0499091025.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/PN0499091025.pdf"}, {"formNumber": "PWR 00 05", "edition": "10 23", "formName": "Powersports \"Mobile Equipment\" Endorsement", "program": "CGL", "section": "Rental/Equipment Endorsements", "sortOrder": 580, "specimenFile": "PWR 00 05 10 23.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/PWR%2000%2005%2010%2023.pdf"}, {"formNumber": "BFOG 00 01", "edition": "12 25", "formName": "Non-Motorized Adventure Equipment Endorsement", "program": "CGL", "section": "Rental/Equipment Endorsements", "sortOrder": 590, "specimenFile": "BFOG 00 01 12 25.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2000%2001%2012%2025.pdf"}, {"formNumber": "BFOG 00 02", "edition": "05 26", "formName": "Non-Motorized Adventure Rental Endorsement", "program": "CGL", "section": "Rental/Equipment Endorsements", "sortOrder": 600, "specimenFile": "BFOG 00 02 05 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2000%2002%2005%2026.pdf"}, {"formNumber": "BFOG 00 11", "edition": "02 26", "formName": "Watercraft Liability Endorsement", "program": "CGL", "section": "Rental/Equipment Endorsements", "sortOrder": 610, "specimenFile": "BFOG 00 11 02 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2000%2011%2002%2026.pdf"}, {"formNumber": "BFOG 00 03", "edition": "12 25", "formName": "Adventure Sports Product Liability Endorsement", "program": "CGL", "section": "Adventure Sports Liability Endorsements", "sortOrder": 620, "specimenFile": "BFOG 00 03 12 25.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2000%2003%2012%2025.pdf"}, {"formNumber": "BFOG 00 04", "edition": "12 25", "formName": "Adventure Sports Premises Liability Endorsement", "program": "CGL", "section": "Adventure Sports Liability Endorsements", "sortOrder": 630, "specimenFile": "BFOG 00 04 12 25.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2000%2004%2012%2025.pdf"}, {"formNumber": "BFSR 01 21", "edition": "07 26", "formName": "Third Party Injury Expense Coverage", "program": "CGL", "section": "Participant Coverage Endorsements", "sortOrder": 640, "specimenFile": "BFSR 01 21 07 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSR%2001%2021%2007%2026.pdf"}, {"formNumber": "BFOG 00 05", "edition": "12 25", "formName": "Adventure Sports Participant Injury Endorsement", "program": "CGL", "section": "Participant Coverage Endorsements", "sortOrder": 650, "specimenFile": "BFOG 00 05 12 25.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2000%2005%2012%2025.pdf"}, {"formNumber": "BFOG 01 05", "edition": "06 26", "formName": "Adventure Sports Participant Injury Endorsement", "program": "CGL", "section": "Participant Coverage Endorsements", "sortOrder": 660, "specimenFile": "BFOG 01 05 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2001%2005%2006%2026.pdf"}, {"formNumber": "BFOG 02 05", "edition": "06 26", "formName": "Adventure Sports Participant Injury Endorsement", "program": "CGL", "section": "Participant Coverage Endorsements", "sortOrder": 670, "specimenFile": "BFOG 02 05 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2002%2005%2006%2026.pdf"}, {"formNumber": "BFSC 00 02", "edition": "02 26", "formName": "Athletic and Sports Participants Coverage Modification Endorsement", "program": "CGL", "section": "Participant Coverage Endorsements", "sortOrder": 680, "specimenFile": "BFSC 00 02 02 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSC%2000%2002%2002%2026.pdf"}, {"formNumber": "BFSC 01 02", "edition": "07 26", "formName": "Athletic and Sports Participants Coverage Modification Endorsement", "program": "CGL", "section": "Participant Coverage Endorsements", "sortOrder": 690, "specimenFile": "BFSC 01 02 07 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSC%2001%2002%2007%2026.pdf"}, {"formNumber": "BFSC 02 02", "edition": "07 26", "formName": "Athletic and Sports Participants Coverage Modification Endorsement", "program": "CGL", "section": "Participant Coverage Endorsements", "sortOrder": 700, "specimenFile": "BFSC 02 02 07 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSC%2002%2002%2007%2026.pdf"}, {"formNumber": "BFSC 03 02", "edition": "07 26", "formName": "Athletic and Sports Participants Coverage Modification Endorsement", "program": "CGL", "section": "Participant Coverage Endorsements", "sortOrder": 710, "specimenFile": "BFSC 03 02 07 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSC%2003%2002%2007%2026.pdf"}, {"formNumber": "BFSC 01 04", "edition": "07 26", "formName": "Professional Instruction and Training Liability Endorsement", "program": "CGL", "section": "Professional Instruction Endorsement", "sortOrder": 720, "specimenFile": "BFSC 01 04 07 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSC%2001%2004%2007%2026.pdf"}, {"formNumber": "BFOG 00 06", "edition": "12 25", "formName": "Adventure Sports Professional Services Endorsement", "program": "CGL", "section": "Professional Instruction Endorsement", "sortOrder": 730, "specimenFile": "BFOG 00 06 12 25.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2000%2006%2012%2025.pdf"}, {"formNumber": "BFSC 00 03", "edition": "02 26", "formName": "Facility Operations and Safety Conditions Endorsement", "program": "CGL", "section": "Facility Endorsement", "sortOrder": 740, "specimenFile": "BFSC 00 03 02 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSC%2000%2003%2002%2026.pdf"}, {"formNumber": "BFSR 00 24", "edition": "07 26", "formName": "Incident Reporting and Activation Warranty Endorsement", "program": "CGL", "section": "Warranties", "sortOrder": 750, "specimenFile": "BFSR 00 24 07 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSR%2000%2024%2007%2026.pdf"}, {"formNumber": "BFSR 00 23", "edition": "07 26", "formName": "Companion Accident Medical Coverage Warranty", "program": "CGL", "section": "Warranties", "sortOrder": 760, "specimenFile": "BFSR 00 23 07 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSR%2000%2023%2007%2026.pdf"}, {"formNumber": "PWR 00 30", "edition": "03 26", "formName": "Warranty of Compliance of Terms Motorized Outfitter 18 and up", "program": "CGL", "section": "Warranties", "sortOrder": 770, "specimenFile": "PWR 00 30 03 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/PWR%2000%2030%2003%2026.pdf"}, {"formNumber": "PWR 00 31", "edition": "03 26", "formName": "Warranty of Compliance of Terms Motorized Outfitter 16 and up", "program": "CGL", "section": "Warranties", "sortOrder": 780, "specimenFile": "PWR 00 31 03 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/PWR%2000%2031%2003%2026.pdf"}, {"formNumber": "PWR 00 32", "edition": "03 26", "formName": "Warranty of Compliance of Terms Motorized Outfitter Mixed Ages", "program": "CGL", "section": "Warranties", "sortOrder": 790, "specimenFile": "PWR 00 32 03 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/PWR%2000%2032%2003%2026.pdf"}, {"formNumber": "BFOG 01 20", "edition": "03 26", "formName": "WCOT NonMountaineering None Endorsement", "program": "CGL", "section": "Warranties", "sortOrder": 800, "specimenFile": "BFOG 01 20 03 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2001%2020%2003%2026.pdf"}, {"formNumber": "BFOG 01 21", "edition": "03 26", "formName": "WCOT NonMountaineering Limited Endorsement", "program": "CGL", "section": "Warranties", "sortOrder": 810, "specimenFile": "BFOG 01 21 03 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2001%2021%2003%2026.pdf"}, {"formNumber": "BFOG 01 22", "edition": "03 26", "formName": "WCOT NonMountaineering Standard Endorsement", "program": "CGL", "section": "Warranties", "sortOrder": 820, "specimenFile": "BFOG 01 22 03 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2001%2022%2003%2026.pdf"}, {"formNumber": "BFOG 01 23", "edition": "03 26", "formName": "WCOT NonMountaineering Enhanced Endorsement", "program": "CGL", "section": "Warranties", "sortOrder": 830, "specimenFile": "BFOG 01 23 03 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2001%2023%2003%2026.pdf"}, {"formNumber": "BFOG 01 24", "edition": "03 26", "formName": "WCOT NonMountaineering Comprehensive Endorsement", "program": "CGL", "section": "Warranties", "sortOrder": 840, "specimenFile": "BFOG 01 24 03 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2001%2024%2003%2026.pdf"}, {"formNumber": "BFOG 01 25", "edition": "03 26", "formName": "WCOT Mountaineering None Endorsement", "program": "CGL", "section": "Warranties", "sortOrder": 850, "specimenFile": "BFOG 01 25 03 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2001%2025%2003%2026.pdf"}, {"formNumber": "BFOG 01 26", "edition": "03 26", "formName": "WCOT Mountaineering Limited Endorsement", "program": "CGL", "section": "Warranties", "sortOrder": 860, "specimenFile": "BFOG 01 26 03 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2001%2026%2003%2026.pdf"}, {"formNumber": "BFOG 01 27", "edition": "03 26", "formName": "WCOT Mountaineering Standard Endorsement", "program": "CGL", "section": "Warranties", "sortOrder": 870, "specimenFile": "BFOG 01 27 03 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2001%2027%2003%2026.pdf"}, {"formNumber": "BFOG 01 28", "edition": "03 26", "formName": "WCOT Mountaineering Enhanced Endorsement", "program": "CGL", "section": "Warranties", "sortOrder": 880, "specimenFile": "BFOG 01 28 03 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2001%2028%2003%2026.pdf"}, {"formNumber": "BFOG 01 29", "edition": "03 26", "formName": "WCOT Mountaineering Comprehensive Endorsement", "program": "CGL", "section": "Warranties", "sortOrder": 890, "specimenFile": "BFOG 01 29 03 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2001%2029%2003%2026.pdf"}, {"formNumber": "BFSC 01 08", "edition": "03 26", "formName": "Warranty of Compliance — Tier 1 (Studios & Low-Impact)", "program": "CGL", "section": "Warranties", "sortOrder": 900, "specimenFile": "BFSC 01 08 03 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSC%2001%2008%2003%2026.pdf"}, {"formNumber": "BFSC 03 08", "edition": "03 26", "formName": "Warranty of Compliance — Tier 2 (Standard Facilities)", "program": "CGL", "section": "Warranties", "sortOrder": 910, "specimenFile": "BFSC 03 08 03 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSC%2003%2008%2003%2026.pdf"}, {"formNumber": "BFSC 05 08", "edition": "03 26", "formName": "Warranty of Compliance — Tier 3 (High-Intensity & Contact)", "program": "CGL", "section": "Warranties", "sortOrder": 920, "specimenFile": "BFSC 05 08 03 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSC%2005%2008%2003%2026.pdf"}, {"formNumber": "BFSC 07 08", "edition": "03 26", "formName": "Warranty of Compliance — Tier 4 & 5 (Maximum Hazard Operations)", "program": "CGL", "section": "Warranties", "sortOrder": 930, "specimenFile": "BFSC 07 08 03 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSC%2007%2008%2003%2026.pdf"}, {"formNumber": "BFSR 02 08", "edition": "06 26", "formName": "Amusement Warranty Tier 1", "program": "CGL", "section": "Warranties", "sortOrder": 940, "specimenFile": "BFSR 02 08 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSR%2002%2008%2006%2026.pdf"}, {"formNumber": "BFSR 04 08", "edition": "06 26", "formName": "Amusement Warranty Tier 2", "program": "CGL", "section": "Warranties", "sortOrder": 950, "specimenFile": "BFSR 04 08 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSR%2004%2008%2006%2026.pdf"}, {"formNumber": "BFSR 06 08", "edition": "06 26", "formName": "Amusement Warranty Tier 3", "program": "CGL", "section": "Warranties", "sortOrder": 960, "specimenFile": "BFSR 06 08 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSR%2006%2008%2006%2026.pdf"}, {"formNumber": "BFSR 08 08", "edition": "06 26", "formName": "Amusement Warranty Tier 4", "program": "CGL", "section": "Warranties", "sortOrder": 970, "specimenFile": "BFSR 08 08 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSR%2008%2008%2006%2026.pdf"}, {"formNumber": "BFSR 10 08", "edition": "06 26", "formName": "Amusement Warranty Tier 5", "program": "CGL", "section": "Warranties", "sortOrder": 980, "specimenFile": "BFSR 10 08 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSR%2010%2008%2006%2026.pdf"}, {"formNumber": "CG 03 00", "edition": "01 96", "formName": "Deductible Liability Insurance", "program": "CGL", "section": "Deductibles", "sortOrder": 990, "specimenFile": "CG 03 00 01 96.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2003%2000%2001%2096.pdf"}, {"formNumber": "BFOG 00 20", "edition": "05 26", "formName": "Damage to Premises Rented to You – Deductible Endorsement", "program": "CGL", "section": "Deductibles", "sortOrder": 1000, "specimenFile": "BFOG 00 20 05 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2000%2020%2005%2026.pdf"}, {"formNumber": "BFSR 00 30", "edition": "07 26", "formName": "Self-Insured Retention Endorsement - Excluding ALAE", "program": "CGL", "section": "SIR", "sortOrder": 1010, "specimenFile": "BFSR 00 30 07 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSR%2000%2030%2007%2026.pdf"}, {"formNumber": "BFSR 01 30", "edition": "07 26", "formName": "Self-Insured Retention Endorsement - Including ALAE", "program": "CGL", "section": "SIR", "sortOrder": 1020, "specimenFile": "BFSR 01 30 07 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSR%2001%2030%2007%2026.pdf"}, {"formNumber": "BFSR 00 25", "edition": "06 26", "formName": "Designated Location(s) General Aggregate Limit - Capped (Blanket)", "program": "CGL", "section": "Designated Locations General Aggregate", "sortOrder": 1030, "specimenFile": "BFSR 00 25 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSR%2000%2025%2006%2026.pdf"}, {"formNumber": "CG 25 04", "edition": "05 09", "formName": "Designated Location(s) General Aggregate Limit", "program": "CGL", "section": "Designated Locations General Aggregate", "sortOrder": 1040, "specimenFile": "CG 25 04 05 09.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2025%2004%2005%2009.pdf"}, {"formNumber": "BFOG 00 12", "edition": "02 26", "formName": "Each Claimant Sublimit of Liability Endorsement", "program": "CGL", "section": "Claimant Sublimit", "sortOrder": 1050, "specimenFile": "BFOG 00 12 02 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2000%2012%2002%2026.pdf"}, {"formNumber": "PWR 00 15", "edition": "06 26", "formName": "Each Claimant Sublimit of Liability Endorsement - Specified Activities Mobile Equipment", "program": "CGL", "section": "Claimant Sublimit", "sortOrder": 1060, "specimenFile": "PWR 00 15 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/PWR%2000%2015%2006%2026.pdf"}, {"formNumber": "BFSR 00 22", "edition": "06 26", "formName": "Each Claimant Sublimit of Liability Endorsement - Specified Activities (Universal)", "program": "CGL", "section": "Claimant Sublimit", "sortOrder": 1070, "specimenFile": "BFSR 00 22 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSR%2000%2022%2006%2026.pdf"}, {"formNumber": "BFOG 00 13", "edition": "05 26", "formName": "Rental User Sublimit of Insurance Endorsement", "program": "CGL", "section": "Claimant Sublimit", "sortOrder": 1080, "specimenFile": "BFOG 00 13 05 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2000%2013%2005%2026.pdf"}, {"formNumber": "CG 40 28", "edition": "09 22", "formName": "Broad Abuse or Molestation Exclusion", "program": "CGL", "section": "SA&M", "sortOrder": 1090, "specimenFile": "CG 40 28 09 22.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2040%2028%2009%2022.pdf"}, {"formNumber": "BFOG 03 15", "edition": "02 26", "formName": "Abuse or Molestation Coverage — Claims-Made", "program": "CGL", "section": "SA&M", "sortOrder": 1100, "specimenFile": "BFOG 03 15 02 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2003%2015%2002%2026.pdf"}, {"formNumber": "BFOG 02 15", "edition": "02 26", "formName": "Abuse or Molestation Coverage — Per Occurrence", "program": "CGL", "section": "SA&M", "sortOrder": 1110, "specimenFile": "BFOG 02 15 02 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2002%2015%2002%2026.pdf"}, {"formNumber": "BFOG 01 08", "edition": "01 26", "formName": "Hired Auto and Non-Owned Auto Liability", "program": "CGL", "section": "HNOA", "sortOrder": 1120, "specimenFile": "BFOG 01 08 01 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2001%2008%2001%2026.pdf"}, {"formNumber": "CA 04 55", "edition": "12 23", "formName": "Communicable Disease Exclusion for Covered Autos Liability Exposure", "program": "CGL", "section": "HNOA", "sortOrder": 1130, "specimenFile": "CA 04 55 12 23.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CA%2004%2055%2012%2023.pdf"}, {"formNumber": "NMA2920", "edition": "08 01", "formName": "Terrorism Exclusion Endorsement — Auto Liability", "program": "CGL", "section": "HNOA", "sortOrder": 1140, "specimenFile": "NMA2920.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/NMA2920.pdf"}, {"formNumber": "CG 24 22", "edition": "04 13", "formName": "Amendment of Coverage Territory – Worldwide Coverage", "program": "CGL", "section": "Amendment of Coverage Territory", "sortOrder": 1150, "specimenFile": "CG 24 22 04 13.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2024%2022%2004%2013.pdf"}, {"formNumber": "CG 24 23", "edition": "04 13", "formName": "Amendment of Coverage Territory – Additional Scheduled Countries", "program": "CGL", "section": "Amendment of Coverage Territory", "sortOrder": 1160, "specimenFile": "CG 24 23 04 13.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2024%2023%2004%2013.pdf"}, {"formNumber": "CG 24 24", "edition": "04 13", "formName": "Amendment of Coverage Territory – Worldwide Coverage with Specified Exceptions", "program": "CGL", "section": "Amendment of Coverage Territory", "sortOrder": 1170, "specimenFile": "CG 24 24 04 13.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2024%2024%2004%2013.pdf"}, {"formNumber": "CG 00 33", "edition": "04 13", "formName": "Liquor Liability Coverage Form", "program": "CGL", "section": "Liquor Liability", "sortOrder": 1180, "specimenFile": "CG 00 33 04 13.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2000%2033%2004%2013.pdf"}, {"formNumber": "CG 24 08", "edition": "10 93", "formName": "Liquor Liability (CGL Endorsement)", "program": "CGL", "section": "Liquor Liability", "sortOrder": 1190, "specimenFile": "CG 24 08 10 93.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2024%2008%2010%2093.pdf"}, {"formNumber": "CG 24 06", "edition": "04 13", "formName": "Liquor Liability Bring Your Own Alcohol Establishments", "program": "CGL", "section": "Liquor Liability", "sortOrder": 1200, "specimenFile": "CG 24 06 04 13.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2024%2006%2004%2013.pdf"}, {"formNumber": "BFSR 00 26", "edition": "06 26", "formName": "Designated Location(s) Liquor Liability Aggregate Limit - Capped (Blanket)", "program": "CGL", "section": "Liquor Liability", "sortOrder": 1210, "specimenFile": "BFSR 00 26 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSR%2000%2026%2006%2026.pdf"}, {"formNumber": "BFSC 00 08", "edition": "05 26", "formName": "Exclusion – Collapse of Temporary Structures", "program": "CGL", "section": "Exclusions", "sortOrder": 1220, "specimenFile": "BFSC 00 08 05 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFSC%2000%2008%2005%2026.pdf"}, {"formNumber": "CG 21 42", "edition": "12 04", "formName": "Exclusion — Explosion, Collapse and Underground Property Damage", "program": "CGL", "section": "Exclusions", "sortOrder": 1230, "specimenFile": "CG 21 42 12 04.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2021%2042%2012%2004.pdf"}, {"formNumber": "BFOG 00 16", "edition": "01 26", "formName": "Firearms Exclusion", "program": "CGL", "section": "Exclusions", "sortOrder": 1240, "specimenFile": "BFOG 00 16 01 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2000%2016%2001%2026.pdf"}, {"formNumber": "BFOG 00 17", "edition": "01 26", "formName": "Cannabis Exclusion", "program": "CGL", "section": "Exclusions", "sortOrder": 1250, "specimenFile": "BFOG 00 17 01 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2000%2017%2001%2026.pdf"}, {"formNumber": "CG 21 09", "edition": "06 15", "formName": "Exclusion — Unmanned Aircraft", "program": "CGL", "section": "Exclusions", "sortOrder": 1260, "specimenFile": "CG 21 09 06 15.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2021%2009%2006%2015.pdf"}, {"formNumber": "CG 40 32", "edition": "05 23", "formName": "Exclusion — PFAS", "program": "CGL", "section": "Exclusions", "sortOrder": 1270, "specimenFile": "CG 40 32 05 23.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2040%2032%2005%2023.pdf"}, {"formNumber": "CG 21 49", "edition": "09 99", "formName": "Total Pollution Exclusion", "program": "CGL", "section": "Exclusions", "sortOrder": 1280, "specimenFile": "CG 21 49 09 99.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2021%2049%2009%2099.pdf"}, {"formNumber": "CG 21 06", "edition": "12 23", "formName": "Exclusion — Access or Disclosure of Confidential or Personal Information", "program": "CGL", "section": "Exclusions", "sortOrder": 1290, "specimenFile": "CG 21 06 12 23.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2021%2006%2012%2023.pdf"}, {"formNumber": "NMA0464", "edition": "01 38", "formName": "War and Civil War Exclusion Clause", "program": "CGL", "section": "Exclusions", "sortOrder": 1300, "specimenFile": "NMA0464.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/NMA0464.pdf"}, {"formNumber": "NMA1256", "edition": "10 01", "formName": "Nuclear Incident Exclusion Clause — Liability — Direct (Broad)", "program": "CGL", "section": "Exclusions", "sortOrder": 1310, "specimenFile": "NMA1256.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/NMA1256.pdf"}, {"formNumber": "LMA5496", "edition": "12 20", "formName": "Cyber Exclusion (US Professional Indemnity)", "program": "CGL", "section": "Exclusions", "sortOrder": 1320, "specimenFile": "LMA5496.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/LMA5496.pdf"}, {"formNumber": "CL0370", "edition": "10 03", "formName": "Institute Radioactive Contamination, Chemical, Biological, Bio-Chemical and Electromagnetic Weapons Exclusion Clause", "program": "CGL", "section": "Exclusions", "sortOrder": 1330, "specimenFile": "CL0370.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CL0370.pdf"}, {"formNumber": "LMA5289", "edition": "06 17", "formName": "Nuclear and Radioactive Contamination Exclusion (Liability)", "program": "CGL", "section": "Exclusions", "sortOrder": 1340, "specimenFile": "LMA5289.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/LMA5289.pdf"}, {"formNumber": "LMA3100A", "edition": "10 23", "formName": "Sanctions Limitation and Exclusion Clause", "program": "CGL", "section": "Exclusions", "sortOrder": 1350, "specimenFile": "LMA3100A.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/LMA3100A.pdf"}, {"formNumber": "LMA5500", "edition": "05 20", "formName": "Infectious or Contagious Disease Exclusion during a PHEIC", "program": "CGL", "section": "Exclusions", "sortOrder": 1360, "specimenFile": "LMA5500.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/LMA5500.pdf"}, {"formNumber": "NMA2962", "edition": "", "formName": "Biological or Chemical Materials Exclusion", "program": "CGL", "section": "Exclusions", "sortOrder": 1370, "specimenFile": "NMA2962.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/NMA2962.pdf"}, {"formNumber": "CG 21 32", "edition": "05 09", "formName": "Communicable Disease Exclusion", "program": "CGL", "section": "Exclusions", "sortOrder": 1380, "specimenFile": "CG 21 32 05 09.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2021%2032%2005%2009.pdf"}, {"formNumber": "CG 21 65", "edition": "12 04", "formName": "Total Pollution Exclusion With a Building Heating, Cooling and Dehumidifying Equipment Exception and a Hostile Fire Exception", "program": "CGL", "section": "Exclusions", "sortOrder": 1390, "specimenFile": "CG 21 65 12 04.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2021%2065%2012%2004.pdf"}, {"formNumber": "LMA5389", "edition": "01 20", "formName": "US TRIA — New & Renewal Business Endorsement", "program": "CGL", "section": "Terrorism", "sortOrder": 1400, "specimenFile": "LMA5389.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/LMA5389.pdf"}, {"formNumber": "LMA5390", "edition": "01 20", "formName": "US TRIA — Not Purchased Clause", "program": "CGL", "section": "Terrorism", "sortOrder": 1410, "specimenFile": "LMA5390.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/LMA5390.pdf"}, {"formNumber": "SP 4 159", "edition": "01 15", "formName": "Exclusion of Other Than Certified Acts of Terrorism", "program": "CGL", "section": "Terrorism", "sortOrder": 1420, "specimenFile": "SP 4 159 01 15.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/SP%204%20159%2001%2015.pdf"}, {"formNumber": "CG 21 73", "edition": "01 15", "formName": "Exclusion of Certified Acts of Terrorism", "program": "CGL", "section": "Terrorism", "sortOrder": 1430, "specimenFile": "CG 21 73 01 15.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2021%2073%2001%2015.pdf"}, {"formNumber": "BFVQ 00 01", "edition": "02 26", "formName": "Bluefields/vQuip Fraud Warning Statements", "program": "CGL", "section": "Fraud Statements and Clauses", "sortOrder": 1440, "specimenFile": "BFVQ 00 01 02 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFVQ%2000%2001%2002%2026.pdf"}, {"formNumber": "LMA5020A", "edition": "", "formName": "Service of Suit Clause (USA)", "program": "CGL", "section": "Fraud Statements and Clauses", "sortOrder": 1450, "specimenFile": "LMA5020A.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/LMA5020A.pdf"}, {"formNumber": "LSW1001", "edition": "08 94", "formName": "Several Liability Notice", "program": "CGL", "section": "Fraud Statements and Clauses", "sortOrder": 1460, "specimenFile": "LSW1001.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/LSW1001.pdf"}, {"formNumber": "NMA1331", "edition": "", "formName": "Cancellation Clause", "program": "CGL", "section": "Fraud Statements and Clauses", "sortOrder": 1470, "specimenFile": "NMA1331.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/NMA1331.pdf"}, {"formNumber": "CG 02 24", "edition": "10 93", "formName": "Earlier Notice of Cancellation Provided by Us", "program": "CGL", "section": "Fraud Statements and Clauses", "sortOrder": 1480, "specimenFile": "CG 02 24 10 93.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2002%2024%2010%2093.pdf"}, {"formNumber": "PWR 00 18", "edition": "06 26", "formName": "Minimum Earned Premium Endorsement", "program": "CGL", "section": "Minimum Earned Premium Endorsements", "sortOrder": 1490, "specimenFile": "PWR 00 18 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/PWR%2000%2018%2006%2026.pdf"}, {"formNumber": "PWR 00 17", "edition": "11 25", "formName": "Seasonal Business Disclosure Endorsement", "program": "CGL", "section": "Minimum Earned Premium Endorsements", "sortOrder": 1500, "specimenFile": "PWR 00 17 11 25.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/PWR%2000%2017%2011%2025.pdf"}, {"formNumber": "CG 21 53", "edition": "01 96", "formName": "EXCLUSION – DESIGNATED ONGOING OPERATIONS", "program": "CGL", "section": "Additional Insured", "sortOrder": 1510, "specimenFile": "CG 21 53 01 96.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2021%2053%2001%2096.pdf"}, {"formNumber": "CG 20 26", "edition": "12 19", "formName": "Additional Insured — Designated Person or Organization", "program": "CGL", "section": "Additional Insured", "sortOrder": 1520, "specimenFile": "CG 20 26 12 19.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2020%2026%2012%2019.pdf"}, {"formNumber": "CG 20 11", "edition": "04 13", "formName": "Additional Insured — Managers or Lessors of Premises", "program": "CGL", "section": "Additional Insured", "sortOrder": 1530, "specimenFile": "CG 20 11 04 13.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2020%2011%2004%2013.pdf"}, {"formNumber": "CG 20 12", "edition": "04 13", "formName": "Additional Insured — State or Governmental Agency (Permits/Authorizations)", "program": "CGL", "section": "Additional Insured", "sortOrder": 1540, "specimenFile": "CG 20 12 04 13.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2020%2012%2004%2013.pdf"}, {"formNumber": "CG 20 13", "edition": "04 13", "formName": "Additional Insured — State or Governmental Agency", "program": "CGL", "section": "Additional Insured", "sortOrder": 1550, "specimenFile": "CG 20 13 04 13.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2020%2013%2004%2013.pdf"}, {"formNumber": "BFOG 00 07", "edition": "12 25", "formName": "Additional Insured — Lessor of Leased Equipment", "program": "CGL", "section": "Additional Insured", "sortOrder": 1560, "specimenFile": "BFOG 00 07 12 25.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2000%2007%2012%2025.pdf"}, {"formNumber": "BFOG 00 09", "edition": "01 26", "formName": "Blanket Additional Insured (incl. Products-Completed Ops if Required by Contract)", "program": "CGL", "section": "Additional Insured", "sortOrder": 1570, "specimenFile": "BFOG 00 09 01 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2000%2009%2001%2026.pdf"}, {"formNumber": "BFOG 00 10", "edition": "01 26", "formName": "Primary and Non-Contributory for Additional Insureds", "program": "CGL", "section": "Additional Insured", "sortOrder": 1580, "specimenFile": "BFOG 00 10 01 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFOG%2000%2010%2001%2026.pdf"}, {"formNumber": "CG 24 04", "edition": "12 19", "formName": "Waiver of Transfer of Rights of Recovery (Waiver of Subrogation)", "program": "CGL", "section": "Additional Insured", "sortOrder": 1590, "specimenFile": "CG 24 04 12 19.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/CG%2024%2004%2012%2019.pdf"}, {"formNumber": "PWR 00 16", "edition": "11 25", "formName": "Policy Interest Schedule", "program": "CGL", "section": "Additional Insured", "sortOrder": 1600, "specimenFile": "PWR 00 16 11 25.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/PWR%2000%2016%2011%2025.pdf"}, {"formNumber": "PWR 01 16", "edition": "06 26", "formName": "Policy Interest Schedule — with Blanket AI Language", "program": "CGL", "section": "Additional Insured", "sortOrder": 1610, "specimenFile": "PWR 01 16 06 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/PWR%2001%2016%2006%2026.pdf"}, {"formNumber": "BFEX 00 01", "edition": "07 26", "formName": "London Short Excess Form Declarations", "program": "Excess", "section": "Excess", "sortOrder": 1620, "specimenFile": "BFEX 00 01 07 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFEX%2000%2001%2007%2026.pdf"}, {"formNumber": "BFEX 00 02", "edition": "07 26", "formName": "London Short Excess Form", "program": "Excess", "section": "Excess", "sortOrder": 1630, "specimenFile": "BFEX 00 02 07 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFEX%2000%2002%2007%2026.pdf"}, {"formNumber": "BFEX 00 03", "edition": "07 26", "formName": "Non-Follow Form Endorsement - Excess", "program": "Excess", "section": "Excess", "sortOrder": 1640, "specimenFile": "BFEX 00 03 07 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFEX%2000%2003%2007%2026.pdf"}, {"formNumber": "BFEX 00 04", "edition": "07 26", "formName": "Professional Services Exclusion - Excess", "program": "Excess", "section": "Excess", "sortOrder": 1650, "specimenFile": "BFEX 00 04 07 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFEX%2000%2004%2007%2026.pdf"}, {"formNumber": "BFEX 00 05", "edition": "07 26", "formName": "Sexual Abuse or Molestation Exclusion", "program": "Excess", "section": "Excess", "sortOrder": 1660, "specimenFile": "BFEX 00 05 07 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFEX%2000%2005%2007%2026.pdf"}, {"formNumber": "BFEX 00 06", "edition": "07 26", "formName": "Absolute Auto Exclusion", "program": "Excess", "section": "Excess", "sortOrder": 1670, "specimenFile": "BFEX 00 06 07 26.pdf", "specimenUrl": "https://pgkohfffgbtyyhoi.public.blob.vercel-storage.com/specimen/BFEX%2000%2006%2007%2026.pdf"}];
+const PASSWORD = "BF$RSp3c!men";
+
+// ---- state ----
+const state = {
+  selected: new Set(),      // formNumber keys
+  uploaded: false,
+  uploadedSet: null,        // Set of detected formNumbers (baseline)
+  detectedOrder: [],        // order forms appeared in the quote
+  quoteName: "",
+  quoteFile: null,          // the uploaded quote File (for the merge)
+};
+const keyOf = f => f.formNumber + " " + f.edition;
+
+// ---- sections ordering ----
+const sectionOrder = [];
+const bySection = {};
+for (const f of CONFIG){
+  if (!(f.section in bySection)){ bySection[f.section]=[]; sectionOrder.push(f.section); }
+  bySection[f.section].push(f);
+}
+
+// ---- view switching ----
+function show(view){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+view).classList.add('active');
+  document.querySelectorAll('#steps .st').forEach(s=>s.classList.toggle('active', s.dataset.step===view));
+  window.scrollTo(0,0);
+}
+
+// ---- gate ----
+document.getElementById('pwbtn').onclick = tryPw;
+document.getElementById('pw').addEventListener('keydown',e=>{ if(e.key==='Enter') tryPw(); });
+function tryPw(){
+  const v=document.getElementById('pw').value;
+  if(v===PASSWORD){ document.getElementById('pwerr').textContent=''; show('start'); }
+  else { document.getElementById('pwerr').textContent='Incorrect password. Please try again.'; }
+}
+
+// ---- start / upload ----
+const dz=document.getElementById('dz'), fileInput=document.getElementById('file');
+dz.onclick=()=>fileInput.click();
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag'); if(e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);});
+fileInput.onchange=e=>{ if(e.target.files[0]) handleFile(e.target.files[0]); };
+document.getElementById('skipbtn').onclick=()=>{ resetManual(); buildPicker(); show('picker'); };
+document.getElementById('uploadcontinue').onclick=()=>{ buildPicker(); show('picker'); };
+
+function resetManual(){
+  state.uploaded=false; state.uploadedSet=null; state.detectedOrder=[]; state.selected=new Set(); state.quoteFile=null; state.quoteName="";
+}
+
+async function handleFile(file){
+  state.quoteName=file.name;
+  state.quoteFile=file;
+  document.getElementById('filename').textContent=file.name;
+  document.getElementById('filechip').style.display='inline-flex';
+  const note=document.getElementById('detectnote');
+  note.textContent='Reading quote…';
+  try{
+    const buf=await file.arrayBuffer();
+    const text=await extractPdfText(buf);
+    const detected=detectForms(text);
+    state.uploaded=true;
+    state.selected=new Set(detected.map(f=>keyOf(f)));
+    state.uploadedSet=new Set(detected.map(f=>keyOf(f)));
+    state.detectedOrder=detected.map(f=>keyOf(f));
+    note.textContent = detected.length
+      ? `Detected ${detected.length} form${detected.length===1?'':'s'} from the quote schedule.`
+      : 'No catalog forms detected — you can select forms manually on the next screen.';
+    document.getElementById('uploadcontinue').style.display='inline-flex';
+  }catch(err){
+    console.error(err);
+    note.textContent='Could not read this PDF. You can still select forms manually.';
+    state.uploaded=true; state.uploadedSet=new Set(); state.selected=new Set();
+    document.getElementById('uploadcontinue').style.display='inline-flex';
+  }
+}
+
+async function extractPdfText(buf){
+  const pdfjsLib=window['pdfjs-dist/build/pdf'];
+  pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const pdf=await pdfjsLib.getDocument({data:buf}).promise;
+  let all='';
+  for(let p=1;p<=pdf.numPages;p++){
+    const page=await pdf.getPage(p);
+    const tc=await page.getTextContent();
+    all += ' ' + tc.items.map(i=>i.str).join(' ');
+  }
+  return all;
+}
+
+function normNum(s){ return (s||'').toUpperCase().replace(/[^A-Z0-9]/g,''); }
+function detectForms(text){
+  const norm=normNum(text);
+  const found=[]; const seen=new Set();
+  // Preserve order of appearance: find index of each form's normalized number+edition, else number
+  const candidates=[];
+  for(const f of CONFIG){
+    const nk=normNum(f.formNumber);
+    let idx=-1;
+    const withEd=normNum(f.formNumber+f.edition);
+    idx=norm.indexOf(withEd);
+    if(idx<0) idx=norm.indexOf(nk);
+    if(idx>=0 && !seen.has(keyOf(f))){ candidates.push({f,idx}); seen.add(keyOf(f)); }
+  }
+  candidates.sort((a,b)=>a.idx-b.idx);
+  return candidates.map(c=>c.f);
+}
+
+// ---- picker build ----
+function buildPicker(){
+  const container=document.getElementById('sections');
+  container.innerHTML='';
+  document.getElementById('totalcount').textContent=CONFIG.length;
+  for(const sec of sectionOrder){
+    const forms=bySection[sec];
+    const secEl=document.createElement('div');
+    secEl.className='section open';
+    secEl.dataset.section=sec;
+    const head=document.createElement('div'); head.className='sec-head';
+    head.innerHTML=`<span class="caret">▶</span><span class="sec-title">${esc(sec)}</span>
+      <span class="sec-selall" data-sec="${esc(sec)}">Select all</span>
+      <span class="sec-badge zero"><span class="secsel">0</span>/${forms.length}</span>`;
+    head.addEventListener('click',e=>{ if(e.target.classList.contains('sec-selall'))return; secEl.classList.toggle('open'); });
+    head.querySelector('.sec-selall').addEventListener('click',()=>toggleSection(sec));
+    const body=document.createElement('div'); body.className='sec-body';
+    for(const f of forms){
+      const row=document.createElement('label'); row.className='formrow'; row.dataset.key=keyOf(f);
+      row.dataset.search=(f.formNumber+' '+f.edition+' '+f.formName).toLowerCase();
+      const isExcess=f.program==='Excess';
+      row.innerHTML=`<input type="checkbox" ${state.selected.has(keyOf(f))?'checked':''}/>
+        <span class="fn">${esc(f.formNumber)}</span>
+        <span class="ed">${esc(f.edition||'—')}</span>
+        <span class="nm">${esc(f.formName)}${isExcess?'<span class="tag excess">Excess</span>':''}</span>`;
+      row.querySelector('input').addEventListener('change',e=>{
+        if(e.target.checked) state.selected.add(keyOf(f)); else state.selected.delete(keyOf(f));
+        updateCounts();
+      });
+      body.appendChild(row);
+    }
+    secEl.appendChild(head); secEl.appendChild(body);
+    container.appendChild(secEl);
+  }
+  document.getElementById('ab-mode').textContent = state.uploaded ? ('from uploaded quote'+(state.quoteName?' · '+state.quoteName:'')) : 'manual selection';
+  updateCounts();
+}
+
+function toggleSection(sec){
+  const forms=bySection[sec];
+  const allSel=forms.every(f=>state.selected.has(keyOf(f)));
+  for(const f of forms){ if(allSel) state.selected.delete(keyOf(f)); else state.selected.add(keyOf(f)); }
+  syncChecks(); updateCounts();
+}
+function syncChecks(){
+  document.querySelectorAll('.formrow').forEach(row=>{
+    row.querySelector('input').checked = state.selected.has(row.dataset.key);
+  });
+}
+function updateCounts(){
+  const n=state.selected.size;
+  document.getElementById('selcount').textContent=n;
+  document.getElementById('ab-count').textContent=n;
+  document.getElementById('assemble').disabled = n===0;
+  // per-section badges
+  document.querySelectorAll('.section').forEach(secEl=>{
+    const forms=bySection[secEl.dataset.section];
+    const c=forms.filter(f=>state.selected.has(keyOf(f))).length;
+    const badge=secEl.querySelector('.sec-badge'); badge.querySelector('.secsel').textContent=c;
+    badge.classList.toggle('zero',c===0);
+    secEl.querySelector('.sec-selall').textContent = forms.every(f=>state.selected.has(keyOf(f)))?'Clear':'Select all';
+  });
+  // divergence
+  const dv=document.getElementById('diverge');
+  if(state.uploaded && state.uploadedSet){
+    const same = state.uploadedSet.size===state.selected.size && [...state.selected].every(k=>state.uploadedSet.has(k));
+    dv.classList.toggle('show', !same);
+  } else dv.classList.remove('show');
+}
+
+// ---- search ----
+document.getElementById('search').addEventListener('input',e=>{
+  const q=e.target.value.trim().toLowerCase();
+  let anyVisible=false;
+  document.querySelectorAll('.section').forEach(secEl=>{
+    let secVisible=false;
+    secEl.querySelectorAll('.formrow').forEach(row=>{
+      const hit = !q || row.dataset.search.includes(q);
+      row.classList.toggle('hidden',!hit);
+      if(hit) secVisible=true;
+    });
+    secEl.classList.toggle('hidden',!secVisible);
+    if(secVisible){ anyVisible=true; if(q) secEl.classList.add('open'); }
+  });
+  document.getElementById('noresults').style.display=anyVisible?'none':'block';
+});
+
+// ---- toolbar ----
+document.getElementById('expandall').onclick=()=>document.querySelectorAll('.section').forEach(s=>s.classList.add('open'));
+document.getElementById('collapseall').onclick=()=>document.querySelectorAll('.section').forEach(s=>s.classList.remove('open'));
+document.getElementById('clearall').onclick=()=>{ state.selected.clear(); syncChecks(); updateCounts(); };
+document.getElementById('backstart').onclick=()=>show('start');
+
+// ---- assemble (real pdf-lib merge) ----
+let assembling=false;
+document.getElementById('assemble').onclick=runAssembly;
+document.getElementById('modalclose').onclick=()=>{ if(!assembling) document.getElementById('modalbg').classList.remove('show'); };
+document.getElementById('modalbg').addEventListener('click',e=>{ if(e.target.id==='modalbg' && !assembling) e.currentTarget.classList.remove('show'); });
+document.getElementById('modaldownload').onclick=downloadFormList;
+
+function sanitize(s){ return (s||'').replace(/[\\/:*?"<>|]+/g,' ').replace(/\s+/g,' ').trim(); }
+function makeFilename(){
+  if(state.quoteName){ const base=state.quoteName.replace(/\.pdf$/i,''); return sanitize(base)+' — Specimen Packet.pdf'; }
+  return 'BFSOR Specimen Packet.pdf';
+}
+
+async function runAssembly(){
+  if(assembling) return;
+  const ordered=orderedSelection();
+  if(!ordered.length) return;
+  assembling=true;
+  const bg=document.getElementById('modalbg'); bg.classList.add('show');
+  document.getElementById('modaltitle').textContent='Assembling packet…';
+  document.getElementById('modalsub').innerHTML=`<span class="spin"></span> Fetching ${ordered.length} specimen form${ordered.length===1?'':'s'}${state.quoteFile?' and merging onto your quote':''}…`;
+  const body=document.getElementById('modalbody');
+  body.innerHTML='<div id="prog"></div>';
+  const prog=document.getElementById('prog');
+  const line=(txt,cls)=>{ const d=document.createElement('div'); d.className='pline'+(cls?' '+cls:''); d.textContent=txt; prog.appendChild(d); prog.scrollTop=prog.scrollHeight; return d; };
+  try{
+    const {PDFDocument}=PDFLib;
+    const out=await PDFDocument.create();
+    let expected=0;
+    // 1) quote pages first
+    if(state.quoteFile){
+      const qbytes=await state.quoteFile.arrayBuffer();
+      const q=await PDFDocument.load(qbytes,{ignoreEncryption:true});
+      expected+=q.getPageCount();
+      const qp=await out.copyPages(q,q.getPageIndices()); qp.forEach(p=>out.addPage(p));
+      line(`Quote: ${state.quoteName} — ${q.getPageCount()} pp`,'ok');
+    }
+    // 2) specimens in order
+    const failed=[];
+    for(let i=0;i<ordered.length;i++){
+      const f=ordered[i];
+      const d=line(`${i+1}. ${f.formNumber} ${f.edition||''} …`);
+      try{
+        if(!f.specimenUrl) throw new Error('no URL in config');
+        const resp=await fetch(f.specimenUrl);
+        if(!resp.ok) throw new Error('HTTP '+resp.status);
+        const buf=await resp.arrayBuffer();
+        const src=await PDFDocument.load(buf,{ignoreEncryption:true});
+        expected+=src.getPageCount();
+        const pages=await out.copyPages(src,src.getPageIndices()); pages.forEach(p=>out.addPage(p));
+        d.className='pline ok'; d.textContent=`${i+1}. ${f.formNumber} ${f.edition||''} — ${src.getPageCount()} pp`;
+      }catch(err){
+        d.className='pline err'; d.textContent=`${i+1}. ${f.formNumber} ${f.edition||''} — FAILED: ${err.message||err}`;
+        failed.push(f);
+      }
+    }
+    // 3) hard-fail if any form missing (never download a partial packet)
+    if(failed.length){
+      document.getElementById('modaltitle').textContent='Assembly incomplete';
+      document.getElementById('modalsub').innerHTML=`<b>${failed.length}</b> form(s) could not be fetched — <b>no packet was downloaded</b>. If these are cross-origin (CORS) errors, the specimen store needs a same-origin proxy route; otherwise check the form URLs.`;
+      return;
+    }
+    // 4) page-count gate + download
+    const bytes=await out.save();
+    const total=out.getPageCount();
+    const gateOk = total===expected;
+    const blob=new Blob([bytes],{type:'application/pdf'});
+    const fname=makeFilename();
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=fname; a.click();
+    document.getElementById('modaltitle').textContent='✓ Packet assembled';
+    document.getElementById('modalsub').innerHTML=`Downloaded <b>${esc(fname)}</b> — <b>${total} pages</b>`
+      + (state.quoteFile?` (quote + ${ordered.length} specimens)`:` (${ordered.length} specimens)`)
+      + (gateOk?'':' &nbsp;⚠ page-count gate mismatch — review before use.');
+  }catch(err){
+    document.getElementById('modaltitle').textContent='Assembly error';
+    document.getElementById('modalsub').textContent=String(err.message||err);
+  }finally{
+    assembling=false;
+  }
+}
+
+function downloadFormList(){
+  const ordered=orderedSelection();
+  const lines=['BFSOR Specimen Packet — Form List','Mode: '+(state.uploaded?('From quote '+(state.quoteName||'')):'Manual selection'),'Total forms: '+ordered.length,''];
+  ordered.forEach((f,i)=>lines.push(`${String(i+1).padStart(3,' ')}. ${f.formNumber} ${f.edition||''}  —  ${f.formName}`));
+  const blob=new Blob([lines.join('\n')],{type:'text/plain'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='specimen-packet-form-list.txt'; a.click();
+}
+
+function orderedSelection(){
+  const sel=[...state.selected];
+  if(state.uploaded && state.detectedOrder.length){
+    // detected order first (for those still selected), then any added forms by catalog order
+    const inDetected=state.detectedOrder.filter(k=>state.selected.has(k));
+    const added=CONFIG.filter(f=>state.selected.has(keyOf(f)) && !state.detectedOrder.includes(keyOf(f))).sort((a,b)=>a.sortOrder-b.sortOrder).map(keyOf);
+    const orderKeys=[...inDetected,...added];
+    return orderKeys.map(k=>CONFIG.find(f=>keyOf(f)===k));
+  }
+  return CONFIG.filter(f=>state.selected.has(keyOf(f))).sort((a,b)=>a.sortOrder-b.sortOrder);
+}
+
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+// init
+show('gate');
+</script>
+</body>
+</html>
