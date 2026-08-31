@@ -172,6 +172,15 @@ export function isFormListed(formNumber, binderEntries) {
   return binderEntries.some((e) => e === key || e.startsWith(key + ' '));
 }
 
+// QA gate: binder-listed entries that match NO library form (unmatched). These
+// were requested on the binder but the library cannot produce them, so they must
+// be surfaced. Same edition-agnostic matching as isFormListed.
+export function unmatchedBinderForms(binderRaw, formOrder) {
+  const entries = parseBinderForms(binderRaw);
+  const libKeys = (formOrder || []).map((f) => formNumberKey(f.formNumber));
+  return entries.filter((e) => !libKeys.some((k) => e === k || e.startsWith(k + ' ')));
+}
+
 export function resolveManifest(formOrder, formRules, resolved) {
   const out = [];
   const binderEntries = parseBinderForms(resolved && resolved.Binder_Forms);

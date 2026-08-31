@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import packetConfig from '../../sandbox/policy-packet/packet-config.json';
 import { evaluateRule } from './evaluateRule.js';
-import { runCalculations, resolveManifest } from './resolveEngine.js';
+import { runCalculations, resolveManifest, unmatchedBinderForms } from './resolveEngine.js';
 import { addOneYear } from './lib/dateHelpers';
 import PrefillUpload from './PrefillUpload.jsx';
 
@@ -413,7 +413,7 @@ function CalcValuesPanel({ calcValues }) {
 }
 
 // ─── Resolved form manifest ───────────────────────────────────────────────────
-function ManifestView({ manifest, total, calcValues }) {
+function ManifestView({ manifest, total, calcValues, unmatched = [] }) {
   return (
     <div className="rounded-2xl p-6 md:p-8"
       style={{ backgroundColor: '#ffffff', border: `1px solid ${bf.borderSubtle}`, boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
@@ -429,6 +429,19 @@ function ManifestView({ manifest, total, calcValues }) {
         </p>
       </div>
 
+      {unmatched.length > 0 && (
+        <div className="rounded-xl mb-6 p-4" style={{ backgroundColor: '#fff4f4', border: `1px solid ${bf.danger}` }}>
+          <p className="text-sm font-bold" style={{ color: bf.danger, fontFamily: bf.fontBody }}>
+            ⚠ {unmatched.length} form{unmatched.length === 1 ? '' : 's'} on the binder {unmatched.length === 1 ? 'was' : 'were'} not found in the library and will NOT be included:
+          </p>
+          <ul className="mt-2 text-sm" style={{ color: bf.textBody, fontFamily: bf.fontBody }}>
+            {unmatched.map((f) => <li key={f} className="tabular-nums">• {f}</li>)}
+          </ul>
+          <p className="text-xs mt-2 italic" style={{ color: bf.textMuted }}>
+            Check the form number/edition on the binder, or stage &amp; wire the form before building.
+          </p>
+        </div>
+      )}
       <CalcValuesPanel calcValues={calcValues} />
 
       <div className="overflow-x-auto">
@@ -594,7 +607,8 @@ export default function Questionnaire() {
   const engine = useMemo(() => {
     const { resolved: postCalc, calcValues } = runCalculations(packetConfig.calculations, resolved);
     const manifest = resolveManifest(packetConfig.formOrder, packetConfig.formRules, postCalc);
-    return { calcValues, manifest };
+    const unmatched = unmatchedBinderForms(postCalc.Binder_Forms, packetConfig.formOrder);
+    return { calcValues, manifest, unmatched };
   }, [resolved]);
 
   // ── Build Packet: POST the resolved memo (pre-calc; the endpoint re-derives
@@ -717,7 +731,7 @@ export default function Questionnaire() {
           <section className="flex-1 min-w-0">
             {view === 'manifest' && (
               <div>
-                <ManifestView manifest={engine.manifest} total={packetConfig.formOrder.length} calcValues={engine.calcValues} />
+                <ManifestView manifest={engine.manifest} total={packetConfig.formOrder.length} calcValues={engine.calcValues} unmatched={engine.unmatched} />
                 <BuildPacketBar
                   building={building}
                   buildErr={buildErr}
