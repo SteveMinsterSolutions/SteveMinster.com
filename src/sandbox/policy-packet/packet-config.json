@@ -7235,6 +7235,52 @@
         "Earlier Notice of Cancellation Provided by Us": "See Form CG 02 24"
       },
       "default": ""
+    },
+    {
+      "kind": "copy",
+      "section": 2,
+      "seq": 50,
+      "target": "SIR_Prod",
+      "source": "SIR_Per"
+    },
+    {
+      "kind": "copy",
+      "section": 2,
+      "seq": 51,
+      "target": "SIR_CovA",
+      "source": "SIR_Per"
+    },
+    {
+      "kind": "copy",
+      "section": 2,
+      "seq": 52,
+      "target": "SIR_CovB",
+      "source": "SIR_Per"
+    },
+    {
+      "kind": "copy",
+      "section": 2,
+      "seq": 53,
+      "target": "CIR_TPI",
+      "source": "SIR_Per"
+    },
+    {
+      "kind": "lookup",
+      "section": 2,
+      "seq": 54,
+      "target": "SIR_Agg",
+      "sourceField": "SIR_Per",
+      "cases": {},
+      "default": "None"
+    },
+    {
+      "kind": "lookup",
+      "section": 2,
+      "seq": 55,
+      "target": "SIR_CovC",
+      "sourceField": "SIR_Per",
+      "cases": {},
+      "default": "Excluded"
     }
   ],
   "formOrder": [
@@ -7904,6 +7950,26 @@
       "edition": "07 26",
       "name": "Professional Instruction",
       "file": "BFSC 01 04 07 26 Professional Instruction.docx",
+      "library": "dynamic",
+      "isDynamic": true,
+      "present": true
+    },
+    {
+      "seq": "8.11",
+      "formNumber": "BFSR 00 30",
+      "edition": "08 26",
+      "name": "Self-Insured Retention — Excluding ALAE",
+      "file": "BFSR 00 30 08 26 SIR Excl ALAE.docx",
+      "library": "dynamic",
+      "isDynamic": true,
+      "present": true
+    },
+    {
+      "seq": "8.12",
+      "formNumber": "BFSR 01 30",
+      "edition": "08 26",
+      "name": "Self-Insured Retention — Including ALAE",
+      "file": "BFSR 01 30 08 26 SIR Incl ALAE.docx",
       "library": "dynamic",
       "isDynamic": true,
       "present": true
@@ -9673,6 +9739,22 @@
       "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
     },
     {
+      "seq": "8.11",
+      "formNumber": "BFSR 00 30",
+      "rule": {
+        "onBinderList": true
+      },
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
+    },
+    {
+      "seq": "8.12",
+      "formNumber": "BFSR 01 30",
+      "rule": {
+        "onBinderList": true
+      },
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
+    },
+    {
       "seq": "9.0",
       "formNumber": "BFOG 01 20",
       "rule": {
@@ -10909,6 +10991,24 @@
     ],
     "BFSC 01 04": [
       "PIT_Limit"
+    ],
+    "BFSR 00 30": [
+      "SIR_Per",
+      "SIR_Prod",
+      "SIR_Agg",
+      "SIR_CovA",
+      "SIR_CovB",
+      "SIR_CovC",
+      "CIR_TPI"
+    ],
+    "BFSR 01 30": [
+      "SIR_Per",
+      "SIR_Prod",
+      "SIR_Agg",
+      "SIR_CovA",
+      "SIR_CovB",
+      "SIR_CovC",
+      "CIR_TPI"
     ]
   }
 }

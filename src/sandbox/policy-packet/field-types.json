@@ -1148,5 +1148,40 @@
     "tokenFormat": "currency_whole",
     "answerType": "Drop Down",
     "behavior": "passthrough"
+  },
+  "SIR_Per": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "currency_whole"
+  },
+  "SIR_Prod": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Calc",
+    "behavior": "currency_whole"
+  },
+  "SIR_CovA": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Calc",
+    "behavior": "currency_whole"
+  },
+  "SIR_CovB": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Calc",
+    "behavior": "currency_whole"
+  },
+  "CIR_TPI": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Calc",
+    "behavior": "currency_whole"
+  },
+  "SIR_Agg": {
+    "tokenFormat": "Text",
+    "answerType": "Derived",
+    "behavior": "passthrough"
+  },
+  "SIR_CovC": {
+    "tokenFormat": "Text",
+    "answerType": "Derived",
+    "behavior": "passthrough"
   }
 }
