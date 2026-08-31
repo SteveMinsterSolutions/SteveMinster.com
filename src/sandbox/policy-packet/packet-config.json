@@ -826,6 +826,354 @@
       "showIfRaw": "None - Always Ask"
     },
     {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 10,
+      "id": "Excess_A_Premium",
+      "label": "Excess Layer 1 (BFEI6) — Annual Premium?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Excess_Liability",
+            "op": "eq",
+            "values": [
+              "Yes - Layer 1 Only",
+              "Yes - Layers 1 and 2"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "Excess Liability includes Layer 1",
+      "group": "Excess Premium & Taxes — Layer 1 (BFEI6)"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 11,
+      "id": "Excess_A_Taxes_Fees",
+      "label": "Excess Layer 1 (BFEI6) — Insurance Taxes & Fees?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Excess_Liability",
+            "op": "eq",
+            "values": [
+              "Yes - Layer 1 Only",
+              "Yes - Layers 1 and 2"
+            ]
+          },
+          {
+            "field": "L_1_ST",
+            "op": "neq",
+            "values": [
+              "CA"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "Excess Liability includes Layer 1 and {{L_1_ST}} ≠ \"CA\"",
+      "group": "Excess Premium & Taxes — Layer 1 (BFEI6)"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 12,
+      "id": "Excess_A_SL_Tax",
+      "label": "Excess Layer 1 (BFEI6) — CA Surplus Lines Tax?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Excess_Liability",
+            "op": "eq",
+            "values": [
+              "Yes - Layer 1 Only",
+              "Yes - Layers 1 and 2"
+            ]
+          },
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "CA"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "Excess Liability includes Layer 1 and {{L_1_ST}} = \"CA\"",
+      "group": "Excess Premium & Taxes — Layer 1 (BFEI6)"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 13,
+      "id": "Excess_A_Stamp",
+      "label": "Excess Layer 1 (BFEI6) — CA Stamping Fee?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Excess_Liability",
+            "op": "eq",
+            "values": [
+              "Yes - Layer 1 Only",
+              "Yes - Layers 1 and 2"
+            ]
+          },
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "CA"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "Excess Liability includes Layer 1 and {{L_1_ST}} = \"CA\"",
+      "group": "Excess Premium & Taxes — Layer 1 (BFEI6)"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 14,
+      "id": "Excess_A_Min_Earned",
+      "label": "Excess Layer 1 (BFEI6) — Minimum Earned Percentage?",
+      "type": "dropdown",
+      "required": "conditional",
+      "options": [
+        "25%",
+        "50%",
+        "75%",
+        "100%"
+      ],
+      "showIf": {
+        "all": [
+          {
+            "field": "Excess_Liability",
+            "op": "eq",
+            "values": [
+              "Yes - Layer 1 Only",
+              "Yes - Layers 1 and 2"
+            ]
+          },
+          {
+            "field": "L_1_ST",
+            "op": "neq",
+            "values": [
+              "CA"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "Excess Liability includes Layer 1 and {{L_1_ST}} ≠ \"CA\"",
+      "group": "Excess Premium & Taxes — Layer 1 (BFEI6)"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 15,
+      "id": "Excess_A_Total",
+      "label": "Excess Layer 1 (BFEI6) — Total Cost?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Excess_Liability",
+            "op": "eq",
+            "values": [
+              "Yes - Layer 1 Only",
+              "Yes - Layers 1 and 2"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "Excess Liability includes Layer 1",
+      "group": "Excess Premium & Taxes — Layer 1 (BFEI6)"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 16,
+      "id": "Excess_B_Premium",
+      "label": "Excess Layer 2 (BFEX6) — Annual Premium?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Excess_Liability",
+            "op": "eq",
+            "values": [
+              "Yes - Layers 1 and 2"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "Excess Liability = Layers 1 and 2",
+      "group": "Excess Premium & Taxes — Layer 2 (BFEX6)"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 17,
+      "id": "Excess_B_Taxes_Fees",
+      "label": "Excess Layer 2 (BFEX6) — Insurance Taxes & Fees?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Excess_Liability",
+            "op": "eq",
+            "values": [
+              "Yes - Layers 1 and 2"
+            ]
+          },
+          {
+            "field": "L_1_ST",
+            "op": "neq",
+            "values": [
+              "CA"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "Excess Liability = Layers 1 and 2 and {{L_1_ST}} ≠ \"CA\"",
+      "group": "Excess Premium & Taxes — Layer 2 (BFEX6)"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 18,
+      "id": "Excess_B_SL_Tax",
+      "label": "Excess Layer 2 (BFEX6) — CA Surplus Lines Tax?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Excess_Liability",
+            "op": "eq",
+            "values": [
+              "Yes - Layers 1 and 2"
+            ]
+          },
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "CA"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "Excess Liability = Layers 1 and 2 and {{L_1_ST}} = \"CA\"",
+      "group": "Excess Premium & Taxes — Layer 2 (BFEX6)"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 19,
+      "id": "Excess_B_Stamp",
+      "label": "Excess Layer 2 (BFEX6) — CA Stamping Fee?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Excess_Liability",
+            "op": "eq",
+            "values": [
+              "Yes - Layers 1 and 2"
+            ]
+          },
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "CA"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "Excess Liability = Layers 1 and 2 and {{L_1_ST}} = \"CA\"",
+      "group": "Excess Premium & Taxes — Layer 2 (BFEX6)"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 20,
+      "id": "Excess_B_Min_Earned",
+      "label": "Excess Layer 2 (BFEX6) — Minimum Earned Percentage?",
+      "type": "dropdown",
+      "required": "conditional",
+      "options": [
+        "25%",
+        "50%",
+        "75%",
+        "100%"
+      ],
+      "showIf": {
+        "all": [
+          {
+            "field": "Excess_Liability",
+            "op": "eq",
+            "values": [
+              "Yes - Layers 1 and 2"
+            ]
+          },
+          {
+            "field": "L_1_ST",
+            "op": "neq",
+            "values": [
+              "CA"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "Excess Liability = Layers 1 and 2 and {{L_1_ST}} ≠ \"CA\"",
+      "group": "Excess Premium & Taxes — Layer 2 (BFEX6)"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 21,
+      "id": "Excess_B_Total",
+      "label": "Excess Layer 2 (BFEX6) — Total Cost?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Excess_Liability",
+            "op": "eq",
+            "values": [
+              "Yes - Layers 1 and 2"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "Excess Liability = Layers 1 and 2",
+      "group": "Excess Premium & Taxes — Layer 2 (BFEX6)"
+    },
+    {
       "section": 4,
       "sectionName": "Earned Premium Calculation",
       "seq": 1,
@@ -6487,7 +6835,7 @@
       "options": null,
       "showIf": null,
       "showIfRaw": "None - Always Ask",
-      "placeholder": "Paste the binder's forms-and-endorsements schedule \u2014 one form number per line (e.g. BFOG 01 22 03 26). Edition optional.",
+      "placeholder": "Paste the binder's forms-and-endorsements schedule — one form number per line (e.g. BFOG 01 22 03 26). Edition optional.",
       "help": "Interim input for render-from-list inclusion. Forms whose rule is onBinderList attach when their number appears here; Phase 5 prefill will fill this automatically."
     },
     {

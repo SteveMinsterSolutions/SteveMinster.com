@@ -1,0 +1,267 @@
+{
+  "_meta": {
+    "purpose": "Excess policy form-set (BFEI6/BFEX6). Consumed by buildOnePolicy via fanOutPolicies; NOT part of the CGL packet-config. See claude/SO-excess-fanout-design.md.",
+    "order": "Steve-confirmed: SLC-3 (CA/non-CA) → BFEX 00 01 → PWR 00 04 → BFEX 00 02 → 00 03 → 00 04 → 00 05 → 00 06.",
+    "pending": "Requires 2 template edits (Steve): BFEX 00 01 lead-underlying token → Lead_Underlying_Policy_Number; SLC-3 NMA2868 wording 'Commercial General Liability'→'policy'. Excess financials from per-instance questionnaire fields (Excess_A_*/Excess_B_*)."
+  },
+  "questions": [],
+  "calculations": [
+    {
+      "kind": "dateBranch",
+      "target": "Lloyd's_Authority_Num",
+      "dateField": "Policy_Effective_Date",
+      "threshold": "2026-07-01",
+      "before": "B0146GLUSA2500391",
+      "onOrAfter": "B2252GLUSA2600391"
+    }
+  ],
+  "formOrder": [
+    {
+      "seq": "0.1",
+      "formNumber": "SLC-3 USA NMA2868",
+      "edition": "01 26",
+      "name": "Lloyd's Certificate (Non-CA)",
+      "file": "SLC-3 USA NMA2868 Lloyds Common Policy Declarations.docx",
+      "library": "dynamic",
+      "isDynamic": true,
+      "present": true
+    },
+    {
+      "seq": "0.2",
+      "formNumber": "SLC-3 (COR) LMA3102B",
+      "edition": "12 19",
+      "name": "Lloyd's Certificate — California",
+      "file": "SLC-3 (COR) California LMA3102B Lloyds Dec Page.docx",
+      "library": "dynamic",
+      "isDynamic": true,
+      "present": true
+    },
+    {
+      "seq": "1.0",
+      "formNumber": "BFEX 00 01",
+      "edition": "07 26",
+      "name": "Excess Declarations",
+      "file": "BFEX 00 01 07 26 Excess Declarations.docx",
+      "library": "dynamic",
+      "isDynamic": true,
+      "present": true
+    },
+    {
+      "seq": "2.0",
+      "formNumber": "PWR 00 04",
+      "edition": "08 26",
+      "name": "Schedule of Lloyd's Security",
+      "file": "PWR 00 04 08 26 SCHEDULE OF LLOYD'S SECURITY.docx",
+      "library": "dynamic",
+      "isDynamic": true,
+      "present": true
+    },
+    {
+      "seq": "3.0",
+      "formNumber": "BFEX 00 02",
+      "edition": "07 26",
+      "name": "Excess Body",
+      "file": "BFEX 00 02 07 26 Excess Body.docx",
+      "library": "dynamic",
+      "isDynamic": true,
+      "present": true
+    },
+    {
+      "seq": "4.0",
+      "formNumber": "BFEX 00 03",
+      "edition": "07 26",
+      "name": "Non-Follow",
+      "file": "BFEX 00 03 07 26 Non-Follow.docx",
+      "library": "static",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "5.0",
+      "formNumber": "BFEX 00 04",
+      "edition": "07 26",
+      "name": "Professional Services Excl",
+      "file": "BFEX 00 04 07 26 PROFESSIONAL SERVICES EXCL.docx",
+      "library": "static",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "6.0",
+      "formNumber": "BFEX 00 05",
+      "edition": "07 26",
+      "name": "SA&M Excl",
+      "file": "BFEX 00 05 07 26 SAM EXCL.docx",
+      "library": "static",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "7.0",
+      "formNumber": "BFEX 00 06",
+      "edition": "07 26",
+      "name": "Absolute Auto Excl",
+      "file": "BFEX 00 06 07 26 Absolute Auto Excl.docx",
+      "library": "static",
+      "isDynamic": false,
+      "present": true
+    }
+  ],
+  "formRules": [
+    {
+      "seq": "0.1",
+      "formNumber": "SLC-3 USA NMA2868",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "neq",
+            "values": [
+              "CA"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if L_1_ST ≠ CA"
+    },
+    {
+      "seq": "0.2",
+      "formNumber": "SLC-3 (COR) LMA3102B",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "CA"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if L_1_ST = CA"
+    },
+    {
+      "seq": "1.0",
+      "formNumber": "BFEX 00 01",
+      "rule": {
+        "alwaysApply": true
+      },
+      "ruleRaw": "Always Apply"
+    },
+    {
+      "seq": "2.0",
+      "formNumber": "PWR 00 04",
+      "rule": {
+        "alwaysApply": true
+      },
+      "ruleRaw": "Always Apply"
+    },
+    {
+      "seq": "3.0",
+      "formNumber": "BFEX 00 02",
+      "rule": {
+        "alwaysApply": true
+      },
+      "ruleRaw": "Always Apply"
+    },
+    {
+      "seq": "4.0",
+      "formNumber": "BFEX 00 03",
+      "rule": {
+        "onBinderList": true
+      },
+      "ruleRaw": "On Binder List (buy-back suppressible)"
+    },
+    {
+      "seq": "5.0",
+      "formNumber": "BFEX 00 04",
+      "rule": {
+        "onBinderList": true
+      },
+      "ruleRaw": "On Binder List (buy-back suppressible)"
+    },
+    {
+      "seq": "6.0",
+      "formNumber": "BFEX 00 05",
+      "rule": {
+        "alwaysApply": true
+      },
+      "ruleRaw": "Always Apply"
+    },
+    {
+      "seq": "7.0",
+      "formNumber": "BFEX 00 06",
+      "rule": {
+        "alwaysApply": true
+      },
+      "ruleRaw": "Always Apply"
+    }
+  ],
+  "fieldMapping": {
+    "BFEX 00 01": [
+      "Excess_Policy_Number",
+      "Named_Insured",
+      "Location_1_Address_1",
+      "Location_1_Address_2",
+      "L_1_City",
+      "L_1_ST",
+      "L_1_Zip",
+      "Lead_Underlying_Policy_Number",
+      "Excess_1_Policy_Number",
+      "Excess_Per_Occ",
+      "Excess_Agg",
+      "Attach_Per_Occ",
+      "Attach_Agg",
+      "Policy_Effective_Date",
+      "Policy_Expiration_Date",
+      "Excess_Premium"
+    ],
+    "BFEX 00 02": [
+      "Excess_Per_Occ",
+      "Excess_Agg",
+      "Attach_Per_Occ",
+      "Attach_Agg"
+    ],
+    "PWR 00 04": [
+      "3456_Pct",
+      "2121_Pct",
+      "2121",
+      "AA-112121"
+    ],
+    "SLC-3 USA NMA2868": [
+      "Policy_Number",
+      "Named_Insured",
+      "Location_1_Address_1",
+      "Location_1_Address_2",
+      "L_1_City",
+      "L_1_ST",
+      "L_1_Zip",
+      "Policy_Effective_Date",
+      "Policy_Expiration_Date",
+      "TTL_Premium",
+      "TTL_Ins_Taxes_Fees",
+      "TTL_Cost",
+      "Minimum_Earned",
+      "Today_Date",
+      "Lloyd's_Authority_Num",
+      "Dec_Page_Form_Number"
+    ],
+    "SLC-3 (COR) LMA3102B": [
+      "Policy_Number",
+      "Named_Insured",
+      "Location_1_Address_1",
+      "Location_1_Address_2",
+      "L_1_City",
+      "L_1_ST",
+      "L_1_Zip",
+      "Policy_Effective_Date",
+      "Policy_Expiration_Date",
+      "TTL_Premium",
+      "CA_SL_Tax",
+      "CA_Stamp",
+      "TTL_Cost",
+      "Today_Date",
+      "Lloyd's_Authority_Num"
+    ]
+  }
+}

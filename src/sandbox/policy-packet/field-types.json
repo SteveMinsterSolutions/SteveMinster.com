@@ -1298,5 +1298,65 @@
     "tokenFormat": "Text",
     "answerType": "Calc",
     "behavior": "passthrough"
+  },
+  "Excess_Policy_Number": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Excess_1_Policy_Number": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Excess_Per_Occ": {
+    "tokenFormat": "number_whole",
+    "answerType": "Calc",
+    "behavior": "number_whole"
+  },
+  "Excess_Agg": {
+    "tokenFormat": "number_whole",
+    "answerType": "Calc",
+    "behavior": "number_whole"
+  },
+  "Attach_Per_Occ": {
+    "tokenFormat": "number_whole",
+    "answerType": "Calc",
+    "behavior": "number_whole"
+  },
+  "Attach_Agg": {
+    "tokenFormat": "number_whole",
+    "answerType": "Calc",
+    "behavior": "number_whole"
+  },
+  "Excess_Premium": {
+    "tokenFormat": "number_whole",
+    "answerType": "Currency",
+    "behavior": "number_whole"
+  },
+  "3456_Pct": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "2121_Pct": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "2121": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "AA-112121": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Lead_Underlying_Policy_Number": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
   }
 }

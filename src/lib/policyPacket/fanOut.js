@@ -67,16 +67,46 @@ export function buildExcessOverlay(layer, resolved) {
 
   const { own, attach } = excessLimits(layer, resolved?.Excess_Tower_Size);
 
+  // PWR 00 04 Schedule of Lloyd's Security — syndicate split differs by layer
+  // (Steve 2026-08-31). Row-1 syndicate 3456 / FEIN AA-1123456 are baked in the
+  // template; only the percentages + row-2 (syndicate 2121) are tokens.
+  //   BFEI6 (A): 100% to 3456, row 2 blank.
+  //   BFEX6 (B): 50% to 3456 + 50% to 2121 (FEIN AA-1122121).
+  const syndicate = layer === 'A'
+    ? { '3456_Pct': '100%', '2121_Pct': '', '2121': '', 'AA-112121': '' }
+    : { '3456_Pct': '50%', '2121_Pct': '50%', '2121': '2121', 'AA-112121': 'AA-1122121' };
+
+  // Per-instance financial questionnaire fields (Excess_A_* / Excess_B_*) → the
+  // shared SLC-3 + BFEX 00 01 token names, overriding the CGL's values for this build.
+  const fp = layer === 'A' ? 'Excess_A_' : 'Excess_B_';
+  const fin = (suffix) => resolved?.[fp + suffix] ?? '';
+
   return {
+    // Policy numbers. Policy_Number now means THIS policy's own number (so the SLC-3
+    // certificate is correct); the CGL moves to Lead_Underlying_Policy_Number, which
+    // BFEX 00 01's "Lead Underlying Policy No." line uses after its template edit.
     Excess_Policy_Number: num,
-    // Policy_Number intentionally NOT set — stays the CGL number (lead underlying).
+    Policy_Number: num,
+    Lead_Underlying_Policy_Number: cgl,
     Excess_1_Policy_Number: layer === 'B' ? deriveExcessNumber(cgl, 'BFEI6') : '',
+    // The excess SLC-3 references the excess dec (BFEX 00 01), not the CGL's BGL dec.
+    Dec_Page_Form_Number: 'BFEX 00 01 07 26',
     // Attachment (underlying total below this layer) — per-occ ≠ agg.
     Attach_Per_Occ: attach.perOcc,
     Attach_Agg: attach.agg,
     // This layer's OWN limit — per-occ == agg.
     Excess_Per_Occ: own,
     Excess_Agg: own,
+    // Per-instance financials → SLC-3 (TTL_*, CA_*, Minimum_Earned) + BFEX 00 01 (Excess_Premium).
+    TTL_Premium: fin('Premium'),
+    Excess_Premium: fin('Premium'),
+    TTL_Ins_Taxes_Fees: fin('Taxes_Fees'),
+    Minimum_Earned: fin('Min_Earned'),
+    CA_SL_Tax: fin('SL_Tax'),
+    CA_Stamp: fin('Stamp'),
+    TTL_Cost: fin('Total'),
+    // PWR 00 04 syndicate split (per layer).
+    ...syndicate,
   };
 }
 

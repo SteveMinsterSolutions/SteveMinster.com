@@ -56,6 +56,12 @@ export function formatValue(token, fieldTypes, values) {
       return d === '' ? '' : (d.length < 5 ? d.padStart(5, '0') : d); // zip5 as string, keep leading zeros
     }
     case 'currency_whole': return formatCurrency(s, 0);
+    case 'number_whole': {
+      // Thousands-separated whole number, NO currency symbol — for forms that print
+      // their own currency word (e.g. Lloyd's excess decs: "USD {{Excess_Per_Occ}}").
+      const n = Number(String(s).replace(/[^0-9.\-]/g, ''));
+      return Number.isFinite(n) ? n.toLocaleString('en-US', { maximumFractionDigits: 0 }) : '';
+    }
     case 'currency_cents': return formatCurrency(s, 2);
     case 'date_iso': return toIsoDate(s);
     default:
