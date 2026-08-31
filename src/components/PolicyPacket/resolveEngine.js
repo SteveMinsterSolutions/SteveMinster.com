@@ -139,6 +139,17 @@ export function runCalculations(calculations, answers) {
         value = resolved[calc.source] ?? '';
         break;
       }
+      case 'template': {
+        // Fill a `{field}` placeholder string from resolved values. If EVERY
+        // referenced field is empty, emit '' (so an unused repeat slot stays blank
+        // instead of rendering stray punctuation).
+        const fields = [...String(calc.template).matchAll(/\{([^}]+)\}/g)].map((m) => m[1]);
+        const anyFilled = fields.some((f) => String(resolved[f] ?? '').trim() !== '');
+        value = anyFilled
+          ? String(calc.template).replace(/\{([^}]+)\}/g, (_, f) => String(resolved[f] ?? '').trim())
+          : '';
+        break;
+      }
       default:
         continue;
     }
