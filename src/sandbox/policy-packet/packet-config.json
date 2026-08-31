@@ -7281,6 +7281,76 @@
       "sourceField": "SIR_Per",
       "cases": {},
       "default": "Excluded"
+    },
+    {
+      "kind": "template",
+      "section": 2,
+      "seq": 60,
+      "target": "Loction_1_Address",
+      "template": "{DLA_1_Add}, {DLA_1_City}, {DLA_1_ST} {DLA_1_Zip}"
+    },
+    {
+      "kind": "template",
+      "section": 2,
+      "seq": 61,
+      "target": "Loction_2_Address",
+      "template": "{DLA_2_Add}, {DLA_2_City}, {DLA_2_ST} {DLA_2_Zip}"
+    },
+    {
+      "kind": "template",
+      "section": 2,
+      "seq": 62,
+      "target": "Loction_3_Address",
+      "template": "{DLA_3_Add}, {DLA_3_City}, {DLA_3_ST} {DLA_3_Zip}"
+    },
+    {
+      "kind": "template",
+      "section": 2,
+      "seq": 63,
+      "target": "Loction_4_Address",
+      "template": "{DLA_4_Add}, {DLA_4_City}, {DLA_4_ST} {DLA_4_Zip}"
+    },
+    {
+      "kind": "template",
+      "section": 2,
+      "seq": 64,
+      "target": "Loction_5_Address",
+      "template": "{DLA_5_Add}, {DLA_5_City}, {DLA_5_ST} {DLA_5_Zip}"
+    },
+    {
+      "kind": "template",
+      "section": 2,
+      "seq": 65,
+      "target": "Loction_6_Address",
+      "template": "{DLA_6_Add}, {DLA_6_City}, {DLA_6_ST} {DLA_6_Zip}"
+    },
+    {
+      "kind": "template",
+      "section": 2,
+      "seq": 66,
+      "target": "Loction_7_Address",
+      "template": "{DLA_7_Add}, {DLA_7_City}, {DLA_7_ST} {DLA_7_Zip}"
+    },
+    {
+      "kind": "template",
+      "section": 2,
+      "seq": 67,
+      "target": "Loction_8_Address",
+      "template": "{DLA_8_Add}, {DLA_8_City}, {DLA_8_ST} {DLA_8_Zip}"
+    },
+    {
+      "kind": "template",
+      "section": 2,
+      "seq": 68,
+      "target": "Loction_9_Address",
+      "template": "{DLA_9_Add}, {DLA_9_City}, {DLA_9_ST} {DLA_9_Zip}"
+    },
+    {
+      "kind": "template",
+      "section": 2,
+      "seq": 69,
+      "target": "Loction_10_Address",
+      "template": "{DLA_10_Add}, {DLA_10_City}, {DLA_10_ST} {DLA_10_Zip}"
     }
   ],
   "formOrder": [
@@ -8180,6 +8250,16 @@
       "edition": "05 09",
       "name": "DESIGNATED LOCATION(S) GENERAL AGGREGATE LIMIT",
       "file": "CG 25 04 05 09 DESIGNATED LOCATION(S) GENERAL AGGREGATE LIMIT.docx",
+      "library": "dynamic",
+      "isDynamic": true,
+      "present": true
+    },
+    {
+      "seq": "11.25",
+      "formNumber": "BFSR 00 25",
+      "edition": "06 26",
+      "name": "Capped Designated Location(s) General Aggregate Limit",
+      "file": "BFSR 00 25 06 26 Capped Designated Location Gen Agg.docx",
       "library": "dynamic",
       "isDynamic": true,
       "present": true
@@ -9947,6 +10027,14 @@
       "ruleRaw": "If {{DLA_Count}} ≠\"None\""
     },
     {
+      "seq": "11.25",
+      "formNumber": "BFSR 00 25",
+      "rule": {
+        "onBinderList": true
+      },
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
+    },
+    {
       "seq": "11.3",
       "formNumber": "CG 21 53",
       "rule": {
@@ -11009,6 +11097,29 @@
       "SIR_CovB",
       "SIR_CovC",
       "CIR_TPI"
+    ],
+    "BFSR 00 25": [
+      "Loction_1_Address",
+      "Loction_2_Address",
+      "Loction_3_Address",
+      "Loction_4_Address",
+      "Loction_5_Address",
+      "Loction_6_Address",
+      "Loction_7_Address",
+      "Loction_8_Address",
+      "Loction_9_Address",
+      "Loction_10_Address",
+      "Loction_11_Address",
+      "Loction_12_Address",
+      "Loction_13_Address",
+      "Loction_14_Address",
+      "Loction_15_Address",
+      "Loction_16_Address",
+      "Loction_17_Address",
+      "Loction_18_Address",
+      "Loction_19_Address",
+      "Loction_20_Address",
+      "Loc_Gen_Agg"
     ]
   }
 }

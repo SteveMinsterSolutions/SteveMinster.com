@@ -1183,5 +1183,110 @@
     "tokenFormat": "Text",
     "answerType": "Derived",
     "behavior": "passthrough"
+  },
+  "Loction_1_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loction_2_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loction_3_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loction_4_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loction_5_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loction_6_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loction_7_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loction_8_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loction_9_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loction_10_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loction_11_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loction_12_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loction_13_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loction_14_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loction_15_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loction_16_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loction_17_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loction_18_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loction_19_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loction_20_Address": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Loc_Gen_Agg": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Currency",
+    "behavior": "currency_whole"
   }
 }
