@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import packetConfig from '../../sandbox/policy-packet/packet-config.json';
 import { evaluateRule } from './evaluateRule.js';
-import { runCalculations, resolveManifest, unmatchedBinderForms } from './resolveEngine.js';
+import { runCalculations, resolveManifest, unmatchedBinderForms, numericValue } from './resolveEngine.js';
 import { addOneYear } from './lib/dateHelpers';
 import PrefillUpload from './PrefillUpload.jsx';
 
@@ -544,6 +544,9 @@ export default function Questionnaire() {
   // stop auto-syncing it to effective + 1 year. Flipped true ONLY by real user
   // input via handleUserChange / a prefilled expiration — never by a programmatic set.
   const [expirationTouched, setExpirationTouched] = useState(false);
+  // Designated-location aggregate fields prefill from the Coverage A aggregate
+  // until the user edits them (override-able), mirroring the expiration auto-sync.
+  const [desLocTouched, setDesLocTouched] = useState({});
 
   const setAnswer = (id, val) => setAnswers((prev) => ({ ...prev, [id]: val }));
 
@@ -551,6 +554,7 @@ export default function Questionnaire() {
   // expiration auto-sync below) so the auto-sync never marks itself as touched.
   const handleUserChange = (id, val) => {
     if (id === 'Policy_Expiration_Date') setExpirationTouched(true);
+    if (id === 'Des_Loc_Agg_Limit' || id === 'Loc_Gen_Agg') setDesLocTouched((p) => ({ ...p, [id]: true }));
     setAnswer(id, val);
   };
 
@@ -566,6 +570,25 @@ export default function Questionnaire() {
       prev.Policy_Expiration_Date === next ? prev : { ...prev, Policy_Expiration_Date: next }
     );
   }, [answers.Policy_Effective_Date, expirationTouched]);
+
+  // Prefill the designated-location aggregate fields from the CGL Coverage A
+  // aggregate (whole dollars) until the user overrides each. A blank/Excluded
+  // aggregate leaves them blank.
+  useEffect(() => {
+    const agg = numericValue(answers.Aggregate_Limit ?? '');
+    const next = agg > 0 ? String(agg) : '';
+    setAnswers((prev) => {
+      let out = prev; let changed = false;
+      for (const id of ['Des_Loc_Agg_Limit', 'Loc_Gen_Agg']) {
+        if (desLocTouched[id]) continue;
+        if ((prev[id] ?? '') !== next) {
+          if (!changed) { out = { ...prev }; changed = true; }
+          out[id] = next;
+        }
+      }
+      return changed ? out : prev;
+    });
+  }, [answers.Aggregate_Limit, desLocTouched]);
 
   const isVisible = (q) => q.showIf == null || evaluateRule(q.showIf, answers);
 
