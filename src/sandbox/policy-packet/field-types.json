@@ -1143,5 +1143,10 @@
     "tokenFormat": "currency_whole",
     "answerType": "Drop Down",
     "behavior": "passthrough"
+  },
+  "PIT_Limit": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
   }
 }

@@ -7899,6 +7899,16 @@
       "present": true
     },
     {
+      "seq": "8.10",
+      "formNumber": "BFSC 01 04",
+      "edition": "07 26",
+      "name": "Professional Instruction",
+      "file": "BFSC 01 04 07 26 Professional Instruction.docx",
+      "library": "dynamic",
+      "isDynamic": true,
+      "present": true
+    },
+    {
       "seq": "9.0",
       "formNumber": "BFOG 01 20",
       "edition": "03 26",
@@ -9655,6 +9665,14 @@
       "ruleRaw": "If {{BFSC_00_04}}  = \"Yes\""
     },
     {
+      "seq": "8.10",
+      "formNumber": "BFSC 01 04",
+      "rule": {
+        "onBinderList": true
+      },
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
+    },
+    {
       "seq": "9.0",
       "formNumber": "BFOG 01 20",
       "rule": {
@@ -10888,6 +10906,9 @@
       "TPI_Excess",
       "TPI_Primary",
       "TPI_Agg"
+    ],
+    "BFSC 01 04": [
+      "PIT_Limit"
     ]
   }
 }
