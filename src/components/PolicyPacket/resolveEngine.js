@@ -133,6 +133,12 @@ export function runCalculations(calculations, answers) {
         value = hit ?? (calc.default ?? '');
         break;
       }
+      case 'copy': {
+        // Passthrough copy of another field's (string) value — for derived tokens
+        // that mirror a captured answer (e.g. SIR_Prod = SIR_Per).
+        value = resolved[calc.source] ?? '';
+        break;
+      }
       default:
         continue;
     }
