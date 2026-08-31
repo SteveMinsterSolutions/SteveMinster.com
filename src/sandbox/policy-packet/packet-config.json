@@ -8039,6 +8039,26 @@
       "present": true
     },
     {
+      "seq": "9.14",
+      "formNumber": "BFSR 00 23",
+      "edition": "07 26",
+      "name": "Companion Accident Medical Warranty",
+      "file": "BFSR 00 23 07 26 Companion AccMed Warranty.docx",
+      "library": "static",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "9.15",
+      "formNumber": "BFSR 00 24",
+      "edition": "07 26",
+      "name": "Incident Reporting Warranty",
+      "file": "BFSR 00 24 07 26 Incident Reporting Warranty.docx",
+      "library": "static",
+      "isDynamic": false,
+      "present": true
+    },
+    {
       "seq": "10.0",
       "formNumber": "BFVQ 00 01",
       "edition": "02 26",
@@ -9731,6 +9751,22 @@
     {
       "seq": "9.13",
       "formNumber": "BFSC 07 08",
+      "rule": {
+        "onBinderList": true
+      },
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
+    },
+    {
+      "seq": "9.14",
+      "formNumber": "BFSR 00 23",
+      "rule": {
+        "onBinderList": true
+      },
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
+    },
+    {
+      "seq": "9.15",
+      "formNumber": "BFSR 00 24",
       "rule": {
         "onBinderList": true
       },
