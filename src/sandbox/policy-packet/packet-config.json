@@ -6533,6 +6533,20 @@
         ]
       },
       "showIfRaw": "If {{Policy_Interest_Count}} = \"10\""
+    },
+    {
+      "section": 1,
+      "sectionName": "Account Information",
+      "seq": 99,
+      "id": "Binder_Forms",
+      "label": "Forms & Endorsements listed on the binder",
+      "type": "textarea",
+      "required": "optional",
+      "options": null,
+      "showIf": null,
+      "showIfRaw": "None - Always Ask",
+      "placeholder": "Paste the binder's forms-and-endorsements schedule \u2014 one form number per line (e.g. BFOG 01 22 03 26). Edition optional.",
+      "help": "Interim input for render-from-list inclusion. Forms whose rule is onBinderList attach when their number appears here; Phase 5 prefill will fill this automatically."
     }
   ],
   "calculations": [

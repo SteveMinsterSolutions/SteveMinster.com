@@ -264,6 +264,8 @@ function QuestionField({ q, value, onChange, invalid, required, prefilled }) {
     );
   } else if (q.type === 'date') {
     control = <input {...common} type="date" />;
+  } else if (q.type === 'textarea') {
+    control = <textarea {...common} rows={5} placeholder={q.placeholder ?? ''} />;
   } else {
     // text, plus dropdown-with-no-options fallback (e.g. Season_Start_Mo)
     control = <input {...common} type="text" placeholder="" />;
@@ -282,6 +284,11 @@ function QuestionField({ q, value, onChange, invalid, required, prefilled }) {
         )}
       </label>
       {control}
+      {q.help && (
+        <p className="mt-1 text-xs" style={{ color: bf.textMuted, fontFamily: bf.fontBody }}>
+          {q.help}
+        </p>
+      )}
       {invalid && (
         <p className="mt-1 text-xs" style={{ color: bf.danger, fontFamily: bf.fontBody }}>
           This field is required.
