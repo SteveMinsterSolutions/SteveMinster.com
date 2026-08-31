@@ -7376,6 +7376,16 @@
   ],
   "formOrder": [
     {
+      "seq": "0.0",
+      "formNumber": "CA CCPA Notice",
+      "edition": "05 23",
+      "name": "California Consumer Privacy Act Notice",
+      "file": "CA CCPA Notice 05 23.docx",
+      "library": "static",
+      "isDynamic": false,
+      "present": true
+    },
+    {
       "seq": "1.0",
       "formNumber": "BFSD 01 01",
       "edition": "06 26",
@@ -8807,6 +8817,22 @@
     }
   ],
   "formRules": [
+    {
+      "seq": "0.0",
+      "formNumber": "CA CCPA Notice",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "CA"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "If {{L_1_ST}} = \"CA\""
+    },
     {
       "seq": "1.0",
       "formNumber": "BFSD 01 01",
