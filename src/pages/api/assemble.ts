@@ -18,6 +18,7 @@ import type { APIRoute } from 'astro';
 import { get } from '@vercel/blob';
 import packetConfig from '../../sandbox/policy-packet/packet-config.json';
 import fieldTypes from '../../sandbox/policy-packet/field-types.json';
+import excessConfig from '../../sandbox/policy-packet/excess-config.json';
 import { buildOnePolicy } from '../../lib/policyPacket/buildPolicy.js';
 import { fanOutPolicies, zipPolicies, policiesZipName } from '../../lib/policyPacket/fanOut.js';
 
@@ -98,10 +99,9 @@ export const POST: APIRoute = async ({ request }) => {
 
   try {
     // ── Fan out: one submission → an ordered policy list (CGL + 0–2 excess) ──
-    // excessConfig is null until the excess form-set config lands (next commit), so
-    // today this ALWAYS returns just the CGL and behavior is unchanged.
-    const excessConfig = null;
-    const policies = fanOutPolicies(packetConfig as any, excessConfig, resolved);
+    // With the excess form-set config imported, an excess election now fans out to
+    // BFEI6 (A) and/or BFEX6 (B) alongside the CGL; no election ⇒ CGL only (unchanged).
+    const policies = fanOutPolicies(packetConfig as any, excessConfig as any, resolved);
 
     // Build every policy through the shared primitive. Any single policy failing its
     // assertions fails the WHOLE build — never ship a partial tower.
