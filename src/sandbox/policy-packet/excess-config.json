@@ -244,7 +244,9 @@
       "Minimum_Earned",
       "Today_Date",
       "Lloyd's_Authority_Num",
-      "Dec_Page_Form_Number"
+      "Dec_Page_Form_Number",
+      "3456_Pct",
+      "2121_Pct"
     ],
     "SLC-3 (COR) LMA3102B": [
       "Policy_Number",
@@ -261,7 +263,9 @@
       "CA_Stamp",
       "TTL_Cost",
       "Today_Date",
-      "Lloyd's_Authority_Num"
+      "Lloyd's_Authority_Num",
+      "3456_Pct",
+      "2121_Pct"
     ]
   }
 }
