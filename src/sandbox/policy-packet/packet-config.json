@@ -6649,6 +6649,50 @@
       "showIfRaw": "None - Always Ask",
       "group": "Optional Coverages & Endorsements",
       "help": "Whole-dollar. Overall policy-level aggregate cap across all designated locations; prefilled from the CGL Coverage A aggregate. Applies when BFSR 00 25 is on the binder."
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 30,
+      "id": "Excess_Liability",
+      "label": "Does this policy include Excess Liability?",
+      "type": "dropdown",
+      "required": "always",
+      "options": [
+        "No",
+        "Yes - Layer 1 Only",
+        "Yes - Layers 1 and 2"
+      ],
+      "showIf": null,
+      "showIfRaw": "None - Always Ask",
+      "group": "Excess Liability"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 31,
+      "id": "Excess_Tower_Size",
+      "label": "Excess tower size (Layers 1 and 2)",
+      "type": "dropdown",
+      "required": "conditional",
+      "options": [
+        "2x1 ($2M xs $1M)",
+        "3x1 ($3M xs $1M)",
+        "4x1 ($4M xs $1M)"
+      ],
+      "showIf": {
+        "all": [
+          {
+            "field": "Excess_Liability",
+            "op": "eq",
+            "values": [
+              "Yes - Layers 1 and 2"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Excess_Liability}} = \"Yes - Layers 1 and 2\"",
+      "group": "Excess Liability"
     }
   ],
   "calculations": [
