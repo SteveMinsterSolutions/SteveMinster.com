@@ -10,14 +10,16 @@
 //
 // On ANY assertion failure we return HTTP 500 and DO NOT stream — a corrupt bound
 // packet is worse than a clear error. On success we stream application/pdf.
+//
+// The three-stage pipeline itself now lives in the shared buildOnePolicy() primitive
+// (src/lib/policyPacket/buildPolicy.js); this endpoint owns the HTTP concerns and, next,
+// the fan-out loop that turns one submission into a LIST of policies (CGL + excess).
 import type { APIRoute } from 'astro';
 import { get } from '@vercel/blob';
 import packetConfig from '../../sandbox/policy-packet/packet-config.json';
 import fieldTypes from '../../sandbox/policy-packet/field-types.json';
-import { resolvePacket } from '../../components/PolicyPacket/resolveEngine.js';
-import { fetchPacketForms } from '../../lib/policyPacket/fetchForms.js';
-import { fillAndConvertDynamics } from '../../lib/policyPacket/fillConvert.js';
-import { mergePacket, countPdfPages, buildPacketAssertions, packetFilename } from '../../lib/policyPacket/mergePacket.js';
+import { buildOnePolicy } from '../../lib/policyPacket/buildPolicy.js';
+import { fanOutPolicies, zipPolicies, policiesZipName } from '../../lib/policyPacket/fanOut.js';
 
 export const prerender = false;
 // Batch-convert (~21 dynamics through Gotenberg) + merge of ~42 forms is the slow
@@ -95,75 +97,53 @@ export const POST: APIRoute = async ({ request }) => {
   };
 
   try {
-    // ── Resolve the manifest (authoritative assembly order) ──
-    const { manifest } = resolvePacket(packetConfig as any, resolved) as any;
-    const dynamics = manifest.filter((m: any) => m.isDynamic);
+    // ── Fan out: one submission → an ordered policy list (CGL + 0–2 excess) ──
+    // excessConfig is null until the excess form-set config lands (next commit), so
+    // today this ALWAYS returns just the CGL and behavior is unchanged.
+    const excessConfig = null;
+    const policies = fanOutPolicies(packetConfig as any, excessConfig, resolved);
 
-    // ── Stage 1: fetch statics from Blob (bytes via the non-enumerable `buffer`) ──
-    const s1 = await fetchPacketForms(packetConfig as any, resolved);
-    const staticByFormNumber = new Map<string, Buffer>();
-    const staticFailures: any[] = [];
-    for (const f of (s1 as any).fetches) {
-      if (f.isDynamic) continue; // dynamics' .docx are fetched too but ignored here
-      if (!f.ok || !f.buffer) { staticFailures.push(f); continue; }
-      staticByFormNumber.set(f.formNumber, f.buffer);
-    }
-    if (staticFailures.length) {
-      return json({
-        error: 'Stage 1 — one or more static forms failed to fetch from Blob; not assembling.',
-        forms: staticFailures.map((f) => ({ formNumber: f.formNumber, pathname: f.pathname ?? null, detail: f.error ?? 'no buffer returned' })),
-      }, 500);
-    }
-
-    // ── Stage 2: fill dynamics + batch-convert to PDF ──
-    const s2 = await fillAndConvertDynamics(packetConfig as any, fieldTypes as any, resolved, {
-      loadTemplate: loadTemplateFromBlob,
-      gotenberg,
-    });
-    const failedDyn = (s2 as any).records.filter((r: any) => !r.converted);
-    if (failedDyn.length) {
-      return json({
-        error: 'Stage 2 — one or more dynamic forms failed to fill/convert; not assembling.',
-        forms: failedDyn.map((r: any) => ({ formNumber: r.formNumber, detail: r.fillError || r.convertError || 'unknown' })),
-      }, 500);
-    }
-    const dynPdf = new Map<string, Buffer>((s2 as any).records.map((r: any) => [r.formNumber, r.pdf]));
-
-    // ── Build per-form sources IN MANIFEST ARRAY ORDER ──
-    const sources = manifest.map((m: any, i: number) => {
-      const pdf = m.isDynamic ? dynPdf.get(m.formNumber) : staticByFormNumber.get(m.formNumber);
-      if (!pdf) throw new Error(`internal: no PDF for ${m.isDynamic ? 'dynamic' : 'static'} "${m.formNumber}"`);
-      return { manifestIndex: i, formNumber: m.formNumber, seq: m.seq, isDynamic: m.isDynamic, source: m.isDynamic ? 'dynamic' : 'static', pdf };
-    });
-
-    // ── Stage 3: MERGE (shared module) ──
-    const { mergedBytes, mergedPageCount, provenance } = await mergePacket(sources);
-
-    // ── Verify the bytes that landed, then run the 7 assertions ──
-    const landedPageCount = await countPdfPages(mergedBytes); // re-parse what we're about to stream
-    const { checks } = buildPacketAssertions({ manifest, provenance, mergedPageCount, landedPageCount });
-    const failedChecks = checks.filter((c: any) => !c.ok);
-    if (failedChecks.length) {
-      return json({
-        error: 'Stage 3 — assembled packet failed its assertions; not streaming a packet that failed verification.',
-        failedGates: failedChecks.map((c: any) => ({ gate: c.label, detail: c.detail })),
-        pageCount: mergedPageCount,
-        forms: provenance.map((r: any) => ({ manifestIndex: r.manifestIndex, formNumber: r.formNumber, seq: r.seq, pageStart: r.pageStart, pageCount: r.pageCount })),
-      }, 500);
+    // Build every policy through the shared primitive. Any single policy failing its
+    // assertions fails the WHOLE build — never ship a partial tower.
+    const built: Array<{ pdf: Uint8Array; filename: string }> = [];
+    for (const p of policies) {
+      const result = await buildOnePolicy(p.config as any, fieldTypes as any, p.resolved, {
+        loadTemplate: loadTemplateFromBlob,
+        gotenberg,
+        filename: p.filename,
+      });
+      if (!result.ok) {
+        return json({ ...(result as any).body, policy: p.id, policyFilename: p.filename }, (result as any).status);
+      }
+      built.push({ pdf: (result as any).pdf, filename: (result as any).filename });
     }
 
-    // ── Success: stream the named PDF ──
-    const filename = packetFilename(resolved);
+    // ── Single policy (the common case): stream the named PDF, exactly as before ──
     // The runtime (undici/Vercel) streams a Uint8Array body as-is. The cast bridges a
-    // strict-TS lib gap only: TS 5.7 types Uint8Array as Uint8Array<ArrayBufferLike>,
-    // while the DOM BodyInit wants Uint8Array<ArrayBuffer> (and @types/node isn't in
-    // this project's tsconfig types). Not a runtime concern.
-    return new Response(mergedBytes as unknown as BodyInit, {
+    // strict-TS lib gap only (Uint8Array<ArrayBufferLike> vs the DOM BodyInit's
+    // Uint8Array<ArrayBuffer>); not a runtime concern.
+    if (built.length === 1) {
+      const { pdf, filename } = built[0];
+      return new Response(pdf as unknown as BodyInit, {
+        status: 200,
+        headers: {
+          'content-type': 'application/pdf',
+          'content-disposition': contentDisposition(filename),
+          'content-length': String(pdf.length),
+          'cache-control': 'no-store',
+        },
+      });
+    }
+
+    // ── Multiple policies (fanned-out tower): return one zip of named PDFs ──
+    const zipBytes = zipPolicies(built);
+    const zipName = policiesZipName(resolved);
+    return new Response(zipBytes as unknown as BodyInit, {
       status: 200,
       headers: {
-        'content-type': 'application/pdf',
-        'content-disposition': contentDisposition(filename),
-        'content-length': String(mergedBytes.length),
+        'content-type': 'application/zip',
+        'content-disposition': contentDisposition(zipName),
+        'content-length': String(zipBytes.length),
         'cache-control': 'no-store',
       },
     });
