@@ -7368,10 +7368,8 @@
       "seq": 71,
       "target": "Dec_Page_Form_Number",
       "sourceField": "L_1_ST",
-      "cases": {
-        "CA": "SLC-3 LMA3102B"
-      },
-      "default": "SLC-3 USA NMA2868"
+      "cases": {},
+      "default": "BGL 00 02 06 26"
     }
   ],
   "formOrder": [
