@@ -899,87 +899,6 @@
       "showIfRaw": "If {{Minimum_Premium}} = \"Seasonal Use\""
     },
     {
-      "section": 5,
-      "sectionName": "Warranties",
-      "seq": 1,
-      "id": "Is_Mountaineering",
-      "label": "Is this risk Mountaineering?",
-      "type": "dropdown",
-      "required": "conditional",
-      "options": [
-        "Yes",
-        "No"
-      ],
-      "showIf": {
-        "all": [
-          {
-            "field": "O_G_Program",
-            "op": "eq",
-            "values": [
-              "Non-Motorized"
-            ]
-          }
-        ]
-      },
-      "showIfRaw": "If {{O_G_Program}} = \"Non-Motorized\""
-    },
-    {
-      "section": 5,
-      "sectionName": "Warranties",
-      "seq": 2,
-      "id": "O_G_Loss_Control",
-      "label": "Which Level of Loss Control?",
-      "type": "dropdown",
-      "required": "conditional",
-      "options": [
-        "None",
-        "Limited",
-        "Standard",
-        "Enhanced",
-        "Comprehensive"
-      ],
-      "showIf": {
-        "all": [
-          {
-            "field": "O_G_Program",
-            "op": "eq",
-            "values": [
-              "Non-Motorized",
-              "Ski and Bike Shop"
-            ]
-          }
-        ]
-      },
-      "showIfRaw": "If {{O_G_Program}} = \"Non-Motorized\" OR \"Ski and Bike Shop\""
-    },
-    {
-      "section": 5,
-      "sectionName": "Warranties",
-      "seq": 3,
-      "id": "BFSC_Tier",
-      "label": "Which Tier is the Highest Tiered Activity?",
-      "type": "dropdown",
-      "required": "conditional",
-      "options": [
-        "Tier 1",
-        "Tier 2",
-        "Tier 3",
-        "Tier 4"
-      ],
-      "showIf": {
-        "all": [
-          {
-            "field": "O_G_Program",
-            "op": "eq",
-            "values": [
-              "Complexes, Facilities, Studios"
-            ]
-          }
-        ]
-      },
-      "showIfRaw": "If {{O_G_Program}} = \"Complexes, Facilities, Studios\""
-    },
-    {
       "section": 6,
       "sectionName": "Terrorism",
       "seq": 1,
@@ -9257,295 +9176,113 @@
       "seq": "9.0",
       "formNumber": "BFOG 01 20",
       "rule": {
-        "all": [
-          {
-            "field": "Is_Mountaineering",
-            "op": "eq",
-            "values": [
-              "No"
-            ]
-          },
-          {
-            "field": "O_G_Loss_Control",
-            "op": "eq",
-            "values": [
-              "None"
-            ]
-          }
-        ]
+        "onBinderList": true
       },
-      "ruleRaw": "If {{Is_Mountaineering}} = \"No\" AND {{O_G_Loss_Control}} = \"None\""
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
     },
     {
       "seq": "9.1",
       "formNumber": "BFOG 01 21",
       "rule": {
-        "all": [
-          {
-            "field": "Is_Mountaineering",
-            "op": "eq",
-            "values": [
-              "No"
-            ]
-          },
-          {
-            "field": "O_G_Loss_Control",
-            "op": "eq",
-            "values": [
-              "Limited"
-            ]
-          }
-        ]
+        "onBinderList": true
       },
-      "ruleRaw": "If {{Is_Mountaineering}} = \"No\" AND {{O_G_Loss_Control}} = \"Limited\""
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
     },
     {
       "seq": "9.2",
       "formNumber": "BFOG 01 22",
       "rule": {
-        "all": [
-          {
-            "field": "Is_Mountaineering",
-            "op": "eq",
-            "values": [
-              "No"
-            ]
-          },
-          {
-            "field": "O_G_Loss_Control",
-            "op": "eq",
-            "values": [
-              "Standard"
-            ]
-          }
-        ]
+        "onBinderList": true
       },
-      "ruleRaw": "If {{Is_Mountaineering}} = \"No\" AND {{O_G_Loss_Control}} = \"Standard\""
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
     },
     {
       "seq": "9.3",
       "formNumber": "BFOG 01 23",
       "rule": {
-        "all": [
-          {
-            "field": "Is_Mountaineering",
-            "op": "eq",
-            "values": [
-              "No"
-            ]
-          },
-          {
-            "field": "O_G_Loss_Control",
-            "op": "eq",
-            "values": [
-              "Enhanced"
-            ]
-          }
-        ]
+        "onBinderList": true
       },
-      "ruleRaw": "If {{Is_Mountaineering}} = \"No\" AND {{O_G_Loss_Control}} = \"Enhanced\""
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
     },
     {
       "seq": "9.4",
       "formNumber": "BFOG 01 24",
       "rule": {
-        "all": [
-          {
-            "field": "Is_Mountaineering",
-            "op": "eq",
-            "values": [
-              "No"
-            ]
-          },
-          {
-            "field": "O_G_Loss_Control",
-            "op": "eq",
-            "values": [
-              "Comprehensive"
-            ]
-          }
-        ]
+        "onBinderList": true
       },
-      "ruleRaw": "If {{Is_Mountaineering}} = \"No\" AND {{O_G_Loss_Control}} = \"Comprehensive\""
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
     },
     {
       "seq": "9.5",
       "formNumber": "BFOG 01 25",
       "rule": {
-        "all": [
-          {
-            "field": "Is_Mountaineering",
-            "op": "eq",
-            "values": [
-              "Yes"
-            ]
-          },
-          {
-            "field": "O_G_Loss_Control",
-            "op": "eq",
-            "values": [
-              "None"
-            ]
-          }
-        ]
+        "onBinderList": true
       },
-      "ruleRaw": "If {{Is_Mountaineering}} = \"Yes\" AND {{O_G_Loss_Control}} = \"None\""
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
     },
     {
       "seq": "9.6",
       "formNumber": "BFOG 01 26",
       "rule": {
-        "all": [
-          {
-            "field": "Is_Mountaineering",
-            "op": "eq",
-            "values": [
-              "Yes"
-            ]
-          },
-          {
-            "field": "O_G_Loss_Control",
-            "op": "eq",
-            "values": [
-              "Limited"
-            ]
-          }
-        ]
+        "onBinderList": true
       },
-      "ruleRaw": "If {{Is_Mountaineering}} = \"Yes\" AND {{O_G_Loss_Control}} = \"Limited\""
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
     },
     {
       "seq": "9.7",
       "formNumber": "BFOG 01 27",
       "rule": {
-        "all": [
-          {
-            "field": "Is_Mountaineering",
-            "op": "eq",
-            "values": [
-              "Yes"
-            ]
-          },
-          {
-            "field": "O_G_Loss_Control",
-            "op": "eq",
-            "values": [
-              "Standard"
-            ]
-          }
-        ]
+        "onBinderList": true
       },
-      "ruleRaw": "If {{Is_Mountaineering}} = \"Yes\" AND {{O_G_Loss_Control}} = \"Standard\""
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
     },
     {
       "seq": "9.8",
       "formNumber": "BFOG 01 28",
       "rule": {
-        "all": [
-          {
-            "field": "Is_Mountaineering",
-            "op": "eq",
-            "values": [
-              "Yes"
-            ]
-          },
-          {
-            "field": "O_G_Loss_Control",
-            "op": "eq",
-            "values": [
-              "Enhanced"
-            ]
-          }
-        ]
+        "onBinderList": true
       },
-      "ruleRaw": "If {{Is_Mountaineering}} = \"Yes\" AND {{O_G_Loss_Control}} = \"Enhanced\""
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
     },
     {
       "seq": "9.9",
       "formNumber": "BFOG 01 29",
       "rule": {
-        "all": [
-          {
-            "field": "Is_Mountaineering",
-            "op": "eq",
-            "values": [
-              "Yes"
-            ]
-          },
-          {
-            "field": "O_G_Loss_Control",
-            "op": "eq",
-            "values": [
-              "Comprehensive"
-            ]
-          }
-        ]
+        "onBinderList": true
       },
-      "ruleRaw": "If {{Is_Mountaineering}} = \"Yes\" AND {{O_G_Loss_Control}} = \"Comprehensive\""
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
     },
     {
       "seq": "9.10",
       "formNumber": "BFSC 01 08",
       "rule": {
-        "all": [
-          {
-            "field": "BFSC_Tier",
-            "op": "eq",
-            "values": [
-              "Tier 1"
-            ]
-          }
-        ]
+        "onBinderList": true
       },
-      "ruleRaw": "If {{BFSC_Tier}} = \"Tier 1\""
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
     },
     {
       "seq": "9.11",
       "formNumber": "BFSC 03 08",
       "rule": {
-        "all": [
-          {
-            "field": "BFSC_Tier",
-            "op": "eq",
-            "values": [
-              "Tier 2"
-            ]
-          }
-        ]
+        "onBinderList": true
       },
-      "ruleRaw": "If {{BFSC_Tier}} = \"Tier 2\""
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
     },
     {
       "seq": "9.12",
       "formNumber": "BFSC 05 08",
       "rule": {
-        "all": [
-          {
-            "field": "BFSC_Tier",
-            "op": "eq",
-            "values": [
-              "Tier 3"
-            ]
-          }
-        ]
+        "onBinderList": true
       },
-      "ruleRaw": "If {{BFSC_Tier}} = \"Tier 3\""
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
     },
     {
       "seq": "9.13",
       "formNumber": "BFSC 07 08",
       "rule": {
-        "all": [
-          {
-            "field": "BFSC_Tier",
-            "op": "eq",
-            "values": [
-              "Tier 4"
-            ]
-          }
-        ]
+        "onBinderList": true
       },
-      "ruleRaw": "If {{BFSC_Tier}} = \"Tier 4\""
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
     },
     {
       "seq": "10.0",
