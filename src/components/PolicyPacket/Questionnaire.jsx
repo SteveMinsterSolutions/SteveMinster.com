@@ -559,14 +559,14 @@ export default function Questionnaire() {
 
   // A visible, required, empty input field is invalid (soft — never hard-blocks).
   const isInvalid = (q) =>
-    q.type !== 'derived' && isVisible(q) && isRequired(q) && isEmpty(answers[q.id]);
+    q.type !== 'derived' && q.type !== 'constant' && isVisible(q) && isRequired(q) && isEmpty(answers[q.id]);
 
   // Per-section live stats (visible inputs + incomplete-required count).
   const stats = useMemo(() => sections.map((sec) => {
     let visibleCount = 0;
     let incomplete = 0;
     for (const q of sec.questions) {
-      if (!isVisible(q) || q.type === 'derived') continue;
+      if (!isVisible(q) || q.type === 'derived' || q.type === 'constant') continue;
       visibleCount++;
       if (isRequired(q) && isEmpty(answers[q.id])) incomplete++;
     }
@@ -580,7 +580,9 @@ export default function Questionnaire() {
     for (const sec of sections) {
       for (const q of sec.questions) {
         if (q.type === 'derived' || !isVisible(q)) continue;
-        out[q.id] = answers[q.id] ?? '';
+        // constant: inject the fixed value (not a user answer) so it lands in the
+        // resolved memo for the assemble guard without rendering an input.
+        out[q.id] = q.type === 'constant' ? (q.value ?? '') : (answers[q.id] ?? '');
       }
     }
     return out;
@@ -632,7 +634,7 @@ export default function Questionnaire() {
   const visibleTotal = Object.keys(resolved).length;
   const active = sections[activeIdx];
   const isLastPage = activeIdx === sections.length - 1;
-  const visibleQuestions = active.questions.filter(isVisible);
+  const visibleQuestions = active.questions.filter((q) => isVisible(q) && q.type !== 'constant');
 
   // Phase 4: upload + prefill step precedes the questionnaire (= the Verify screen).
   if (step === 'upload') {

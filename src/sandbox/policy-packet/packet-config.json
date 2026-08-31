@@ -28,16 +28,13 @@
       "sectionName": "Account Information",
       "seq": 1,
       "id": "O_G_Program",
-      "label": "Which O&G Program is this policy?",
-      "type": "dropdown",
+      "label": "O&G Program (fixed — all policies are Bluefields Sports & Outdoor Recreation)",
+      "type": "constant",
+      "value": "Bluefields Sports & Outdoor Recreation",
       "required": "always",
-      "options": [
-        "Non-Motorized",
-        "Ski and Bike Shop",
-        "Complexes, Facilities, Studios"
-      ],
+      "options": null,
       "showIf": null,
-      "showIfRaw": "None - Always Ask"
+      "showIfRaw": "Derived to constant (§9#1) — not asked; injected into resolved for the assemble guard"
     },
     {
       "section": 1,
