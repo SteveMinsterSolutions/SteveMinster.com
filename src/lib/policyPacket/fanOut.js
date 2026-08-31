@@ -24,12 +24,13 @@ const M = 1_000_000;
 const sanitize = (s) => String(s).replace(/[<>:"/\\|?*\x00-\x1f]/g, '_').replace(/[ .]+$/, '');
 
 // ── Policy-number derivation (bound-doc critical) ─────────────────────────────
-// CGL is "BFSR6 #######-##". Swap ONLY the prefix; preserve the number + suffix
-// byte-for-byte. Return null on any unrecognized shape so the caller hard-fails
-// instead of shipping a defective policy number.
+// CGL is "BFSR6…" (space optional — production emits BFSR6####### with no space).
+// Swap ONLY the leading BFSR6 prefix; preserve everything after it byte-for-byte.
+// Return null when the number doesn't start with BFSR6 (or has nothing after) so the
+// caller hard-fails instead of shipping a defective policy number.
 export function deriveExcessNumber(cglNumber, prefix) {
   if (cglNumber == null) return null;
-  const m = String(cglNumber).trim().match(/^BFSR6(\s+\S.*)$/i);
+  const m = String(cglNumber).trim().match(/^BFSR6(.+)$/i);
   return m ? `${prefix}${m[1]}` : null;
 }
 
