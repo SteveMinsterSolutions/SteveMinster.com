@@ -7734,6 +7734,22 @@
       "sourceField": "L_1_ST",
       "cases": {},
       "default": ""
+    },
+    {
+      "kind": "lookup",
+      "section": 2,
+      "target": "2121",
+      "sourceField": "L_1_ST",
+      "cases": {},
+      "default": ""
+    },
+    {
+      "kind": "lookup",
+      "section": 2,
+      "target": "AA-112121",
+      "sourceField": "L_1_ST",
+      "cases": {},
+      "default": ""
     }
   ],
   "formOrder": [
@@ -8250,11 +8266,11 @@
     {
       "seq": "4.0",
       "formNumber": "PWR 00 04",
-      "edition": "10 23",
+      "edition": "08 26",
       "name": "Schedule of Lloyd's Security",
-      "file": "PWR 00 04 10 23 SCHEDULE OF LLOYD’S SECURITY.docx",
-      "library": "static",
-      "isDynamic": false,
+      "file": "PWR 00 04 08 26 SCHEDULE OF LLOYD'S SECURITY.docx",
+      "library": "dynamic",
+      "isDynamic": true,
       "present": true
     },
     {
@@ -11536,6 +11552,12 @@
       "Loction_19_Address",
       "Loction_20_Address",
       "Loc_Gen_Agg"
+    ],
+    "PWR 00 04": [
+      "3456_Pct",
+      "2121_Pct",
+      "2121",
+      "AA-112121"
     ]
   }
 }
