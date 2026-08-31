@@ -33,23 +33,29 @@ export function deriveExcessNumber(cglNumber, prefix) {
   return m ? `${prefix}${m[1]}` : null;
 }
 
-// ── Per-layer limits ──────────────────────────────────────────────────────────
-// perOcc is fixed by tower geometry. agg is PENDING Steve's figures (null → guard).
-// B keys are the exact Excess_Tower_Size option strings.
-const LIMITS = {
-  A: { attachPerOcc: 1 * M, attachAgg: null, excessPerOcc: 1 * M, excessAgg: null },
-  B: {
-    '2x1 ($2M xs $1M)': { attachPerOcc: 2 * M, attachAgg: null, excessPerOcc: 1 * M, excessAgg: null },
-    '3x1 ($3M xs $1M)': { attachPerOcc: 2 * M, attachAgg: null, excessPerOcc: 2 * M, excessAgg: null },
-    '4x1 ($4M xs $1M)': { attachPerOcc: 2 * M, attachAgg: null, excessPerOcc: 3 * M, excessAgg: null },
-  },
+// ── Per-layer limits (confirmed Steve 2026-08-31; see design doc §CONFIRMED #3) ─
+// A layer's OWN limit always has per-occ == aggregate. The UNDERLYING/attachment
+// figures can differ (per-occ ≠ agg). Attachment points are INVARIANT of tower size
+// (BFEI6 attaches on the CGL $1M/$2M; BFEX6 on CGL+BFEI6 $2M/$3M); only BFEX6's own
+// limit varies by tower size. The CGL BFSR6 base must be $1M/$2M for Excess 2 to attach.
+const ATTACH = {
+  A: { perOcc: 1 * M, agg: 2 * M }, // the CGL ($1M/$2M) beneath BFEI6
+  B: { perOcc: 2 * M, agg: 3 * M }, // CGL + BFEI6 ($2M/$3M) beneath BFEX6
+};
+const OWN_A = 1 * M;                 // BFEI6 own limit — always $1M (per-occ = agg)
+const OWN_B = {                      // BFEX6 own limit by tower size (per-occ = agg)
+  '2x1 ($2M xs $1M)': 1 * M,
+  '3x1 ($3M xs $1M)': 2 * M,
+  '4x1 ($4M xs $1M)': 2 * M,
 };
 
-function layerLimits(layer, towerSize) {
-  if (layer === 'A') return LIMITS.A;
-  const b = LIMITS.B[towerSize];
-  if (!b) throw new Error(`Excess B: unrecognized Excess_Tower_Size "${towerSize}".`);
-  return b;
+// Resolve { own, attach } for a layer. Throws on an unrecognized tower size for B —
+// Excess 2 cannot be built without a valid tower selection.
+function excessLimits(layer, towerSize) {
+  if (layer === 'A') return { own: OWN_A, attach: ATTACH.A };
+  const own = OWN_B[towerSize];
+  if (own == null) throw new Error(`Excess B: unrecognized Excess_Tower_Size "${towerSize}".`);
+  return { own, attach: ATTACH.B };
 }
 
 // Build the per-instance resolved overlay (derived numbers + this layer's limits).
@@ -59,19 +65,18 @@ export function buildExcessOverlay(layer, resolved) {
   const num = deriveExcessNumber(cgl, prefix);
   if (!num) throw new Error(`Excess ${layer}: cannot derive policy number from CGL "${cgl}" (expected "BFSR6 …").`);
 
-  const lim = layerLimits(layer, resolved?.Excess_Tower_Size);
-  for (const [k, v] of Object.entries(lim)) {
-    if (v == null) throw new Error(`Excess ${layer}: "${k}" aggregate not yet confirmed — refusing to emit an unconfirmed bound aggregate.`);
-  }
+  const { own, attach } = excessLimits(layer, resolved?.Excess_Tower_Size);
 
   return {
     Excess_Policy_Number: num,
-    // Policy_Number intentionally NOT set here — stays the CGL number (lead underlying).
+    // Policy_Number intentionally NOT set — stays the CGL number (lead underlying).
     Excess_1_Policy_Number: layer === 'B' ? deriveExcessNumber(cgl, 'BFEI6') : '',
-    Attach_Per_Occ: lim.attachPerOcc,
-    Attach_Agg: lim.attachAgg,
-    Excess_Per_Occ: lim.excessPerOcc,
-    Excess_Agg: lim.excessAgg,
+    // Attachment (underlying total below this layer) — per-occ ≠ agg.
+    Attach_Per_Occ: attach.perOcc,
+    Attach_Agg: attach.agg,
+    // This layer's OWN limit — per-occ == agg.
+    Excess_Per_Occ: own,
+    Excess_Agg: own,
   };
 }
 
