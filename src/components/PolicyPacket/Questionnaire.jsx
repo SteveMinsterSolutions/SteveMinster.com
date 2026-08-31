@@ -654,6 +654,18 @@ export default function Questionnaire() {
   const active = sections[activeIdx];
   const isLastPage = activeIdx === sections.length - 1;
   const visibleQuestions = active.questions.filter((q) => isVisible(q) && q.type !== 'constant');
+  // Group visible questions by their `group` field (order-preserving). Questions
+  // with no group fall into a single unnamed group => renders exactly as before.
+  const groupedVisible = (() => {
+    const out = [];
+    for (const q of visibleQuestions) {
+      const g = q.group || '';
+      const last = out[out.length - 1];
+      if (!last || last.group !== g) out.push({ group: g, questions: [q] });
+      else last.questions.push(q);
+    }
+    return out;
+  })();
 
   // Phase 4: upload + prefill step precedes the questionnaire (= the Verify screen).
   if (step === 'upload') {
@@ -761,19 +773,29 @@ export default function Questionnaire() {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                {visibleQuestions.map((q) => (
-                  <QuestionField
-                    key={q.id}
-                    q={q}
-                    value={answers[q.id]}
-                    onChange={handleUserChange}
-                    invalid={isInvalid(q)}
-                    required={isRequired(q) && q.type !== 'derived'}
-                    prefilled={prefilledIds.includes(q.id)}
-                  />
-                ))}
-              </div>
+              {groupedVisible.map((grp, gi) => (
+                <div key={grp.group || `g${gi}`} className={gi > 0 ? 'mt-8' : ''}>
+                  {grp.group && (
+                    <h3 className="text-sm font-bold uppercase tracking-wide mb-3 pb-1"
+                      style={{ color: bf.accentDark, fontFamily: bf.fontBody, borderBottom: `1px solid ${bf.borderSubtle}` }}>
+                      {grp.group}
+                    </h3>
+                  )}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                    {grp.questions.map((q) => (
+                      <QuestionField
+                        key={q.id}
+                        q={q}
+                        value={answers[q.id]}
+                        onChange={handleUserChange}
+                        invalid={isInvalid(q)}
+                        required={isRequired(q) && q.type !== 'derived'}
+                        prefilled={prefilledIds.includes(q.id)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))}
 
               {/* Prev / Next */}
               <div className="flex items-center justify-between mt-8 pt-5" style={{ borderTop: `1px solid ${bf.borderSubtle}` }}>

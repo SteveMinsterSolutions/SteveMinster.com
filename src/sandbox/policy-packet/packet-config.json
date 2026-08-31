@@ -392,7 +392,7 @@
     {
       "section": 2,
       "sectionName": "Coverage Limits",
-      "seq": 1,
+      "seq": 8,
       "id": "Aggregate_Limit",
       "label": "What are the aggregate limit?",
       "type": "dropdown",
@@ -409,12 +409,13 @@
         "$5,000,000"
       ],
       "showIf": null,
-      "showIfRaw": "None - Always Ask"
+      "showIfRaw": "None - Always Ask",
+      "group": "Primary CGL Coverages"
     },
     {
       "section": 2,
       "sectionName": "Coverage Limits",
-      "seq": 2,
+      "seq": 9,
       "id": "Prod_Ops_Limit",
       "label": "What is the prod ops limit?",
       "type": "dropdown",
@@ -431,12 +432,13 @@
         "$5,000,000"
       ],
       "showIf": null,
-      "showIfRaw": "None - Always Ask"
+      "showIfRaw": "None - Always Ask",
+      "group": "Primary CGL Coverages"
     },
     {
       "section": 2,
       "sectionName": "Coverage Limits",
-      "seq": 3,
+      "seq": 7,
       "id": "Pers_Ad_Limit",
       "label": "What is the pers ad limit?",
       "type": "dropdown",
@@ -453,12 +455,13 @@
         "$5,000,000"
       ],
       "showIf": null,
-      "showIfRaw": "None - Always Ask"
+      "showIfRaw": "None - Always Ask",
+      "group": "Primary CGL Coverages"
     },
     {
       "section": 2,
       "sectionName": "Coverage Limits",
-      "seq": 4,
+      "seq": 1,
       "id": "Occurrence_Limit",
       "label": "What is the occurrence limit?",
       "type": "dropdown",
@@ -475,12 +478,13 @@
         "$5,000,000"
       ],
       "showIf": null,
-      "showIfRaw": "None - Always Ask"
+      "showIfRaw": "None - Always Ask",
+      "group": "Primary CGL Coverages"
     },
     {
       "section": 2,
       "sectionName": "Coverage Limits",
-      "seq": 5,
+      "seq": 2,
       "id": "Prem_Dam_Limit",
       "label": "What is the prem dam limit?",
       "type": "dropdown",
@@ -493,16 +497,18 @@
         "$50,000",
         "$100,000",
         "$250,000",
+        "$300,000",
         "$500,000",
         "$1,000,000"
       ],
       "showIf": null,
-      "showIfRaw": "None - Always Ask"
+      "showIfRaw": "None - Always Ask",
+      "group": "Primary CGL Coverages"
     },
     {
       "section": 2,
       "sectionName": "Coverage Limits",
-      "seq": 6,
+      "seq": 11,
       "id": "Premises_Rented_Deductible",
       "label": "What is the prem dam Deductible?",
       "type": "dropdown",
@@ -520,12 +526,13 @@
         "$500,000"
       ],
       "showIf": null,
-      "showIfRaw": "None - Always Ask"
+      "showIfRaw": "None - Always Ask",
+      "group": "Deductibles, Retention & Sub-Limits"
     },
     {
       "section": 2,
       "sectionName": "Coverage Limits",
-      "seq": 7,
+      "seq": 3,
       "id": "Med_Limit",
       "label": "What is the med limit?",
       "type": "dropdown",
@@ -537,12 +544,13 @@
         "$25,000"
       ],
       "showIf": null,
-      "showIfRaw": "None - Always Ask"
+      "showIfRaw": "None - Always Ask",
+      "group": "Primary CGL Coverages"
     },
     {
       "section": 2,
       "sectionName": "Coverage Limits",
-      "seq": 8,
+      "seq": 20,
       "id": "SAM_per_person",
       "label": "What is the sam per person limit?",
       "type": "dropdown",
@@ -559,12 +567,13 @@
         "$1,000,000"
       ],
       "showIf": null,
-      "showIfRaw": "None - Always Ask"
+      "showIfRaw": "None - Always Ask",
+      "group": "Optional Coverages & Endorsements"
     },
     {
       "section": 2,
       "sectionName": "Coverage Limits",
-      "seq": 9,
+      "seq": 21,
       "id": "SAM_Aggregate",
       "label": "What is the sam aggregate limit?",
       "type": "dropdown",
@@ -584,12 +593,13 @@
         "$5,000,000"
       ],
       "showIf": null,
-      "showIfRaw": "None - Always Ask"
+      "showIfRaw": "None - Always Ask",
+      "group": "Optional Coverages & Endorsements"
     },
     {
       "section": 2,
       "sectionName": "Coverage Limits",
-      "seq": 10,
+      "seq": 24,
       "id": "Liquor_Each_Limit",
       "label": "What is the liquor each limit?",
       "type": "dropdown",
@@ -606,12 +616,13 @@
         "$5,000,000"
       ],
       "showIf": null,
-      "showIfRaw": "None - Always Ask"
+      "showIfRaw": "None - Always Ask",
+      "group": "Optional Coverages & Endorsements"
     },
     {
       "section": 2,
       "sectionName": "Coverage Limits",
-      "seq": 11,
+      "seq": 25,
       "id": "Liquor_Agg_Limit",
       "label": "What is the liquor agg limit?",
       "type": "dropdown",
@@ -628,12 +639,13 @@
         "$5,000,000"
       ],
       "showIf": null,
-      "showIfRaw": "None - Always Ask"
+      "showIfRaw": "None - Always Ask",
+      "group": "Optional Coverages & Endorsements"
     },
     {
       "section": 2,
       "sectionName": "Coverage Limits",
-      "seq": 12,
+      "seq": 23,
       "id": "HNOA_Limit",
       "label": "What is the hnoa limit?",
       "type": "dropdown",
@@ -648,12 +660,13 @@
         "$1,000,000 CSL"
       ],
       "showIf": null,
-      "showIfRaw": "None - Always Ask"
+      "showIfRaw": "None - Always Ask",
+      "group": "Optional Coverages & Endorsements"
     },
     {
       "section": 2,
       "sectionName": "Coverage Limits",
-      "seq": 13,
+      "seq": 12,
       "id": "Claimant_Sublimit",
       "label": "What is the claimant sublimit?",
       "type": "dropdown",
@@ -671,12 +684,13 @@
         "$1,000,000"
       ],
       "showIf": null,
-      "showIfRaw": "None - Always Ask"
+      "showIfRaw": "None - Always Ask",
+      "group": "Deductibles, Retention & Sub-Limits"
     },
     {
       "section": 2,
       "sectionName": "Coverage Limits",
-      "seq": 14,
+      "seq": 13,
       "id": "Rental_User_Sublimit",
       "label": "What is the rental user sublimit?",
       "type": "dropdown",
@@ -694,12 +708,13 @@
         "$1,000,000"
       ],
       "showIf": null,
-      "showIfRaw": "None - Always Ask"
+      "showIfRaw": "None - Always Ask",
+      "group": "Deductibles, Retention & Sub-Limits"
     },
     {
       "section": 2,
       "sectionName": "Coverage Limits",
-      "seq": 15,
+      "seq": 10,
       "id": "Liability_Deductible",
       "label": "What is the liability deductible?",
       "type": "dropdown",
@@ -717,7 +732,8 @@
         "$500,000"
       ],
       "showIf": null,
-      "showIfRaw": "None - Always Ask"
+      "showIfRaw": "None - Always Ask",
+      "group": "Deductibles, Retention & Sub-Limits"
     },
     {
       "section": 3,
@@ -6473,6 +6489,166 @@
       "showIfRaw": "None - Always Ask",
       "placeholder": "Paste the binder's forms-and-endorsements schedule \u2014 one form number per line (e.g. BFOG 01 22 03 26). Edition optional.",
       "help": "Interim input for render-from-list inclusion. Forms whose rule is onBinderList attach when their number appears here; Phase 5 prefill will fill this automatically."
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 4,
+      "id": "TPI_Excess",
+      "label": "What is the Third Party Injury Expense — Excess Medical limit?",
+      "type": "dropdown",
+      "required": "always",
+      "options": [
+        "Excluded",
+        "$500",
+        "$1,500",
+        "$2,000",
+        "$3,000",
+        "$4,000",
+        "$5,000",
+        "$10,000"
+      ],
+      "showIf": null,
+      "showIfRaw": "None - Always Ask",
+      "group": "Primary CGL Coverages"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 5,
+      "id": "TPI_Primary",
+      "label": "What is the Third Party Injury Expense — Primary Incidental Injury limit?",
+      "type": "dropdown",
+      "required": "always",
+      "options": [
+        "Excluded",
+        "$500",
+        "$1,500",
+        "$2,000",
+        "$3,000",
+        "$4,000",
+        "$5,000"
+      ],
+      "showIf": null,
+      "showIfRaw": "None - Always Ask",
+      "group": "Primary CGL Coverages"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 6,
+      "id": "TPI_Agg",
+      "label": "What is the Third Party Injury Expense — Aggregate limit?",
+      "type": "dropdown",
+      "required": "always",
+      "options": [
+        "Excluded",
+        "$3,000",
+        "$4,000",
+        "$5,000",
+        "$10,000"
+      ],
+      "showIf": null,
+      "showIfRaw": "None - Always Ask",
+      "group": "Primary CGL Coverages"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 14,
+      "id": "SIR_Per",
+      "label": "What is the Self-Insured Retention (SIR) limit?",
+      "type": "dropdown",
+      "required": "always",
+      "options": [
+        "None",
+        "$1,000",
+        "$2,500",
+        "$5,000",
+        "$10,000",
+        "$25,000",
+        "$50,000",
+        "$100,000",
+        "$250,000",
+        "$500,000",
+        "$1,000,000"
+      ],
+      "showIf": null,
+      "showIfRaw": "None - Always Ask",
+      "group": "Deductibles, Retention & Sub-Limits"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 15,
+      "id": "SIR_ALAE",
+      "label": "Self-Insured Retention — Include or Exclude ALAE?",
+      "type": "dropdown",
+      "required": "conditional",
+      "options": [
+        "Include ALAE",
+        "Exclude ALAE"
+      ],
+      "showIf": {
+        "all": [
+          {
+            "field": "SIR_Per",
+            "op": "neq",
+            "values": [
+              "None"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{SIR_Per}} ≠ \"None\"",
+      "group": "Deductibles, Retention & Sub-Limits"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 22,
+      "id": "PIT_Limit",
+      "label": "What is the Professional Instruction sublimit?",
+      "type": "dropdown",
+      "required": "always",
+      "options": [
+        "Excluded",
+        "$100,000",
+        "$250,000",
+        "$500,000",
+        "$1,000,000"
+      ],
+      "showIf": null,
+      "showIfRaw": "None - Always Ask",
+      "group": "Optional Coverages & Endorsements"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 26,
+      "id": "Des_Loc_Agg_Limit",
+      "label": "Designated Location General Aggregate — uncapped (CG 25 04)",
+      "type": "Currency",
+      "required": "optional",
+      "options": null,
+      "showIf": null,
+      "showIfRaw": "None - Always Ask",
+      "group": "Optional Coverages & Endorsements",
+      "help": "Whole-dollar. Per-location General Aggregate with no overall cap; prefilled from the CGL Coverage A aggregate. Applies when CG 25 04 is on the binder."
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 27,
+      "id": "Loc_Gen_Agg",
+      "label": "Designated Location General Aggregate — capped total (BFSR 00 25)",
+      "type": "Currency",
+      "required": "optional",
+      "options": null,
+      "showIf": null,
+      "showIfRaw": "None - Always Ask",
+      "group": "Optional Coverages & Endorsements",
+      "help": "Whole-dollar. Overall policy-level aggregate cap across all designated locations; prefilled from the CGL Coverage A aggregate. Applies when BFSR 00 25 is on the binder."
     }
   ],
   "calculations": [
