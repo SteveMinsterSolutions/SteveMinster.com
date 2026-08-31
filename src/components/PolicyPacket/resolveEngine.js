@@ -148,13 +148,46 @@ export function runCalculations(calculations, answers) {
 // formNumbers aligned & unique) — join by index. Include when the rule is
 // alwaysApply, or evaluateRule passes against the post-calc answers. Emit in
 // formOrder sequence = the All Form Order manifest.
+// Normalize a form number: uppercase, collapse whitespace, trim. Edition-agnostic
+// matching is handled by isFormListed (a bare library number matches a binder
+// entry that carries a trailing edition), so we deliberately do NOT strip digits
+// here — a form number like "BFOG 01 22" already ends in a two-group pattern.
+export function formNumberKey(s) {
+  return String(s == null ? '' : s).toUpperCase().replace(/\s+/g, ' ').trim();
+}
+
+// Parse the binder's forms-and-endorsements list (Binder_Forms) into an array of
+// normalized entries. Accepts newline / comma / semicolon separators.
+export function parseBinderForms(raw) {
+  if (raw == null) return [];
+  return String(raw).split(/[\n,;]+/).map(formNumberKey).filter(Boolean);
+}
+
+// A library form number is "on the binder" when a binder entry equals it, or
+// starts with it followed by a space (same number plus an edition and/or
+// description). The trailing space stops "BFOG 01 2" matching "BFOG 01 22".
+export function isFormListed(formNumber, binderEntries) {
+  const key = formNumberKey(formNumber);
+  if (!key) return false;
+  return binderEntries.some((e) => e === key || e.startsWith(key + ' '));
+}
+
 export function resolveManifest(formOrder, formRules, resolved) {
   const out = [];
+  const binderEntries = parseBinderForms(resolved && resolved.Binder_Forms);
   for (let i = 0; i < formOrder.length; i++) {
     const fo = formOrder[i];
     const fr = formRules[i];
     const rule = fr && fr.rule;
-    const include = (rule && rule.alwaysApply === true) || evaluateRule(rule, resolved);
+    // Detection-driven inclusion (render-from-list): a form whose rule is
+    // { onBinderList: true } includes iff its own form number is on the binder's
+    // schedule. Additive - any other rule shape keeps its prior behavior.
+    let include;
+    if (rule && rule.onBinderList === true) {
+      include = isFormListed(fo.formNumber, binderEntries);
+    } else {
+      include = (rule && rule.alwaysApply === true) || evaluateRule(rule, resolved);
+    }
     if (include) {
       out.push({
         seq: fo.seq,
