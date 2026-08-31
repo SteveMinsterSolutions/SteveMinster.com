@@ -283,6 +283,11 @@ function QuestionField({ q, value, onChange, invalid, required, prefilled }) {
           </span>
         )}
       </label>
+      {q.formNumber && (
+        <p className="text-[11px] -mt-0.5 mb-1" style={{ color: bf.textMuted, fontFamily: bf.fontBody }}>
+          {q.formNumber}
+        </p>
+      )}
       {control}
       {q.help && (
         <p className="mt-1 text-xs" style={{ color: bf.textMuted, fontFamily: bf.fontBody }}>
