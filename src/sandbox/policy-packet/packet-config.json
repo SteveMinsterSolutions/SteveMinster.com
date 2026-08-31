@@ -6693,6 +6693,171 @@
       },
       "showIfRaw": "If {{Excess_Liability}} = \"Yes - Layers 1 and 2\"",
       "group": "Excess Liability"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 40,
+      "id": "Business_Auto",
+      "label": "Does this account require a Business Auto policy?",
+      "type": "dropdown",
+      "required": "always",
+      "options": [
+        "No",
+        "Yes"
+      ],
+      "showIf": null,
+      "showIfRaw": "None - Always Ask",
+      "group": "Business Auto"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 41,
+      "id": "BA_Liab",
+      "label": "Business Auto BI/PD Limits",
+      "type": "dropdown",
+      "required": "conditional",
+      "options": [
+        "$15,000/$30,000/$15,000",
+        "$25,000/$50,000/$25,000",
+        "$30,000/$65,000/$25,000",
+        "$35,000/$70,000/$25,000",
+        "$50,000/$100,000/$50,000",
+        "$100,000/$300,000/$100,000"
+      ],
+      "showIf": {
+        "all": [
+          {
+            "field": "Business_Auto",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Business_Auto}} = \"Yes\"",
+      "group": "Business Auto"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 42,
+      "id": "BA_Physical_Damage",
+      "label": "Business Auto Physical Damage",
+      "type": "dropdown",
+      "required": "conditional",
+      "options": [
+        "Liability Only",
+        "Damage Waiver",
+        "Damage Waiver w/ At-Rest"
+      ],
+      "showIf": {
+        "all": [
+          {
+            "field": "Business_Auto",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Business_Auto}} = \"Yes\"",
+      "group": "Business Auto"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 43,
+      "id": "BA_Damage_Waiver_Limit",
+      "label": "Damage Waiver Limit",
+      "type": "Currency",
+      "required": "conditional",
+      "options": null,
+      "showIf": {
+        "all": [
+          {
+            "field": "Business_Auto",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          },
+          {
+            "field": "BA_Physical_Damage",
+            "op": "eq",
+            "values": [
+              "Damage Waiver",
+              "Damage Waiver w/ At-Rest"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Business_Auto}} = \"Yes\" AND {{BA_Physical_Damage}} = \"Damage Waiver\" OR \"Damage Waiver w/ At-Rest\"",
+      "group": "Business Auto"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 44,
+      "id": "BA_Damage_Waiver_Deductible",
+      "label": "Damage Waiver Deductible",
+      "type": "Currency",
+      "required": "conditional",
+      "options": null,
+      "showIf": {
+        "all": [
+          {
+            "field": "Business_Auto",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          },
+          {
+            "field": "BA_Physical_Damage",
+            "op": "eq",
+            "values": [
+              "Damage Waiver",
+              "Damage Waiver w/ At-Rest"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Business_Auto}} = \"Yes\" AND {{BA_Physical_Damage}} = \"Damage Waiver\" OR \"Damage Waiver w/ At-Rest\"",
+      "group": "Business Auto"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 45,
+      "id": "TIV",
+      "label": "At-Rest Coverage TIV",
+      "type": "Currency",
+      "required": "conditional",
+      "options": null,
+      "showIf": {
+        "all": [
+          {
+            "field": "Business_Auto",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          },
+          {
+            "field": "BA_Physical_Damage",
+            "op": "eq",
+            "values": [
+              "Damage Waiver w/ At-Rest"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Business_Auto}} = \"Yes\" AND {{BA_Physical_Damage}} = \"Damage Waiver w/ At-Rest\"",
+      "group": "Business Auto"
     }
   ],
   "calculations": [
