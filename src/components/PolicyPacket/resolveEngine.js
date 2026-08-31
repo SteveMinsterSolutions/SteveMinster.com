@@ -28,6 +28,16 @@ function numToString(n) {
   return String(Math.round(n * 1e6) / 1e6);
 }
 
+// Coerce a date answer to canonical YYYY-MM-DD so two dates compare as strings
+// (ISO dates sort lexicographically). Accepts ISO or US MM/DD/YYYY; else ''.
+function isoDateKey(v) {
+  const s = String(v == null ? '' : v).trim();
+  let m;
+  if ((m = /^(\d{4})-(\d{2})-(\d{2})(?:[T ].*)?$/.exec(s))) return `${m[1]}-${m[2]}-${m[3]}`;
+  if ((m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(s))) return `${m[3]}-${m[1].padStart(2, '0')}-${m[2].padStart(2, '0')}`;
+  return '';
+}
+
 // ─── Safe arithmetic evaluator (no eval / no Function) ────────────────────────
 // Grammar: expr := term ('+' term)* ; term := factor ('*' factor)* ;
 // factor := number | identifier | roundup(expr, expr) | '(' expr ')'.
@@ -148,6 +158,15 @@ export function runCalculations(calculations, answers) {
         value = anyFilled
           ? String(calc.template).replace(/\{([^}]+)\}/g, (_, f) => String(resolved[f] ?? '').trim())
           : '';
+        break;
+      }
+      case 'dateBranch': {
+        // Pick `before` or `onOrAfter` by comparing a date field to a threshold.
+        // Real ISO-normalized compare; strict < so the threshold date itself takes
+        // onOrAfter. Blank/unparseable date → default.
+        const d = isoDateKey(resolved[calc.dateField]);
+        const t = isoDateKey(calc.threshold);
+        value = (d && t) ? (d < t ? calc.before : calc.onOrAfter) : (calc.default ?? '');
         break;
       }
       default:
