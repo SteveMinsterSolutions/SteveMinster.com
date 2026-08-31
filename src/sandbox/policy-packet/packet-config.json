@@ -8040,6 +8040,16 @@
     },
     {
       "seq": "9.14",
+      "formNumber": "BFSR 01 21",
+      "edition": "07 26",
+      "name": "Third Party Injury Expense",
+      "file": "BFSR 01 21 07 26 Third Party Injury Expense.docx",
+      "library": "dynamic",
+      "isDynamic": true,
+      "present": true
+    },
+    {
+      "seq": "9.15",
       "formNumber": "BFSR 00 23",
       "edition": "07 26",
       "name": "Companion Accident Medical Warranty",
@@ -8049,7 +8059,7 @@
       "present": true
     },
     {
-      "seq": "9.15",
+      "seq": "9.16",
       "formNumber": "BFSR 00 24",
       "edition": "07 26",
       "name": "Incident Reporting Warranty",
@@ -9758,7 +9768,7 @@
     },
     {
       "seq": "9.14",
-      "formNumber": "BFSR 00 23",
+      "formNumber": "BFSR 01 21",
       "rule": {
         "onBinderList": true
       },
@@ -9766,6 +9776,14 @@
     },
     {
       "seq": "9.15",
+      "formNumber": "BFSR 00 23",
+      "rule": {
+        "onBinderList": true
+      },
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
+    },
+    {
+      "seq": "9.16",
       "formNumber": "BFSR 00 24",
       "rule": {
         "onBinderList": true
@@ -10865,6 +10883,11 @@
     ],
     "LMA5389": [
       "TRIA_Premium"
+    ],
+    "BFSR 01 21": [
+      "TPI_Excess",
+      "TPI_Primary",
+      "TPI_Agg"
     ]
   }
 }

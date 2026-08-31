@@ -1128,5 +1128,20 @@
     "tokenFormat": "Text",
     "answerType": "Drop Down",
     "behavior": "passthrough"
+  },
+  "TPI_Excess": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "TPI_Primary": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
+  },
+  "TPI_Agg": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
   }
 }
