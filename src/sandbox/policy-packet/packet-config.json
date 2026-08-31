@@ -6858,6 +6858,66 @@
       },
       "showIfRaw": "If {{Business_Auto}} = \"Yes\" AND {{BA_Physical_Damage}} = \"Damage Waiver w/ At-Rest\"",
       "group": "Business Auto"
+    },
+    {
+      "section": 8,
+      "sectionName": "Optional Forms",
+      "seq": 61,
+      "id": "BA_Combined_Deductible",
+      "label": "Business Auto — add Combined Deductible Single Incident Endorsement?",
+      "type": "dropdown",
+      "required": "conditional",
+      "options": [
+        "No",
+        "Yes"
+      ],
+      "showIf": {
+        "all": [
+          {
+            "field": "Business_Auto",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          },
+          {
+            "field": "BA_Physical_Damage",
+            "op": "eq",
+            "values": [
+              "Damage Waiver",
+              "Damage Waiver w/ At-Rest"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Business_Auto}} = \"Yes\" AND {{BA_Physical_Damage}} = \"Damage Waiver\" OR \"Damage Waiver w/ At-Rest\"",
+      "group": "Business Auto"
+    },
+    {
+      "section": 8,
+      "sectionName": "Optional Forms",
+      "seq": 62,
+      "id": "BA_Employee_Use",
+      "label": "Business Auto — add Employee Use Coverage?",
+      "type": "dropdown",
+      "required": "conditional",
+      "options": [
+        "No",
+        "Yes"
+      ],
+      "showIf": {
+        "all": [
+          {
+            "field": "Business_Auto",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Business_Auto}} = \"Yes\"",
+      "group": "Business Auto"
     }
   ],
   "calculations": [
