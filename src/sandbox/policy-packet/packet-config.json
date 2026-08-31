@@ -7351,6 +7351,27 @@
       "seq": 69,
       "target": "Loction_10_Address",
       "template": "{DLA_10_Add}, {DLA_10_City}, {DLA_10_ST} {DLA_10_Zip}"
+    },
+    {
+      "kind": "dateBranch",
+      "section": 2,
+      "seq": 70,
+      "target": "Lloyd's_Authority_Num",
+      "dateField": "Policy_Effective_Date",
+      "threshold": "2026-07-01",
+      "before": "B0146GLUSA2500391",
+      "onOrAfter": "B2252GLUSA2600391"
+    },
+    {
+      "kind": "lookup",
+      "section": 2,
+      "seq": 71,
+      "target": "Dec_Page_Form_Number",
+      "sourceField": "L_1_ST",
+      "cases": {
+        "CA": "SLC-3 LMA3102B"
+      },
+      "default": "SLC-3 USA NMA2868"
     }
   ],
   "formOrder": [
@@ -10848,7 +10869,8 @@
       "CA_SL_Tax",
       "CA_Stamp",
       "TTL_Cost",
-      "Today_Date"
+      "Today_Date",
+      "Lloyd's_Authority_Num"
     ],
     "SLC-3 USA NMA2868": [
       "Policy_Number",
@@ -10864,7 +10886,9 @@
       "TTL_Ins_Taxes_Fees",
       "TTL_Cost",
       "Minimum_Earned",
-      "Today_Date"
+      "Today_Date",
+      "Lloyd's_Authority_Num",
+      "Dec_Page_Form_Number"
     ],
     "CG 25 04": [
       "DLA_1",

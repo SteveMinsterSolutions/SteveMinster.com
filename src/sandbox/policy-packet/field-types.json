@@ -1288,5 +1288,15 @@
     "tokenFormat": "currency_whole",
     "answerType": "Currency",
     "behavior": "currency_whole"
+  },
+  "Lloyd's_Authority_Num": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Dec_Page_Form_Number": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
   }
 }
