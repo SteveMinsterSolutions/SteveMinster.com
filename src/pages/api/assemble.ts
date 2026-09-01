@@ -21,7 +21,7 @@ import fieldTypes from '../../sandbox/policy-packet/field-types.json';
 import excessConfig from '../../sandbox/policy-packet/excess-config.json';
 import baConfig from '../../sandbox/policy-packet/ba-config.json';
 import { buildOnePolicy } from '../../lib/policyPacket/buildPolicy.js';
-import { fanOutPolicies, zipPolicies, policiesZipName } from '../../lib/policyPacket/fanOut.js';
+import { fanOutPolicies, zipPolicies, policiesZipName, buildBFPISchedule } from '../../lib/policyPacket/fanOut.js';
 
 export const prerender = false;
 // Batch-convert (~21 dynamics through Gotenberg) + merge of ~42 forms is the slow
@@ -103,6 +103,17 @@ export const POST: APIRoute = async ({ request }) => {
     // With the excess form-set config imported, an excess election now fans out to
     // BFEI6 (A) and/or BFEX6 (B) alongside the CGL; no election ⇒ CGL only (unchanged).
     const policies = fanOutPolicies(packetConfig as any, excessConfig as any, resolved, baConfig as any);
+
+    // ── BFPI 00 01: cross-policy Premium Installment Schedule (BA-only) ──
+    // Computed from the ORIGINAL submission `resolved` (which still carries each
+    // policy's premium, the CGL BFSR6 number and the effective date) and merged into
+    // the Business-Auto policy's resolved. Must run AFTER fan-out because the BA
+    // overlay overwrites Policy_Number/TTL_Premium; reading those post-overlay would
+    // schedule the wrong figures. No-op when there is no BA policy in the list.
+    const baPolicy = policies.find((p) => p.id === 'BA');
+    if (baPolicy) {
+      baPolicy.resolved = { ...baPolicy.resolved, ...buildBFPISchedule(resolved) };
+    }
 
     // Build every policy through the shared primitive. Any single policy failing its
     // assertions fails the WHOLE build — never ship a partial tower.

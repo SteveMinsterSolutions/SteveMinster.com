@@ -139,6 +139,131 @@ export function buildBAOverlay(resolved) {
   };
 }
 
+// ─── BFPI 00 01 — cross-policy Premium Installment Schedule (BA-only) ──────────
+// Computed from the ORIGINAL submission resolved (each policy's premium + the CGL
+// number + effective date are all still present there) and injected into the BA
+// policy's resolved AFTER fan-out — the BA overlay has already overwritten
+// Policy_Number and TTL_Premium, so those must NOT be read from the BA policy.
+//
+// Confirmed rules (Steve 2026-08/09):
+//   • Down % applies to PREMIUM ONLY (taxes/fees are never on the schedule).
+//   • Remaining premium is split EQUALLY over N installments, each rounded UP to the
+//     penny; the FINAL installment is the balance (it absorbs the rounding).
+//   • Down due = policy effective date; installment n due = the same calendar day n
+//     months later, overflowing (29/30/31 in a short month) to that month's last day.
+//     No weekend/holiday adjustment; each date is anchored to the ORIGINAL eff day.
+//   • One row-group per policy present in THIS submission (Primary always; Excess L1/L2
+//     by election; Business Auto always in a BA build). Absent policies render blank —
+//     their shared coverage-label + number + amount tokens all resolve to "".
+const BFPI_PLANS = {
+  'Paid in Full':                 { downPct: 1.00, installments: 0 },
+  '40% Down with 2 Installments': { downPct: 0.40, installments: 2 },
+  '25% Down with 5 Installments': { downPct: 0.25, installments: 5 },
+  '25% Down with 8 Installments': { downPct: 0.25, installments: 8 },
+};
+const BFPI_MAX_INSTALLMENTS = 8;
+
+// dollars → integer cents (round to nearest cent). Blank/NaN → null (= "absent").
+function bfpiToCents(v) {
+  if (v == null || String(v).trim() === '') return null;
+  const n = Number(String(v).replace(/[^0-9.\-]/g, ''));
+  return Number.isFinite(n) ? Math.round(n * 100) : null;
+}
+// integer cents → a plain "1234.56" the currency_cents field-type renders as "$1,234.56".
+const bfpiCentsToStr = (c) => (c == null ? '' : (c / 100).toFixed(2));
+
+// Split a premium (in cents) into { down, inst[] } per the plan. inst has exactly N
+// entries; installments 1..N-1 = ceil(remaining/N), installment N = the balance.
+function bfpiSplit(premiumCents, plan) {
+  const down = Math.round(premiumCents * plan.downPct);
+  const rem = premiumCents - down;
+  const N = plan.installments;
+  const inst = [];
+  if (N > 0) {
+    const base = Math.ceil(rem / N);
+    let acc = 0;
+    for (let i = 1; i < N; i += 1) { inst.push(base); acc += base; }
+    inst.push(rem - acc); // final = the exact balance
+  }
+  return { down, inst };
+}
+
+// Add `months` to an ISO date; a nonexistent target day (e.g. the 31st in a 30-day
+// month) overflows to that month's last day. Anchored to the ORIGINAL day each call.
+function bfpiAddMonthsISO(iso, months) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso ?? '').trim());
+  if (!m) return '';
+  const y = +m[1], mo = +m[2], d = +m[3];
+  const target = (mo - 1) + months;             // 0-based target month index
+  const ty = y + Math.floor(target / 12);
+  const tmo = ((target % 12) + 12) % 12;         // 0-based month in [0,11]
+  const lastDay = new Date(Date.UTC(ty, tmo + 1, 0)).getUTCDate();
+  const day = Math.min(d, lastDay);
+  return `${ty}-${String(tmo + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}
+
+// Build every BFPI token value from the ORIGINAL resolved. Returns a flat map to
+// merge into the BA policy's resolved.
+export function buildBFPISchedule(resolved) {
+  const plan = BFPI_PLANS[resolved?.Pay_Plan] ?? BFPI_PLANS['Paid in Full'];
+  const eff = resolved?.Policy_Effective_Date ?? '';
+  const cgl = resolved?.Policy_Number; // ORIGINAL resolved still carries the CGL BFSR6 number
+
+  const election = resolved?.Excess_Liability;
+  const hasA = election === 'Yes - Layer 1 Only' || election === 'Yes - Layers 1 and 2';
+  const hasB = election === 'Yes - Layers 1 and 2';
+
+  const rows = [
+    { pre: 'BFSR', labelTok: 'Primary',   label: 'Primary',        num: cgl,                              prem: resolved?.TTL_Premium,      present: true },
+    { pre: 'BFEI', labelTok: 'Excess_L1', label: 'Excess Layer 1', num: deriveExcessNumber(cgl, 'BFEI6'), prem: resolved?.Excess_A_Premium, present: hasA },
+    { pre: 'BFEX', labelTok: 'Excess_L2', label: 'Excess Layer 2', num: deriveExcessNumber(cgl, 'BFEX6'), prem: resolved?.Excess_B_Premium, present: hasB },
+    { pre: 'BFBA', labelTok: 'BFBA_Cov',  label: 'Business Auto',  num: deriveExcessNumber(cgl, 'BFBA6'), prem: resolved?.BA_Prem,          present: true },
+  ];
+
+  const out = {};
+  let totalCents = 0;
+
+  for (const r of rows) {
+    out[`${r.pre}_On`] = r.present ? '1' : ''; // section flag: hide an absent policy's row
+    const blankAmounts = () => {
+      out[`${r.pre}_Down`] = '';
+      for (let i = 1; i <= BFPI_MAX_INSTALLMENTS; i += 1) out[`${r.pre}_Ins_${i}`] = '';
+    };
+    if (!r.present) {
+      out[`${r.pre}_PolNum`] = '';
+      out[r.labelTok] = '';
+      blankAmounts();
+      continue;
+    }
+    out[`${r.pre}_PolNum`] = r.num ?? '';
+    out[r.labelTok] = r.label;
+
+    const pc = bfpiToCents(r.prem);
+    if (pc == null) { blankAmounts(); continue; } // present but no premium captured → blank, don't invent $0
+    totalCents += pc;
+    const { down, inst } = bfpiSplit(pc, plan);
+    out[`${r.pre}_Down`] = bfpiCentsToStr(down);
+    for (let i = 1; i <= BFPI_MAX_INSTALLMENTS; i += 1) {
+      out[`${r.pre}_Ins_${i}`] = i <= inst.length ? bfpiCentsToStr(inst[i - 1]) : '';
+    }
+  }
+
+  // Installment due dates — one shared column across all policies; only the plan's
+  // used installments carry a date, the rest stay blank.
+  for (let i = 1; i <= BFPI_MAX_INSTALLMENTS; i += 1) {
+    const on = i <= plan.installments;
+    out[`Inst_${i}_Due`] = on ? bfpiAddMonthsISO(eff, i) : '';
+    out[`Inst_${i}_On`] = on ? '1' : ''; // section flag: hide an unused installment block
+  }
+
+  // TOTAL – ALL COVERAGES = Σ of each present policy's premium (premium only, matching
+  // the schedule). down + installments reconstruct each premium exactly, so this also
+  // equals the sum of every scheduled payment.
+  out.All_Prem_TTL = bfpiCentsToStr(totalCents);
+
+  return out;
+}
+
 /**
  * Fan one submission into an ordered policy list: CGL + 0–2 excess + optional BA.
  * @param {object} packetConfig CGL config · @param {object|null} excessConfig

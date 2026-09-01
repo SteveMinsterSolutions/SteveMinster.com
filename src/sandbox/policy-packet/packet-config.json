@@ -7513,6 +7513,62 @@
       },
       "showIfRaw": "If {{Business_Auto}} = \"Yes\"",
       "group": "Business Auto"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 39,
+      "id": "Who_Pays",
+      "label": "Who pays the premium (billing method)?",
+      "type": "dropdown",
+      "required": "conditional",
+      "options": [
+        "Direct Bill",
+        "Agency Bill",
+        "Agency Bill and Agent Remits Taxes",
+        "Outside Premium Finance"
+      ],
+      "showIf": {
+        "all": [
+          {
+            "field": "Business_Auto",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Business_Auto}} = \"Yes\"",
+      "group": "Billing & Installments"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 40,
+      "id": "Pay_Plan",
+      "label": "Which installment pay plan applies?",
+      "type": "dropdown",
+      "required": "conditional",
+      "options": [
+        "Paid in Full",
+        "40% Down with 2 Installments",
+        "25% Down with 5 Installments",
+        "25% Down with 8 Installments"
+      ],
+      "showIf": {
+        "all": [
+          {
+            "field": "Business_Auto",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Business_Auto}} = \"Yes\"",
+      "group": "Billing & Installments"
     }
   ],
   "calculations": [

@@ -2353,5 +2353,325 @@
     "tokenFormat": "currency_whole",
     "answerType": "Currency",
     "behavior": "currency_whole"
+  },
+  "Primary": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Excess_L1": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Excess_L2": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "BFBA_Cov": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "BFSR_PolNum": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "BFEI_PolNum": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "BFEX_PolNum": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "BFSR_Down": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFEI_Down": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFEX_Down": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFBA_Down": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "All_Prem_TTL": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFSR_Ins_1": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFSR_Ins_2": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFSR_Ins_3": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFSR_Ins_4": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFSR_Ins_5": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFSR_Ins_6": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFSR_Ins_7": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFSR_Ins_8": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFEI_Ins_1": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFEI_Ins_2": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFEI_Ins_3": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFEI_Ins_4": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFEI_Ins_5": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFEI_Ins_6": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFEI_Ins_7": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFEI_Ins_8": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFEX_Ins_1": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFEX_Ins_2": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFEX_Ins_3": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFEX_Ins_4": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFEX_Ins_5": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFEX_Ins_6": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFEX_Ins_7": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFEX_Ins_8": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFBA_Ins_1": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFBA_Ins_2": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFBA_Ins_3": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFBA_Ins_4": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFBA_Ins_5": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFBA_Ins_6": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFBA_Ins_7": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "BFBA_Ins_8": {
+    "tokenFormat": "currency_cents",
+    "answerType": "Calc",
+    "behavior": "currency_cents"
+  },
+  "Inst_1_Due": {
+    "tokenFormat": "YYYY-MM-DD",
+    "answerType": "Calc",
+    "behavior": "date_iso"
+  },
+  "Inst_2_Due": {
+    "tokenFormat": "YYYY-MM-DD",
+    "answerType": "Calc",
+    "behavior": "date_iso"
+  },
+  "Inst_3_Due": {
+    "tokenFormat": "YYYY-MM-DD",
+    "answerType": "Calc",
+    "behavior": "date_iso"
+  },
+  "Inst_4_Due": {
+    "tokenFormat": "YYYY-MM-DD",
+    "answerType": "Calc",
+    "behavior": "date_iso"
+  },
+  "Inst_5_Due": {
+    "tokenFormat": "YYYY-MM-DD",
+    "answerType": "Calc",
+    "behavior": "date_iso"
+  },
+  "Inst_6_Due": {
+    "tokenFormat": "YYYY-MM-DD",
+    "answerType": "Calc",
+    "behavior": "date_iso"
+  },
+  "Inst_7_Due": {
+    "tokenFormat": "YYYY-MM-DD",
+    "answerType": "Calc",
+    "behavior": "date_iso"
+  },
+  "Inst_8_Due": {
+    "tokenFormat": "YYYY-MM-DD",
+    "answerType": "Calc",
+    "behavior": "date_iso"
+  },
+  "BFSR_On": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "BFEI_On": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "BFEX_On": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "BFBA_On": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Inst_1_On": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Inst_2_On": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Inst_3_On": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Inst_4_On": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Inst_5_On": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Inst_6_On": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Inst_7_On": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Inst_8_On": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
   }
 }
