@@ -7648,7 +7648,7 @@
       "id": "Activity_1_Description",
       "label": "Covered Activity 1 (from the quote's Covered Activities list)",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": null,
       "showIfRaw": "None - Always Ask",
@@ -7661,7 +7661,7 @@
       "id": "Activity_2_Description",
       "label": "Covered Activity 2",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -7684,7 +7684,7 @@
       "id": "Activity_3_Description",
       "label": "Covered Activity 3",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -7707,7 +7707,7 @@
       "id": "Activity_4_Description",
       "label": "Covered Activity 4",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -7730,7 +7730,7 @@
       "id": "Activity_5_Description",
       "label": "Covered Activity 5",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -7753,7 +7753,7 @@
       "id": "Activity_6_Description",
       "label": "Covered Activity 6",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -7776,7 +7776,7 @@
       "id": "Activity_7_Description",
       "label": "Covered Activity 7",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -7799,7 +7799,7 @@
       "id": "Activity_8_Description",
       "label": "Covered Activity 8",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -7822,7 +7822,7 @@
       "id": "Activity_9_Description",
       "label": "Covered Activity 9",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -7845,7 +7845,7 @@
       "id": "Activity_10_Description",
       "label": "Covered Activity 10",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -7868,7 +7868,7 @@
       "id": "Activity_11_Description",
       "label": "Covered Activity 11",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -7891,7 +7891,7 @@
       "id": "Activity_12_Description",
       "label": "Covered Activity 12",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -7914,7 +7914,7 @@
       "id": "Activity_13_Description",
       "label": "Covered Activity 13",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -7937,7 +7937,7 @@
       "id": "Activity_14_Description",
       "label": "Covered Activity 14",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -7960,7 +7960,7 @@
       "id": "Activity_15_Description",
       "label": "Covered Activity 15",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -7983,7 +7983,7 @@
       "id": "Activity_16_Description",
       "label": "Covered Activity 16",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -8006,7 +8006,7 @@
       "id": "Activity_17_Description",
       "label": "Covered Activity 17",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -8029,7 +8029,7 @@
       "id": "Activity_18_Description",
       "label": "Covered Activity 18",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -8052,7 +8052,7 @@
       "id": "Activity_19_Description",
       "label": "Covered Activity 19",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -8075,7 +8075,7 @@
       "id": "Activity_20_Description",
       "label": "Covered Activity 20",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -8098,7 +8098,7 @@
       "id": "Activity_21_Description",
       "label": "Covered Activity 21",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -8121,7 +8121,7 @@
       "id": "Activity_22_Description",
       "label": "Covered Activity 22",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -8144,7 +8144,7 @@
       "id": "Activity_23_Description",
       "label": "Covered Activity 23",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -8167,7 +8167,7 @@
       "id": "Activity_24_Description",
       "label": "Covered Activity 24",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -8190,7 +8190,7 @@
       "id": "Activity_25_Description",
       "label": "Covered Activity 25",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -8213,7 +8213,7 @@
       "id": "Activity_26_Description",
       "label": "Covered Activity 26",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -8236,7 +8236,7 @@
       "id": "Activity_27_Description",
       "label": "Covered Activity 27",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -8259,7 +8259,7 @@
       "id": "Activity_28_Description",
       "label": "Covered Activity 28",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -8282,7 +8282,7 @@
       "id": "Activity_29_Description",
       "label": "Covered Activity 29",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -8305,7 +8305,7 @@
       "id": "Activity_30_Description",
       "label": "Covered Activity 30",
       "type": "text",
-      "required": "conditional",
+      "required": "optional",
       "options": [],
       "showIf": {
         "all": [
@@ -8327,9 +8327,20 @@
       "seq": 100,
       "id": "Activity_Sublimit",
       "label": "Per Claimant Sublimit of Liability — Specific Activities",
-      "type": "Currency",
-      "required": "conditional",
-      "options": [],
+      "type": "dropdown",
+      "required": "optional",
+      "options": [
+        "None",
+        "$5,000",
+        "$10,000",
+        "$25,000",
+        "$50,000",
+        "$100,000",
+        "$250,000",
+        "$500,000",
+        "$750,000",
+        "$1,000,000"
+      ],
       "showIf": {
         "all": [
           {

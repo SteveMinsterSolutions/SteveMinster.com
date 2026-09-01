@@ -2675,9 +2675,9 @@
     "behavior": "passthrough"
   },
   "Des_Loc_Agg_Limit": {
-    "tokenFormat": "Text",
-    "answerType": "Calc",
-    "behavior": "passthrough"
+    "tokenFormat": "currency_whole",
+    "answerType": "Currency",
+    "behavior": "currency_whole"
   },
   "SIR_ALAE": {
     "tokenFormat": "Text",
@@ -3005,9 +3005,9 @@
     "behavior": "passthrough"
   },
   "Activity_Sublimit": {
-    "tokenFormat": "currency_whole",
-    "answerType": "Calc",
-    "behavior": "currency_whole"
+    "tokenFormat": "Text",
+    "answerType": "Drop Down",
+    "behavior": "passthrough"
   },
   "Policy_Retroactive_Date": {
     "tokenFormat": "YYYY-MM-DD",
