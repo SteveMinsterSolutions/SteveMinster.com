@@ -11876,9 +11876,9 @@
       "seq": "17.0",
       "formNumber": "BFSC 00 08",
       "rule": {
-        "alwaysApply": true
+        "onBinderList": true
       },
-      "ruleRaw": "Always Apply"
+      "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
     },
     {
       "seq": "17.1",
