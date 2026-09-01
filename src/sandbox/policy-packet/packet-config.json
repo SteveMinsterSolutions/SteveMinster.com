@@ -1192,42 +1192,6 @@
     {
       "section": 3,
       "sectionName": "Premium and Taxes",
-      "seq": 14,
-      "id": "Excess_A_Min_Earned",
-      "label": "Excess Layer 1 (BFEI6) — Minimum Earned Percentage?",
-      "type": "dropdown",
-      "required": "conditional",
-      "options": [
-        "25%",
-        "50%",
-        "75%",
-        "100%"
-      ],
-      "showIf": {
-        "all": [
-          {
-            "field": "Excess_Liability",
-            "op": "eq",
-            "values": [
-              "Yes - Layer 1 Only",
-              "Yes - Layers 1 and 2"
-            ]
-          },
-          {
-            "field": "L_1_ST",
-            "op": "neq",
-            "values": [
-              "CA"
-            ]
-          }
-        ]
-      },
-      "showIfRaw": "Excess Liability includes Layer 1 and {{L_1_ST}} ≠ \"CA\"",
-      "group": "Excess Premium & Taxes — Layer 1 (BFEI6)"
-    },
-    {
-      "section": 3,
-      "sectionName": "Premium and Taxes",
       "seq": 15,
       "id": "Excess_A_Total",
       "label": "Excess Layer 1 (BFEI6) — Total Cost?",
@@ -1360,41 +1324,6 @@
         ]
       },
       "showIfRaw": "Excess Liability = Layers 1 and 2 and {{L_1_ST}} = \"CA\"",
-      "group": "Excess Premium & Taxes — Layer 2 (BFEX6)"
-    },
-    {
-      "section": 3,
-      "sectionName": "Premium and Taxes",
-      "seq": 20,
-      "id": "Excess_B_Min_Earned",
-      "label": "Excess Layer 2 (BFEX6) — Minimum Earned Percentage?",
-      "type": "dropdown",
-      "required": "conditional",
-      "options": [
-        "25%",
-        "50%",
-        "75%",
-        "100%"
-      ],
-      "showIf": {
-        "all": [
-          {
-            "field": "Excess_Liability",
-            "op": "eq",
-            "values": [
-              "Yes - Layers 1 and 2"
-            ]
-          },
-          {
-            "field": "L_1_ST",
-            "op": "neq",
-            "values": [
-              "CA"
-            ]
-          }
-        ]
-      },
-      "showIfRaw": "Excess Liability = Layers 1 and 2 and {{L_1_ST}} ≠ \"CA\"",
       "group": "Excess Premium & Taxes — Layer 2 (BFEX6)"
     },
     {
@@ -7120,6 +7049,7 @@
         "$500",
         "$1,500",
         "$2,000",
+        "$2,500",
         "$3,000",
         "$4,000",
         "$5,000"
@@ -7569,6 +7499,157 @@
       },
       "showIfRaw": "If {{Business_Auto}} = \"Yes\"",
       "group": "Billing & Installments"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 1.1,
+      "id": "CGL_Prem_Split",
+      "label": "Is the CGL premium split between Motorized and Non-Motorized?",
+      "type": "dropdown",
+      "required": "always",
+      "options": [
+        "No",
+        "Yes"
+      ],
+      "showIf": null,
+      "showIfRaw": "None - Always Ask",
+      "group": null
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 1.2,
+      "id": "CGL_Motorized_Prem",
+      "label": "CGL — Motorized Premium?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "CGL_Prem_Split",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{CGL_Prem_Split}} = \"Yes\"",
+      "group": null
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 1.3,
+      "id": "CGL_NonMotorized_Prem",
+      "label": "CGL — Non-Motorized Premium?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "CGL_Prem_Split",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{CGL_Prem_Split}} = \"Yes\"",
+      "group": null
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 10.1,
+      "id": "Excess_A_Prem_Split",
+      "label": "Excess Layer 1 (BFEI6) — Is the premium split between Motorized and Non-Motorized?",
+      "type": "dropdown",
+      "required": "conditional",
+      "options": [
+        "No",
+        "Yes"
+      ],
+      "showIf": {
+        "all": [
+          {
+            "field": "Excess_Liability",
+            "op": "eq",
+            "values": [
+              "Yes - Layer 1 Only",
+              "Yes - Layers 1 and 2"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "Excess Liability includes Layer 1",
+      "group": "Excess Premium & Taxes — Layer 1 (BFEI6)"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 10.2,
+      "id": "Excess_A_Motorized_Prem",
+      "label": "Excess Layer 1 (BFEI6) — Motorized Premium?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Excess_Liability",
+            "op": "eq",
+            "values": [
+              "Yes - Layer 1 Only",
+              "Yes - Layers 1 and 2"
+            ]
+          },
+          {
+            "field": "Excess_A_Prem_Split",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "Excess Liability includes Layer 1 and {{Excess_A_Prem_Split}} = \"Yes\"",
+      "group": "Excess Premium & Taxes — Layer 1 (BFEI6)"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 10.3,
+      "id": "Excess_A_NonMotorized_Prem",
+      "label": "Excess Layer 1 (BFEI6) — Non-Motorized Premium?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Excess_Liability",
+            "op": "eq",
+            "values": [
+              "Yes - Layer 1 Only",
+              "Yes - Layers 1 and 2"
+            ]
+          },
+          {
+            "field": "Excess_A_Prem_Split",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "Excess Liability includes Layer 1 and {{Excess_A_Prem_Split}} = \"Yes\"",
+      "group": "Excess Premium & Taxes — Layer 1 (BFEI6)"
     }
   ],
   "calculations": [

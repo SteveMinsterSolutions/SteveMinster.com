@@ -98,11 +98,13 @@ export function buildExcessOverlay(layer, resolved) {
     // This layer's OWN limit — per-occ == agg.
     Excess_Per_Occ: own,
     Excess_Agg: own,
-    // Per-instance financials → SLC-3 (TTL_*, CA_*, Minimum_Earned) + BFEX 00 01 (Excess_Premium).
+    // Per-instance financials → SLC-3 (TTL_*, CA_*) + BFEX 00 01 (Excess_Premium).
+    // NOTE: Minimum_Earned is intentionally NOT set here — excess min earned follows the
+    // OVERALL program value (shared resolved.Minimum_Earned), per Steve 2026-09-01. The
+    // per-instance Excess_A/B_Min_Earned questions were removed.
     TTL_Premium: fin('Premium'),
     Excess_Premium: fin('Premium'),
     TTL_Ins_Taxes_Fees: fin('Taxes_Fees'),
-    Minimum_Earned: fin('Min_Earned'),
     CA_SL_Tax: fin('SL_Tax'),
     CA_Stamp: fin('Stamp'),
     TTL_Cost: fin('Total'),
