@@ -17,6 +17,486 @@
   ],
   "formOrder": [
     {
+      "seq": "1.0",
+      "formNumber": "CA CCPA Notice",
+      "edition": "05 23",
+      "name": "California Consumer Privacy Act Notice",
+      "file": "CA CCPA Notice 05 23.docx",
+      "library": "static",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "2.0",
+      "formNumber": "BFSD 01 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Alabama",
+      "file": "BFSD 01 01 06 26 Alabama.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "3.0",
+      "formNumber": "BFSD 02 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Alaska",
+      "file": "BFSD 02 01 06 26 Alaska.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "4.0",
+      "formNumber": "BFSD 03 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Arizona",
+      "file": "BFSD 03 01 06 26 Arizona.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "5.0",
+      "formNumber": "BFSD 04 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Arkansas",
+      "file": "BFSD 04 01 06 26 Arkansas.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "6.0",
+      "formNumber": "BFSD 06 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Colorado",
+      "file": "BFSD 06 01 06 26 Colorado.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "7.0",
+      "formNumber": "BFSD 07 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Connecticut",
+      "file": "BFSD 07 01 06 26 Connecticut.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "8.0",
+      "formNumber": "BFSD 08 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Delaware",
+      "file": "BFSD 08 01 06 26 Delaware.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "9.0",
+      "formNumber": "BFSD 09 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Florida",
+      "file": "BFSD 09 01 06 26 Florida.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "10.0",
+      "formNumber": "BFSD 10 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Georgia",
+      "file": "BFSD 10 01 06 26 Georgia.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "11.0",
+      "formNumber": "BFSD 11 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Hawaii",
+      "file": "BFSD 11 01 06 26 Hawaii.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "12.0",
+      "formNumber": "BFSD 12 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Idaho",
+      "file": "BFSD 12 01 06 26 Idaho.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "13.0",
+      "formNumber": "BFSD 13 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Illinois",
+      "file": "BFSD 13 01 06 26 Illinois.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "14.0",
+      "formNumber": "BFSD 15 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Iowa",
+      "file": "BFSD 15 01 06 26 Iowa.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "15.0",
+      "formNumber": "BFSD 16 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Kansas",
+      "file": "BFSD 16 01 06 26 Kansas.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "16.0",
+      "formNumber": "BFSD 17 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Kentucky",
+      "file": "BFSD 17 01 06 26 Kentucky.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "17.0",
+      "formNumber": "BFSD 18 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Louisiana",
+      "file": "BFSD 18 01 06 26 Louisiana.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "18.0",
+      "formNumber": "BFSD 19 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Maine",
+      "file": "BFSD 19 01 06 26 Maine.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "19.0",
+      "formNumber": "BFSD 20 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Maryland",
+      "file": "BFSD 20 01 06 26 Maryland.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "20.0",
+      "formNumber": "BFSD 21 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Massachusetts",
+      "file": "BFSD 21 01 06 26 Massachusetts.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "21.0",
+      "formNumber": "BFSD 22 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Michigan",
+      "file": "BFSD 22 01 06 26 Michigan.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "22.0",
+      "formNumber": "BFSD 23 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Minnesota",
+      "file": "BFSD 23 01 06 26 Minnesota.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "23.0",
+      "formNumber": "BFSD 24 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Mississippi",
+      "file": "BFSD 24 01 06 26 Mississippi.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "24.0",
+      "formNumber": "BFSD 25 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Missouri",
+      "file": "BFSD 25 01 06 26 Missouri.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "25.0",
+      "formNumber": "BFSD 26 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Montana",
+      "file": "BFSD 26 01 06 26 Montana.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "26.0",
+      "formNumber": "BFSD 27 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Nebraska",
+      "file": "BFSD 27 01 06 26 Nebraska.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "27.0",
+      "formNumber": "BFSD 28 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Nevada",
+      "file": "BFSD 28 01 06 26 Nevada.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "28.0",
+      "formNumber": "BFSD 29 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - New Hampshire",
+      "file": "BFSD 29 01 06 26 New Hampshire.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "29.0",
+      "formNumber": "BFSD 30 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - New Jersey",
+      "file": "BFSD 30 01 06 26 New Jersey.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "30.0",
+      "formNumber": "BFSD 31 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - New Mexico",
+      "file": "BFSD 31 01 06 26 New Mexico.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "31.0",
+      "formNumber": "BFSD 32 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - New York",
+      "file": "BFSD 32 01 06 26 New York.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "32.0",
+      "formNumber": "BFSD 33 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - North Carolina",
+      "file": "BFSD 33 01 06 26 North Carolina.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "33.0",
+      "formNumber": "BFSD 34 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - North Dakota",
+      "file": "BFSD 34 01 06 26 North Dakota.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "34.0",
+      "formNumber": "BFSD 35 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Ohio",
+      "file": "BFSD 35 01 06 26 Ohio.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "35.0",
+      "formNumber": "BFSD 36 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Oklahoma",
+      "file": "BFSD 36 01 06 26 Oklahoma.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "36.0",
+      "formNumber": "BFSD 37 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Oregon",
+      "file": "BFSD 37 01 06 26 Oregon.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "37.0",
+      "formNumber": "BFSD 38 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Pennsylvania",
+      "file": "BFSD 38 01 06 26 Pennsylvania.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "38.0",
+      "formNumber": "BFSD 39 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Rhode Island",
+      "file": "BFSD 39 01 06 26 Rhode Island.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "39.0",
+      "formNumber": "BFSD 40 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - South Carolina",
+      "file": "BFSD 40 01 06 26 South Carolina.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "40.0",
+      "formNumber": "BFSD 41 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - South Dakota",
+      "file": "BFSD 41 01 06 26 South Dakota.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "41.0",
+      "formNumber": "BFSD 42 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Tennessee",
+      "file": "BFSD 42 01 06 26 Tennessee.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "42.0",
+      "formNumber": "BFSD 43 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Texas",
+      "file": "BFSD 43 01 06 26 Texas.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "43.0",
+      "formNumber": "BFSD 44 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Utah",
+      "file": "BFSD 44 01 06 26 Utah.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "44.0",
+      "formNumber": "BFSD 45 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Vermont",
+      "file": "BFSD 45 01 06 26 Vermont.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "45.0",
+      "formNumber": "BFSD 46 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Virginia",
+      "file": "BFSD 46 01 06 26 Virginia.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "46.0",
+      "formNumber": "BFSD 47 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Washington",
+      "file": "BFSD 47 01 06 26 Washington.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "47.0",
+      "formNumber": "BFSD 50 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Wisconsin",
+      "file": "BFSD 50 01 06 26 Wisconsin.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "48.0",
+      "formNumber": "BFSD 51 01",
+      "edition": "06 26",
+      "name": "Surplus Lines Disclosure Statement - Wyoming",
+      "file": "BFSD 51 01 06 26 Wyoming.docx",
+      "library": "surplus",
+      "isDynamic": false,
+      "present": true
+    },
+    {
       "seq": "0.1",
       "formNumber": "SLC-3 USA NMA2868",
       "edition": "01 26",
@@ -108,6 +588,774 @@
     }
   ],
   "formRules": [
+    {
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "CA"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"CA\"",
+      "seq": "1.0",
+      "formNumber": "CA CCPA Notice"
+    },
+    {
+      "seq": "2.0",
+      "formNumber": "BFSD 01 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "AL"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"AL\""
+    },
+    {
+      "seq": "3.0",
+      "formNumber": "BFSD 02 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "AK"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"AK\""
+    },
+    {
+      "seq": "4.0",
+      "formNumber": "BFSD 03 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "AZ"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"AZ\""
+    },
+    {
+      "seq": "5.0",
+      "formNumber": "BFSD 04 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "AR"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"AR\""
+    },
+    {
+      "seq": "6.0",
+      "formNumber": "BFSD 06 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "CO"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"CO\""
+    },
+    {
+      "seq": "7.0",
+      "formNumber": "BFSD 07 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "CT"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"CT\""
+    },
+    {
+      "seq": "8.0",
+      "formNumber": "BFSD 08 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "DE"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"DE\""
+    },
+    {
+      "seq": "9.0",
+      "formNumber": "BFSD 09 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "FL"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"FL\""
+    },
+    {
+      "seq": "10.0",
+      "formNumber": "BFSD 10 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "GA"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"GA\""
+    },
+    {
+      "seq": "11.0",
+      "formNumber": "BFSD 11 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "HI"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"HI\""
+    },
+    {
+      "seq": "12.0",
+      "formNumber": "BFSD 12 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "ID"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"ID\""
+    },
+    {
+      "seq": "13.0",
+      "formNumber": "BFSD 13 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "IL"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"IL\""
+    },
+    {
+      "seq": "14.0",
+      "formNumber": "BFSD 15 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "IA"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"IA\""
+    },
+    {
+      "seq": "15.0",
+      "formNumber": "BFSD 16 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "KS"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"KS\""
+    },
+    {
+      "seq": "16.0",
+      "formNumber": "BFSD 17 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "KY"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"KY\""
+    },
+    {
+      "seq": "17.0",
+      "formNumber": "BFSD 18 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "LA"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"LA\""
+    },
+    {
+      "seq": "18.0",
+      "formNumber": "BFSD 19 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "ME"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"ME\""
+    },
+    {
+      "seq": "19.0",
+      "formNumber": "BFSD 20 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "MD"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"MD\""
+    },
+    {
+      "seq": "20.0",
+      "formNumber": "BFSD 21 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "MA"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"MA\""
+    },
+    {
+      "seq": "21.0",
+      "formNumber": "BFSD 22 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "MI"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"MI\""
+    },
+    {
+      "seq": "22.0",
+      "formNumber": "BFSD 23 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "MN"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"MN\""
+    },
+    {
+      "seq": "23.0",
+      "formNumber": "BFSD 24 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "MS"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"MS\""
+    },
+    {
+      "seq": "24.0",
+      "formNumber": "BFSD 25 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "MO"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"MO\""
+    },
+    {
+      "seq": "25.0",
+      "formNumber": "BFSD 26 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "MT"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"MT\""
+    },
+    {
+      "seq": "26.0",
+      "formNumber": "BFSD 27 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "NE"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"NE\""
+    },
+    {
+      "seq": "27.0",
+      "formNumber": "BFSD 28 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "NV"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"NV\""
+    },
+    {
+      "seq": "28.0",
+      "formNumber": "BFSD 29 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "NH"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"NH\""
+    },
+    {
+      "seq": "29.0",
+      "formNumber": "BFSD 30 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "NJ"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"NJ\""
+    },
+    {
+      "seq": "30.0",
+      "formNumber": "BFSD 31 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "NM"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"NM\""
+    },
+    {
+      "seq": "31.0",
+      "formNumber": "BFSD 32 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "NY"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"NY\""
+    },
+    {
+      "seq": "32.0",
+      "formNumber": "BFSD 33 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "NC"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"NC\""
+    },
+    {
+      "seq": "33.0",
+      "formNumber": "BFSD 34 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "ND"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"ND\""
+    },
+    {
+      "seq": "34.0",
+      "formNumber": "BFSD 35 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "OH"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"OH\""
+    },
+    {
+      "seq": "35.0",
+      "formNumber": "BFSD 36 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "OK"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"OK\""
+    },
+    {
+      "seq": "36.0",
+      "formNumber": "BFSD 37 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "OR"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"OR\""
+    },
+    {
+      "seq": "37.0",
+      "formNumber": "BFSD 38 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "PA"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"PA\""
+    },
+    {
+      "seq": "38.0",
+      "formNumber": "BFSD 39 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "RI"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"RI\""
+    },
+    {
+      "seq": "39.0",
+      "formNumber": "BFSD 40 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "SC"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"SC\""
+    },
+    {
+      "seq": "40.0",
+      "formNumber": "BFSD 41 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "SD"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"SD\""
+    },
+    {
+      "seq": "41.0",
+      "formNumber": "BFSD 42 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "TN"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"TN\""
+    },
+    {
+      "seq": "42.0",
+      "formNumber": "BFSD 43 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "TX"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"TX\""
+    },
+    {
+      "seq": "43.0",
+      "formNumber": "BFSD 44 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "UT"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"UT\""
+    },
+    {
+      "seq": "44.0",
+      "formNumber": "BFSD 45 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "VT"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"VT\""
+    },
+    {
+      "seq": "45.0",
+      "formNumber": "BFSD 46 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "VA"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"VA\""
+    },
+    {
+      "seq": "46.0",
+      "formNumber": "BFSD 47 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "WA"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"WA\""
+    },
+    {
+      "seq": "47.0",
+      "formNumber": "BFSD 50 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "WI"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"WI\""
+    },
+    {
+      "seq": "48.0",
+      "formNumber": "BFSD 51 01",
+      "rule": {
+        "all": [
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "WY"
+            ]
+          }
+        ]
+      },
+      "ruleRaw": "if {{L_1_ST}} = \"WY\""
+    },
     {
       "seq": "0.1",
       "formNumber": "SLC-3 USA NMA2868",
