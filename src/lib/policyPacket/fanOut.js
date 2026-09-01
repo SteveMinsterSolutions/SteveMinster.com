@@ -45,9 +45,11 @@ const ATTACH = {
 };
 const OWN_A = 1 * M;                 // BFEI6 own limit — always $1M (per-occ = agg)
 const OWN_B = {                      // BFEX6 own limit by tower size (per-occ = agg)
+  // Nx1 = $NM excess of $1M primary. L1 (BFEI6) always contributes $1M; L2 (BFEX6)
+  // carries the remainder = $(N-1)M. (Steve 2026-09-02: 4x1 corrected 2M -> 3M.)
   '2x1 ($2M xs $1M)': 1 * M,
   '3x1 ($3M xs $1M)': 2 * M,
-  '4x1 ($4M xs $1M)': 2 * M,
+  '4x1 ($4M xs $1M)': 3 * M,
 };
 
 // Resolve { own, attach } for a layer. Throws on an unrecognized tower size for B —
