@@ -149,14 +149,28 @@ export function runCalculations(calculations, answers) {
         value = resolved[calc.source] ?? '';
         break;
       }
+      case 'split': {
+        // Split a delimited field and take one part — e.g. BA_Liab
+        // "$100,000/$300,000/$100,000" → BI_PP/BI_PA/PD_Limit by index. Blank source
+        // (or a missing index) yields '' so nothing renders stray.
+        const parts = String(resolved[calc.source] ?? '').split(calc.sep ?? '/');
+        value = (parts[calc.index] ?? '').trim();
+        break;
+      }
       case 'template': {
-        // Fill a `{field}` placeholder string from resolved values. If EVERY
-        // referenced field is empty, emit '' (so an unused repeat slot stays blank
-        // instead of rendering stray punctuation).
-        const fields = [...String(calc.template).matchAll(/\{([^}]+)\}/g)].map((m) => m[1]);
+        // Fill a `{field}` placeholder string from resolved values. A spec may carry a
+        // formatter: `{field|currency}` renders a whole-dollar amount ("$50,000"). If
+        // EVERY referenced field is empty, emit '' (so an unused slot stays blank).
+        const specName = (f) => f.split('|')[0];
+        const fmtCur = (v) => { const n = Number(String(v).replace(/[^0-9.\-]/g, '')); return Number.isFinite(n) ? '$' + n.toLocaleString('en-US', { maximumFractionDigits: 0 }) : ''; };
+        const fields = [...String(calc.template).matchAll(/\{([^}]+)\}/g)].map((m) => specName(m[1]));
         const anyFilled = fields.some((f) => String(resolved[f] ?? '').trim() !== '');
         value = anyFilled
-          ? String(calc.template).replace(/\{([^}]+)\}/g, (_, f) => String(resolved[f] ?? '').trim())
+          ? String(calc.template).replace(/\{([^}]+)\}/g, (_, spec) => {
+              const [name, fmt] = spec.split('|');
+              const raw = String(resolved[name] ?? '').trim();
+              return fmt === 'currency' ? fmtCur(raw) : raw;
+            })
           : '';
         break;
       }

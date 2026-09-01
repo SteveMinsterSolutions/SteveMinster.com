@@ -828,6 +828,253 @@
     {
       "section": 3,
       "sectionName": "Premium and Taxes",
+      "seq": 30,
+      "id": "BA_Liab_Prem",
+      "label": "Business Auto — Liability Premium?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Business_Auto",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Business_Auto}} = \"Yes\"",
+      "group": "Business Auto Premium & Taxes"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 31,
+      "id": "CMP_Prem",
+      "label": "Business Auto — Comprehensive Premium?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Business_Auto",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          },
+          {
+            "field": "BA_Physical_Damage",
+            "op": "eq",
+            "values": [
+              "Damage Waiver",
+              "Damage Waiver w/ At-Rest"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Business_Auto}} = \"Yes\" and Damage Waiver",
+      "group": "Business Auto Premium & Taxes"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 32,
+      "id": "Coll_Prem",
+      "label": "Business Auto — Collision Premium?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Business_Auto",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          },
+          {
+            "field": "BA_Physical_Damage",
+            "op": "eq",
+            "values": [
+              "Damage Waiver",
+              "Damage Waiver w/ At-Rest"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Business_Auto}} = \"Yes\" and Damage Waiver",
+      "group": "Business Auto Premium & Taxes"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 33,
+      "id": "BA_Prem",
+      "label": "Business Auto — Total Premium?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Business_Auto",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Business_Auto}} = \"Yes\"",
+      "group": "Business Auto Premium & Taxes"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 34,
+      "id": "BA_TF",
+      "label": "Business Auto — Insurance Taxes & Fees?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Business_Auto",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          },
+          {
+            "field": "L_1_ST",
+            "op": "neq",
+            "values": [
+              "CA"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Business_Auto}} = \"Yes\" and {{L_1_ST}} ≠ \"CA\"",
+      "group": "Business Auto Premium & Taxes"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 35,
+      "id": "BA_SL_Tax",
+      "label": "Business Auto — CA Surplus Lines Tax?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Business_Auto",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          },
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "CA"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Business_Auto}} = \"Yes\" and {{L_1_ST}} = \"CA\"",
+      "group": "Business Auto Premium & Taxes"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 36,
+      "id": "BA_Stamp",
+      "label": "Business Auto — CA Stamping Fee?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Business_Auto",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          },
+          {
+            "field": "L_1_ST",
+            "op": "eq",
+            "values": [
+              "CA"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Business_Auto}} = \"Yes\" and {{L_1_ST}} = \"CA\"",
+      "group": "Business Auto Premium & Taxes"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 37,
+      "id": "BA_TTL",
+      "label": "Business Auto — Total Cost?",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Business_Auto",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Business_Auto}} = \"Yes\"",
+      "group": "Business Auto Premium & Taxes"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
+      "seq": 38,
+      "id": "Policy_Carrier",
+      "label": "Business Auto — Policy Carrier (verify from quote)?",
+      "type": "dropdown",
+      "required": "conditional",
+      "options": [
+        "Underwriters at Lloyd's, London Syndicate 3456",
+        "Benchmark Specialty Insurance Company"
+      ],
+      "showIf": {
+        "all": [
+          {
+            "field": "Business_Auto",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Business_Auto}} = \"Yes\"",
+      "group": "Business Auto Premium & Taxes"
+    },
+    {
+      "section": 3,
+      "sectionName": "Premium and Taxes",
       "seq": 10,
       "id": "Excess_A_Premium",
       "label": "Excess Layer 1 (BFEI6) — Annual Premium?",

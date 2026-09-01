@@ -32,12 +32,37 @@ import { mergePacket, countPdfPages, buildPacketAssertions, packetFilename } fro
  *   On failure `body` is the exact JSON the endpoint returned inline before; `status`
  *   is 500 for every pipeline-stage failure.
  */
+// ── BFFE 00 00 (Schedule of Forms & Endorsements) — manifest-derived fill ──────
+// When a policy's manifest includes BFFE 00 00, that form lists the policy's OWN
+// forms: for each included form i (1..N, capped at 60) emit FM_i (number), FE_i
+// (edition, rejoined from formOrder), Form_i_Name (name). Unused slots stay blank.
+// Policy_Carrier rides in `resolved` (a questionnaire answer), not the manifest.
+const BFFE_MAX = 60;
+function buildBFFEValues(config, manifest) {
+  const foByNum = new Map((config.formOrder || []).map((f) => [f.formNumber, f]));
+  const out = {};
+  manifest.forEach((m, idx) => {
+    const i = idx + 1;
+    if (i > BFFE_MAX) return;
+    const fo = foByNum.get(m.formNumber);
+    out[`FM_${i}`] = m.formNumber ?? '';
+    out[`FE_${i}`] = fo?.edition ?? '';
+    out[`Form_${i}_Name`] = m.name ?? fo?.name ?? '';
+  });
+  return out;
+}
+
 export async function buildOnePolicy(config, fieldTypes, resolved, io) {
   // ── Resolve the manifest (authoritative assembly order) ──
   const { manifest } = resolvePacket(config, resolved);
 
+  // ── BFFE 00 00: inject the manifest-derived schedule-of-forms values (BA only) ──
+  const resolvedForBuild = manifest.some((m) => m.formNumber === 'BFFE 00 00')
+    ? { ...resolved, ...buildBFFEValues(config, manifest) }
+    : resolved;
+
   // ── Stage 1: fetch statics from Blob (bytes via the non-enumerable `buffer`) ──
-  const s1 = await fetchPacketForms(config, resolved, io.blobOpts ?? {});
+  const s1 = await fetchPacketForms(config, resolvedForBuild, io.blobOpts ?? {});
   const staticByFormNumber = new Map();
   const staticFailures = [];
   for (const f of s1.fetches) {
@@ -53,7 +78,7 @@ export async function buildOnePolicy(config, fieldTypes, resolved, io) {
   }
 
   // ── Stage 2: fill dynamics + batch-convert to PDF ──
-  const s2 = await fillAndConvertDynamics(config, fieldTypes, resolved, {
+  const s2 = await fillAndConvertDynamics(config, fieldTypes, resolvedForBuild, {
     loadTemplate: io.loadTemplate,
     gotenberg: io.gotenberg,
   });

@@ -118,22 +118,57 @@ export function buildExcessOverlay(layer, resolved) {
  * @param {object} resolved  the shared resolved answer set
  * @returns {Array<{ id:string, config:object, resolved:object, filename:string }>}
  */
-export function fanOutPolicies(packetConfig, excessConfig, resolved) {
+// Business Auto overlay — BFBA6 policy. Number swaps CGL BFSR6→BFBA6; the BA
+// financials map onto the shared SLC-3 tokens; syndicate + Dec-page reference come
+// from the BA config/overlay. Minimum earned is the shared program value (rides in
+// resolved). Cross-policy BFPI installments are filled later (post-fan-out).
+export function buildBAOverlay(resolved) {
+  const cgl = resolved?.Policy_Number;
+  const num = deriveExcessNumber(cgl, 'BFBA6'); // deriveExcessNumber is a generic BFSR6→prefix swap
+  if (!num) throw new Error(`Business Auto: cannot derive policy number from CGL "${cgl}" (expected "BFSR6 …").`);
+  return {
+    Policy_Number: num,
+    BFBA_PolNum: num,
+    Dec_Page_Form_Number: 'BRP 00 02 10 23', // the BA SLC-3 references the BA dec
+    // BA financials → SLC-3 tokens (BRP keeps its own BA_Prem/BA_TF/BA_TTL).
+    TTL_Premium: resolved?.BA_Prem ?? '',
+    TTL_Ins_Taxes_Fees: resolved?.BA_TF ?? '',
+    TTL_Cost: resolved?.BA_TTL ?? '',
+    CA_SL_Tax: resolved?.BA_SL_Tax ?? '',
+    CA_Stamp: resolved?.BA_Stamp ?? '',
+  };
+}
+
+/**
+ * Fan one submission into an ordered policy list: CGL + 0–2 excess + optional BA.
+ * @param {object} packetConfig CGL config · @param {object|null} excessConfig
+ * @param {object} resolved · @param {object|null} [baConfig]
+ */
+export function fanOutPolicies(packetConfig, excessConfig, resolved, baConfig) {
   const policies = [{ id: 'CGL', config: packetConfig, resolved, filename: packetFilename(resolved) }];
 
+  // ── Excess tower (0–2 policies) ──
   const election = resolved?.Excess_Liability;
-  if (!excessConfig || !election || election === 'No') return policies;
-
-  const layers = [];
-  if (election === 'Yes - Layer 1 Only' || election === 'Yes - Layers 1 and 2') layers.push('A');
-  if (election === 'Yes - Layers 1 and 2') layers.push('B');
-
-  for (const layer of layers) {
-    const overlay = buildExcessOverlay(layer, resolved);
-    const merged = { ...resolved, ...overlay };
-    const filename = `${sanitize(`${resolved.Named_Insured} ${overlay.Excess_Policy_Number}`)}.pdf`;
-    policies.push({ id: `EXCESS_${layer}`, config: excessConfig, resolved: merged, filename });
+  if (excessConfig && election && election !== 'No') {
+    const layers = [];
+    if (election === 'Yes - Layer 1 Only' || election === 'Yes - Layers 1 and 2') layers.push('A');
+    if (election === 'Yes - Layers 1 and 2') layers.push('B');
+    for (const layer of layers) {
+      const overlay = buildExcessOverlay(layer, resolved);
+      const merged = { ...resolved, ...overlay };
+      const filename = `${sanitize(`${resolved.Named_Insured} ${overlay.Excess_Policy_Number}`)}.pdf`;
+      policies.push({ id: `EXCESS_${layer}`, config: excessConfig, resolved: merged, filename });
+    }
   }
+
+  // ── Business Auto (0–1 policy) ──
+  if (baConfig && resolved?.Business_Auto === 'Yes') {
+    const overlay = buildBAOverlay(resolved);
+    const merged = { ...resolved, ...overlay };
+    const filename = `${sanitize(`${resolved.Named_Insured} ${overlay.Policy_Number}`)}.pdf`;
+    policies.push({ id: 'BA', config: baConfig, resolved: merged, filename });
+  }
+
   return policies;
 }
 
