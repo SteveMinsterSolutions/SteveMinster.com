@@ -7650,6 +7650,774 @@
       },
       "showIfRaw": "Excess Liability includes Layer 1 and {{Excess_A_Prem_Split}} = \"Yes\"",
       "group": "Excess Premium & Taxes — Layer 1 (BFEI6)"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 70,
+      "id": "Activity_1_Description",
+      "label": "Covered Activity 1 (from the quote's Covered Activities list)",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": null,
+      "showIfRaw": "None - Always Ask",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 71,
+      "id": "Activity_2_Description",
+      "label": "Covered Activity 2",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_1_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_1_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 72,
+      "id": "Activity_3_Description",
+      "label": "Covered Activity 3",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_2_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_2_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 73,
+      "id": "Activity_4_Description",
+      "label": "Covered Activity 4",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_3_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_3_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 74,
+      "id": "Activity_5_Description",
+      "label": "Covered Activity 5",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_4_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_4_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 75,
+      "id": "Activity_6_Description",
+      "label": "Covered Activity 6",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_5_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_5_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 76,
+      "id": "Activity_7_Description",
+      "label": "Covered Activity 7",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_6_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_6_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 77,
+      "id": "Activity_8_Description",
+      "label": "Covered Activity 8",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_7_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_7_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 78,
+      "id": "Activity_9_Description",
+      "label": "Covered Activity 9",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_8_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_8_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 79,
+      "id": "Activity_10_Description",
+      "label": "Covered Activity 10",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_9_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_9_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 80,
+      "id": "Activity_11_Description",
+      "label": "Covered Activity 11",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_10_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_10_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 81,
+      "id": "Activity_12_Description",
+      "label": "Covered Activity 12",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_11_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_11_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 82,
+      "id": "Activity_13_Description",
+      "label": "Covered Activity 13",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_12_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_12_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 83,
+      "id": "Activity_14_Description",
+      "label": "Covered Activity 14",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_13_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_13_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 84,
+      "id": "Activity_15_Description",
+      "label": "Covered Activity 15",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_14_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_14_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 85,
+      "id": "Activity_16_Description",
+      "label": "Covered Activity 16",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_15_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_15_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 86,
+      "id": "Activity_17_Description",
+      "label": "Covered Activity 17",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_16_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_16_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 87,
+      "id": "Activity_18_Description",
+      "label": "Covered Activity 18",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_17_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_17_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 88,
+      "id": "Activity_19_Description",
+      "label": "Covered Activity 19",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_18_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_18_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 89,
+      "id": "Activity_20_Description",
+      "label": "Covered Activity 20",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_19_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_19_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 90,
+      "id": "Activity_21_Description",
+      "label": "Covered Activity 21",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_20_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_20_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 91,
+      "id": "Activity_22_Description",
+      "label": "Covered Activity 22",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_21_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_21_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 92,
+      "id": "Activity_23_Description",
+      "label": "Covered Activity 23",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_22_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_22_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 93,
+      "id": "Activity_24_Description",
+      "label": "Covered Activity 24",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_23_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_23_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 94,
+      "id": "Activity_25_Description",
+      "label": "Covered Activity 25",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_24_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_24_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 95,
+      "id": "Activity_26_Description",
+      "label": "Covered Activity 26",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_25_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_25_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 96,
+      "id": "Activity_27_Description",
+      "label": "Covered Activity 27",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_26_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_26_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 97,
+      "id": "Activity_28_Description",
+      "label": "Covered Activity 28",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_27_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_27_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 98,
+      "id": "Activity_29_Description",
+      "label": "Covered Activity 29",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_28_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_28_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 99,
+      "id": "Activity_30_Description",
+      "label": "Covered Activity 30",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_29_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Activity_29_Description}} is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 100,
+      "id": "Activity_Sublimit",
+      "label": "Per Claimant Sublimit of Liability — Specific Activities",
+      "type": "Currency",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Activity_1_Description",
+            "op": "neq",
+            "values": [
+              ""
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If any Covered Activity is entered",
+      "group": "Covered Activities"
+    },
+    {
+      "section": 8,
+      "sectionName": "Optional Forms",
+      "seq": 63,
+      "id": "Pollution_Liability",
+      "label": "Is Pollution Legal Liability (BFSR 00 35) on the policy?",
+      "type": "dropdown",
+      "required": "always",
+      "options": [
+        "No",
+        "Yes"
+      ],
+      "showIf": null,
+      "showIfRaw": "None - Always Ask",
+      "group": "Pollution Liability"
+    },
+    {
+      "section": 8,
+      "sectionName": "Optional Forms",
+      "seq": 64,
+      "id": "Policy_Form_Type",
+      "label": "Policy Form Type?",
+      "type": "dropdown",
+      "required": "conditional",
+      "options": [
+        "Occurrence",
+        "Claims Made"
+      ],
+      "showIf": {
+        "all": [
+          {
+            "field": "Pollution_Liability",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Pollution_Liability}} = \"Yes\"",
+      "group": "Pollution Liability"
+    },
+    {
+      "section": 8,
+      "sectionName": "Optional Forms",
+      "seq": 65,
+      "id": "Policy_Retroactive_Date",
+      "label": "Retroactive Date?",
+      "type": "date",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Pollution_Liability",
+            "op": "eq",
+            "values": [
+              "Yes"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{Pollution_Liability}} = \"Yes\"",
+      "group": "Pollution Liability"
     }
   ],
   "calculations": [
@@ -8134,6 +8902,16 @@
       "sourceField": "L_1_ST",
       "cases": {},
       "default": ""
+    },
+    {
+      "kind": "copy",
+      "target": "Liquor_Form",
+      "source": "Liquor_Liability_Type"
+    },
+    {
+      "kind": "copy",
+      "target": "SAM_Form",
+      "source": "SAM_Type"
     }
   ],
   "formOrder": [
@@ -8640,9 +9418,9 @@
     {
       "seq": "3.0",
       "formNumber": "BGL 00 02",
-      "edition": "06 26",
+      "edition": "08 26",
       "name": "Commercial General Liability Declarations",
-      "file": "BGL 00 02 06 26 COMMERCIAL GENERAL LIABILITY DECLARATIONS.docx",
+      "file": "BGL 00 02 08 26 COMMERCIAL GENERAL LIABILITY DECLARATIONS.docx",
       "library": "dynamic",
       "isDynamic": true,
       "present": true
@@ -11582,7 +12360,90 @@
       "L_2_City",
       "L_2_ST",
       "L_2_Zip",
-      "Today_Date"
+      "Today_Date",
+      "Policy_Carrier",
+      "TTL_Premium",
+      "TTL_Cost",
+      "TTL_Ins_Taxes_Fees",
+      "TPI_Primary",
+      "TPI_Agg",
+      "TPI_Excess",
+      "SIR_Per",
+      "SIR_ALAE",
+      "PIT_Limit",
+      "Loc_Gen_Agg",
+      "Des_Loc_Agg_Limit",
+      "Liquor_Form",
+      "SAM_Form",
+      "Loction_1_Address",
+      "Loction_2_Address",
+      "Loction_3_Address",
+      "Loction_4_Address",
+      "Loction_5_Address",
+      "Activity_Sublimit",
+      "Pollution_Liability",
+      "Policy_Form_Type",
+      "Policy_Retroactive_Date",
+      "Activity_1_Description",
+      "Activity_2_Description",
+      "Activity_3_Description",
+      "Activity_4_Description",
+      "Activity_5_Description",
+      "Activity_6_Description",
+      "Activity_7_Description",
+      "Activity_8_Description",
+      "Activity_9_Description",
+      "Activity_10_Description",
+      "Activity_11_Description",
+      "Activity_12_Description",
+      "Activity_13_Description",
+      "Activity_14_Description",
+      "Activity_15_Description",
+      "Activity_16_Description",
+      "Activity_17_Description",
+      "Activity_18_Description",
+      "Activity_19_Description",
+      "Activity_20_Description",
+      "Activity_21_Description",
+      "Activity_22_Description",
+      "Activity_23_Description",
+      "Activity_24_Description",
+      "Activity_25_Description",
+      "Activity_26_Description",
+      "Activity_27_Description",
+      "Activity_28_Description",
+      "Activity_29_Description",
+      "Activity_30_Description",
+      "Form_Number_1",
+      "Form_Number_2",
+      "Form_Number_3",
+      "Form_Number_4",
+      "Form_Number_5",
+      "Form_Number_6",
+      "Form_Number_7",
+      "Form_Number_8",
+      "Form_Number_9",
+      "Form_Number_10",
+      "Edition_1",
+      "Edition_2",
+      "Edition_3",
+      "Edition_4",
+      "Edition_5",
+      "Edition_6",
+      "Edition_7",
+      "Edition_8",
+      "Edition_9",
+      "Edition_10",
+      "Form_Title_1",
+      "Form_Title_2",
+      "Form_Title_3",
+      "Form_Title_4",
+      "Form_Title_5",
+      "Form_Title_6",
+      "Form_Title_7",
+      "Form_Title_8",
+      "Form_Title_9",
+      "Form_Title_10"
     ],
     "CG 02 24": [
       "Days_Notice"

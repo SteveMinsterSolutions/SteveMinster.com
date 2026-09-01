@@ -2673,5 +2673,345 @@
     "tokenFormat": "Text",
     "answerType": "Calc",
     "behavior": "passthrough"
+  },
+  "Des_Loc_Agg_Limit": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "SIR_ALAE": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Liquor_Form": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "SAM_Form": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Pollution_Liability": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Policy_Form_Type": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_1_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_2_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_3_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_4_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_5_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_6_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_7_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_8_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_9_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_10_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_11_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_12_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_13_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_14_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_15_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_16_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_17_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_18_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_19_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_20_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_21_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_22_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_23_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_24_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_25_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_26_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_27_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_28_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_29_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_30_Description": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Number_1": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Number_2": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Number_3": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Number_4": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Number_5": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Number_6": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Number_7": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Number_8": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Number_9": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Number_10": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Edition_1": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Edition_2": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Edition_3": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Edition_4": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Edition_5": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Edition_6": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Edition_7": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Edition_8": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Edition_9": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Edition_10": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Title_1": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Title_2": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Title_3": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Title_4": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Title_5": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Title_6": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Title_7": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Title_8": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Title_9": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Form_Title_10": {
+    "tokenFormat": "Text",
+    "answerType": "Calc",
+    "behavior": "passthrough"
+  },
+  "Activity_Sublimit": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Calc",
+    "behavior": "currency_whole"
+  },
+  "Policy_Retroactive_Date": {
+    "tokenFormat": "YYYY-MM-DD",
+    "answerType": "Calc",
+    "behavior": "date_iso"
   }
 }

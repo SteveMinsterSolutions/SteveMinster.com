@@ -52,14 +52,63 @@ function buildBFFEValues(config, manifest) {
   return out;
 }
 
+// ── BGL 00 02 (CGL Declarations) — Schedule of Additional Interest Forms ────────
+// The dec lists the additional-insured / interest ENDORSEMENT forms the policy
+// carries, derived from the up-to-10 Policy Interest selections. We reuse the SAME
+// interest-type → form map the questionnaire's Policy_Interest_n_Interest lookup uses
+// (parsing "See Form CG 20 26" → "CG 20 26"), so the dec and the questionnaire never
+// drift. Distinct forms only (dedupe, first-seen order); edition + title come from the
+// config's formOrder. Compacted into Form_Number_k / Edition_k / Form_Title_k
+// (k = 1..MAX); unused slots blank so the template row self-guards ({{#Form_Number_k}}).
+const BGL_FORMS_MAX = 10;
+function interestFormMap(config) {
+  const c = (config.calculations || []).find((x) => x.target === 'Policy_Interest_1_Interest' && x.kind === 'lookup');
+  const map = {};
+  if (c && c.cases) {
+    for (const [type, val] of Object.entries(c.cases)) {
+      const m = /See Form\s+(.+)$/i.exec(String(val));
+      if (m) map[type] = m[1].trim();
+    }
+  }
+  return map;
+}
+function buildBGLFormsSchedule(config, resolved) {
+  const typeToForm = interestFormMap(config);
+  const foByNum = new Map((config.formOrder || []).map((f) => [f.formNumber, f]));
+  const seen = new Set();
+  const forms = [];
+  for (let i = 1; i <= 10; i += 1) {
+    const type = resolved[`Policy_Interest_${i}_Interest_Type`];
+    const num = type ? typeToForm[type] : null;
+    if (!num || seen.has(num)) continue;
+    seen.add(num);
+    forms.push(num);
+  }
+  const out = {};
+  for (let k = 1; k <= BGL_FORMS_MAX; k += 1) {
+    const num = forms[k - 1];
+    const fo = num ? foByNum.get(num) : null;
+    out[`Form_Number_${k}`] = num ?? '';
+    out[`Edition_${k}`] = fo?.edition ?? '';
+    out[`Form_Title_${k}`] = fo?.name ?? '';
+  }
+  return out;
+}
+
 export async function buildOnePolicy(config, fieldTypes, resolved, io) {
   // ── Resolve the manifest (authoritative assembly order) ──
   const { manifest } = resolvePacket(config, resolved);
 
-  // ── BFFE 00 00: inject the manifest-derived schedule-of-forms values (BA only) ──
-  const resolvedForBuild = manifest.some((m) => m.formNumber === 'BFFE 00 00')
-    ? { ...resolved, ...buildBFFEValues(config, manifest) }
-    : resolved;
+  // ── Inject document-specific derived values before dynamic-fill ──
+  // BFFE 00 00 (BA schedule-of-forms) and BGL 00 02 (CGL dec interest-forms schedule)
+  // each derive extra tokens from the manifest / the Policy Interest answers.
+  let resolvedForBuild = resolved;
+  if (manifest.some((m) => m.formNumber === 'BFFE 00 00')) {
+    resolvedForBuild = { ...resolvedForBuild, ...buildBFFEValues(config, manifest) };
+  }
+  if (manifest.some((m) => m.formNumber === 'BGL 00 02')) {
+    resolvedForBuild = { ...resolvedForBuild, ...buildBGLFormsSchedule(config, resolved) };
+  }
 
   // ── Stage 1: fetch statics from Blob (bytes via the non-enumerable `buffer`) ──
   const s1 = await fetchPacketForms(config, resolvedForBuild, io.blobOpts ?? {});
