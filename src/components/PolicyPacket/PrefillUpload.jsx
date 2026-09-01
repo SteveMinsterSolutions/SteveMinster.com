@@ -54,24 +54,20 @@ function FileSlot({ label, hint, file, onPick, disabled }) {
 
 export default function PrefillUpload({ onPrefilled, onSkip }) {
   const [binding, setBinding] = useState(null);
-  const [current, setCurrent] = useState(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState(null);
 
   async function run() {
     setErr(null);
-    if (!binding && !current) { setErr('Add at least one PDF.'); return; }
+    if (!binding) { setErr('Add the binding quote PDF.'); return; }
     setBusy(true);
     try {
       const { extractPdfText } = await import('./lib/extractPdfText.ts');
-      const [bindingText, currentText] = await Promise.all([
-        binding ? extractPdfText(binding) : Promise.resolve(''),
-        current ? extractPdfText(current) : Promise.resolve(''),
-      ]);
+      const bindingText = await extractPdfText(binding);
       const res = await fetch('/api/prefill', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ bindingText, currentText }),
+        body: JSON.stringify({ bindingText }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || 'Prefill failed.');
@@ -97,29 +93,22 @@ export default function PrefillUpload({ onPrefilled, onSkip }) {
             <span className="text-sm tracking-widest uppercase font-medium" style={{ fontFamily: bf.fontDisplay, color: bf.accentDark }}>Bluefields</span>
           </div>
           <h1 className="text-2xl font-bold mb-1" style={{ fontFamily: bf.fontDisplay, color: bf.textStrong }}>
-            Prefill from PDFs
+            Prefill from binding quote
           </h1>
           <p className="text-sm" style={{ color: bf.textMuted, fontFamily: bf.fontBody }}>
-            Upload the packet PDFs to pre-fill the questionnaire, or skip to fill it manually.
+            Upload the binding quote to pre-fill the questionnaire, or skip to fill it manually.
           </p>
         </div>
 
         {/* Card */}
         <div className="rounded-2xl p-6 md:p-8"
           style={{ backgroundColor: '#ffffff', border: `1px solid ${bf.borderSubtle}`, boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 gap-5">
             <FileSlot
-              label="Binding packet (authoritative)"
-              hint="What the policy SHOULD say — preferred on conflict."
+              label="Binding quote (authoritative)"
+              hint="The signed binding quote — the source of truth for this policy."
               file={binding}
               onPick={setBinding}
-              disabled={busy}
-            />
-            <FileSlot
-              label="Current packet (existing output)"
-              hint="The existing, possibly incorrect packet."
-              file={current}
-              onPick={setCurrent}
               disabled={busy}
             />
           </div>
@@ -138,7 +127,7 @@ export default function PrefillUpload({ onPrefilled, onSkip }) {
               className="flex-1 font-semibold py-2.5 px-4 rounded-full text-sm tracking-wide border-none cursor-pointer transition-all disabled:opacity-60 disabled:cursor-not-allowed"
               style={{ fontFamily: bf.fontBody, backgroundColor: bf.accentPrimary, color: bf.textInverse }}
             >
-              {busy ? 'Extracting & prefilling…' : 'Prefill from PDFs'}
+              {busy ? 'Extracting & prefilling…' : 'Prefill from quote'}
             </button>
             <button
               onClick={onSkip}
