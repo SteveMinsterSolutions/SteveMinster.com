@@ -92,6 +92,15 @@ function buildBGLFormsSchedule(config, resolved) {
     out[`Edition_${k}`] = fo?.edition ?? '';
     out[`Form_Title_${k}`] = fo?.name ?? '';
   }
+
+  // Policy Form Type is POLICY-LEVEL (not tied to any form): default "Occurrence"
+  // when unanswered. Retroactive Date applies only to a Claims-Made policy; for an
+  // Occurrence policy it prints "N/A" (Steve 2026-09-01). The date input rides in
+  // resolved.Policy_Retro_Date; the dec token is Policy_Retroactive_Date.
+  const formType = String(resolved.Policy_Form_Type ?? '').trim() || 'Occurrence';
+  out.Policy_Form_Type = formType;
+  out.Policy_Retroactive_Date = formType === 'Claims Made' ? (resolved.Policy_Retro_Date ?? '') : 'N/A';
+
   return out;
 }
 

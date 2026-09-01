@@ -8377,47 +8377,37 @@
       "id": "Policy_Form_Type",
       "label": "Policy Form Type?",
       "type": "dropdown",
-      "required": "conditional",
+      "required": "always",
       "options": [
         "Occurrence",
         "Claims Made"
       ],
-      "showIf": {
-        "all": [
-          {
-            "field": "Pollution_Liability",
-            "op": "eq",
-            "values": [
-              "Yes"
-            ]
-          }
-        ]
-      },
-      "showIfRaw": "If {{Pollution_Liability}} = \"Yes\"",
-      "group": "Pollution Liability"
+      "showIf": null,
+      "showIfRaw": "None - Always Ask",
+      "group": "Policy Form"
     },
     {
       "section": 8,
       "sectionName": "Optional Forms",
       "seq": 65,
-      "id": "Policy_Retroactive_Date",
-      "label": "Retroactive Date?",
+      "id": "Policy_Retro_Date",
+      "label": "Retroactive Date? (Claims-Made policies)",
       "type": "date",
       "required": "conditional",
       "options": [],
       "showIf": {
         "all": [
           {
-            "field": "Pollution_Liability",
+            "field": "Policy_Form_Type",
             "op": "eq",
             "values": [
-              "Yes"
+              "Claims Made"
             ]
           }
         ]
       },
-      "showIfRaw": "If {{Pollution_Liability}} = \"Yes\"",
-      "group": "Pollution Liability"
+      "showIfRaw": "If {{Policy_Form_Type}} = \"Claims Made\"",
+      "group": "Policy Form"
     }
   ],
   "calculations": [
