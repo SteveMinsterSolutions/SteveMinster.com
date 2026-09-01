@@ -8779,70 +8779,70 @@
       "section": 2,
       "seq": 60,
       "target": "Loction_1_Address",
-      "template": "{DLA_1_Add}, {DLA_1_City}, {DLA_1_ST} {DLA_1_Zip}"
+      "template": "{Location_1_Address_1} {Location_1_Address_2}, {L_1_City}, {L_1_ST} {L_1_Zip}"
     },
     {
       "kind": "template",
       "section": 2,
       "seq": 61,
       "target": "Loction_2_Address",
-      "template": "{DLA_2_Add}, {DLA_2_City}, {DLA_2_ST} {DLA_2_Zip}"
+      "template": "{Location_2_Address_1} {Location_2_Address_2}, {L_2_City}, {L_2_ST} {L_2_Zip}"
     },
     {
       "kind": "template",
       "section": 2,
       "seq": 62,
       "target": "Loction_3_Address",
-      "template": "{DLA_3_Add}, {DLA_3_City}, {DLA_3_ST} {DLA_3_Zip}"
+      "template": ""
     },
     {
       "kind": "template",
       "section": 2,
       "seq": 63,
       "target": "Loction_4_Address",
-      "template": "{DLA_4_Add}, {DLA_4_City}, {DLA_4_ST} {DLA_4_Zip}"
+      "template": ""
     },
     {
       "kind": "template",
       "section": 2,
       "seq": 64,
       "target": "Loction_5_Address",
-      "template": "{DLA_5_Add}, {DLA_5_City}, {DLA_5_ST} {DLA_5_Zip}"
+      "template": ""
     },
     {
       "kind": "template",
       "section": 2,
       "seq": 65,
       "target": "Loction_6_Address",
-      "template": "{DLA_6_Add}, {DLA_6_City}, {DLA_6_ST} {DLA_6_Zip}"
+      "template": ""
     },
     {
       "kind": "template",
       "section": 2,
       "seq": 66,
       "target": "Loction_7_Address",
-      "template": "{DLA_7_Add}, {DLA_7_City}, {DLA_7_ST} {DLA_7_Zip}"
+      "template": ""
     },
     {
       "kind": "template",
       "section": 2,
       "seq": 67,
       "target": "Loction_8_Address",
-      "template": "{DLA_8_Add}, {DLA_8_City}, {DLA_8_ST} {DLA_8_Zip}"
+      "template": ""
     },
     {
       "kind": "template",
       "section": 2,
       "seq": 68,
       "target": "Loction_9_Address",
-      "template": "{DLA_9_Add}, {DLA_9_City}, {DLA_9_ST} {DLA_9_Zip}"
+      "template": ""
     },
     {
       "kind": "template",
       "section": 2,
       "seq": 69,
       "target": "Loction_10_Address",
-      "template": "{DLA_10_Add}, {DLA_10_City}, {DLA_10_ST} {DLA_10_Zip}"
+      "template": ""
     },
     {
       "kind": "dateBranch",
