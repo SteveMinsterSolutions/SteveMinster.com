@@ -9788,16 +9788,6 @@
       "present": true
     },
     {
-      "seq": "10.0",
-      "formNumber": "BFVQ 00 01",
-      "edition": "02 26",
-      "name": "Bluefields/vQuip Fraud Warning Statements",
-      "file": "BFVQ 00 01 02 26 Bluefields vQuip Fraud Warning Statements.docx",
-      "library": "dynamic",
-      "isDynamic": true,
-      "present": true
-    },
-    {
       "seq": "11.0",
       "formNumber": "CG 03 00",
       "edition": "01 96",
@@ -10225,6 +10215,16 @@
       "file": "NMA1331 CANCELLATION CLAUSE.docx",
       "library": "static",
       "isDynamic": false,
+      "present": true
+    },
+    {
+      "seq": "20.3",
+      "formNumber": "BFVQ 00 01",
+      "edition": "02 26",
+      "name": "Bluefields/vQuip Fraud Warning Statements",
+      "file": "BFVQ 00 01 02 26 Bluefields vQuip Fraud Warning Statements.docx",
+      "library": "dynamic",
+      "isDynamic": true,
       "present": true
     },
     {
@@ -11568,14 +11568,6 @@
       "ruleRaw": "Render-from-list — include if listed on the binder’s forms & endorsements schedule"
     },
     {
-      "seq": "10.0",
-      "formNumber": "BFVQ 00 01",
-      "rule": {
-        "alwaysApply": true
-      },
-      "ruleRaw": "Always Apply"
-    },
-    {
       "seq": "11.0",
       "formNumber": "CG 03 00",
       "rule": {
@@ -12091,6 +12083,14 @@
     {
       "seq": "20.2",
       "formNumber": "NMA1331",
+      "rule": {
+        "alwaysApply": true
+      },
+      "ruleRaw": "Always Apply"
+    },
+    {
+      "seq": "20.3",
+      "formNumber": "BFVQ 00 01",
       "rule": {
         "alwaysApply": true
       },
