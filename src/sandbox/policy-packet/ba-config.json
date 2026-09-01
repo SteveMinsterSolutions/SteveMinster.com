@@ -91,6 +91,11 @@
       "kind": "template",
       "target": "Coll_Limit_Ded",
       "template": "Up to {BA_Damage_Waiver_Limit|currency} Actual Cash Value or Cost of Repair. Whichever is less. Minus the Deductible. {BA_Damage_Waiver_Deductible|currency}, for Each Covered Auto."
+    },
+    {
+      "kind": "copy",
+      "target": "CMP_Ded",
+      "source": "BA_Damage_Waiver_Deductible"
     }
   ],
   "formOrder": [
@@ -2188,9 +2193,25 @@
       "Form_60_Name"
     ],
     "BFPI 00 01": [],
-    "PWR 00 20": [],
-    "PWR 00 21": [],
-    "PWR 00 17": [],
-    "PWR 00 18": []
+    "PWR 00 20": [
+      "TPI_Agg"
+    ],
+    "PWR 00 21": [
+      "TIV",
+      "CMP_Ded"
+    ],
+    "PWR 00 17": [
+      "Policy_Number",
+      "Policy_Effective_Date",
+      "Named_Insured",
+      "Season_Start_Mo",
+      "Season_End_Mo"
+    ],
+    "PWR 00 18": [
+      "Policy_Number",
+      "Policy_Effective_Date",
+      "Named_Insured",
+      "Minimum_Earned"
+    ]
   }
 }

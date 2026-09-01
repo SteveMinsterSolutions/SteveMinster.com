@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import packetConfig from '../../sandbox/policy-packet/packet-config.json';
 import excessConfig from '../../sandbox/policy-packet/excess-config.json';
+import baConfig from '../../sandbox/policy-packet/ba-config.json';
 import { evaluateRule } from './evaluateRule.js';
 import { runCalculations, resolveManifest, unmatchedBinderForms, numericValue } from './resolveEngine.js';
 import { addOneYear } from './lib/dateHelpers';
@@ -638,7 +639,7 @@ export default function Questionnaire() {
     const manifest = resolveManifest(packetConfig.formOrder, packetConfig.formRules, postCalc);
     // Library = CGL forms + excess-policy forms; a binder entry that matches either
     // is produced (excess forms build under the fanned-out excess policy).
-    const libraryFormOrder = [...packetConfig.formOrder, ...excessConfig.formOrder];
+    const libraryFormOrder = [...packetConfig.formOrder, ...excessConfig.formOrder, ...baConfig.formOrder];
     const unmatched = unmatchedBinderForms(postCalc.Binder_Forms, libraryFormOrder);
     return { calcValues, manifest, unmatched };
   }, [resolved]);

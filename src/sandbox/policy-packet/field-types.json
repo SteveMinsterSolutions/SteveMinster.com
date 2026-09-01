@@ -2343,5 +2343,15 @@
     "tokenFormat": "Text",
     "answerType": "Calc",
     "behavior": "passthrough"
+  },
+  "CMP_Ded": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Currency",
+    "behavior": "currency_whole"
+  },
+  "TIV": {
+    "tokenFormat": "currency_whole",
+    "answerType": "Currency",
+    "behavior": "currency_whole"
   }
 }
