@@ -20,12 +20,16 @@ const schema = (packetConfig.questions as Q[])
   .map((q) => {
     const row: Record<string, unknown> = { id: q.id, label: q.label, type: q.type, section: q.section };
     if (Array.isArray(q.options) && q.options.length) row.options = q.options;
+    if ((q as any).prefillHint) row.prefillHint = (q as any).prefillHint;
     return row;
   });
 const knownIds = new Set(schema.map((q) => q.id as string));
 // Date-typed ids — their prefilled values are normalized to canonical YYYY-MM-DD
 // on write so the native <input type="date"> can render them (MM/DD/YYYY shows blank).
 const dateIds = new Set(schema.filter((q) => q.type === 'date').map((q) => q.id as string));
+// Free-entry Currency fields: strip the model's "$1,234" to a plain number so the
+// questionnaire's Currency input (which adds its own $) doesn't render "$$".
+const currencyIds = new Set(schema.filter((q) => q.type === 'Currency').map((q) => q.id as string));
 
 function clamp(s: unknown): string {
   const t = typeof s === 'string' ? s : '';
@@ -59,6 +63,7 @@ export const POST: APIRoute = async ({ request }) => {
     '- type "Currency" / currency values: format as "$1,234" (leading $, thousands commas, no cents unless present).',
     '- type "date": use ISO format YYYY-MM-DD.',
     '- Do NOT include derived/computed fields, totals, or taxes — those are recalculated downstream.',
+    '- If a field object includes a "prefillHint", follow that hint when choosing its value (it disambiguates which line of the quote to use).',
     '- All values are strings.',
   ].join('\n');
 
@@ -128,7 +133,9 @@ export const POST: APIRoute = async ({ request }) => {
   const cleaned: Record<string, string> = {};
   for (const [k, v] of Object.entries(parsed)) {
     if (!knownIds.has(k) || v === null || v === undefined) continue;
-    cleaned[k] = dateIds.has(k) ? normalizeToIso(String(v)) : String(v);
+    if (dateIds.has(k)) cleaned[k] = normalizeToIso(String(v));
+    else if (currencyIds.has(k)) cleaned[k] = String(v).replace(/[^0-9.]/g, '');
+    else cleaned[k] = String(v);
   }
 
   // -00 policy-number rule: append when read from upload and not already suffixed.

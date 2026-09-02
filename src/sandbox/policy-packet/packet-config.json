@@ -214,16 +214,21 @@
       "section": 1,
       "sectionName": "Account Information",
       "seq": 12,
-      "id": "Location_2_Exist",
-      "label": "Is there a second Loction listed on Dec Page?",
+      "id": "Location_Count",
+      "label": "How many Locations need listed on the Dec Page?",
       "type": "dropdown",
       "required": "always",
       "options": [
-        "Yes",
-        "No"
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
       ],
       "showIf": null,
-      "showIfRaw": "None - Always Ask"
+      "showIfRaw": "None - Always Ask",
+      "default": "1",
+      "prefillHint": "The number of distinct insured premises/locations shown in the quote (1-5)."
     },
     {
       "section": 1,
@@ -237,15 +242,18 @@
       "showIf": {
         "all": [
           {
-            "field": "Location_2_Exist",
+            "field": "Location_Count",
             "op": "eq",
             "values": [
-              "Yes"
+              "2",
+              "3",
+              "4",
+              "5"
             ]
           }
         ]
       },
-      "showIfRaw": "If {{Location_2_Exist}} = \"Yes\""
+      "showIfRaw": "If Location Count ≥ 2"
     },
     {
       "section": 1,
@@ -259,15 +267,18 @@
       "showIf": {
         "all": [
           {
-            "field": "Location_2_Exist",
+            "field": "Location_Count",
             "op": "eq",
             "values": [
-              "Yes"
+              "2",
+              "3",
+              "4",
+              "5"
             ]
           }
         ]
       },
-      "showIfRaw": "If {{Location_2_Exist}} = \"Yes\""
+      "showIfRaw": "If Location Count ≥ 2"
     },
     {
       "section": 1,
@@ -281,15 +292,18 @@
       "showIf": {
         "all": [
           {
-            "field": "Location_2_Exist",
+            "field": "Location_Count",
             "op": "eq",
             "values": [
-              "Yes"
+              "2",
+              "3",
+              "4",
+              "5"
             ]
           }
         ]
       },
-      "showIfRaw": "If {{Location_2_Exist}} = \"Yes\""
+      "showIfRaw": "If Location Count ≥ 2"
     },
     {
       "section": 1,
@@ -357,15 +371,18 @@
       "showIf": {
         "all": [
           {
-            "field": "Location_2_Exist",
+            "field": "Location_Count",
             "op": "eq",
             "values": [
-              "Yes"
+              "2",
+              "3",
+              "4",
+              "5"
             ]
           }
         ]
       },
-      "showIfRaw": "If {{Location_2_Exist}} = \"Yes\""
+      "showIfRaw": "If Location Count ≥ 2"
     },
     {
       "section": 1,
@@ -379,15 +396,18 @@
       "showIf": {
         "all": [
           {
-            "field": "Location_2_Exist",
+            "field": "Location_Count",
             "op": "eq",
             "values": [
-              "Yes"
+              "2",
+              "3",
+              "4",
+              "5"
             ]
           }
         ]
       },
-      "showIfRaw": "If {{Location_2_Exist}} = \"Yes\""
+      "showIfRaw": "If Location Count ≥ 2"
     },
     {
       "section": 2,
@@ -745,7 +765,8 @@
       "required": "always",
       "options": [],
       "showIf": null,
-      "showIfRaw": "None - Always Ask"
+      "showIfRaw": "None - Always Ask",
+      "prefillHint": "Use the base 'General Liability Premium' line from the quote — NOT 'General Liability Total' (which includes taxes and fees)."
     },
     {
       "section": 3,
@@ -8386,7 +8407,8 @@
       ],
       "showIf": null,
       "showIfRaw": "None - Always Ask",
-      "group": "Policy Form"
+      "group": "Policy Form",
+      "default": "Occurrence"
     },
     {
       "section": 8,
@@ -8410,6 +8432,739 @@
       },
       "showIfRaw": "If {{Policy_Form_Type}} = \"Claims Made\"",
       "group": "Policy Form"
+    },
+    {
+      "section": 1,
+      "sectionName": "Account Information",
+      "seq": 18,
+      "id": "Location_3_Address_1",
+      "label": "What is the location 3 address address line 1?",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Location_Count",
+            "op": "eq",
+            "values": [
+              "3",
+              "4",
+              "5"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If Location Count ≥ 3"
+    },
+    {
+      "section": 1,
+      "sectionName": "Account Information",
+      "seq": 19,
+      "id": "Location_3_Address_2",
+      "label": "What is the location 3 address address line 2?",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Location_Count",
+            "op": "eq",
+            "values": [
+              "3",
+              "4",
+              "5"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If Location Count ≥ 3"
+    },
+    {
+      "section": 1,
+      "sectionName": "Account Information",
+      "seq": 20,
+      "id": "L_3_City",
+      "label": "What is the Location 3 city?",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Location_Count",
+            "op": "eq",
+            "values": [
+              "3",
+              "4",
+              "5"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If Location Count ≥ 3"
+    },
+    {
+      "section": 1,
+      "sectionName": "Account Information",
+      "seq": 21,
+      "id": "L_3_ST",
+      "label": "What is the Location 3 st?",
+      "type": "dropdown",
+      "required": "conditional",
+      "options": [
+        "AL",
+        "AK",
+        "AZ",
+        "AR",
+        "CA",
+        "CO",
+        "CT",
+        "DE",
+        "DC",
+        "FL",
+        "GA",
+        "HI",
+        "ID",
+        "IL",
+        "IN",
+        "IA",
+        "KS",
+        "KY",
+        "LA",
+        "ME",
+        "MD",
+        "MA",
+        "MI",
+        "MN",
+        "MS",
+        "MO",
+        "MT",
+        "NE",
+        "NV",
+        "NH",
+        "NJ",
+        "NM",
+        "NY",
+        "NC",
+        "ND",
+        "OH",
+        "OK",
+        "OR",
+        "PA",
+        "PR",
+        "RI",
+        "SC",
+        "SD",
+        "TN",
+        "TX",
+        "UT",
+        "VT",
+        "USVI",
+        "VA",
+        "WA",
+        "WV",
+        "WI",
+        "WY"
+      ],
+      "showIf": {
+        "all": [
+          {
+            "field": "Location_Count",
+            "op": "eq",
+            "values": [
+              "3",
+              "4",
+              "5"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If Location Count ≥ 3"
+    },
+    {
+      "section": 1,
+      "sectionName": "Account Information",
+      "seq": 22,
+      "id": "L_3_Zip",
+      "label": "What is the Location 3 zip?",
+      "type": "number",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Location_Count",
+            "op": "eq",
+            "values": [
+              "3",
+              "4",
+              "5"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If Location Count ≥ 3"
+    },
+    {
+      "section": 1,
+      "sectionName": "Account Information",
+      "seq": 23,
+      "id": "Location_4_Address_1",
+      "label": "What is the location 4 address address line 1?",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Location_Count",
+            "op": "eq",
+            "values": [
+              "4",
+              "5"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If Location Count ≥ 4"
+    },
+    {
+      "section": 1,
+      "sectionName": "Account Information",
+      "seq": 24,
+      "id": "Location_4_Address_2",
+      "label": "What is the location 4 address address line 2?",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Location_Count",
+            "op": "eq",
+            "values": [
+              "4",
+              "5"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If Location Count ≥ 4"
+    },
+    {
+      "section": 1,
+      "sectionName": "Account Information",
+      "seq": 25,
+      "id": "L_4_City",
+      "label": "What is the Location 4 city?",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Location_Count",
+            "op": "eq",
+            "values": [
+              "4",
+              "5"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If Location Count ≥ 4"
+    },
+    {
+      "section": 1,
+      "sectionName": "Account Information",
+      "seq": 26,
+      "id": "L_4_ST",
+      "label": "What is the Location 4 st?",
+      "type": "dropdown",
+      "required": "conditional",
+      "options": [
+        "AL",
+        "AK",
+        "AZ",
+        "AR",
+        "CA",
+        "CO",
+        "CT",
+        "DE",
+        "DC",
+        "FL",
+        "GA",
+        "HI",
+        "ID",
+        "IL",
+        "IN",
+        "IA",
+        "KS",
+        "KY",
+        "LA",
+        "ME",
+        "MD",
+        "MA",
+        "MI",
+        "MN",
+        "MS",
+        "MO",
+        "MT",
+        "NE",
+        "NV",
+        "NH",
+        "NJ",
+        "NM",
+        "NY",
+        "NC",
+        "ND",
+        "OH",
+        "OK",
+        "OR",
+        "PA",
+        "PR",
+        "RI",
+        "SC",
+        "SD",
+        "TN",
+        "TX",
+        "UT",
+        "VT",
+        "USVI",
+        "VA",
+        "WA",
+        "WV",
+        "WI",
+        "WY"
+      ],
+      "showIf": {
+        "all": [
+          {
+            "field": "Location_Count",
+            "op": "eq",
+            "values": [
+              "4",
+              "5"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If Location Count ≥ 4"
+    },
+    {
+      "section": 1,
+      "sectionName": "Account Information",
+      "seq": 27,
+      "id": "L_4_Zip",
+      "label": "What is the Location 4 zip?",
+      "type": "number",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Location_Count",
+            "op": "eq",
+            "values": [
+              "4",
+              "5"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If Location Count ≥ 4"
+    },
+    {
+      "section": 1,
+      "sectionName": "Account Information",
+      "seq": 28,
+      "id": "Location_5_Address_1",
+      "label": "What is the location 5 address address line 1?",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Location_Count",
+            "op": "eq",
+            "values": [
+              "5"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If Location Count ≥ 5"
+    },
+    {
+      "section": 1,
+      "sectionName": "Account Information",
+      "seq": 29,
+      "id": "Location_5_Address_2",
+      "label": "What is the location 5 address address line 2?",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Location_Count",
+            "op": "eq",
+            "values": [
+              "5"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If Location Count ≥ 5"
+    },
+    {
+      "section": 1,
+      "sectionName": "Account Information",
+      "seq": 30,
+      "id": "L_5_City",
+      "label": "What is the Location 5 city?",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Location_Count",
+            "op": "eq",
+            "values": [
+              "5"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If Location Count ≥ 5"
+    },
+    {
+      "section": 1,
+      "sectionName": "Account Information",
+      "seq": 31,
+      "id": "L_5_ST",
+      "label": "What is the Location 5 st?",
+      "type": "dropdown",
+      "required": "conditional",
+      "options": [
+        "AL",
+        "AK",
+        "AZ",
+        "AR",
+        "CA",
+        "CO",
+        "CT",
+        "DE",
+        "DC",
+        "FL",
+        "GA",
+        "HI",
+        "ID",
+        "IL",
+        "IN",
+        "IA",
+        "KS",
+        "KY",
+        "LA",
+        "ME",
+        "MD",
+        "MA",
+        "MI",
+        "MN",
+        "MS",
+        "MO",
+        "MT",
+        "NE",
+        "NV",
+        "NH",
+        "NJ",
+        "NM",
+        "NY",
+        "NC",
+        "ND",
+        "OH",
+        "OK",
+        "OR",
+        "PA",
+        "PR",
+        "RI",
+        "SC",
+        "SD",
+        "TN",
+        "TX",
+        "UT",
+        "VT",
+        "USVI",
+        "VA",
+        "WA",
+        "WV",
+        "WI",
+        "WY"
+      ],
+      "showIf": {
+        "all": [
+          {
+            "field": "Location_Count",
+            "op": "eq",
+            "values": [
+              "5"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If Location Count ≥ 5"
+    },
+    {
+      "section": 1,
+      "sectionName": "Account Information",
+      "seq": 32,
+      "id": "L_5_Zip",
+      "label": "What is the Location 5 zip?",
+      "type": "number",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "Location_Count",
+            "op": "eq",
+            "values": [
+              "5"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If Location Count ≥ 5"
+    },
+    {
+      "section": 10,
+      "sectionName": "Additional Data",
+      "seq": 1,
+      "id": "HubSpot_Deal_ID",
+      "label": "What is the HubSpot Deal ID?",
+      "type": "number",
+      "required": "always",
+      "options": [],
+      "showIf": null,
+      "showIfRaw": "None - Always Ask"
+    },
+    {
+      "section": 10,
+      "sectionName": "Additional Data",
+      "seq": 2,
+      "id": "HubSpot_Deal_Name",
+      "label": "What is the HubSpot Deal Name?",
+      "type": "text",
+      "required": "always",
+      "options": [],
+      "showIf": null,
+      "showIfRaw": "None - Always Ask"
+    },
+    {
+      "section": 10,
+      "sectionName": "Additional Data",
+      "seq": 3,
+      "id": "SL_Tax_Filer",
+      "label": "Who is filing the surplus lines taxes?",
+      "type": "dropdown",
+      "required": "always",
+      "options": [
+        "Bluefields",
+        "RT Specialty",
+        "Other"
+      ],
+      "showIf": null,
+      "showIfRaw": "None - Always Ask"
+    },
+    {
+      "section": 10,
+      "sectionName": "Additional Data",
+      "seq": 4,
+      "id": "SL_Broker_Name",
+      "label": "Surplus Lines Broker Name",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "SL_Tax_Filer",
+            "op": "eq",
+            "values": [
+              "Other"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{SL_Tax_Filer}} = \"Other\""
+    },
+    {
+      "section": 10,
+      "sectionName": "Additional Data",
+      "seq": 5,
+      "id": "SL_Broker_License",
+      "label": "Surplus Lines Broker License Number",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "SL_Tax_Filer",
+            "op": "eq",
+            "values": [
+              "Other"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{SL_Tax_Filer}} = \"Other\""
+    },
+    {
+      "section": 10,
+      "sectionName": "Additional Data",
+      "seq": 6,
+      "id": "SL_Broker_Address",
+      "label": "Surplus Lines Broker License Address",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "SL_Tax_Filer",
+            "op": "eq",
+            "values": [
+              "Other"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{SL_Tax_Filer}} = \"Other\""
+    },
+    {
+      "section": 10,
+      "sectionName": "Additional Data",
+      "seq": 7,
+      "id": "SL_Broker_City",
+      "label": "Surplus Lines Broker License Address City",
+      "type": "text",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "SL_Tax_Filer",
+            "op": "eq",
+            "values": [
+              "Other"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{SL_Tax_Filer}} = \"Other\""
+    },
+    {
+      "section": 10,
+      "sectionName": "Additional Data",
+      "seq": 8,
+      "id": "SL_Broker_State",
+      "label": "Surplus Lines Broker License Address State",
+      "type": "dropdown",
+      "required": "conditional",
+      "options": [
+        "AL",
+        "AK",
+        "AZ",
+        "AR",
+        "CA",
+        "CO",
+        "CT",
+        "DE",
+        "DC",
+        "FL",
+        "GA",
+        "HI",
+        "ID",
+        "IL",
+        "IN",
+        "IA",
+        "KS",
+        "KY",
+        "LA",
+        "ME",
+        "MD",
+        "MA",
+        "MI",
+        "MN",
+        "MS",
+        "MO",
+        "MT",
+        "NE",
+        "NV",
+        "NH",
+        "NJ",
+        "NM",
+        "NY",
+        "NC",
+        "ND",
+        "OH",
+        "OK",
+        "OR",
+        "PA",
+        "PR",
+        "RI",
+        "SC",
+        "SD",
+        "TN",
+        "TX",
+        "UT",
+        "VT",
+        "USVI",
+        "VA",
+        "WA",
+        "WV",
+        "WI",
+        "WY"
+      ],
+      "showIf": {
+        "all": [
+          {
+            "field": "SL_Tax_Filer",
+            "op": "eq",
+            "values": [
+              "Other"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{SL_Tax_Filer}} = \"Other\""
+    },
+    {
+      "section": 10,
+      "sectionName": "Additional Data",
+      "seq": 9,
+      "id": "SL_Broker_Zip",
+      "label": "Surplus Lines Broker License Address Zip",
+      "type": "number",
+      "required": "conditional",
+      "options": [],
+      "showIf": {
+        "all": [
+          {
+            "field": "SL_Tax_Filer",
+            "op": "eq",
+            "values": [
+              "Other"
+            ]
+          }
+        ]
+      },
+      "showIfRaw": "If {{SL_Tax_Filer}} = \"Other\""
     }
   ],
   "calculations": [
@@ -8793,21 +9548,21 @@
       "section": 2,
       "seq": 62,
       "target": "Loction_3_Address",
-      "template": ""
+      "template": "{Location_3_Address_1} {Location_3_Address_2}, {L_3_City}, {L_3_ST} {L_3_Zip}"
     },
     {
       "kind": "template",
       "section": 2,
       "seq": 63,
       "target": "Loction_4_Address",
-      "template": ""
+      "template": "{Location_4_Address_1} {Location_4_Address_2}, {L_4_City}, {L_4_ST} {L_4_Zip}"
     },
     {
       "kind": "template",
       "section": 2,
       "seq": 64,
       "target": "Loction_5_Address",
-      "template": ""
+      "template": "{Location_5_Address_1} {Location_5_Address_2}, {L_5_City}, {L_5_ST} {L_5_Zip}"
     },
     {
       "kind": "template",

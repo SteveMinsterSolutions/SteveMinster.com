@@ -39,13 +39,25 @@ function cleanMoney(s) {
 }
 function formatMoney(raw) {
   if (raw == null || raw === '') return '';
-  const [intPart, decPart] = String(raw).split('.');
+  const clean = cleanMoney(raw); // strip stray $/commas (e.g. a prefilled "$1,234") before formatting → no "$$"
+  if (clean === '') return '';
+  const [intPart, decPart] = clean.split('.');
   const intFmt = (intPart || '0').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   const dec = decPart !== undefined ? '.' + decPart.slice(0, 2) : '';
   return '$' + intFmt + dec;
 }
 
 const isEmpty = (v) => v == null || String(v).trim() === '';
+
+// Seed answers with any question-level `default` (e.g. Policy_Form_Type = "Occurrence",
+// Location_Count = "1"). Prefill and user edits merge over these.
+function initialAnswers(questions) {
+  const out = {};
+  for (const q of questions || []) {
+    if (q && q.default != null && q.default !== '') out[q.id] = q.default;
+  }
+  return out;
+}
 
 // ─── Build Packet download helpers ────────────────────────────────────────────
 // The /api/assemble success response is a binary PDF stream (NOT JSON). These
@@ -537,7 +549,7 @@ function BuildPacketBar({ building, buildErr, buildDone, formCount, onBuild }) {
 // ─── Questionnaire ────────────────────────────────────────────────────────────
 export default function Questionnaire() {
   const sections = useMemo(() => buildSections(packetConfig.questions ?? []), []);
-  const [answers, setAnswers] = useState({});
+  const [answers, setAnswers] = useState(() => initialAnswers(packetConfig.questions ?? []));
   const [activeIdx, setActiveIdx] = useState(0);
   const [view, setView] = useState('form'); // 'form' | 'manifest'
   const [step, setStep] = useState('upload'); // 'upload' | 'verify'
