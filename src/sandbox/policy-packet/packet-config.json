@@ -7457,60 +7457,38 @@
       "group": "Business Auto"
     },
     {
-      "section": 3,
-      "sectionName": "Premium and Taxes",
-      "seq": 39,
+      "section": 10,
+      "sectionName": "Additional Data",
+      "seq": 1,
       "id": "Who_Pays",
       "label": "Who pays the premium (billing method)?",
       "type": "dropdown",
-      "required": "conditional",
+      "required": "always",
       "options": [
         "Direct Bill",
         "Agency Bill",
         "Agency Bill and Agent Remits Taxes",
         "Outside Premium Finance"
       ],
-      "showIf": {
-        "all": [
-          {
-            "field": "Business_Auto",
-            "op": "eq",
-            "values": [
-              "Yes"
-            ]
-          }
-        ]
-      },
-      "showIfRaw": "If {{Business_Auto}} = \"Yes\"",
-      "group": "Billing & Installments"
+      "showIf": null,
+      "showIfRaw": "None - Always Ask"
     },
     {
-      "section": 3,
-      "sectionName": "Premium and Taxes",
-      "seq": 40,
+      "section": 10,
+      "sectionName": "Additional Data",
+      "seq": 2,
       "id": "Pay_Plan",
       "label": "Which installment pay plan applies?",
       "type": "dropdown",
-      "required": "conditional",
+      "required": "always",
       "options": [
         "Paid in Full",
         "40% Down with 2 Installments",
         "25% Down with 5 Installments",
         "25% Down with 8 Installments"
       ],
-      "showIf": {
-        "all": [
-          {
-            "field": "Business_Auto",
-            "op": "eq",
-            "values": [
-              "Yes"
-            ]
-          }
-        ]
-      },
-      "showIfRaw": "If {{Business_Auto}} = \"Yes\"",
-      "group": "Billing & Installments"
+      "showIf": null,
+      "showIfRaw": "None - Always Ask"
     },
     {
       "section": 3,
@@ -8943,7 +8921,7 @@
     {
       "section": 10,
       "sectionName": "Additional Data",
-      "seq": 1,
+      "seq": 3.0,
       "id": "HubSpot_Deal_ID",
       "label": "What is the HubSpot Deal ID?",
       "type": "number",
@@ -8955,7 +8933,7 @@
     {
       "section": 10,
       "sectionName": "Additional Data",
-      "seq": 2,
+      "seq": 4.0,
       "id": "HubSpot_Deal_Name",
       "label": "What is the HubSpot Deal Name?",
       "type": "text",
@@ -8967,7 +8945,7 @@
     {
       "section": 10,
       "sectionName": "Additional Data",
-      "seq": 3,
+      "seq": 5.0,
       "id": "SL_Tax_Filer",
       "label": "Who is filing the surplus lines taxes?",
       "type": "dropdown",
@@ -8983,7 +8961,7 @@
     {
       "section": 10,
       "sectionName": "Additional Data",
-      "seq": 4,
+      "seq": 6.0,
       "id": "SL_Broker_Name",
       "label": "Surplus Lines Broker Name",
       "type": "text",
@@ -9005,7 +8983,7 @@
     {
       "section": 10,
       "sectionName": "Additional Data",
-      "seq": 5,
+      "seq": 7.0,
       "id": "SL_Broker_License",
       "label": "Surplus Lines Broker License Number",
       "type": "text",
@@ -9027,7 +9005,7 @@
     {
       "section": 10,
       "sectionName": "Additional Data",
-      "seq": 6,
+      "seq": 8.0,
       "id": "SL_Broker_Address",
       "label": "Surplus Lines Broker License Address",
       "type": "text",
@@ -9049,7 +9027,7 @@
     {
       "section": 10,
       "sectionName": "Additional Data",
-      "seq": 7,
+      "seq": 9.0,
       "id": "SL_Broker_City",
       "label": "Surplus Lines Broker License Address City",
       "type": "text",
@@ -9071,7 +9049,7 @@
     {
       "section": 10,
       "sectionName": "Additional Data",
-      "seq": 8,
+      "seq": 10.0,
       "id": "SL_Broker_State",
       "label": "Surplus Lines Broker License Address State",
       "type": "dropdown",
@@ -9147,7 +9125,7 @@
     {
       "section": 10,
       "sectionName": "Additional Data",
-      "seq": 9,
+      "seq": 11.0,
       "id": "SL_Broker_Zip",
       "label": "Surplus Lines Broker License Address Zip",
       "type": "number",

@@ -172,6 +172,9 @@ export function runCalculations(calculations, answers) {
               return fmt === 'currency' ? fmtCur(raw) : raw;
             })
           : '';
+        // Tidy: collapse runs of spaces and drop any space before a comma left by an
+        // empty placeholder (e.g. a location with no address line 2).
+        if (value) value = value.replace(/ +/g, ' ').replace(/ +,/g, ',').trim();
         break;
       }
       case 'dateBranch': {
