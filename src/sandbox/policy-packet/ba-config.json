@@ -677,7 +677,10 @@
       "file": "PWR 01 07 08 26 Powersports Rental Endorsement.docx",
       "library": "static",
       "isDynamic": false,
-      "present": true
+      "present": true,
+      "aliases": [
+        "PWR 00 07"
+      ]
     },
     {
       "seq": "59.0",

@@ -104,15 +104,16 @@ export const POST: APIRoute = async ({ request }) => {
     // BFEI6 (A) and/or BFEX6 (B) alongside the CGL; no election ⇒ CGL only (unchanged).
     const policies = fanOutPolicies(packetConfig as any, excessConfig as any, resolved, baConfig as any);
 
-    // ── BFPI 00 01: cross-policy Premium Installment Schedule (BA-only) ──
-    // Computed from the ORIGINAL submission `resolved` (which still carries each
+    // ── BFPI 00 01: cross-policy Premium Installment Schedule (ALL policies) ──
+    // Computed ONCE from the ORIGINAL submission `resolved` (which still carries each
     // policy's premium, the CGL BFSR6 number and the effective date) and merged into
-    // the Business-Auto policy's resolved. Must run AFTER fan-out because the BA
-    // overlay overwrites Policy_Number/TTL_Premium; reading those post-overlay would
-    // schedule the wrong figures. No-op when there is no BA policy in the list.
-    const baPolicy = policies.find((p) => p.id === 'BA');
-    if (baPolicy) {
-      baPolicy.resolved = { ...baPolicy.resolved, ...buildBFPISchedule(resolved) };
+    // EVERY policy's resolved. Must run AFTER fan-out because policy overlays overwrite
+    // Policy_Number/TTL_Premium; reading those post-overlay would schedule the wrong
+    // figures. Each policy config gates BFPI inclusion via its own formOrder/formRule,
+    // so merging these values everywhere is harmless where BFPI is not on the manifest.
+    const bfpiValues = buildBFPISchedule(resolved);
+    for (const p of policies) {
+      p.resolved = { ...p.resolved, ...bfpiValues };
     }
 
     // Build every policy through the shared primitive. Any single policy failing its

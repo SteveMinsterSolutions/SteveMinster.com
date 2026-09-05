@@ -230,7 +230,7 @@ export function isFormListed(formNumber, binderEntries) {
 // be surfaced. Same edition-agnostic matching as isFormListed.
 export function unmatchedBinderForms(binderRaw, formOrder) {
   const entries = parseBinderForms(binderRaw);
-  const libKeys = (formOrder || []).map((f) => formNumberKey(f.formNumber));
+  const libKeys = (formOrder || []).flatMap((f) => [f.formNumber, ...(f.aliases || [])].map(formNumberKey));
   return entries.filter((e) => !libKeys.some((k) => e === k || e.startsWith(k + ' ')));
 }
 
@@ -246,7 +246,10 @@ export function resolveManifest(formOrder, formRules, resolved) {
     // schedule. Additive - any other rule shape keeps its prior behavior.
     let include;
     if (rule && rule.onBinderList === true) {
-      include = isFormListed(fo.formNumber, binderEntries);
+      // A form is included if its own number OR any of its declared aliases (older
+      // editions the binder may request, e.g. PWR 00 07 -> PWR 01 07) is on the binder.
+      include = isFormListed(fo.formNumber, binderEntries)
+        || (fo.aliases || []).some((a) => isFormListed(a, binderEntries));
     } else {
       include = (rule && rule.alwaysApply === true) || evaluateRule(rule, resolved);
     }

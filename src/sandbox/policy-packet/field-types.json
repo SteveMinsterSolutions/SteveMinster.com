@@ -1360,34 +1360,34 @@
     "behavior": "passthrough"
   },
   "BA_Liab_Prem": {
-    "tokenFormat": "currency_whole",
+    "tokenFormat": "currency_cents",
     "answerType": "Currency",
-    "behavior": "currency_whole"
+    "behavior": "currency_cents"
   },
   "CMP_Prem": {
-    "tokenFormat": "currency_whole",
+    "tokenFormat": "currency_cents",
     "answerType": "Currency",
-    "behavior": "currency_whole"
+    "behavior": "currency_cents"
   },
   "Coll_Prem": {
-    "tokenFormat": "currency_whole",
+    "tokenFormat": "currency_cents",
     "answerType": "Currency",
-    "behavior": "currency_whole"
+    "behavior": "currency_cents"
   },
   "BA_Prem": {
-    "tokenFormat": "currency_whole",
+    "tokenFormat": "currency_cents",
     "answerType": "Currency",
-    "behavior": "currency_whole"
+    "behavior": "currency_cents"
   },
   "BA_TF": {
-    "tokenFormat": "currency_whole",
+    "tokenFormat": "currency_cents",
     "answerType": "Currency",
-    "behavior": "currency_whole"
+    "behavior": "currency_cents"
   },
   "BA_TTL": {
-    "tokenFormat": "currency_whole",
+    "tokenFormat": "currency_cents",
     "answerType": "Currency",
-    "behavior": "currency_whole"
+    "behavior": "currency_cents"
   },
   "BA_SL_Tax": {
     "tokenFormat": "currency_whole",
