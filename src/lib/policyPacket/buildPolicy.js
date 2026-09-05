@@ -38,16 +38,45 @@ import { mergePacket, countPdfPages, buildPacketAssertions, packetFilename } fro
 // (edition, rejoined from formOrder), Form_i_Name (name). Unused slots stay blank.
 // Policy_Carrier rides in `resolved` (a questionnaire answer), not the manifest.
 const BFFE_MAX = 60;
-function buildBFFEValues(config, manifest) {
+// Manual forms: binder-listed endorsements the library cannot produce, captured in
+// the UI as { number, edition, name } and carried in resolved.Manual_Forms (a JSON
+// array string). Appended to the schedule AFTER the produced manifest forms so the
+// completed packet's Schedule of Forms is accurate; the operator inserts the actual
+// PDF by hand (list-only — no placeholder page is generated).
+function parseManualForms(raw) {
+  if (!raw) return [];
+  try {
+    const arr = JSON.parse(raw);
+    if (!Array.isArray(arr)) return [];
+    return arr
+      .map((m) => ({
+        number: String((m && m.number) || '').trim(),
+        edition: String((m && m.edition) || '').trim(),
+        name: String((m && m.name) || '').trim(),
+      }))
+      .filter((m) => m.number);
+  } catch {
+    return [];
+  }
+}
+function buildBFFEValues(config, manifest, resolved) {
   const foByNum = new Map((config.formOrder || []).map((f) => [f.formNumber, f]));
   const out = {};
-  manifest.forEach((m, idx) => {
-    const i = idx + 1;
+  let i = 0;
+  manifest.forEach((m) => {
+    i += 1;
     if (i > BFFE_MAX) return;
     const fo = foByNum.get(m.formNumber);
     out[`FM_${i}`] = m.formNumber ?? '';
     out[`FE_${i}`] = fo?.edition ?? '';
     out[`Form_${i}_Name`] = m.name ?? fo?.name ?? '';
+  });
+  parseManualForms(resolved && resolved.Manual_Forms).forEach((mf) => {
+    i += 1;
+    if (i > BFFE_MAX) return;
+    out[`FM_${i}`] = mf.number;
+    out[`FE_${i}`] = mf.edition;
+    out[`Form_${i}_Name`] = mf.name;
   });
   return out;
 }
@@ -113,7 +142,7 @@ export async function buildOnePolicy(config, fieldTypes, resolved, io) {
   // each derive extra tokens from the manifest / the Policy Interest answers.
   let resolvedForBuild = resolved;
   if (manifest.some((m) => m.formNumber === 'BFFE 00 00')) {
-    resolvedForBuild = { ...resolvedForBuild, ...buildBFFEValues(config, manifest) };
+    resolvedForBuild = { ...resolvedForBuild, ...buildBFFEValues(config, manifest, resolved) };
   }
   if (manifest.some((m) => m.formNumber === 'BGL 00 02')) {
     resolvedForBuild = { ...resolvedForBuild, ...buildBGLFormsSchedule(config, resolved) };

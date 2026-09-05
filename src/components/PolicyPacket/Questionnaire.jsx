@@ -432,7 +432,7 @@ function CalcValuesPanel({ calcValues }) {
 }
 
 // ─── Resolved form manifest ───────────────────────────────────────────────────
-function ManifestView({ manifest, total, calcValues, unmatched = [] }) {
+function ManifestView({ manifest, total, calcValues, unmatched = [], manualDefaults = {}, manualForms = {}, onManualChange = () => {} }) {
   return (
     <div className="rounded-2xl p-6 md:p-8"
       style={{ backgroundColor: '#ffffff', border: `1px solid ${bf.borderSubtle}`, boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
@@ -449,15 +449,37 @@ function ManifestView({ manifest, total, calcValues, unmatched = [] }) {
       </div>
 
       {unmatched.length > 0 && (
-        <div className="rounded-xl mb-6 p-4" style={{ backgroundColor: '#fff4f4', border: `1px solid ${bf.danger}` }}>
-          <p className="text-sm font-bold" style={{ color: bf.danger, fontFamily: bf.fontBody }}>
-            ⚠ {unmatched.length} form{unmatched.length === 1 ? '' : 's'} on the binder {unmatched.length === 1 ? 'was' : 'were'} not found in the library and will NOT be included:
+        <div className="rounded-xl mb-6 p-4" style={{ backgroundColor: '#fff8ef', border: `1px solid ${bf.warning || bf.danger}` }}>
+          <p className="text-sm font-bold" style={{ color: bf.warning || bf.danger, fontFamily: bf.fontBody }}>
+            {unmatched.length} form{unmatched.length === 1 ? '' : 's'} on the binder {unmatched.length === 1 ? 'is' : 'are'} not in the library and will NOT be generated.
           </p>
-          <ul className="mt-2 text-sm" style={{ color: bf.textBody, fontFamily: bf.fontBody }}>
-            {unmatched.map((f) => <li key={f} className="tabular-nums">• {f}</li>)}
-          </ul>
-          <p className="text-xs mt-2 italic" style={{ color: bf.textMuted }}>
-            Check the form number/edition on the binder, or stage &amp; wire the form before building.
+          <p className="text-xs mt-1 mb-3" style={{ color: bf.textMuted, fontFamily: bf.fontBody }}>
+            Enter each form's details to list it on the Schedule of Forms (BFFE 00 00) of the CGL packet, then insert the form PDF into that packet by hand. Clear the Form # to omit a row.
+          </p>
+          <div className="space-y-3">
+            {unmatched.map((entry) => {
+              const v = { ...(manualDefaults[entry] || { number: entry, edition: '', name: '' }), ...(manualForms[entry] || {}) };
+              const cell = (key, ph, w) => (
+                <input
+                  type="text"
+                  value={v[key] ?? ''}
+                  placeholder={ph}
+                  onChange={(e) => onManualChange(entry, key, e.target.value)}
+                  className={`${w} rounded-lg px-3 py-2 text-sm`}
+                  style={{ border: `1px solid ${bf.borderSubtle}`, color: bf.textStrong, fontFamily: bf.fontBody }}
+                />
+              );
+              return (
+                <div key={entry} className="flex flex-col md:flex-row gap-2 md:items-center">
+                  {cell('number', 'Form #', 'md:w-40')}
+                  {cell('edition', 'Edition', 'md:w-28')}
+                  {cell('name', 'Form name', 'flex-1')}
+                </div>
+              );
+            })}
+          </div>
+          <p className="text-[11px] mt-3 italic" style={{ color: bf.textMuted }}>
+            Read from the binder as: {unmatched.join(', ')}
           </p>
         </div>
       )}
@@ -656,6 +678,29 @@ export default function Questionnaire() {
     return { calcValues, manifest, unmatched };
   }, [resolved]);
 
+  // Manual (library-absent) forms captured for the BFFE Schedule of Forms. Keyed by
+  // the unmatched binder entry; a stored value overrides the parsed default. Sent to
+  // /api/assemble as resolved.Manual_Forms (JSON), appended to the CGL packet schedule.
+  const [manualForms, setManualForms] = useState({});
+  const manualDefaults = useMemo(() => {
+    const out = {};
+    for (const entry of engine.unmatched) {
+      const m = /^([A-Z]+(?:\s+\d{2}){2})(?:\s+(\d{2}\s+\d{2}))?\s*(.*)$/.exec(entry);
+      out[entry] = m
+        ? { number: m[1].replace(/\s+/g, ' ').trim(), edition: (m[2] || '').replace(/\s+/g, ' ').trim(), name: (m[3] || '').trim() }
+        : { number: entry, edition: '', name: '' };
+    }
+    return out;
+  }, [engine.unmatched]);
+  const setManualField = (entry, key, value) =>
+    setManualForms((prev) => ({ ...prev, [entry]: { ...manualDefaults[entry], ...(prev[entry] || {}), [key]: value } }));
+  const manualFormsPayload = useMemo(
+    () => engine.unmatched
+      .map((entry) => ({ ...manualDefaults[entry], ...(manualForms[entry] || {}) }))
+      .filter((m) => (m.number || '').trim()),
+    [engine.unmatched, manualDefaults, manualForms],
+  );
+
   // ── Build Packet: POST the resolved memo (pre-calc; the endpoint re-derives
   //    calcs itself) to /api/assemble and download the streamed PDF. Mirrors the
   //    busy/err/finally convention from PrefillUpload.jsx.
@@ -671,7 +716,7 @@ export default function Questionnaire() {
       const res = await fetch('/api/assemble', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ resolved }), // resolved memo — NEVER engine/manifest
+        body: JSON.stringify({ resolved: { ...resolved, Manual_Forms: manualFormsPayload.length ? JSON.stringify(manualFormsPayload) : '' } }), // resolved memo (+ manual forms) — NEVER engine/manifest
       });
       // Success is a binary PDF stream — branch on res.ok BEFORE parsing.
       if (res.ok) {
@@ -788,7 +833,7 @@ export default function Questionnaire() {
           <section className="flex-1 min-w-0">
             {view === 'manifest' && (
               <div>
-                <ManifestView manifest={engine.manifest} total={packetConfig.formOrder.length} calcValues={engine.calcValues} unmatched={engine.unmatched} />
+                <ManifestView manifest={engine.manifest} total={packetConfig.formOrder.length} calcValues={engine.calcValues} unmatched={engine.unmatched} manualDefaults={manualDefaults} manualForms={manualForms} onManualChange={setManualField} />
                 <BuildPacketBar
                   building={building}
                   buildErr={buildErr}

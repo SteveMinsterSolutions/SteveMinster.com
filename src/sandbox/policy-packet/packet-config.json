@@ -11099,6 +11099,16 @@
       "library": "dynamic",
       "isDynamic": true,
       "present": true
+    },
+    {
+      "seq": "23.2",
+      "formNumber": "PWR 00 05",
+      "edition": "10 23",
+      "name": "Powersports Mobile Equipment Endorsement",
+      "file": "PWR 00 05 10 23 Powersports Mobile Equipment Endorsement.docx",
+      "library": "static",
+      "isDynamic": false,
+      "present": true
     }
   ],
   "formRules": [
@@ -13070,6 +13080,14 @@
         ]
       },
       "ruleRaw": "If {{Blanket_AI}} = \"Yes\""
+    },
+    {
+      "rule": {
+        "onBinderList": true
+      },
+      "ruleRaw": "When listed on the binding quote document",
+      "seq": "23.2",
+      "formNumber": "PWR 00 05"
     }
   ],
   "fieldMapping": {

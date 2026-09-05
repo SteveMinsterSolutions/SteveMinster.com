@@ -116,6 +116,19 @@ export const POST: APIRoute = async ({ request }) => {
       p.resolved = { ...p.resolved, ...bfpiValues };
     }
 
+    // ── Manual (library-absent) forms: document on the BASE CGL packet only ──
+    // The UI captures binder-listed forms the library can't produce as
+    // resolved.Manual_Forms (JSON [{number,edition,name}]); buildBFFEValues appends
+    // them to that policy's Schedule of Forms. They aren't attributable to a specific
+    // fanned policy, so strip Manual_Forms from every non-CGL policy to avoid listing
+    // them on the BA/excess schedules. The operator inserts the actual PDF by hand.
+    for (const p of policies) {
+      if (p.id !== 'CGL' && p.resolved && 'Manual_Forms' in p.resolved) {
+        const { Manual_Forms, ...rest } = p.resolved as Record<string, unknown>;
+        p.resolved = rest;
+      }
+    }
+
     // Build every policy through the shared primitive. Any single policy failing its
     // assertions fails the WHOLE build — never ship a partial tower.
     const built: Array<{ pdf: Uint8Array; filename: string }> = [];
