@@ -43,3 +43,6 @@ ai-accelerator-capstone-*.md
 
 # Backup copies of components; the live one is the .tsx
 *.tsx.txt
+
+# cobra/radio videos live in the steveminster-site-media public Blob store
+public/images/off-the-clock/cobra/radio/*.mp4
