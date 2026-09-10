@@ -1,0 +1,37 @@
+# Not build inputs. Keeps CLI (`vercel deploy`) uploads lean.
+# NOTE: git-triggered deploys clone the repo, so untracked files never reach
+# them anyway — this file only affects deploys made from the working directory.
+
+# Standard — restated because a present .vercelignore supersedes .gitignore
+node_modules/
+.git/
+.vercel/
+.astro/
+dist/
+build/
+.env
+.env*
+
+# Debug artifacts from packet-builder troubleshooting
+err.json
+err_body.bin
+headers.txt
+build-packet.diff
+
+# Generated packet PDFs (build output, not source)
+packet*.pdf
+
+# Stray docs / screenshots that aren't site content
+*.docx
+Screenshot*.png
+cos_demo_page.html
+
+# Planning / handoff scratch docs (root-level .md is never an Astro route)
+LEDGER_DEPLOY.md
+integration-README.md
+*-integration.md
+ai-accelerator-capstone-*.md
+phase4-*.md
+
+# Backup copy of a real component; the live one is RoadTripResults.tsx
+*.tsx.txt

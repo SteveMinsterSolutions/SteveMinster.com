@@ -19,3 +19,27 @@ phase5-*.md
 
 test-fixtures/
 .env*
+
+# Debug artifacts from packet-builder troubleshooting
+err.json
+err_body.bin
+headers.txt
+build-packet.diff
+
+# Generated packet PDFs
+packet*.pdf
+
+# Stray docs / screenshots that aren't site content
+*.docx
+Screenshot*.png
+cos_demo_page.html
+
+# Planning/handoff scratch docs (same class as phase5-*.md above)
+phase4-*.md
+LEDGER_DEPLOY.md
+integration-README.md
+*-integration.md
+ai-accelerator-capstone-*.md
+
+# Backup copies of components; the live one is the .tsx
+*.tsx.txt
