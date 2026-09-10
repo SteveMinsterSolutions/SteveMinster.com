@@ -4,7 +4,7 @@
 //   • dynamic → the normalized .docx from build/normalized-templates
 //     (run `node scripts/normalize-templates.mjs` FIRST for dynamics)
 // Blob object name = the exact filename (matches how assemble.ts fetches).
-// Requires $env:BLOB_READ_WRITE_TOKEN set in the same shell.  Run: node scripts/upload-forms.mjs
+// Requires $env:BLOB_READ_WRITE_TOKEN and $env:FORMS_STATIC_DIR (see .env).  Run: node scripts/upload-forms.mjs
 import { put } from '@vercel/blob';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -14,7 +14,9 @@ const token = process.env.BLOB_READ_WRITE_TOKEN;
 if (!token) { console.error('\n  ERROR: set $env:BLOB_READ_WRITE_TOKEN in this PowerShell first.\n'); process.exit(1); }
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const STATIC_DIR = 'C:/Users/smins/OneDrive/Documents/Claude Co Work Root/Outfitter and Guide Policy Packet Builder/Forms/Static';
+// Local-only source folder for the static .pdf forms; set FORMS_STATIC_DIR in .env
+// (this is a public repo — no machine-specific paths in source).
+const FORMS_DIR = process.env.FORMS_STATIC_DIR ?? './forms/static';
 const NORMALIZED_DIR = path.join(REPO, 'build', 'normalized-templates');
 
 // ── This batch (edit this list for future batches) ──
@@ -47,7 +49,7 @@ const CT = { static: 'application/pdf', dynamic: 'application/vnd.openxmlformats
 
 let ok = 0, fail = 0;
 for (const f of FILES) {
-  const src = f.kind === 'static' ? path.join(STATIC_DIR, f.name) : path.join(NORMALIZED_DIR, f.name);
+  const src = f.kind === 'static' ? path.join(FORMS_DIR, f.name) : path.join(NORMALIZED_DIR, f.name);
   if (!fs.existsSync(src)) { console.log('MISSING  ' + f.name + '   (looked in ' + src + ')'); fail++; continue; }
   try {
     const body = fs.readFileSync(src);
