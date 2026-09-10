@@ -7176,6 +7176,23 @@
     {
       "section": 2,
       "sectionName": "Coverage Limits",
+      "seq": 26.5,
+      "id": "Des_Loc_Agg_Mode",
+      "label": "Designated Location General Aggregate — uncapped (CG 25 04): show on Dec?",
+      "type": "dropdown",
+      "required": "optional",
+      "options": [
+        "Auto (show when CG 25 04 applies)",
+        "None"
+      ],
+      "showIf": null,
+      "showIfRaw": "None - Always Ask",
+      "group": "Optional Coverages & Endorsements",
+      "help": "Auto = print the uncapped designated-location aggregate on the Dec only when CG 25 04 is on the policy. None = never print it."
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
       "seq": 27,
       "id": "Loc_Gen_Agg",
       "label": "Designated Location General Aggregate — capped total (BFSR 00 25)",
@@ -7186,6 +7203,23 @@
       "showIfRaw": "None - Always Ask",
       "group": "Optional Coverages & Endorsements",
       "help": "Whole-dollar. Overall policy-level aggregate cap across all designated locations; prefilled from the CGL Coverage A aggregate. Applies when BFSR 00 25 is on the binder."
+    },
+    {
+      "section": 2,
+      "sectionName": "Coverage Limits",
+      "seq": 27.5,
+      "id": "Loc_Gen_Agg_Mode",
+      "label": "Designated Location General Aggregate — capped total (BFSR 00 25): show on Dec?",
+      "type": "dropdown",
+      "required": "optional",
+      "options": [
+        "Auto (show when BFSR 00 25 applies)",
+        "None"
+      ],
+      "showIf": null,
+      "showIfRaw": "None - Always Ask",
+      "group": "Optional Coverages & Endorsements",
+      "help": "Auto = print the capped-total designated-location aggregate on the Dec only when BFSR 00 25 is on the policy. None = never print it."
     },
     {
       "section": 2,

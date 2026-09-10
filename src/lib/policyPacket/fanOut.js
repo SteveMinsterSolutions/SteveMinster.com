@@ -221,7 +221,7 @@ export function buildBFPISchedule(resolved) {
     { pre: 'BFSR', labelTok: 'Primary',   label: 'Primary',        num: cgl,                              prem: resolved?.TTL_Premium,      present: true },
     { pre: 'BFEI', labelTok: 'Excess_L1', label: 'Excess Layer 1', num: deriveExcessNumber(cgl, 'BFEI6'), prem: resolved?.Excess_A_Premium, present: hasA },
     { pre: 'BFEX', labelTok: 'Excess_L2', label: 'Excess Layer 2', num: deriveExcessNumber(cgl, 'BFEX6'), prem: resolved?.Excess_B_Premium, present: hasB },
-    { pre: 'BFBA', labelTok: 'BFBA_Cov',  label: 'Business Auto',  num: deriveExcessNumber(cgl, 'BFBA6'), prem: resolved?.BA_Prem,          present: true },
+    { pre: 'BFBA', labelTok: 'BFBA_Cov',  label: 'Business Auto',  num: deriveExcessNumber(cgl, 'BFBA6'), prem: resolved?.BA_Prem,          present: resolved?.Business_Auto === 'Yes' },
   ];
 
   const out = {};

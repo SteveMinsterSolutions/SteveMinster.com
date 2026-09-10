@@ -133,6 +133,20 @@ function buildBGLFormsSchedule(config, resolved) {
   return out;
 }
 
+// ── Designated-Location aggregate limits on the CGL Dec (BGL 00 02) ────────────
+// The Dec always prints Des_Loc_Agg_Limit (CG 25 04, uncapped) and Loc_Gen_Agg
+// (BFSR 00 25, capped total). Blank each when its form is NOT on this policy's
+// manifest, or when the operator set its *_Mode to "None" — so no aggregate prints
+// for a coverage the policy doesn't carry. Amount otherwise (from the resolved answer).
+function buildDesLocAggValues(manifest, resolved) {
+  const has = (fn) => manifest.some((m) => m.formNumber === fn);
+  const isNone = (v) => String(v ?? '').trim().toLowerCase() === 'none';
+  return {
+    Des_Loc_Agg_Limit: has('CG 25 04') && !isNone(resolved.Des_Loc_Agg_Mode) ? (resolved.Des_Loc_Agg_Limit ?? '') : '',
+    Loc_Gen_Agg: has('BFSR 00 25') && !isNone(resolved.Loc_Gen_Agg_Mode) ? (resolved.Loc_Gen_Agg ?? '') : '',
+  };
+}
+
 export async function buildOnePolicy(config, fieldTypes, resolved, io) {
   // ── Resolve the manifest (authoritative assembly order) ──
   const { manifest } = resolvePacket(config, resolved);
@@ -146,6 +160,9 @@ export async function buildOnePolicy(config, fieldTypes, resolved, io) {
   }
   if (manifest.some((m) => m.formNumber === 'BGL 00 02')) {
     resolvedForBuild = { ...resolvedForBuild, ...buildBGLFormsSchedule(config, resolved) };
+    // Designated-location aggregate limits: blank on the Dec when the form is absent
+    // or its mode is "None" (see buildDesLocAggValues).
+    resolvedForBuild = { ...resolvedForBuild, ...buildDesLocAggValues(manifest, resolved) };
   }
 
   // ── Stage 1: fetch statics from Blob (bytes via the non-enumerable `buffer`) ──

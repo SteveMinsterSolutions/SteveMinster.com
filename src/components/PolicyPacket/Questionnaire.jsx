@@ -432,7 +432,7 @@ function CalcValuesPanel({ calcValues }) {
 }
 
 // ─── Resolved form manifest ───────────────────────────────────────────────────
-function ManifestView({ manifest, total, calcValues, unmatched = [], manualDefaults = {}, manualForms = {}, onManualChange = () => {} }) {
+function ManifestView({ manifest, total, calcValues, unmatched = [], manualDefaults = {}, manualForms = {}, onManualChange = () => {}, onToggleExcluded = () => {} }) {
   return (
     <div className="rounded-2xl p-6 md:p-8"
       style={{ backgroundColor: '#ffffff', border: `1px solid ${bf.borderSubtle}`, boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
@@ -454,7 +454,7 @@ function ManifestView({ manifest, total, calcValues, unmatched = [], manualDefau
             {unmatched.length} form{unmatched.length === 1 ? '' : 's'} on the binder {unmatched.length === 1 ? 'is' : 'are'} not in the library and will NOT be generated.
           </p>
           <p className="text-xs mt-1 mb-3" style={{ color: bf.textMuted, fontFamily: bf.fontBody }}>
-            Enter each form's details to list it on the Schedule of Forms (BFFE 00 00) of the CGL packet, then insert the form PDF into that packet by hand. Clear the Form # to omit a row.
+            Checked rows are listed on the Schedule of Forms (BFFE 00 00) of the CGL packet; enter each form's details and insert the form PDF into that packet by hand. Uncheck a row (e.g. a binder line that isn't a form) to skip it.
           </p>
           <div className="space-y-3">
             {unmatched.map((entry) => {
@@ -469,8 +469,13 @@ function ManifestView({ manifest, total, calcValues, unmatched = [], manualDefau
                   style={{ border: `1px solid ${bf.borderSubtle}`, color: bf.textStrong, fontFamily: bf.fontBody }}
                 />
               );
+              const included = v.excluded !== true;
               return (
-                <div key={entry} className="flex flex-col md:flex-row gap-2 md:items-center">
+                <div key={entry} className="flex flex-col md:flex-row gap-2 md:items-center" style={{ opacity: included ? 1 : 0.5 }}>
+                  <label className="flex items-center gap-2 md:w-36 text-xs shrink-0" style={{ color: bf.textBody, fontFamily: bf.fontBody }}>
+                    <input type="checkbox" checked={included} onChange={() => onToggleExcluded(entry)} />
+                    Add to schedule
+                  </label>
                   {cell('number', 'Form #', 'md:w-40')}
                   {cell('edition', 'Edition', 'md:w-28')}
                   {cell('name', 'Form name', 'flex-1')}
@@ -694,10 +699,13 @@ export default function Questionnaire() {
   }, [engine.unmatched]);
   const setManualField = (entry, key, value) =>
     setManualForms((prev) => ({ ...prev, [entry]: { ...manualDefaults[entry], ...(prev[entry] || {}), [key]: value } }));
+  const toggleManualExcluded = (entry) =>
+    setManualForms((prev) => ({ ...prev, [entry]: { ...manualDefaults[entry], ...(prev[entry] || {}), excluded: !(prev[entry] && prev[entry].excluded) } }));
   const manualFormsPayload = useMemo(
     () => engine.unmatched
       .map((entry) => ({ ...manualDefaults[entry], ...(manualForms[entry] || {}) }))
-      .filter((m) => (m.number || '').trim()),
+      .filter((m) => (m.number || '').trim() && m.excluded !== true)
+      .map(({ excluded, ...m }) => m),
     [engine.unmatched, manualDefaults, manualForms],
   );
 
@@ -833,7 +841,7 @@ export default function Questionnaire() {
           <section className="flex-1 min-w-0">
             {view === 'manifest' && (
               <div>
-                <ManifestView manifest={engine.manifest} total={packetConfig.formOrder.length} calcValues={engine.calcValues} unmatched={engine.unmatched} manualDefaults={manualDefaults} manualForms={manualForms} onManualChange={setManualField} />
+                <ManifestView manifest={engine.manifest} total={packetConfig.formOrder.length} calcValues={engine.calcValues} unmatched={engine.unmatched} manualDefaults={manualDefaults} manualForms={manualForms} onManualChange={setManualField} onToggleExcluded={toggleManualExcluded} />
                 <BuildPacketBar
                   building={building}
                   buildErr={buildErr}
