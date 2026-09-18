@@ -1,0 +1,988 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Honest owner guide to the Kia EV9 (EN/ES), by Steve Minster.">
+<title>Betty's EV9 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --navy:#1B2A4A; --blue:#2D7DD2; --lime:#97D700;
+    --ink:#0F172A; --slate:#475569; --line:#E2E8F0; --tint:#F1F5F9; --paper:#FFFFFF;
+    --bg:#F6F8FB; --card:#FFFFFF; --heroink:#FFFFFF;
+    --blue-soft:#E7F0FB; --lime-soft:#EEF7D6; --good:#2F855A; --warn:#B45309;
+    --shadow:0 1px 2px rgba(15,23,42,.06),0 6px 20px rgba(15,23,42,.06);
+    --maxw:820px;
+    --f-head:"Space Grotesk",Arial,sans-serif;
+    --f-body:"Inter",Calibri,Arial,sans-serif;
+  }
+  :root:not([data-theme="light"]){ @media (prefers-color-scheme:dark){
+    --navy:#12203c; --blue:#5EA2E6; --lime:#B4E82B;
+    --ink:#E8EDF5; --slate:#9FB0C7; --line:#26344d; --tint:#152238; --paper:#0e1a2f;
+    --bg:#0a1424; --card:#101d33; --heroink:#F3F7FF;
+    --blue-soft:#16294a; --lime-soft:#25341a; --good:#5BD08C; --warn:#E7A33A;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+  }}
+  :root[data-theme="dark"]{
+    --navy:#12203c; --blue:#5EA2E6; --lime:#B4E82B;
+    --ink:#E8EDF5; --slate:#9FB0C7; --line:#26344d; --tint:#152238; --paper:#0e1a2f;
+    --bg:#0a1424; --card:#101d33; --heroink:#F3F7FF;
+    --blue-soft:#16294a; --lime-soft:#25341a; --good:#5BD08C; --warn:#E7A33A;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);
+    font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-inline:20px;padding-block:0}
+  h1,h2,h3{font-family:var(--f-head);line-height:1.15;text-wrap:balance;margin:0}
+  p{margin:0 0 1em}
+  a{color:var(--blue)}
+  .eyebrow{font-family:var(--f-head);font-weight:600;letter-spacing:.13em;
+    text-transform:uppercase;font-size:12px;color:var(--blue)}
+
+  /* HERO */
+  .hero{background:var(--navy);color:var(--heroink);border-radius:0 0 26px 26px;
+    box-shadow:var(--shadow)}
+  .hero .wrap{padding-block:38px 34px}
+  .hero .kicker{font-family:var(--f-head);font-weight:600;letter-spacing:.13em;
+    text-transform:uppercase;font-size:12px;color:var(--lime)}
+  .hero h1{font-size:clamp(30px,7vw,46px);font-weight:700;margin:.35em 0 .1em}
+  .hero .sub{font-size:clamp(16px,2.6vw,19px);color:#C7D3E8;max-width:56ch;margin:.5em 0 0}
+  .limebar{height:5px;width:64px;background:var(--lime);border-radius:3px;margin:20px 0 0}
+  .frm{margin-top:22px;font-size:14.5px;color:#AFC0DD}
+  .frm b{color:#fff;font-weight:600}
+
+  section{padding-block:34px}
+  section + section{border-top:1px solid var(--line)}
+  h2{font-size:clamp(23px,4.4vw,30px);font-weight:700;color:var(--ink)}
+  h2 .n{color:var(--blue)}
+  .lead{color:var(--slate);font-size:17px;max-width:62ch;margin:.5em 0 1.4em}
+
+  /* STAT TILES */
+  .stats{display:flex;flex-direction:column;gap:12px}
+  .stats-row{display:grid;gap:12px}
+  .stats-top{grid-template-columns:repeat(2,minmax(0,230px));justify-content:center}
+  .stats-bot{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:560px){.stats-top,.stats-bot{grid-template-columns:1fr}}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:16px 16px 14px;box-shadow:var(--shadow)}
+  .stat .v{font-family:var(--f-head);font-weight:700;font-size:30px;color:var(--navy);
+    line-height:1.05;font-variant-numeric:tabular-nums}
+  :root[data-theme="dark"] .stat .v{color:var(--heroink)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stat .v{color:var(--heroink)}}
+  .stat .k{font-size:13px;color:var(--slate);margin-top:4px}
+  .stat.accent{border-color:var(--lime);box-shadow:0 0 0 1px var(--lime),var(--shadow)}
+  .stat.accent .v{color:var(--blue)}
+
+  /* LIKE / DISLIKE CARDS */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:620px){.grid2{grid-template-columns:1fr}}
+  .col h3{font-size:16px;display:flex;align-items:center;gap:9px;margin-bottom:12px}
+  .badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;
+    border-radius:8px;font-size:15px;flex:none}
+  .badge.up{background:var(--lime-soft);color:var(--good)}
+  .badge.dn{background:#FBEAE2;color:var(--warn)}
+  :root[data-theme="dark"] .badge.dn{background:#3a2417}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .badge.dn{background:#3a2417}}
+  .items{display:flex;flex-direction:column;gap:9px}
+  .item{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:12px 14px;box-shadow:var(--shadow)}
+  .item b{font-weight:600}
+  .item .d{color:var(--slate);font-size:14px;margin-top:2px;display:block}
+  .rail{border-left:3px solid var(--blue)}
+  .rail.dn{border-left-color:var(--warn)}
+
+  /* CALLOUT */
+  .call{background:var(--tint);border-left:4px solid var(--lime);border-radius:0 14px 14px 0;
+    padding:18px 20px;margin:6px 0}
+  .call h3{font-size:17px;margin-bottom:8px}
+  .call p:last-child{margin-bottom:0}
+
+  /* STORY */
+  .story{background:var(--blue-soft);
+    border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow)}
+  .story .q{font-family:var(--f-head);font-weight:600;font-size:clamp(18px,3vw,22px);
+    color:#17356E;line-height:1.4;margin:0 0 .5em}
+  :root[data-theme="dark"] .story .q{color:var(--heroink)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .story .q{color:var(--heroink)}}
+
+  /* PLAYBOOK STEPS */
+  .steps{display:flex;flex-direction:column;gap:0;counter-reset:s;margin-top:4px}
+  .step{position:relative;padding:2px 0 22px 52px;counter-increment:s}
+  .step:before{content:counter(s);position:absolute;left:0;top:0;width:34px;height:34px;
+    border-radius:10px;background:var(--navy);color:#fff;font-family:var(--f-head);
+    font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px}
+  .step:after{content:"";position:absolute;left:16px;top:34px;bottom:0;width:2px;background:var(--line)}
+  .step:last-child{padding-bottom:0}
+  .step:last-child:after{display:none}
+  .step h3{font-size:16px;margin-bottom:3px}
+  .step p{font-size:14.5px;color:var(--slate);margin:0}
+
+  /* CHART */
+  figure{margin:0}
+  .chartcard{background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:18px 18px 14px;box-shadow:var(--shadow)}
+  .chartcard h3{font-size:15px;color:var(--ink);margin-bottom:2px}
+  .chartcard .cap{font-size:13px;color:var(--slate);margin:0 0 12px}
+  svg{display:block;width:100%;height:auto;overflow:visible}
+  .ax{fill:var(--slate);font-size:11px;font-family:var(--f-body)}
+  .axb{fill:var(--slate);font-size:11.5px;font-family:var(--f-body);font-weight:500}
+  .vlab{fill:var(--ink);font-size:11px;font-weight:600;font-family:var(--f-body);
+    font-variant-numeric:tabular-nums}
+  .grid{stroke:var(--line);stroke-width:1}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:13px;color:var(--slate)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:12px;height:12px;border-radius:3px;flex:none}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.two{grid-template-columns:1fr}}
+
+  /* DETAILS */
+  details{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    margin-top:10px;box-shadow:var(--shadow);overflow:hidden}
+  details[open]{border-color:var(--blue)}
+  summary{cursor:pointer;padding:13px 16px;font-family:var(--f-head);font-weight:600;
+    font-size:14.5px;color:var(--navy);list-style:none;display:flex;justify-content:space-between;
+    align-items:center;gap:10px}
+  :root[data-theme="dark"] summary{color:var(--heroink)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) summary{color:var(--heroink)}}
+  summary::-webkit-details-marker{display:none}
+  summary:after{content:"+";font-size:20px;color:var(--blue);font-weight:400;flex:none}
+  details[open] summary:after{content:"–"}
+  .dbody{padding:0 16px 15px;font-size:14.5px;color:var(--slate)}
+  .dbody p{margin:0 0 .7em}.dbody p:last-child{margin:0}
+  .tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;
+    background:var(--blue-soft);color:var(--blue);padding:2px 9px;border-radius:20px;margin-left:2px}
+
+  /* SELL */
+  .sell{background:var(--card);border:1px dashed var(--line);border-radius:18px;padding:22px}
+  .sell .limebar{margin:0 0 14px}
+
+  ul.clean{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+  ul.clean li{padding-left:26px;position:relative;font-size:14.5px}
+  ul.clean li:before{content:"→";position:absolute;left:0;color:var(--blue);font-weight:700}
+
+  footer{background:var(--navy);color:#AFC0DD;border-radius:26px 26px 0 0;margin-top:20px}
+  footer .wrap{padding-block:26px}
+  footer b{color:#fff}
+  footer a{color:var(--lime)}
+  .note{font-size:13px;color:var(--slate);margin-top:8px}
+
+  /* PRINT — keep elements whole, headings with their content, clean margins */
+  @media print{
+    :root{--bg:#FFFFFF}
+    body{background:#fff;font-size:11pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .wrap{max-width:none}
+    .hero .wrap{padding-block:20px 18px}
+    section{padding-block:10px}
+    .lead{margin-bottom:10px;break-inside:avoid}
+    p{orphans:2;widows:2}
+    .stat{padding:11px 14px 10px}
+    .stat .v{font-size:25px}
+    .eyebrow,h2,h3,.col h3,.lead,.chartcard h3,.chartcard .cap,.step h3{break-after:avoid}
+    .hero,.stats-row,.call,.story,figure,.chartcard,.two,.step,.sell,.item{break-inside:avoid}
+    .grid2{break-before:page}
+    .hero{border-radius:0 0 18px 18px}
+    .hero .frm{display:none}
+    details{display:none}
+    .ask,footer{display:none}
+    a{text-decoration:none}
+  }
+
+  /* LANGUAGE SWITCH (added when merging EN+ES into one page) */
+  .langswitch{position:fixed;top:14px;right:14px;z-index:60;display:flex;gap:2px;
+    background:rgba(27,42,74,.92);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:3px;box-shadow:var(--shadow)}
+  .langswitch button{font-family:var(--f-head);font-weight:600;font-size:13px;letter-spacing:.04em;
+    color:#C7D3E8;background:transparent;border:0;border-radius:999px;padding:6px 13px;cursor:pointer;
+    line-height:1}
+  .langswitch button.on{background:var(--lime);color:#1B2A4A}
+  .langswitch button:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+  @media print{.langswitch{display:none}}
+</style>
+</head>
+<body>
+<div class="langswitch" role="group" aria-label="Language / Idioma">
+  <button type="button" data-lang="en">EN</button>
+  <button type="button" data-lang="es">ES</button>
+</div>
+<div id="lang-en">
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">A note from Steve · September 2026</div>
+    <h1>The Kia EV9, from someone who actually drives one</h1>
+    <p class="sub">Betty — here's the honest version. What I love, what bugs me, what the road
+      trips and the electric bill really look like after ten months and almost fourteen thousand
+      miles. No brochure talk.</p>
+    <div class="limebar"></div>
+    <p class="frm">Tap any <b>“Tell me more”</b> box to go deeper — or skip them and you've still
+      got the whole story. Prefer Spanish? Use the <b>EN / ES</b> switch up top.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- SNAPSHOT -->
+  <section>
+    <div class="eyebrow">The short version</div>
+    <h2 style="margin-top:6px">Ten months in, I'd do it again</h2>
+    <p class="lead">It's my family's main vehicle and my first EV. It's not perfect — no car is —
+      but it nailed the things I actually care about: it's quick, it's comfortable, it hauls, and
+      it costs almost nothing to "fill up" at home. Here's the shape of it.</p>
+    <div class="stats">
+      <div class="stats-row stats-top">
+        <div class="stat"><div class="v">13,728</div><div class="k">miles so far</div></div>
+        <div class="stat"><div class="v">6</div><div class="k">seats, 3 rows, captain's chairs</div></div>
+      </div>
+      <div class="stats-row stats-bot">
+        <div class="stat accent"><div class="v">~12¢</div><div class="k">per kWh, charging at home</div></div>
+        <div class="stat"><div class="v">~$50</div><div class="k">avg. month of charging</div></div>
+        <div class="stat"><div class="v">~4¢</div><div class="k">per mile, charging at home</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIKES & DISLIKES -->
+  <section>
+    <div class="eyebrow">Living with it</div>
+    <h2 style="margin-top:6px">What I love, and what bugs me</h2>
+    <p class="lead">You asked me to be straight about both — so here's the real ledger. The good
+      list is longer, but the annoyances are worth knowing before you sign anything.</p>
+    <div class="grid2">
+      <div class="col">
+        <h3><span class="badge up">✓</span>Things I genuinely love</h3>
+        <div class="items">
+          <div class="item rail"><b>The instant punch.</b><span class="d">Electric torque is addictive. It'll surprise you at a green light, and it never gets old.</span></div>
+          <div class="item rail"><b>My phone is the key.</b><span class="d">Walk up, it unlocks. I usually leave the fob at home entirely.</span></div>
+          <div class="item rail"><b>Heated <i>and</i> cooled seats — even row two.</b><span class="d">Ventilated middle-row captain's chairs are rare. Everybody rides comfortable.</span></div>
+          <div class="item rail"><b>Built for family trips.</b><span class="d">A USB-C port and a cupholder at every seat. Small thing, huge on a long drive.</span></div>
+          <div class="item rail"><b>One-pedal driving.</b><span class="d">Ease off the accelerator and it slows itself. Once you're used to it you won't go back.</span></div>
+          <div class="item rail"><b>Highway Driving Assist.</b><span class="d">Steers and keeps pace on the interstate. Takes the fatigue out of long hauls.</span></div>
+          <div class="item rail"><b>Real three-row space.</b><span class="d">Easy walk-through to the back, and it swallows cargo — more on that below.</span></div>
+        </div>
+      </div>
+      <div class="col">
+        <h3><span class="badge dn">!</span>Things that annoy me</h3>
+        <div class="items">
+          <div class="item rail dn"><b>One-pedal forgets my setting.</b><span class="d">I have to re-enable my regen level after backing up or restarting. Minor, but daily.</span></div>
+          <div class="item rail dn"><b>The warnings are jumpy.</b><span class="d">Cross-traffic and collision alerts fire when nothing's close. You learn to tune them out.</span></div>
+          <div class="item rail dn"><b>Highway speed eats range.</b><span class="d">Above 70 mph the range drops noticeably. Real, and worth planning around.</span></div>
+          <div class="item rail dn"><b>Back-to-back fast charges.</b><span class="d">After several DC stops in a row, the estimated range gets stingy. Rare day-to-day.</span></div>
+          <div class="item rail dn"><b>Skimpy center console.</b><span class="d">Not much room up front for the everyday stuff. I wish it had more.</span></div>
+          <div class="item rail dn"><b>The turn-signal sound.</b><span class="d">Just annoying. That's the whole complaint.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:16px">
+      <h3>The honest bottom line</h3>
+      <p>None of the annoyances are deal-breakers. They're the kind of thing you shrug at, not the
+        kind that makes you regret the purchase. If the good list sounds like your life, you'll be happy.</p>
+    </div>
+  </section>
+
+  <!-- CARGO STORY -->
+  <section>
+    <div class="eyebrow">Cargo &amp; utility</div>
+    <h2 style="margin-top:6px">It hauls more than it looks like it should</h2>
+    <p class="lead">This was one of your big questions, so here's my favorite proof. It's an SUV,
+      but the flat load floor and the length behind the seats are the real surprise.</p>
+    <div class="story">
+      <p class="q">“I needed to move eight-foot 2×6 boards for the Beta Club scenery holders I built.
+        I fully expected to strap them to a roof or borrow a truck. They slid right in — full
+        eight-foot lumber, doors closed, no drama.”</p>
+      <p style="margin:0;color:var(--slate);font-size:14.5px">If it swallows eight-foot construction
+        lumber for a school project, it'll handle strollers, folding tables, a Costco run, and the
+        college-move-in load without you playing Tetris in a parking lot.</p>
+    </div>
+    <details>
+      <summary>Tell me more — the practical utility bits <span class="tag">optional</span></summary>
+      <div class="dbody">
+        <p><b>Fold-flat rear rows.</b> Drop the third row (and second when needed) and you get a long,
+          flat floor — that's what makes the long-lumber trick work.</p>
+        <p><b>Power liftgate.</b> Opens and closes from the dash, the fob, or the hatch itself. One
+          quirk worth knowing: to close it from the little dash button you hold it down until it's
+          fully shut — press-and-release won't do it. Took me a minute to realize that's by design,
+          not a fault.</p>
+        <p><b>Towing.</b> Mine has the hitch — rated to 5,000 lbs. Fine for a small trailer or bikes;
+          it's not a work truck, and I wasn't asking it to be.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- DISTANCE DRIVING -->
+  <section>
+    <div class="eyebrow">The six-hour drive</div>
+    <h2 style="margin-top:6px">Long trips, without the range anxiety</h2>
+    <p class="lead">This is the part first-time EV drivers worry about most, and I get it. The good
+      news: a solo six-hour run to your son's college is very doable. The trick is charging
+      <i>smart</i>, not often. Here's exactly how I do it.</p>
+
+    <div class="steps">
+      <div class="step">
+        <h3>Leave with a full battery</h3>
+        <p>Set the home charger to 100% the night before a big trip (not your everyday 80%). You
+          want every mile you paid for at the start.</p>
+      </div>
+      <div class="step">
+        <h3>Let the car pick the stops</h3>
+        <p>Type the destination into the Kia's own navigation. It plans the charging stops for you
+          and — this matters — it warms the battery on the way in so the charge is faster.</p>
+      </div>
+      <div class="step">
+        <h3>Charge to ~80%, not 100%, on the road</h3>
+        <p>Fast chargers slow way down past 80%. Two shorter stops beat one long one. Roughly
+          20–25 minutes gets you most of the way back to full — enough time for a restroom and a coffee.</p>
+      </div>
+      <div class="step">
+        <h3>Aim for the good stops</h3>
+        <p>I target Tesla Superchargers marked “open to all brands,” or ones at a Buc-ee's, Sheetz,
+          or Meijer — clean restrooms, real food, right off the interstate. The EV9 plugs into those
+          Tesla stalls with no adapter.</p>
+      </div>
+      <div class="step">
+        <h3>Plug in overnight while you're there</h3>
+        <p>Once you're at the college, even a regular wall outlet overnight tops you back up for the
+          drive home. If they've got a dryer-style 240-volt outlet, even better — you'll wake up full.</p>
+      </div>
+    </div>
+
+    <div class="call" style="margin-top:20px">
+      <h3>The one habit that kills range anxiety</h3>
+      <p>Charging overnight at your destination means you never start the return trip low. You're
+        not "hoping to make it" — you're driving home on a full battery, same as you left. That's the
+        whole secret, and it's why I stopped worrying about long drives.</p>
+    </div>
+
+    <div class="story" style="margin-top:16px">
+      <p class="q" style="font-size:clamp(16px,2.6vw,19px)">A stop I've learned to love: the Buc-ee's in Calhoun, GA.</p>
+      <p style="margin:0;color:var(--slate);font-size:14.5px">Besides the Tesla Superchargers, it has
+        a bank of <b>Mercedes-Benz chargers</b> — and honestly I steer for those now. They're usually
+        more open, they carry every plug type, and the cables are long enough to reach any corner of
+        the car. The Tesla stalls are built for a car's back-<i>left</i> port with a short cord, so the
+        EV9 (port on the back-right) has to straddle two spots. One quirk to know: even though those
+        Mercedes chargers are technically part of Kia's program, they don't show up inside the Kia app,
+        so you just start them with the charger's own screen. Little things like this are what you pick
+        up in the first few months — and exactly what I'll walk you through so you don't learn them the
+        hard way.</p>
+    </div>
+
+    <details>
+      <summary>Tell me more — the "don't get stranded" checklist <span class="tag">for peace of mind</span></summary>
+      <div class="dbody">
+        <p><b>Keep it at or under 70 mph.</b> The single biggest thing you control. Above that, range
+          falls off fast. Eco mode on the highway helps too.</p>
+        <p><b>Not every Tesla charger works for us.</b> Look for “open to all brands” / “NACS partner”
+          in the app. The older Tesla-only stalls won't start a charge — I've been turned away by a
+          couple, so I always glance at the app before I commit.</p>
+        <p><b>Have a backup stop in mind.</b> I note the next station up the road before I need it. You
+          almost never use it, but knowing it's there is the difference between calm and white-knuckle.</p>
+        <p><b>Carry the portable cable.</b> It comes with the car and lets you use a normal outlet
+          anywhere in a pinch. Slow, but it's a safety net.</p>
+        <p><b>The real numbers.</b> Plan on about 210–240 miles of comfortable highway range from a
+          full battery with a load in the car. That's two easy legs with one real charging stop for a
+          six-hour drive.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- HOME CHARGING COST -->
+  <section>
+    <div class="eyebrow">What it actually costs</div>
+    <h2 style="margin-top:6px">Charging at home is the quiet superpower</h2>
+    <p class="lead">Almost all my charging happens in my own garage, overnight, while I sleep. No
+      station, no card, no waiting. And here's the part that surprised even me: I went back to my
+      <i>actual power bills</i> — not the charger app's estimate — and it's <b>cheaper than I thought</b>.
+      My real cost is about <b>12¢ per kWh</b>, roughly half what the app guesses.</p>
+
+    <div class="two">
+      <figure class="chartcard">
+        <h3>What I actually pay to charge each month</h3>
+        <p class="cap">Home charging, real power-bill cost, 2026. Dashed line is my ~$50 average.</p>
+        <svg viewBox="0 0 380 210" role="img" aria-label="Monthly home charging cost from real power bills, January through August 2026, averaging about 50 dollars a month">
+          <!-- scale $80 -> 140px; baseline y=170, top y=30; 1.75px per $ -->
+          <g>
+            <line class="grid" x1="34" y1="170" x2="372" y2="170"/>
+            <line class="grid" x1="34" y1="135"  x2="372" y2="135"/>
+            <line class="grid" x1="34" y1="100"  x2="372" y2="100"/>
+            <line class="grid" x1="34" y1="65"   x2="372" y2="65"/>
+            <line class="grid" x1="34" y1="30"   x2="372" y2="30"/>
+            <text class="ax" x="30" y="173" text-anchor="end">$0</text>
+            <text class="ax" x="30" y="138" text-anchor="end">$20</text>
+            <text class="ax" x="30" y="103" text-anchor="end">$40</text>
+            <text class="ax" x="30" y="68"  text-anchor="end">$60</text>
+            <text class="ax" x="30" y="33"  text-anchor="end">$80</text>
+          </g>
+          <!-- avg line at $49.81 -> y=170-49.81*1.75=82.8 -->
+          <line x1="34" y1="83" x2="372" y2="83" stroke="var(--lime)" stroke-width="2" stroke-dasharray="5 4"/>
+          <g fill="var(--blue)">
+            <rect x="40"  y="73"  width="30" height="97"  rx="4"/>
+            <rect x="82"  y="68"  width="30" height="102" rx="4"/>
+            <rect x="124" y="69"  width="30" height="101" rx="4"/>
+            <rect x="166" y="114" width="30" height="56"  rx="4"/>
+            <rect x="208" y="55"  width="30" height="115" rx="4"/>
+            <rect x="250" y="122" width="30" height="48"  rx="4"/>
+            <rect x="292" y="67"  width="30" height="103" rx="4"/>
+            <rect x="334" y="96"  width="30" height="74"  rx="4"/>
+          </g>
+          <g class="vlab" text-anchor="middle">
+            <text x="55"  y="67">$56</text>
+            <text x="97"  y="62">$58</text>
+            <text x="139" y="63">$58</text>
+            <text x="181" y="108">$32</text>
+            <text x="223" y="49">$66</text>
+            <text x="265" y="116">$27</text>
+            <text x="307" y="61">$59</text>
+            <text x="349" y="90">$42</text>
+          </g>
+          <g class="axb" text-anchor="middle">
+            <text x="55"  y="186">Jan</text>
+            <text x="97"  y="186">Feb</text>
+            <text x="139" y="186">Mar</text>
+            <text x="181" y="186">Apr</text>
+            <text x="223" y="186">May</text>
+            <text x="265" y="186">Jun</text>
+            <text x="307" y="186">Jul</text>
+            <text x="349" y="186">Aug</text>
+          </g>
+        </svg>
+        <div class="legend">
+          <span><span class="sw" style="background:var(--blue)"></span>Real monthly cost</span>
+          <span><span class="sw" style="background:var(--lime)"></span>~$50 average</span>
+        </div>
+      </figure>
+
+      <figure class="chartcard">
+        <h3>My cost per mile vs. gas</h3>
+        <p class="cap">Home charging, everything-in (incl. road trips), and gas at 22 mpg / $3.10.</p>
+        <svg viewBox="0 0 380 210" role="img" aria-label="Cost per mile: EV9 at home about 4 cents, all-in including road trips about 9 cents, gas at 22 mpg about 14 cents">
+          <g>
+            <line class="grid" x1="42" y1="170" x2="372" y2="170"/>
+            <line class="grid" x1="42" y1="123.3" x2="372" y2="123.3"/>
+            <line class="grid" x1="42" y1="76.7" x2="372" y2="76.7"/>
+            <line class="grid" x1="42" y1="30" x2="372" y2="30"/>
+            <text class="ax" x="38" y="173" text-anchor="end">0¢</text>
+            <text class="ax" x="38" y="126.3" text-anchor="end">5¢</text>
+            <text class="ax" x="38" y="79.7" text-anchor="end">10¢</text>
+            <text class="ax" x="38" y="33" text-anchor="end">15¢</text>
+          </g>
+          <!-- scale 15c -> 140px. home 3.6c h=33.4 y=136.6 ; allin 8.9c h=83.1 y=86.9 ; gas 14.1c h=131.6 y=38.4 -->
+          <rect x="66"  y="137" width="64" height="33"  rx="5" fill="var(--blue)"/>
+          <rect x="158" y="87"  width="64" height="83"  rx="5" fill="var(--lime)"/>
+          <rect x="250" y="38"  width="64" height="132" rx="5" fill="var(--slate)"/>
+          <g class="vlab" text-anchor="middle" style="font-size:15px">
+            <text x="98"  y="129">~4¢</text>
+            <text x="190" y="79">~9¢</text>
+            <text x="282" y="30">~14¢</text>
+          </g>
+          <g class="axb" text-anchor="middle">
+            <text x="98"  y="188">Home</text>
+            <text x="190" y="188">All-in¹</text>
+            <text x="282" y="188">Gas</text>
+          </g>
+        </svg>
+        <p class="cap" style="margin:10px 0 0">Even <b style="color:var(--good)">all-in with road
+          trips</b>, about 9¢/mile — roughly 40% under gas. <span style="opacity:.85">¹ All-in adds
+          fast charging on trips (~46¢/kWh).</span></p>
+      </figure>
+    </div>
+
+    <div class="call" style="margin-top:16px">
+      <h3>The upfront part, so there are no surprises</h3>
+      <p>Getting set up to charge at home cost me about <b>$2,200 once</b>: ~$400 for the wall charger
+        and ~$1,800 to have an electrician wire it in. After that, "filling up" is just a line on the
+        power bill — about <b>$50 in a normal month</b>. You <i>can</i> run an EV on a regular outlet
+        with no install, it's just slower; the wired-in charger is the convenience upgrade.</p>
+    </div>
+
+    <details>
+      <summary>Tell me more — road-trip charging costs more, and that's fine <span class="tag">the honest version</span></summary>
+      <div class="dbody">
+        <p><b>Home is the cheap part.</b> ~12¢/kWh from my real power bills, ~$50 in a normal month,
+          about 4¢ a mile. That's where 90% of my charging happens.</p>
+        <p><b>Fast charging on a trip runs ~46¢/kWh</b> — roughly four times home. On Kia's charging
+          network I've spent about $316 for 688 kWh across a year of road trips. It's the "convenience
+          tax" for filling up in 20 minutes on the interstate, and it's still cheaper than gas would be
+          for those same miles.</p>
+        <p><b>Blend it all together</b> — home plus every road trip — and I'm at roughly <b>9¢ a mile</b>
+          across 11,000+ miles this year. A gas SUV at 22 mpg would run about 14¢. That's ~$570 kept in
+          my pocket so far this year, and the gap grows every time gas prices climb.</p>
+        <p><b>The car's own numbers:</b> it's averaged about <b>3.3 miles per kWh</b> in mixed driving —
+          efficient enough that even the pricier road-trip electrons don't sting much.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- RIVIAN -->
+  <section>
+    <div class="eyebrow">You mentioned the Rivian</div>
+    <h2 style="margin-top:6px">On the Rivian — and why the EV9 is a great first EV</h2>
+    <p class="lead">You told me you liked the Rivian but not the price, and I get it completely — I
+      test-drove one myself. Here's what I was chasing and what I actually found, because it might
+      make you feel <i>better</i> about the EV9.</p>
+    <p>I drove the Rivian R1S looking for a few specific fixes to my EV9 gripes — mainly one-pedal
+      that remembers its setting and a more polished hands-free highway system. It delivered on those,
+      and it's a lovely truck. But two things stood out: the price climbs past <b>$100,000</b> once
+      you option it the way you'd want, and — this surprised me — it didn't feel as <i>quick</i> off
+      the line as my EV9, even though the spec sheet says it should. The EV9 has more of that
+      "pushed-back-in-your-seat" fun.</p>
+    <div class="call">
+      <h3>The takeaway for you</h3>
+      <p>The Rivian costs roughly <b>$30,000+ more</b> than a comparable EV9 to solve a handful of
+        small annoyances. For a first EV, the EV9 gives you the same three-row family shape, the same
+        easy home charging, and honestly a bigger grin at a green light — for a lot less money. The
+        Rivian is the upgrade you chase later, not the one you need to start.</p>
+    </div>
+  </section>
+
+  <!-- SOFT SELL -->
+  <section>
+    <div class="eyebrow">One last thing — no pressure</div>
+    <h2 style="margin-top:6px">If the dealership part is what you dread…</h2>
+    <div class="sell">
+      <div class="limebar"></div>
+      <p>You mentioned you're not looking forward to the whole dealership dance. I'll just put this out
+        there gently, as a friend and nothing more: <b>if it would make your life easier, I'd sell you
+        mine.</b> It's the exact car in this guide, well cared for, at <b>13,728 miles</b> right now.</p>
+      <p>It would mean no showroom, no haggling, no finance office — you'd know exactly what you're
+        getting because I've told you everything, warts and all, right here. I'd handle the paperwork
+        on my end (mine's a lease I'd buy out first) and we'd settle at a fair market number.</p>
+      <p style="margin-bottom:0"><b>Zero obligation, truly.</b> I value you as a friend far more than as
+        a buyer, and if going the normal route is better for you, I'll happily just be your EV9 hotline
+        instead. This is only here in case it's helpful.</p>
+    </div>
+  </section>
+
+  <!-- WRAP -->
+  <section class="ask">
+    <div class="eyebrow">That's the whole story</div>
+    <h2 style="margin-top:6px">Ask me anything</h2>
+    <p class="lead">I kept this to the things you actually asked about, but there's plenty more where
+      it came from — charging on specific routes, the maintenance so far (spoiler: almost none),
+      whatever you want. Just text me.</p>
+    <ul class="clean">
+      <li>Want a specific route mapped out to your son's college? I'll build it.</li>
+      <li>Curious what maintenance has cost? Basically a tire rotation and a cabin filter so far.</li>
+      <li>Want to sit in mine and try one-pedal driving before you decide anything? Come on over.</li>
+    </ul>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <p style="margin:0 0 4px"><b>Made for Betty</b> — because a real owner beats a brochure.</p>
+    <p style="margin:0">Steve Minster · <a href="https://www.steveminster.com">steveminster.com</a> ·
+      <i>Automate the boring. Build the interesting.</i></p>
+    <p class="note">Numbers are my own real charging and mileage data as of September 2026. Prices and
+      charging details change — treat this as one owner's honest experience, not the final word.</p>
+  </div>
+</footer>
+</div>
+<div id="lang-es" hidden>
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">Una nota de Steve · Septiembre de 2026</div>
+    <h1>El Kia EV9, contado por alguien que de verdad lo maneja</h1>
+    <p class="sub">Betty, aquí va la versión honesta: lo que me encanta, lo que me molesta, y cómo son
+      de verdad los viajes largos y la factura de la luz después de diez meses y casi catorce mil
+      millas. Nada de folleto.</p>
+    <div class="limebar"></div>
+    <p class="frm">Toca cualquier casilla de <b>«Cuéntame más»</b> para profundizar, o sáltalas y aun
+      así tienes la historia completa. ¿Prefieres inglés? Usa el botón <b>EN / ES</b> de arriba.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- SNAPSHOT -->
+  <section>
+    <div class="eyebrow">La versión corta</div>
+    <h2 style="margin-top:6px">Diez meses después, lo volvería a hacer</h2>
+    <p class="lead">Es el vehículo principal de mi familia y mi primer carro eléctrico. No es perfecto
+      —ninguno lo es— pero acertó en lo que de verdad me importa: es rápido, es cómodo, carga de todo
+      y cuesta casi nada «llenarlo» en casa. Así se ve en resumen.</p>
+    <div class="stats">
+      <div class="stats-row stats-top">
+        <div class="stat"><div class="v">13,728</div><div class="k">millas hasta ahora</div></div>
+        <div class="stat"><div class="v">6</div><div class="k">asientos, 3 filas, sillas capitán</div></div>
+      </div>
+      <div class="stats-row stats-bot">
+        <div class="stat accent"><div class="v">~12¢</div><div class="k">por kWh, cargando en casa</div></div>
+        <div class="stat"><div class="v">~$50</div><div class="k">mes promedio de carga</div></div>
+        <div class="stat"><div class="v">~4¢</div><div class="k">por milla, cargando en casa</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIKES & DISLIKES -->
+  <section>
+    <div class="eyebrow">El día a día</div>
+    <h2 style="margin-top:6px">Lo que me encanta y lo que me molesta</h2>
+    <p class="lead">Me pediste que fuera franco con ambas cosas, así que aquí está el balance real. La
+      lista de lo bueno es más larga, pero vale la pena conocer las molestias antes de firmar nada.</p>
+    <div class="grid2">
+      <div class="col">
+        <h3><span class="badge up">✓</span>Cosas que me encantan</h3>
+        <div class="items">
+          <div class="item rail"><b>El empujón instantáneo.</b><span class="d">El torque eléctrico es adictivo. Te sorprende en un semáforo en verde y nunca deja de ser divertido.</span></div>
+          <div class="item rail"><b>Mi teléfono es la llave.</b><span class="d">Te acercas y se abre. Casi siempre dejo el control en casa.</span></div>
+          <div class="item rail"><b>Asientos con calefacción <i>y</i> ventilación, hasta la segunda fila.</b><span class="d">Las sillas capitán ventiladas en la fila del medio son poco comunes. Todos viajan cómodos.</span></div>
+          <div class="item rail"><b>Pensado para viajes en familia.</b><span class="d">Un puerto USB-C y un portavasos en cada asiento. Parece poco, pero es enorme en un viaje largo.</span></div>
+          <div class="item rail"><b>Manejo de un solo pedal.</b><span class="d">Sueltas el acelerador y el carro frena solo. Cuando te acostumbras, ya no quieres volver atrás.</span></div>
+          <div class="item rail"><b>Asistente de manejo en carretera (HDA).</b><span class="d">Dirige y mantiene la velocidad en la autopista. Le quita el cansancio a los tramos largos.</span></div>
+          <div class="item rail"><b>Espacio real de tres filas.</b><span class="d">Se pasa fácil a la parte de atrás y traga carga; más sobre eso abajo.</span></div>
+        </div>
+      </div>
+      <div class="col">
+        <h3><span class="badge dn">!</span>Cosas que me molestan</h3>
+        <div class="items">
+          <div class="item rail dn"><b>Al de un solo pedal se le olvida mi ajuste.</b><span class="d">Tengo que volver a activar mi nivel de regeneración después de dar reversa o de encender. Es menor, pero es diario.</span></div>
+          <div class="item rail dn"><b>Las alertas son nerviosas.</b><span class="d">Las de tráfico cruzado y de colisión saltan cuando no hay nada cerca. Aprendes a ignorarlas.</span></div>
+          <div class="item rail dn"><b>La velocidad en autopista se come la autonomía.</b><span class="d">Por encima de 70 mph la autonomía baja notablemente. Es real y conviene planearlo.</span></div>
+          <div class="item rail dn"><b>Cargas rápidas seguidas.</b><span class="d">Tras varias paradas de carga rápida seguidas, la autonomía estimada se pone tacaña. Rara vez pasa en el día a día.</span></div>
+          <div class="item rail dn"><b>Consola central pequeña.</b><span class="d">No hay mucho espacio adelante para las cosas de todos los días. Ojalá tuviera más.</span></div>
+          <div class="item rail dn"><b>El sonido de la direccional.</b><span class="d">Simplemente molesto. Esa es toda la queja.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:16px">
+      <h3>La conclusión honesta</h3>
+      <p>Ninguna de las molestias es motivo para descartarlo. Son cosas que encoges de hombros, no de
+        las que te hacen arrepentirte de la compra. Si la lista de lo bueno se parece a tu vida, vas a
+        estar feliz.</p>
+    </div>
+  </section>
+
+  <!-- CARGO STORY -->
+  <section>
+    <div class="eyebrow">Carga y practicidad</div>
+    <h2 style="margin-top:6px">Carga más de lo que aparenta</h2>
+    <p class="lead">Esta fue una de tus grandes preguntas, así que aquí va mi prueba favorita. Es una
+      SUV, pero el piso de carga plano y el largo detrás de los asientos son la verdadera sorpresa.</p>
+    <div class="story">
+      <p class="q">«Necesitaba mover tablas de 2×6 de ocho pies para los soportes de escenografía que
+        construí para el Beta Club. Ya me hacía a la idea de amarrarlas al techo o pedir prestada una
+        camioneta. Entraron sin problema: madera completa de ocho pies, puertas cerradas, sin drama.»</p>
+      <p style="margin:0;color:var(--slate);font-size:14.5px">Si se traga tablas de construcción de
+        ocho pies para un proyecto escolar, con las sillas de bebé, mesas plegables, la compra del súper
+        y la mudanza a la universidad ni te vas a poner a jugar Tetris en el estacionamiento.</p>
+    </div>
+    <details>
+      <summary>Cuéntame más: los detalles prácticos <span class="tag">opcional</span></summary>
+      <div class="dbody">
+        <p><b>Filas traseras que se abaten planas.</b> Bajas la tercera fila (y la segunda cuando hace
+          falta) y te queda un piso largo y plano; eso es lo que hace posible el truco de la madera larga.</p>
+        <p><b>Portón eléctrico.</b> Se abre y cierra desde el tablero, el control o el mismo portón. Un
+          detalle que conviene saber: para cerrarlo desde el botón del tablero hay que mantenerlo
+          presionado hasta que cierre por completo; con un toque no basta. Me tomó un momento entender
+          que es a propósito, no una falla.</p>
+        <p><b>Remolque.</b> El mío trae el enganche, con capacidad de 5,000 libras. Bien para un remolque
+          pequeño o bicicletas; no es una camioneta de trabajo, y tampoco se lo pedía.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- DISTANCE DRIVING -->
+  <section>
+    <div class="eyebrow">El viaje de seis horas</div>
+    <h2 style="margin-top:6px">Viajes largos, sin la ansiedad de autonomía</h2>
+    <p class="lead">Esta es la parte que más preocupa a quien maneja un eléctrico por primera vez, y lo
+      entiendo. La buena noticia: un viaje de seis horas tú sola a la universidad de tu hijo es
+      totalmente factible. El truco es cargar <i>inteligente</i>, no seguido. Así lo hago yo.</p>
+
+    <div class="steps">
+      <div class="step">
+        <h3>Sal con la batería llena</h3>
+        <p>Pon el cargador de casa al 100% la noche antes de un viaje grande (no el 80% de todos los
+          días). Quieres cada milla desde el arranque.</p>
+      </div>
+      <div class="step">
+        <h3>Deja que el carro elija las paradas</h3>
+        <p>Escribe el destino en la navegación del propio Kia. Te planea las paradas de carga y —esto
+          importa— calienta la batería en el camino para que la carga sea más rápida.</p>
+      </div>
+      <div class="step">
+        <h3>Carga al ~80%, no al 100%, en carretera</h3>
+        <p>Los cargadores rápidos se vuelven mucho más lentos pasado el 80%. Dos paradas cortas ganan a
+          una larga. Unos 20–25 minutos te dejan casi lleno otra vez: tiempo suficiente para el baño y un café.</p>
+      </div>
+      <div class="step">
+        <h3>Apunta a las buenas paradas</h3>
+        <p>Busco Superchargers de Tesla marcados «abiertos a todas las marcas», o los que están en un
+          Buc-ee's, Sheetz o Meijer: baños limpios, comida de verdad, justo al lado de la autopista. El
+          EV9 se conecta a esos puestos Tesla sin adaptador.</p>
+      </div>
+      <div class="step">
+        <h3>Enchúfalo de noche mientras estás allá</h3>
+        <p>Ya en la universidad, hasta un tomacorriente normal de pared durante la noche te recarga para
+          el regreso. Si tienen un enchufe de 240 voltios (del tipo de la secadora), mejor todavía:
+          amaneces con la batería llena.</p>
+      </div>
+    </div>
+
+    <div class="call" style="margin-top:20px">
+      <h3>El hábito que mata la ansiedad de autonomía</h3>
+      <p>Cargar de noche en tu destino significa que nunca empiezas el regreso con poca batería. No vas
+        «esperando llegar»: manejas de vuelta con la batería llena, igual que a la ida. Ese es todo el
+        secreto, y por eso dejé de preocuparme por los viajes largos.</p>
+    </div>
+
+    <div class="story" style="margin-top:16px">
+      <p class="q" style="font-size:clamp(16px,2.6vw,19px)">Una parada que aprendí a querer: el Buc-ee's de Calhoun, GA.</p>
+      <p style="margin:0;color:var(--slate);font-size:14.5px">Además de los Superchargers de Tesla,
+        tiene un grupo de <b>cargadores Mercedes-Benz</b>, y la verdad ahora me voy por esos. Suelen
+        estar más libres, traen todos los tipos de conector y los cables son lo bastante largos para
+        llegar a cualquier esquina del carro. Los puestos Tesla están hechos para el puerto trasero
+        <i>izquierdo</i> con un cable corto, así que el EV9 (con el puerto atrás a la derecha) tiene que
+        ocupar dos espacios. Un detalle curioso: aunque esos cargadores Mercedes son técnicamente parte
+        del programa de Kia, no aparecen dentro de la app de Kia, así que los inicias con la pantalla
+        del propio cargador. Cositas así son las que aprendes en los primeros meses, y justo lo que te
+        voy a explicar para que no las aprendas por las malas.</p>
+    </div>
+
+    <details>
+      <summary>Cuéntame más: la lista para «no quedarte varada» <span class="tag">para tu tranquilidad</span></summary>
+      <div class="dbody">
+        <p><b>Mantenlo en 70 mph o menos.</b> Es lo más importante que está en tus manos. Por encima de
+          eso, la autonomía cae rápido. El modo Eco en carretera también ayuda.</p>
+        <p><b>No todo cargador Tesla nos sirve.</b> Busca «abierto a todas las marcas» / «socio NACS» en
+          la app. Los puestos viejos solo-Tesla no inician la carga; a mí me han rechazado un par, así
+          que siempre reviso la app antes de comprometerme.</p>
+        <p><b>Ten una parada de respaldo en mente.</b> Anoto la siguiente estación más adelante antes de
+          necesitarla. Casi nunca la usas, pero saber que está ahí es la diferencia entre ir tranquila o
+          con los nudillos blancos.</p>
+        <p><b>Lleva el cable portátil.</b> Viene con el carro y te deja usar un tomacorriente normal en
+          cualquier apuro. Lento, pero es una red de seguridad.</p>
+        <p><b>Los números reales.</b> Cuenta con unas 210–240 millas de autonomía cómoda en carretera con
+          la batería llena y el carro cargado. Eso son dos tramos tranquilos con una sola parada de carga
+          real para un viaje de seis horas.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- HOME CHARGING COST -->
+  <section>
+    <div class="eyebrow">Lo que cuesta de verdad</div>
+    <h2 style="margin-top:6px">Cargar en casa es el súper poder silencioso</h2>
+    <p class="lead">Casi toda mi carga ocurre en mi propia cochera, de noche, mientras duermo. Sin
+      estación, sin tarjeta, sin esperas. Y aquí va lo que hasta a mí me sorprendió: me fui a mis
+      <i>facturas reales de luz</i> —no al estimado de la app del cargador— y es <b>más barato de lo que
+      pensaba</b>. Mi costo real es de unos <b>12¢ por kWh</b>, más o menos la mitad de lo que adivina la app.</p>
+
+    <div class="two">
+      <figure class="chartcard">
+        <h3>Lo que de verdad pago por cargar cada mes</h3>
+        <p class="cap">Carga en casa, costo real de la factura, 2026. La línea punteada es mi promedio de ~$50.</p>
+        <svg viewBox="0 0 380 210" role="img" aria-label="Costo mensual de carga en casa según facturas reales, de enero a agosto de 2026, con un promedio de unos 50 dólares al mes">
+          <g>
+            <line class="grid" x1="34" y1="170" x2="372" y2="170"/>
+            <line class="grid" x1="34" y1="135"  x2="372" y2="135"/>
+            <line class="grid" x1="34" y1="100"  x2="372" y2="100"/>
+            <line class="grid" x1="34" y1="65"   x2="372" y2="65"/>
+            <line class="grid" x1="34" y1="30"   x2="372" y2="30"/>
+            <text class="ax" x="30" y="173" text-anchor="end">$0</text>
+            <text class="ax" x="30" y="138" text-anchor="end">$20</text>
+            <text class="ax" x="30" y="103" text-anchor="end">$40</text>
+            <text class="ax" x="30" y="68"  text-anchor="end">$60</text>
+            <text class="ax" x="30" y="33"  text-anchor="end">$80</text>
+          </g>
+          <line x1="34" y1="83" x2="372" y2="83" stroke="var(--lime)" stroke-width="2" stroke-dasharray="5 4"/>
+          <g fill="var(--blue)">
+            <rect x="40"  y="73"  width="30" height="97"  rx="4"/>
+            <rect x="82"  y="68"  width="30" height="102" rx="4"/>
+            <rect x="124" y="69"  width="30" height="101" rx="4"/>
+            <rect x="166" y="114" width="30" height="56"  rx="4"/>
+            <rect x="208" y="55"  width="30" height="115" rx="4"/>
+            <rect x="250" y="122" width="30" height="48"  rx="4"/>
+            <rect x="292" y="67"  width="30" height="103" rx="4"/>
+            <rect x="334" y="96"  width="30" height="74"  rx="4"/>
+          </g>
+          <g class="vlab" text-anchor="middle">
+            <text x="55"  y="67">$56</text>
+            <text x="97"  y="62">$58</text>
+            <text x="139" y="63">$58</text>
+            <text x="181" y="108">$32</text>
+            <text x="223" y="49">$66</text>
+            <text x="265" y="116">$27</text>
+            <text x="307" y="61">$59</text>
+            <text x="349" y="90">$42</text>
+          </g>
+          <g class="axb" text-anchor="middle">
+            <text x="55"  y="186">Ene</text>
+            <text x="97"  y="186">Feb</text>
+            <text x="139" y="186">Mar</text>
+            <text x="181" y="186">Abr</text>
+            <text x="223" y="186">May</text>
+            <text x="265" y="186">Jun</text>
+            <text x="307" y="186">Jul</text>
+            <text x="349" y="186">Ago</text>
+          </g>
+        </svg>
+        <div class="legend">
+          <span><span class="sw" style="background:var(--blue)"></span>Costo real mensual</span>
+          <span><span class="sw" style="background:var(--lime)"></span>Promedio ~$50</span>
+        </div>
+      </figure>
+
+      <figure class="chartcard">
+        <h3>Mi costo por milla vs. gasolina</h3>
+        <p class="cap">Carga en casa, todo incluido (con viajes) y gasolina a 22 mpg / $3.10.</p>
+        <svg viewBox="0 0 380 210" role="img" aria-label="Costo por milla: EV9 en casa unos 4 centavos, todo incluido con viajes unos 9 centavos, gasolina a 22 mpg unos 14 centavos">
+          <g>
+            <line class="grid" x1="42" y1="170" x2="372" y2="170"/>
+            <line class="grid" x1="42" y1="123.3" x2="372" y2="123.3"/>
+            <line class="grid" x1="42" y1="76.7" x2="372" y2="76.7"/>
+            <line class="grid" x1="42" y1="30" x2="372" y2="30"/>
+            <text class="ax" x="38" y="173" text-anchor="end">0¢</text>
+            <text class="ax" x="38" y="126.3" text-anchor="end">5¢</text>
+            <text class="ax" x="38" y="79.7" text-anchor="end">10¢</text>
+            <text class="ax" x="38" y="33" text-anchor="end">15¢</text>
+          </g>
+          <rect x="66"  y="137" width="64" height="33"  rx="5" fill="var(--blue)"/>
+          <rect x="158" y="87"  width="64" height="83"  rx="5" fill="var(--lime)"/>
+          <rect x="250" y="38"  width="64" height="132" rx="5" fill="var(--slate)"/>
+          <g class="vlab" text-anchor="middle" style="font-size:15px">
+            <text x="98"  y="129">~4¢</text>
+            <text x="190" y="79">~9¢</text>
+            <text x="282" y="30">~14¢</text>
+          </g>
+          <g class="axb" text-anchor="middle">
+            <text x="98"  y="188">En casa</text>
+            <text x="190" y="188">Todo incl.¹</text>
+            <text x="282" y="188">Gasolina</text>
+          </g>
+        </svg>
+        <p class="cap" style="margin:10px 0 0">Incluso <b style="color:var(--good)">con todos los viajes
+          incluidos</b>, unos 9¢/milla: cerca de 40% por debajo de la gasolina. <span style="opacity:.85">¹
+          El «todo incluido» suma la carga rápida en viajes (~46¢/kWh).</span></p>
+      </figure>
+    </div>
+
+    <div class="call" style="margin-top:16px">
+      <h3>La parte inicial, para que no haya sorpresas</h3>
+      <p>Prepararme para cargar en casa me costó unos <b>$2,200 una sola vez</b>: ~$400 por el cargador
+        de pared y ~$1,800 por que un electricista lo instalara. Después de eso, «llenar» es solo una
+        línea en la factura de la luz: unos <b>$50 en un mes normal</b>. <i>Puedes</i> usar un eléctrico
+        con un tomacorriente normal sin instalación; solo es más lento. El cargador fijo es la mejora de
+        comodidad.</p>
+    </div>
+
+    <details>
+      <summary>Cuéntame más: cargar en viaje cuesta más, y está bien <span class="tag">la versión honesta</span></summary>
+      <div class="dbody">
+        <p><b>En casa es la parte barata.</b> ~12¢/kWh según mis facturas reales, ~$50 en un mes normal,
+          unos 4¢ por milla. Ahí ocurre el 90% de mi carga.</p>
+        <p><b>La carga rápida en viaje sale a ~46¢/kWh</b>, más o menos cuatro veces lo de casa. En la
+          red de carga de Kia he gastado unos $316 por 688 kWh en un año de viajes. Es el «impuesto a la
+          comodidad» por llenar en 20 minutos junto a la autopista, y aun así es más barato que lo que
+          costaría la gasolina para esas mismas millas.</p>
+        <p><b>Júntalo todo</b> —casa más cada viaje— y ando en unos <b>9¢ por milla</b> a lo largo de más
+          de 11,000 millas este año. Una SUV de gasolina a 22 mpg andaría en unos 14¢. Eso son ~$570 que
+          me he quedado en el bolsillo en lo que va del año, y la diferencia crece cada vez que sube la
+          gasolina.</p>
+        <p><b>Los números del propio carro:</b> ha promediado unas <b>3.3 millas por kWh</b> en manejo
+          mixto, lo bastante eficiente como para que ni los electrones más caros del viaje duelan mucho.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- RIVIAN -->
+  <section>
+    <div class="eyebrow">Mencionaste el Rivian</div>
+    <h2 style="margin-top:6px">Sobre el Rivian, y por qué el EV9 es un gran primer eléctrico</h2>
+    <p class="lead">Me dijiste que te gustó el Rivian pero no el precio, y te entiendo perfecto: yo
+      mismo lo probé. Aquí va lo que andaba buscando y lo que en realidad encontré, porque quizá te
+      haga sentir <i>mejor</i> con el EV9.</p>
+    <p>Manejé el Rivian R1S buscando arreglar un par de cosas puntuales que me molestan del EV9: sobre
+      todo un modo de un solo pedal que recuerde su ajuste y un sistema de manos libres en carretera más
+      pulido. En eso cumplió, y es una camioneta preciosa. Pero dos cosas saltaron: el precio pasa de
+      <b>$100,000</b> una vez que lo equipas como querrías, y —esto me sorprendió— no se sintió tan
+      <i>rápido</i> saliendo como mi EV9, aunque la ficha diga que debería. El EV9 tiene más de esa
+      emoción de «te clava en el asiento».</p>
+    <div class="call">
+      <h3>Lo que esto significa para ti</h3>
+      <p>El Rivian cuesta más o menos <b>$30,000+ más</b> que un EV9 comparable para resolver un puñado
+        de molestias pequeñas. Para un primer eléctrico, el EV9 te da la misma forma familiar de tres
+        filas, la misma carga fácil en casa y, honestamente, una sonrisa más grande en el semáforo, por
+        mucho menos dinero. El Rivian es la mejora que persigues después, no la que necesitas para empezar.</p>
+    </div>
+  </section>
+
+  <!-- SOFT SELL -->
+  <section>
+    <div class="eyebrow">Una última cosa, sin presión</div>
+    <h2 style="margin-top:6px">Si lo que te da pereza es la parte de la agencia…</h2>
+    <div class="sell">
+      <div class="limebar"></div>
+      <p>Mencionaste que no te emociona todo el baile de la agencia. Solo lo dejo aquí con cariño, como
+        amigo y nada más: <b>si te hiciera la vida más fácil, te vendería el mío.</b> Es exactamente el
+        carro de esta guía, bien cuidado, con <b>13,728 millas</b> en este momento.</p>
+      <p>Sería sin sala de ventas, sin regateo, sin oficina de financiamiento; sabrías exactamente qué te
+        llevas porque aquí te he contado todo, con verrugas y todo. Yo me encargo del papeleo de mi lado
+        (el mío es un arrendamiento que compraría primero) y cerramos en un precio justo de mercado.</p>
+      <p style="margin-bottom:0"><b>Cero compromiso, de verdad.</b> Te valoro como amiga mucho más que
+        como compradora, y si te conviene más ir por la vía normal, con gusto seré tu línea directa del
+        EV9 y ya. Esto está aquí solo por si te sirve.</p>
+    </div>
+  </section>
+
+  <!-- WRAP -->
+  <section class="ask">
+    <div class="eyebrow">Esa es toda la historia</div>
+    <h2 style="margin-top:6px">Pregúntame lo que sea</h2>
+    <p class="lead">Me limité a lo que me preguntaste, pero hay mucho más de dónde salió esto: carga en
+      rutas específicas, el mantenimiento hasta ahora (spoiler: casi nada), lo que quieras. Solo mándame
+      un mensaje.</p>
+    <ul class="clean">
+      <li>¿Quieres una ruta específica trazada a la universidad de tu hijo? Te la armo.</li>
+      <li>¿Con curiosidad por lo que ha costado el mantenimiento? Básicamente una rotación de llantas y un filtro de cabina hasta ahora.</li>
+      <li>¿Quieres subirte al mío y probar el manejo de un solo pedal antes de decidir nada? Vente cuando quieras.</li>
+    </ul>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <p style="margin:0 0 4px"><b>Hecho para Betty</b>, porque un dueño real le gana a un folleto.</p>
+    <p style="margin:0">Steve Minster · <a href="https://www.steveminster.com">steveminster.com</a> ·
+      <i>Automate the boring. Build the interesting.</i></p>
+    <p class="note">Los números son mis propios datos reales de carga y millaje a septiembre de 2026.
+      Los precios y detalles de carga cambian; tómalo como la experiencia honesta de un dueño, no como la
+      última palabra.</p>
+  </div>
+</footer>
+</div>
+<script>
+(function(){
+  var titles={en:"Betty's EV9 Guide",es:"Guía del EV9 para Betty"};
+  var wrap={en:document.getElementById('lang-en'),es:document.getElementById('lang-es')};
+  var btns=document.querySelectorAll('.langswitch button');
+  function pick(){
+    var h=(location.hash||'').replace('#','').toLowerCase();
+    if(h==='es'||h==='en')return h;
+    var q=new URLSearchParams(location.search).get('lang');
+    if(q==='es'||q==='en')return q;
+    try{var s=localStorage.getItem('betty-lang');if(s==='es'||s==='en')return s;}catch(e){}
+    return (navigator.language||'').toLowerCase().indexOf('es')===0?'es':'en';
+  }
+  function set(lang,push){
+    if(lang!=='es')lang='en';
+    wrap.en.hidden=(lang!=='en');
+    wrap.es.hidden=(lang!=='es');
+    document.documentElement.lang=lang;
+    document.title=titles[lang];
+    btns.forEach(function(b){b.classList.toggle('on',b.getAttribute('data-lang')===lang);});
+    try{localStorage.setItem('betty-lang',lang);}catch(e){}
+    if(push){try{history.replaceState(null,'','#'+lang);}catch(e){location.hash=lang;}}
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){set(b.getAttribute('data-lang'),true);});});
+  window.addEventListener('hashchange',function(){set(pick(),false);});
+  set(pick(),false);
+})();
+</script>
+</body>
+</html>
