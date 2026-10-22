@@ -6,7 +6,7 @@ import {
 } from '../../lib/bandits/validate';
 import { OK_FROM } from '../../lib/bandits/eligibility';
 import { fill } from '../../lib/bandits/copy';
-import { dayShort, dayLong, dayMonthLong, monthDayRange, fullDate } from '../../lib/bandits/dates';
+import { dayShort, dayLong, dayMonthLong, monthDayRange, fullDate, formatDobInput, usDateToIso } from '../../lib/bandits/dates';
 import './signup.css';
 
 /**
@@ -53,6 +53,8 @@ const SUMMARY_LABELS: [string, string][] = [
 
 const id = (name: string) => `bf-${name}`;
 const errId = (name: string) => `bf-${name}-err`;
+/** The form keeps the date of birth as typed (MM/DD/YYYY); validation and the API use ISO. */
+const forApi = (v: Values): Values => ({ ...v, dob: usDateToIso(String(v.dob)) });
 
 const bbtl = bandits.tournaments.find((t) => t.id === 'bbtl')!;
 const tdc = bandits.tournaments.find((t) => t.id === 'tdc')!;
@@ -137,12 +139,13 @@ export default function SignupForm({ initiallyClosed = false }: { initiallyClose
   // After the first submit attempt, re-check as the parent fixes things so stale errors clear.
   useEffect(() => {
     if (!attempted) return;
-    const v = validateSignup(values);
+    const v = validateSignup(forApi(values));
     setErrors(v.ok ? {} : v.errors);
   }, [values, attempted]);
 
   const set = (name: string, value: string | boolean) => setValues((v) => ({ ...v, [name]: value }));
-  const onText = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => set(e.target.name, e.target.value);
+  const onText = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
+    set(e.target.name, e.target.name === 'dob' ? formatDobInput(e.target.value) : e.target.value);
   const onCheck = (e: ChangeEvent<HTMLInputElement>) => set(e.target.name, e.target.checked);
   const pickScale = (scale: 'youth' | 'adult') => setValues((v) => (v.jersey_scale === scale ? v : { ...v, jersey_scale: scale, jersey_size: '' }));
 
@@ -151,7 +154,7 @@ export default function SignupForm({ initiallyClosed = false }: { initiallyClose
     if (pendingRef.current) return;
     setAttempted(true);
     setFormError(null);
-    const v = validateSignup(values);
+    const v = validateSignup(forApi(values));
     if (!v.ok) {
       setErrors(v.errors);
       requestAnimationFrame(() => summaryRef.current?.focus());
@@ -164,7 +167,7 @@ export default function SignupForm({ initiallyClosed = false }: { initiallyClose
       const res = await fetch('/api/bandits/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...values, website: honeypotRef.current?.value ?? '' }),
+        body: JSON.stringify({ ...forApi(values), website: honeypotRef.current?.value ?? '' }),
       });
       const body = await res.json().catch(() => ({}));
       if (res.ok && body.ok) {
@@ -210,7 +213,7 @@ export default function SignupForm({ initiallyClosed = false }: { initiallyClose
 
   const errorKeys = SUMMARY_LABELS.filter(([k]) => errors[k]);
   const youth = values.jersey_scale !== 'adult';
-  const dob = String(values.dob);
+  const dob = usDateToIso(String(values.dob));
   const dobOlder = /^\d{4}-\d{2}-\d{2}$/.test(dob) && dob < OK_FROM;
 
   return (
@@ -254,7 +257,7 @@ export default function SignupForm({ initiallyClosed = false }: { initiallyClose
           <div className="sf-grid">
             <Text name="player_first" label="First name" required autoComplete="off" maxLength={60} />
             <Text name="player_last" label="Last name" required autoComplete="off" maxLength={60} />
-            <Text name="dob" label="Date of birth" required type="date" />
+            <Text name="dob" label="Date of birth" required inputMode="numeric" placeholder="MM/DD/YYYY" maxLength={10} autoComplete="off" />
             <Select name="grade" label="Grade this year" options={GRADES} required />
             <Text name="school" label="School" maxLength={100} />
             <Text name="weight_lbs" label="Weight (lbs)" required inputMode="numeric" maxLength={3} />
@@ -345,7 +348,7 @@ export default function SignupForm({ initiallyClosed = false }: { initiallyClose
 
         <fieldset className="sf-section">
           <legend>Emergency contact</legend>
-          <p className="sf-muted">Someone other than the parent above, who can be reached during practices and games.</p>
+          <p className="sf-muted">Another adult we can call if we can't reach a parent. We'll always try the parents first.</p>
           <div className="sf-grid">
             <Text name="emergency_name" label="Name" required maxLength={100} />
             <Text name="emergency_phone" label="Phone" required type="tel" />

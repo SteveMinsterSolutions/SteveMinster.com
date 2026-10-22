@@ -45,3 +45,24 @@ export const signupsClosed = (deadline: string, now: Date = new Date()) => chica
 /** "Sat–Sun, Nov 14–15" */
 export const dayRange = (start: string, end: string) =>
   `${fmt(start, { weekday: 'short' })}–${fmt(end, { weekday: 'short' })}, ${monthDayRange(start, end)}`;
+
+/**
+ * Date-of-birth text field mask: keeps digits, inserts slashes as they're typed
+ * ("0501" → "05/01"). A slash typed after a single digit pads it ("5/" → "05").
+ */
+export function formatDobInput(raw: string): string {
+  const parts = raw.replace(/[^\d/]/g, '').split('/');
+  const digits = parts
+    .map((p, i) => (i < 2 && i < parts.length - 1 && p.length === 1 ? `0${p}` : p))
+    .join('')
+    .slice(0, 8);
+  if (digits.length <= 2) return digits;
+  if (digits.length <= 4) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+  return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
+}
+
+/** "05/01/2013" → "2013-05-01". Anything else comes back unchanged so validation rejects it. */
+export const usDateToIso = (s: string) => {
+  const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s.trim());
+  return m ? `${m[3]}-${m[1]}-${m[2]}` : s;
+};
