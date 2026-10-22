@@ -1,0 +1,444 @@
+---
+// src/pages/sandbox/bandits/index.astro
+// Public team info page. Every fact renders from src/data/bandits.json;
+// the roster counter is filled client-side from /api/bandits/spots.
+import BanditsLayout from '../../../components/Bandits/BanditsLayout.astro';
+import BanditsFooter from '../../../components/Bandits/BanditsFooter.astro';
+import GearDiagram from '../../../components/Bandits/GearDiagram.astro';
+import bandits from '../../../data/bandits.json';
+import { monthDay, dayShort, dayLong, fullDate, monthLongDay, monthDayRange, dayRange } from '../../../lib/bandits/dates';
+
+const { team, fee, rosterCap, practice, eligibility, gameday } = bandits;
+// Tournaments differ in shape (BBTL has check-in and a roster deadline), so read them as string maps.
+const tournament = (id: string) => bandits.tournaments.find((t) => t.id === id) as Record<string, string>;
+const bbtl = tournament('bbtl');
+const tdc = tournament('tdc');
+
+const signupHref = '/sandbox/bandits/signup';
+const mapsHref = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(practice.address)}`;
+
+const practices = practice.dates.map((d, i) => ({
+  when: monthDay(d),
+  what: (practice.notes as Record<string, string>)[d] ?? `Practice ${i + 1}`,
+}));
+
+const fill = (s: string) => s.replaceAll('{fee}', String(fee)).replaceAll('{payment}', bandits.payment);
+---
+
+<BanditsLayout
+  title={`${team.name} ${team.division}`}
+  description={`${team.name} ${team.division} tackle: schedule, eligibility, gear, paperwork and sign-up for ${bbtl.name} and the ${tdc.name}.`}
+>
+  <header class="site-header">
+    <div class="wrap site-header-inner">
+      <div class="brand">
+        <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 L35 9 V20 C35 29 28 35 20 37 C12 35 5 29 5 20 V9 Z" fill="none" stroke="#D4A72C" stroke-width="2.5"></path><path d="M12 20 H28" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"></path></svg>
+        <span class="brand-name">{team.name}</span>
+      </div>
+      <nav aria-label="Page sections" class="site-nav">
+        <a href="#schedule">Schedule</a>
+        <a href="#gear">Gear</a>
+        <a href="#paperwork">Paperwork</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">{team.division} Tackle · {team.season} · {team.town}</p>
+        <h1 class="hero-title">Two tournaments.<br />One roster.<br /><span class="gold">{rosterCap} spots.</span></h1>
+        <p class="hero-lede">
+          The Bandits are a new Wilson County {team.division} team playing {bbtl.name} ({monthDayRange(bbtl.start, bbtl.end)})
+          and the {tdc.name} ({monthDayRange(tdc.start, tdc.end)}). Everything families need is on this page.
+        </p>
+        <div class="hero-ctas">
+          <a href={signupHref} class="btn btn-gold">Sign up a player</a>
+          <a href="#paperwork" class="btn btn-outline-light">Download the waiver</a>
+        </div>
+      </div>
+      <div class="counter">
+        <p class="counter-n" id="spots-rostered">—</p>
+        <p class="counter-label">of <span id="spots-cap">{rosterCap}</span> roster spots filled</p>
+        <p class="counter-note">Once the roster is full, new sign-ups join a waitlist in the order received.</p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="Quick facts" class="facts">
+    <div class="wrap facts-inner">
+      <div><p class="fact-label">Cost</p><p class="fact-value">${fee} per player</p></div>
+      <div><p class="fact-label">Practice</p><p class="fact-value">{practice.day}s · {practice.time}</p></div>
+      <div><p class="fact-label">Colors</p><p class="fact-value">{team.colors}</p></div>
+      <div><p class="fact-label">Sign up by</p><p class="fact-value">{dayLong(bandits.signupDeadline)}</p></div>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <section id="schedule" class="sec sec-first">
+      <h2>Schedule</h2>
+      <p class="sec-intro">Practices are at {practice.location}. Field assignments and game times for both tournaments haven't been released yet; this page will be updated as soon as they are.</p>
+      <div class="cards">
+        <div class="card">
+          <p class="card-eyebrow">Practices</p>
+          <h3>{practice.day}s, {practice.time}</h3>
+          <ul class="rows">
+            {practices.map((p) => <li><span>{p.when}</span><span class="muted">{p.what}</span></li>)}
+          </ul>
+          <p class="card-foot"><a href={mapsHref} class="map-link">{practice.location}, {practice.address}</a></p>
+        </div>
+
+        <div class="card card-dark">
+          <p class="card-eyebrow">Tournament 1</p>
+          <h3>{bbtl.name}</h3>
+          <ul class="rows">
+            <li><span>{dayShort(bbtl.checkIn)}</span><span class="muted">Check-in &amp; weigh-in</span></li>
+            <li><span>{dayRange(bbtl.gamesStart, bbtl.end)}</span><span class="muted">Games · {bbtl.gamesNote}</span></li>
+            <li><span>Where</span><span class="muted">{bbtl.where}</span></li>
+          </ul>
+          <p class="card-foot muted">{bbtl.note}</p>
+        </div>
+
+        <div class="card card-dark">
+          <p class="card-eyebrow">Tournament 2</p>
+          <h3>{tdc.name}</h3>
+          <ul class="rows">
+            <li><span>{dayRange(tdc.start, tdc.end)}</span><span class="muted">{tdc.startNote}</span></li>
+            <li><span>ID check</span><span class="muted">{tdc.idCheck}</span></li>
+            <li><span>Where</span><span class="muted">{tdc.where}</span></li>
+          </ul>
+          <p class="card-foot muted">{tdc.note}</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="eligibility" class="sec">
+      <h2 class="h2-tight">Who can play</h2>
+      <div class="split">
+        <div class="split-main">
+          <p>Players must be <strong>13 or younger on {fullDate(eligibility.cutoff)}</strong>, which means born on or after {fullDate(eligibility.bornOnOrAfter)}.</p>
+          <p>A <strong>14-year-old may play only if in 8th grade</strong>, and must bring a school ID or report card showing 8th-grade enrollment. Organizers are still finalizing how this exception works with the {monthLongDay(eligibility.cutoff)} cutoff.</p>
+        </div>
+        <div class="split-aside">
+          <p class="aside-title">Why ages matter for everyone</p>
+          <p>A team plays in the division of its <strong>oldest</strong> player. One older player could move the whole team up a division, so if your player is near the cutoff, email us before signing up.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="gear" class="sec">
+      <h2>Suit up: what your player needs</h2>
+      <p class="sec-intro">The numbers on the player match the list. Pick a jersey size (youth or adult) and three number choices on the sign-up form; numbers aren't guaranteed.</p>
+      <GearDiagram />
+    </section>
+
+    <section id="paperwork" class="sec">
+      <h2>Paperwork</h2>
+      <p class="sec-intro">Bring the originals to practice by <strong>{dayLong(bandits.paperworkDue)}</strong>. Rosters are due to {bbtl.name} on {monthLongDay(bbtl.rosterDue)}, so paperwork can't wait until game day.</p>
+      <ol class="steps" role="list">
+        <li class="step">
+          <span class="step-n">1</span>
+          <div class="step-body">
+            <p class="step-title">Tournament waiver, signed in ink</p>
+            <p class="step-text">Print it, sign it by hand, and bring the original. Electronic signatures are not accepted, no exceptions.</p>
+            <a href={bandits.waiverUrl} class="btn btn-black">Download the waiver (PDF)</a>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step-n">2</span>
+          <div class="step-body">
+            <p class="step-title">Copy of birth certificate</p>
+            <p class="step-text">Required for {bbtl.name}. Staff compare it to the roster at check-in, and the team keeps it. Please bring a paper copy rather than uploading one.</p>
+          </div>
+        </li>
+        <li class="step step-callout">
+          <span class="step-n">3</span>
+          <div class="step-body">
+            <p class="step-title">ID for the {tdc.name}</p>
+            <p class="step-text">This tournament does <strong>not</strong> accept birth certificates. Each player needs a state ID, a passport, or a National Sports ID (NSID). Most families will want to start an NSID now.</p>
+          </div>
+        </li>
+        <li class="step step-quiet">
+          <span class="step-n">4</span>
+          <div class="step-body">
+            <p class="step-title">14-year-olds only: proof of 8th grade</p>
+            <p class="step-text">A school ID or report card.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section id="gameday" class="sec">
+      <h2>For families on game day</h2>
+      <div class="cards">
+        <div class="panel">
+          <p class="panel-title">{tdc.name} gate</p>
+          <ul>{gameday.tdcGate.map((t) => <li>{t}</li>)}</ul>
+        </div>
+        <div class="panel">
+          <p class="panel-title">Sideline expectations</p>
+          <ul>{gameday.sideline.map((t) => <li>{t}</li>)}</ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="sec sec-last">
+      <h2>Questions</h2>
+      <div class="faq">
+        {bandits.faq.map((f) => (
+          <div><p class="faq-q">{fill(f.q)}</p><p class="faq-a">{fill(f.a)}</p></div>
+        ))}
+      </div>
+    </section>
+  </main>
+
+  <BanditsFooter />
+</BanditsLayout>
+
+<script>
+  // Live roster counter. Shows "—" until the count arrives; stays "—" on failure.
+  fetch('/api/bandits/spots')
+    .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+    .then((s: { rostered: number; cap: number }) => {
+      document.getElementById('spots-rostered')!.textContent = String(s.rostered);
+      document.getElementById('spots-cap')!.textContent = String(s.cap);
+    })
+    .catch(() => {});
+</script>
+
+<style>
+  .gold { color: var(--b-gold); }
+  .muted { color: var(--b-text-2); }
+
+  /* Header */
+  .site-header {
+    background: var(--b-black);
+    color: var(--b-white);
+    border-bottom: 6px solid var(--b-gold);
+  }
+  .site-header-inner {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand { display: flex; align-items: center; gap: 0.75rem; min-height: 44px; }
+  .brand svg { flex: none; }
+  .brand-name {
+    font-family: var(--b-display);
+    font-weight: 600;
+    font-size: 1.25rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .site-nav { display: flex; flex-wrap: wrap; gap: 0 1.25rem; font-weight: 600; }
+  .site-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--b-white);
+    text-decoration: none;
+  }
+  .site-nav a:hover { color: var(--b-gold); }
+
+  /* Hero */
+  .hero { background: var(--b-black); color: var(--b-white); }
+  .hero-inner {
+    padding-top: 4rem;
+    padding-bottom: 4.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+    align-items: flex-end;
+  }
+  .hero-copy { flex: 999 1 520px; min-width: 0; }
+  .eyebrow {
+    margin: 0 0 0.75rem;
+    font-family: var(--b-display);
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--b-gold);
+  }
+  .hero-title {
+    margin: 0;
+    font-family: var(--b-display);
+    font-weight: 700;
+    font-size: clamp(2.75rem, 7vw, 5.5rem);
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+  .hero-lede { margin: 1.5rem 0 0; max-width: 34rem; font-size: 1.2rem; color: #E6E6E6; }
+  .hero-ctas { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+  .counter { flex: 1 1 260px; border: 2px solid var(--b-gold); border-radius: 6px; padding: 1.5rem; }
+  .counter-n {
+    margin: 0;
+    font-family: var(--b-display);
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--b-gold);
+  }
+  .counter-label { margin: 0.25rem 0 0; font-weight: 700; font-size: 1.15rem; }
+  .counter-note { margin: 0.75rem 0 0; color: #CFCFCF; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+  .btn-gold {
+    min-height: 52px;
+    padding: 0 1.75rem;
+    background: var(--b-gold);
+    color: var(--b-black);
+    font-family: var(--b-display);
+    font-weight: 600;
+    font-size: 1.2rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .btn-gold:hover { background: #E0B63C; color: var(--b-black); }
+  .btn-outline-light {
+    min-height: 52px;
+    padding: 0 1.5rem;
+    border: 2px solid var(--b-white);
+    color: var(--b-white);
+  }
+  .btn-outline-light:hover { background: var(--b-white); color: var(--b-black); }
+  .btn-black {
+    min-height: 44px;
+    padding: 0 1.25rem;
+    background: var(--b-black);
+    color: var(--b-white);
+  }
+  .btn-black:hover { background: #333333; color: var(--b-white); }
+
+  /* Quick facts */
+  .facts { background: var(--b-gold); color: var(--b-black); }
+  .facts-inner {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+    gap: 1.5rem;
+  }
+  .fact-label { margin: 0; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+  .fact-value { margin: 0; font-family: var(--b-display); font-size: 1.6rem; font-weight: 600; }
+
+  /* Sections */
+  .sec { padding: 3rem 0 1rem; }
+  .sec-first { padding-top: 4rem; }
+  .sec-last { padding-bottom: 4rem; }
+  .sec h2 {
+    margin: 0 0 0.5rem;
+    font-family: var(--b-display);
+    font-weight: 700;
+    font-size: 2.5rem;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  #eligibility h2 { margin-bottom: 1rem; }
+  #gameday h2, #faq h2 { margin-bottom: 1.5rem; }
+  .sec-intro { margin: 0 0 2rem; color: var(--b-text-2); max-width: 44rem; }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    gap: 1.5rem;
+  }
+  .card { border: 2px solid var(--b-black); border-radius: 6px; padding: 1.5rem; }
+  .card-dark { background: var(--b-black); color: var(--b-white); }
+  .card-eyebrow {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--b-gold-ink);
+  }
+  .card-dark .card-eyebrow { color: var(--b-gold); }
+  .card h3 {
+    margin: 0.25rem 0 1rem;
+    font-family: var(--b-display);
+    font-weight: 600;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+  }
+  .rows { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .rows li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid #DDDDDD;
+    padding-bottom: 0.5rem;
+  }
+  .rows li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .rows li span:last-child { text-align: right; }
+  .card-dark .rows li { border-bottom-color: #333333; }
+  .card-dark .muted { color: #CFCFCF; }
+  .card-foot { margin: 1rem 0 0; font-size: 0.95rem; }
+  .map-link { display: inline-flex; align-items: center; min-height: 44px; }
+
+  /* Eligibility */
+  .split { display: flex; flex-wrap: wrap; gap: 2rem; }
+  .split p { margin: 0 0 1rem; }
+  .split-main { flex: 1 1 420px; min-width: 0; }
+  .split-aside { flex: 1 1 360px; min-width: 0; background: var(--b-sand); border-radius: 6px; padding: 1.25rem 1.5rem; }
+  .split-aside p:last-child { margin: 0; }
+  .split-aside .aside-title { margin: 0 0 0.5rem; font-weight: 700; }
+
+  /* Paperwork */
+  .steps { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+  .step {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    border: 2px solid var(--b-black);
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+  }
+  .step-n {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--b-black);
+    color: var(--b-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--b-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+  }
+  .step-body { min-width: 0; }
+  .step-title { margin: 0; font-weight: 700; font-size: 1.15rem; }
+  .step-text { margin: 0.25rem 0 0; color: var(--b-text-2); }
+  .step-text + .btn { margin-top: 0.75rem; }
+  .step-callout { border-color: var(--b-gold); background: var(--b-cream); }
+  .step-callout .step-n { background: var(--b-gold); color: var(--b-black); }
+  .step-callout .step-text { color: #333333; }
+  .step-quiet { border: 1px solid #CCCCCC; }
+  .step-quiet .step-n { background: transparent; color: var(--b-black); border: 2px solid var(--b-black); }
+  @media (max-width: 400px) {
+    .step { gap: 1rem; padding: 1.25rem 1rem; }
+  }
+
+  /* Game day */
+  .panel { background: var(--b-sand); border-radius: 6px; padding: 1.5rem; }
+  .panel-title { margin: 0 0 0.75rem; font-weight: 700; font-size: 1.15rem; }
+  .panel ul { margin: 0; padding-left: 1.25rem; list-style: disc; display: flex; flex-direction: column; gap: 0.4rem; }
+
+  /* FAQ */
+  .faq { display: flex; flex-direction: column; gap: 1.25rem; max-width: 48rem; }
+  .faq-q { margin: 0; font-weight: 700; }
+  .faq-a { margin: 0.25rem 0 0; color: var(--b-text-2); }
+</style>
