@@ -1,16 +1,33 @@
 // src/pages/api/bandits/spots.ts
 // Public roster counter: { rostered, cap, waitlist } and nothing else.
-// GATE 1 STUB: no database yet, so this always reports an empty roster.
-// Gate 3 replaces the body with a count from the bandits Supabase project.
+// cap comes from bandits_settings (the same value the DB enforces).
 import type { APIRoute } from 'astro';
-import bandits from '../../../data/bandits.json';
+import { supabaseServer } from '../../../lib/bandits/supabase-server';
 
 export const prerender = false;
 
-export const GET: APIRoute = () =>
-  new Response(JSON.stringify({ rostered: 0, cap: bandits.rosterCap, waitlist: 0 }), {
-    headers: {
-      'Content-Type': 'application/json',
-      'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=60',
-    },
-  });
+const json = (body: unknown, status: number, cache: string) =>
+  new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': cache } });
+
+export const GET: APIRoute = async () => {
+  try {
+    const db = supabaseServer();
+    const count = (status: string) =>
+      db.from('bandits_signups').select('id', { count: 'exact', head: true }).eq('status', status);
+    const [rostered, waitlist, settings] = await Promise.all([
+      count('rostered'),
+      count('waitlist'),
+      db.from('bandits_settings').select('roster_cap').single(),
+    ]);
+    const err = rostered.error ?? waitlist.error ?? settings.error;
+    if (err) throw err;
+    return json(
+      { rostered: rostered.count ?? 0, cap: settings.data?.roster_cap ?? 22, waitlist: waitlist.count ?? 0 },
+      200,
+      'public, s-maxage=30, stale-while-revalidate=60',
+    );
+  } catch (e) {
+    console.error('spots_failed', (e as { code?: string; message?: string }).code ?? (e as Error).message);
+    return json({ error: 'unavailable' }, 500, 'no-store');
+  }
+};
