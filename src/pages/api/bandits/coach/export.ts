@@ -6,7 +6,8 @@ import bandits from '../../../../data/bandits.json';
 import { requireStaff } from '../../../../lib/bandits/staff-auth';
 import { supabaseServer } from '../../../../lib/bandits/supabase-server';
 import { toCsv } from '../../../../lib/bandits/csv';
-import { chicagoToday } from '../../../../lib/bandits/dates';
+import { chicagoToday, monthDayRange } from '../../../../lib/bandits/dates';
+import { bbtlRoster, usDate } from '../../../../lib/bandits/bbtl-roster';
 import {
   labelOf, jerseyLabel, formatPhone, GRADES, YEARS_PLAYED, HELMET, AVAILABILITY, TDC_ID_TYPES, RELATIONSHIPS, CONTACT_PREFS,
 } from '../../../../lib/bandits/validate';
@@ -17,22 +18,17 @@ type Row = Record<string, any>;
 
 const STATUS_ORDER: Record<string, number> = { rostered: 0, waitlist: 1, withdrawn: 2 };
 const yesNo = (b: boolean) => (b ? 'Yes' : 'No');
-/** 2013-05-01 → 05/01/2013 */
-const usDate = (iso: string) => `${iso.slice(5, 7)}/${iso.slice(8, 10)}/${iso.slice(0, 4)}`;
-const byLastName = (a: Row, b: Row) =>
-  a.player_last.localeCompare(b.player_last, 'en', { sensitivity: 'base' }) ||
-  a.player_first.localeCompare(b.player_first, 'en', { sensitivity: 'base' });
 
-// Tournament roster format: rostered only, by last name. Coaches listed above the table.
-function bbtl(rows: Row[]) {
-  const roster = rows.filter((r) => r.status === 'rostered').sort(byLastName);
-  return [
-    [`Head Coach: ${bandits.headCoach}`],
-    [],
-    ['Name', 'Jersey #', 'Birthdate', 'Weight'],
-    ...roster.map((r) => [`${r.player_first} ${r.player_last}`, r.assigned_number ?? '', usDate(r.dob), r.weight_lbs]),
-  ];
-}
+// Tournament roster: mirrors BBTL's one-page Official Team Roster form.
+const BBTL = bandits.tournaments.find((t) => t.id === 'bbtl')!;
+const bbtl = (rows: Row[]) =>
+  bbtlRoster(rows as any, {
+    title: `${BBTL.name} · ${monthDayRange(BBTL.start, BBTL.end)}, ${BBTL.end.slice(0, 4)} · ${bandits.team.town}`,
+    teamName: bandits.team.name,
+    division: bandits.team.division,
+    headCoach: bandits.headCoach,
+    playerRows: 22, // lines on the BBTL form
+  });
 
 // Every column, coded values shown as their labels.
 const FULL: [string, (r: Row) => unknown][] = [
