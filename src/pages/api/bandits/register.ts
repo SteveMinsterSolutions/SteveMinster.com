@@ -94,7 +94,7 @@ export const POST: APIRoute = async ({ request }) => {
 async function notify(
   d: SignupPayload,
   flag: EligibilityFlag,
-  r: { id: string; status: string; signup_seq: number; rostered_count: number },
+  r: { id: string; status: string; signup_seq: number; rostered_count: number; waitlist_position: number | null },
 ) {
   const url = banditsEnv('MAKE_BANDITS_WEBHOOK_URL');
   if (!url) {
@@ -107,6 +107,7 @@ async function notify(
     status: r.status,
     signup_seq: r.signup_seq,
     rostered_count: r.rostered_count,
+    waitlist_position: r.waitlist_position ?? null,
     player: `${d.player_first} ${d.player_last}`,
     grade: labelOf(GRADES, d.grade),
     eligibility_flag: flag,
