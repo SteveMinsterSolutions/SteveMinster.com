@@ -19,6 +19,9 @@ export const dayShort = (iso: string) => `${fmt(iso, { weekday: 'short' })}, ${m
 /** "Sunday, Nov 1" */
 export const dayLong = (iso: string) => `${fmt(iso, { weekday: 'long' })}, ${monthDay(iso)}`;
 
+/** "Sunday, November 1" */
+export const dayMonthLong = (iso: string) => fmt(iso, { weekday: 'long', month: 'long', day: 'numeric' });
+
 /** "July 1, 2026" */
 export const fullDate = (iso: string) => fmt(iso, { month: 'long', day: 'numeric', year: 'numeric' });
 
@@ -31,6 +34,13 @@ export const monthDayRange = (start: string, end: string) => {
   const [d1, d2] = [fmt(start, { day: 'numeric' }), fmt(end, { day: 'numeric' })];
   return m1 === m2 ? `${m1} ${d1}–${d2}` : `${m1} ${d1}–${m2} ${d2}`;
 };
+
+/** Today's calendar date in Mt. Juliet, as YYYY-MM-DD. */
+export const chicagoToday = (now: Date = new Date()) =>
+  new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
+
+/** Sign-ups close at midnight Central at the END of the deadline day. */
+export const signupsClosed = (deadline: string, now: Date = new Date()) => chicagoToday(now) > deadline;
 
 /** "Sat–Sun, Nov 14–15" */
 export const dayRange = (start: string, end: string) =>
