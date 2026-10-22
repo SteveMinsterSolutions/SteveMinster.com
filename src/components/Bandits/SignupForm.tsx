@@ -5,6 +5,7 @@ import {
   RELATIONSHIPS, CONTACT_PREFS, NUMBER_FIELDS, type FieldErrors, type Option,
 } from '../../lib/bandits/validate';
 import { OK_FROM } from '../../lib/bandits/eligibility';
+import { fill } from '../../lib/bandits/copy';
 import { dayShort, dayLong, dayMonthLong, monthDayRange, fullDate } from '../../lib/bandits/dates';
 import './signup.css';
 
@@ -404,8 +405,10 @@ function SuccessPanel({ result, onAnother }: { result: Result; onAnother: () => 
         </h1>
         <p className="sf-done-lede">
           {rostered
-            ? `${result.first || 'Your player'} has a spot on the roster. A confirmation email with this checklist is on its way to you.`
-            : `The roster is full, so ${result.first || 'your player'} is on the waitlist in sign-up order. We'll contact you if a spot opens.`}
+            ? fill(bandits.rosterCopy.rostered)
+            : result.position != null
+              ? fill(bandits.rosterCopy.waitlist, { position: result.position })
+              : fill(bandits.rosterCopy.waitlist).replace('#{position} ', '')}
         </p>
         {result.followUp && <p className="sf-done-lede"><strong>We'll be in touch about eligibility.</strong></p>}
       </div>
