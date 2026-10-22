@@ -71,6 +71,7 @@
   color: inherit;
   cursor: pointer;
 }
+.cd-export-warn { margin: 0; padding: 0.6rem 0.85rem; border-radius: 4px; background: var(--b-cream); border-left: 4px solid var(--b-gold); font-weight: 600; }
 .cd-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
 
 /* Login */

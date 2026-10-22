@@ -6,6 +6,7 @@ import {
 } from '../../lib/bandits/validate';
 import { suggestNumbers, type Suggestion } from '../../lib/bandits/numbers';
 import { fullDate } from '../../lib/bandits/dates';
+import { missingNumbers } from '../../lib/bandits/bbtl-roster';
 
 /**
  * CoachRoster — the signed-in coach dashboard views (README §9): summary,
@@ -449,6 +450,7 @@ function ExportsPanel({ api, players, setNotice }: { api: Api; players: Player[]
   const [busy, setBusy] = useState<string | null>(null);
   const [manual, setManual] = useState<string | null>(null);
   const active = players.filter((p) => p.status !== 'withdrawn');
+  const unnumbered = missingNumbers(players);
 
   // The export routes need the Authorization header, so a plain <a href> can't
   // download them: fetch with the token → Blob → object URL → temporary <a download>.
@@ -507,10 +509,15 @@ function ExportsPanel({ api, players, setNotice }: { api: Api; players: Player[]
     <section className="cd-section" aria-labelledby="cd-exports-h">
       <h2 id="cd-exports-h" className="cd-h2">Exports</h2>
       <div className="cd-actions">
-        <button type="button" className="cd-btn cd-btn-dark" disabled={!!busy} onClick={() => download('bbtl')}>{busy === 'bbtl' ? 'Preparing…' : 'BBTL roster (CSV)'}</button>
+        <button type="button" className="cd-btn cd-btn-dark" disabled={!!busy} onClick={() => download('bbtl')} aria-describedby={unnumbered ? 'cd-bbtl-warn' : undefined}>{busy === 'bbtl' ? 'Preparing…' : 'BBTL roster (CSV)'}</button>
         <button type="button" className="cd-btn cd-btn-outline" disabled={!!busy} onClick={() => download('full')}>{busy === 'full' ? 'Preparing…' : 'Full export (CSV)'}</button>
         <button type="button" className="cd-btn cd-btn-outline" disabled={!!busy} onClick={() => download('contacts')}>{busy === 'contacts' ? 'Preparing…' : 'Contacts (CSV)'}</button>
       </div>
+      {unnumbered > 0 && (
+        <p id="cd-bbtl-warn" className="cd-export-warn">
+          BBTL roster: {unnumbered} rostered {unnumbered === 1 ? 'player has' : 'players have'} no assigned number, so Jersey # will be blank.
+        </p>
+      )}
       <div className="cd-actions">
         <button type="button" className="cd-btn cd-btn-outline" disabled={active.length === 0} onClick={() => copy('emails')}>Copy emails</button>
         <button type="button" className="cd-btn cd-btn-outline" disabled={active.length === 0} onClick={() => copy('phones')}>Copy phones</button>
