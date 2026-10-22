@@ -58,9 +58,15 @@ const { title, description = 'Wilson County Bandits 13U tackle football, Fall 20
   body.ground-sand { background: var(--b-sand); }
   .bandits a { color: var(--b-gold-ink); }
   .bandits a:hover { color: var(--b-black); }
+  /* Focus ring: black on light grounds; gold inside dark surfaces, which opt in
+     with class="on-dark" (header, hero, dark cards, footer). */
   .bandits :focus-visible {
-    outline: 3px solid var(--b-gold);
+    outline: 3px solid var(--b-black);
     outline-offset: 2px;
+  }
+  .bandits .on-dark:focus-visible,
+  .bandits .on-dark :focus-visible {
+    outline-color: var(--b-gold);
   }
   .bandits .wrap {
     max-width: 1120px;

@@ -22,7 +22,7 @@ const GOLD = '#D4A72C';
   {[left, right].map((list, i) => (
     <ol class={`gear-list ${i === 0 ? 'gear-left' : 'gear-right'}`} start={list[0].n} role="list">
       {list.map((g) => (
-        <li class:list={['gear-item', { dark: g.tag === 'provided' }]}>
+        <li class:list={['gear-item', { dark: g.tag === 'provided', 'on-dark': g.tag === 'provided' }]}>
           <span class="gear-n">{g.n}</span>
           <div class="gear-text">
             <p class="gear-name">{g.name}</p>

@@ -29,7 +29,7 @@ const fill = (s: string) => s.replaceAll('{fee}', String(fee)).replaceAll('{paym
   title={`${team.name} ${team.division}`}
   description={`${team.name} ${team.division} tackle: schedule, eligibility, gear, paperwork and sign-up for ${bbtl.name} and the ${tdc.name}.`}
 >
-  <header class="site-header">
+  <header class="site-header on-dark">
     <div class="wrap site-header-inner">
       <div class="brand">
         <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 L35 9 V20 C35 29 28 35 20 37 C12 35 5 29 5 20 V9 Z" fill="none" stroke="#D4A72C" stroke-width="2.5"></path><path d="M12 20 H28" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"></path></svg>
@@ -44,7 +44,7 @@ const fill = (s: string) => s.replaceAll('{fee}', String(fee)).replaceAll('{paym
     </div>
   </header>
 
-  <section class="hero">
+  <section class="hero on-dark">
     <div class="wrap hero-inner">
       <div class="hero-copy">
         <p class="eyebrow">{team.division} Tackle · {team.season} · {team.town}</p>
@@ -89,7 +89,7 @@ const fill = (s: string) => s.replaceAll('{fee}', String(fee)).replaceAll('{paym
           <p class="card-foot"><a href={mapsHref} class="map-link">{practice.location}, {practice.address}</a></p>
         </div>
 
-        <div class="card card-dark">
+        <div class="card card-dark on-dark">
           <p class="card-eyebrow">Tournament 1</p>
           <h3>{bbtl.name}</h3>
           <ul class="rows">
@@ -100,7 +100,7 @@ const fill = (s: string) => s.replaceAll('{fee}', String(fee)).replaceAll('{paym
           <p class="card-foot muted">{bbtl.note}</p>
         </div>
 
-        <div class="card card-dark">
+        <div class="card card-dark on-dark">
           <p class="card-eyebrow">Tournament 2</p>
           <h3>{tdc.name}</h3>
           <ul class="rows">
