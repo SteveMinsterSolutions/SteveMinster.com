@@ -399,10 +399,8 @@ function SuccessPanel({ result, onAnother }: { result: Result; onAnother: () => 
   return (
     <section className="sf-done" aria-labelledby="bf-done-title">
       <div className="sf-done-hero on-dark">
-        <p className="sf-eyebrow">{rostered ? "You're on the roster" : "You're on the waitlist"}</p>
-        <h1 id="bf-done-title" className="sf-done-title">
-          {rostered ? 'Welcome to the Bandits' : result.position ? `You're #${result.position} on the waitlist` : "You're on the waitlist"}
-        </h1>
+        <p className="sf-eyebrow">{bandits.team.name} {bandits.team.division}</p>
+        <h1 id="bf-done-title" className="sf-done-title">{bandits.rosterCopy.headline}</h1>
         <p className="sf-done-lede">
           {rostered
             ? fill(bandits.rosterCopy.rostered)
