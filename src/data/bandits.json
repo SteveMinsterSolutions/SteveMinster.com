@@ -9,7 +9,7 @@
   "rosterCopy": {
     "headline": "You're signed up",
     "counterNote": "The roster has {cap} spots. Coach Chris confirms the final roster by {confirmBy}.",
-    "rostered": "You're signed up. Coach Chris confirms the final roster by {confirmBy}.",
+    "rostered": "Coach Chris confirms the final roster by {confirmBy}.",
     "waitlist": "We've had more than {cap} sign-ups, so you're #{position} on the waitlist. Coach Chris confirms the final roster by {confirmBy}."
   },
   "contactEmail": "Steve@MinsterSolutions.com",
