@@ -1,0 +1,176 @@
+---
+// Front-view player with numbered gear markers 1–7. Items 1–4 list on the left,
+// 5–7 on the right; on phones both lists stack under the figure.
+// The list is driven by bandits.json → gear[], so a tag change is a data edit.
+import bandits from '../../data/bandits.json';
+
+type Tag = 'provided' | 'byo' | 'own-or-loaner';
+
+const TAGS: Record<Tag, { lines: string[]; gold: boolean }> = {
+  provided: { lines: ['Provided'], gold: true },
+  byo: { lines: ['Bring', 'your own'], gold: false },
+  'own-or-loaner': { lines: ['Own or', 'loaner'], gold: true },
+};
+
+const items = bandits.gear.map((g) => ({ ...g, tag: g.tag as Tag }));
+const left = items.filter((g) => g.n <= 4);
+const right = items.filter((g) => g.n > 4);
+const GOLD = '#D4A72C';
+---
+
+<div class="gear">
+  {[left, right].map((list, i) => (
+    <ol class={`gear-list ${i === 0 ? 'gear-left' : 'gear-right'}`} start={list[0].n} role="list">
+      {list.map((g) => (
+        <li class:list={['gear-item', { dark: g.tag === 'provided' }]}>
+          <span class="gear-n">{g.n}</span>
+          <div class="gear-text">
+            <p class="gear-name">{g.name}</p>
+            {g.note && <p class="gear-note">{g.note}</p>}
+          </div>
+          <span class:list={['gear-tag', { gold: TAGS[g.tag].gold }]}>
+            {TAGS[g.tag].lines.map((line, j) => (j > 0 ? [<br />, line] : line))}
+          </span>
+        </li>
+      ))}
+    </ol>
+  ))}
+
+  <div class="gear-figure">
+    <svg viewBox="0 0 300 500" width="100%" role="img" aria-label="A football player in a gold helmet, white and gold jersey, black pants, white socks and black cleats, with numbered markers on each piece of gear">
+      <ellipse cx="150" cy="490" rx="100" ry="8" fill="#E4DFD2"></ellipse>
+      <path d="M106 70 C106 30 194 30 194 70 L194 92 C194 104 184 108 172 108 L128 108 C116 108 106 104 106 92 Z" fill={GOLD} stroke="#111111" stroke-width="3"></path>
+      <path d="M150 28 L150 108" stroke="#111111" stroke-width="6"></path>
+      <path d="M120 86 L180 86 M124 99 L176 99 M136 80 L136 108 M164 80 L164 108" stroke="#111111" stroke-width="3" stroke-linecap="round"></path>
+      <rect x="138" y="106" width="24" height="16" fill="#3A3A3A"></rect>
+      <path d="M70 150 C74 124 100 116 124 114 L176 114 C200 116 226 124 230 150 L240 222 L214 228 L204 178 L202 290 L98 290 L96 178 L86 228 L60 222 Z" fill="#FFFFFF" stroke="#111111" stroke-width="3" stroke-linejoin="round"></path>
+      <path d="M62 210 L86 216 M238 210 L214 216" stroke={GOLD} stroke-width="7"></path>
+      <path d="M124 114 Q150 136 176 114" fill="none" stroke={GOLD} stroke-width="6"></path>
+      <text x="150" y="218" text-anchor="middle" font-family="Oswald, Impact, sans-serif" font-size="64" font-weight="700" fill={GOLD} stroke="#111111" stroke-width="2">00</text>
+      <rect x="60" y="226" width="26" height="84" rx="12" fill="#111111"></rect>
+      <rect x="214" y="226" width="26" height="84" rx="12" fill="#111111"></rect>
+      <rect x="98" y="286" width="104" height="12" fill="#3A3A3A"></rect>
+      <path d="M98 298 L202 298 L206 404 L162 404 L150 330 L138 404 L94 404 Z" fill="#111111"></path>
+      <rect x="96" y="402" width="40" height="58" fill="#FFFFFF" stroke="#111111" stroke-width="3"></rect>
+      <rect x="164" y="402" width="40" height="58" fill="#FFFFFF" stroke="#111111" stroke-width="3"></rect>
+      <path d="M94 458 L138 458 L142 478 L78 480 C78 468 84 460 94 458 Z" fill="#111111"></path>
+      <path d="M162 458 L206 458 C216 460 222 468 222 480 L158 478 Z" fill="#111111"></path>
+      <g font-family="Oswald, Impact, sans-serif" font-size="16" font-weight="700" text-anchor="middle">
+        <circle cx="112" cy="40" r="15" fill={GOLD} stroke="#111111" stroke-width="2.5"></circle><text x="112" y="46" fill="#111111">1</text>
+        <circle cx="204" cy="100" r="15" fill={GOLD} stroke="#111111" stroke-width="2.5"></circle><text x="204" y="106" fill="#111111">2</text>
+        <circle cx="78" cy="140" r="15" fill={GOLD} stroke="#111111" stroke-width="2.5"></circle><text x="78" y="146" fill="#111111">3</text>
+        <circle cx="182" cy="256" r="15" fill={GOLD} stroke="#111111" stroke-width="2.5"></circle><text x="182" y="262" fill="#111111">4</text>
+        <circle cx="184" cy="352" r="15" fill={GOLD} stroke="#111111" stroke-width="2.5"></circle><text x="184" y="358" fill="#111111">5</text>
+        <circle cx="116" cy="432" r="15" fill={GOLD} stroke="#111111" stroke-width="2.5"></circle><text x="116" y="438" fill="#111111">6</text>
+        <circle cx="232" cy="470" r="15" fill={GOLD} stroke="#111111" stroke-width="2.5"></circle><text x="232" y="476" fill="#111111">7</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<style>
+  /* Phones: figure, then list 1–4, then list 5–7, single column. */
+  .gear {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'fig' 'left' 'right';
+    gap: 1.5rem;
+    align-items: center;
+  }
+  /* Tablets: figure on top, the two lists side by side under it. */
+  @media (min-width: 640px) {
+    .gear {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-areas: 'fig fig' 'left right';
+      align-items: start;
+    }
+  }
+  /* Desktop: lists flank the figure, as in the prototype. */
+  @media (min-width: 960px) {
+    .gear {
+      grid-template-columns: minmax(0, 1fr) 300px minmax(0, 1fr);
+      grid-template-areas: 'left fig right';
+      align-items: center;
+    }
+  }
+  .gear-left { grid-area: left; }
+  .gear-right { grid-area: right; }
+  .gear-figure {
+    grid-area: fig;
+    justify-self: center;
+    width: 100%;
+    max-width: 300px;
+  }
+  .gear-figure svg { display: block; }
+
+  .gear-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .gear-item {
+    display: flex;
+    gap: 0.9rem;
+    align-items: center;
+    border: 2px solid var(--b-black);
+    border-radius: 6px;
+    padding: 0.9rem 1rem;
+    background: var(--b-white);
+  }
+  .gear-item.dark {
+    background: var(--b-black);
+    color: var(--b-white);
+  }
+  .gear-n {
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--b-gold);
+    border: 2px solid var(--b-black);
+    color: var(--b-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--b-display);
+    font-weight: 700;
+  }
+  .gear-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .gear-name {
+    margin: 0;
+    font-family: var(--b-display);
+    font-weight: 600;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+  }
+  .gear-note {
+    margin: 0.1rem 0 0;
+    color: var(--b-text-2);
+    font-size: 0.95rem;
+  }
+  .dark .gear-note { color: #CFCFCF; }
+  .gear-tag {
+    flex: none;
+    padding: 0.35rem 0.6rem;
+    border-radius: 4px;
+    border: 2px solid var(--b-black);
+    color: var(--b-black);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1.2;
+  }
+  .gear-tag.gold {
+    background: var(--b-gold);
+    border-color: var(--b-gold);
+  }
+</style>
