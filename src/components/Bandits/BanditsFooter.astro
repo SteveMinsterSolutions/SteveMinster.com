@@ -1,0 +1,50 @@
+---
+import bandits from '../../data/bandits.json';
+---
+
+<footer class="b-footer">
+  <div class="wrap b-footer-inner">
+    <div>
+      <p class="b-footer-title">Questions? Email us</p>
+      <p class="b-footer-email"><a href={`mailto:${bandits.contactEmail}`}>{bandits.contactEmail}</a></p>
+    </div>
+    <p class="b-footer-credit">Site by Minster Solutions</p>
+  </div>
+</footer>
+
+<style>
+  .b-footer {
+    background: var(--b-black);
+    color: var(--b-white);
+    border-top: 6px solid var(--b-gold);
+  }
+  .b-footer-inner {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .b-footer-title {
+    margin: 0;
+    font-family: var(--b-display);
+    font-weight: 600;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+  }
+  .b-footer-email { margin: 0.25rem 0 0; }
+  .b-footer-email a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--b-gold);
+  }
+  .b-footer-email a:hover { color: var(--b-white); }
+  .b-footer-credit {
+    margin: 0;
+    color: #BDBDBD;
+    font-size: 0.9rem;
+  }
+</style>
