@@ -1,0 +1,65 @@
+---
+// src/pages/sandbox/bandits/signup.astro
+// Player sign-up. Rendered per request (not prerendered) so the closed state
+// flips at midnight Central after the deadline without a redeploy.
+import BanditsLayout from '../../../components/Bandits/BanditsLayout.astro';
+import BanditsFooter from '../../../components/Bandits/BanditsFooter.astro';
+import SignupForm from '../../../components/Bandits/SignupForm.tsx';
+import bandits from '../../../data/bandits.json';
+import { signupsClosed } from '../../../lib/bandits/dates';
+
+export const prerender = false;
+
+const closed = signupsClosed(bandits.signupDeadline);
+---
+
+<BanditsLayout title={`Sign up a player — ${bandits.team.name}`} description={`Player sign-up for the ${bandits.team.name} ${bandits.team.division}.`} ground="sand">
+  <header class="su-header on-dark">
+    <div class="su-header-inner">
+      <a href="/sandbox/bandits" class="su-back">← {bandits.team.name}</a>
+      <span class="su-count"><span data-spots="rostered">—</span> of <span data-spots="cap">{bandits.rosterCap}</span> spots filled</span>
+    </div>
+  </header>
+
+  <main>
+    <SignupForm client:load initiallyClosed={closed} />
+  </main>
+
+  <BanditsFooter />
+</BanditsLayout>
+
+<script>
+  import '../../../components/Bandits/spots-counter';
+</script>
+
+<style>
+  .su-header {
+    background: var(--b-black);
+    color: var(--b-white);
+    border-bottom: 6px solid var(--b-gold);
+  }
+  .su-header-inner {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0.5rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .su-back {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--b-white);
+    text-decoration: none;
+    font-family: var(--b-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .su-back:hover { color: var(--b-gold); }
+  .su-count { color: var(--b-gold); font-weight: 700; }
+</style>

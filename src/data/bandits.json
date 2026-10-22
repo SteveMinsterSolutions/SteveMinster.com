@@ -1,0 +1,82 @@
+{
+  "team": { "name": "Wilson County Bandits", "division": "13U", "season": "Fall 2026", "town": "Mt. Juliet, TN", "colors": "White & gold, black trim" },
+  "fee": 55,
+  "rosterCap": 22,
+  "signupDeadline": "2026-11-01",
+  "paperworkDue": "2026-11-04",
+  "dataPurgeBy": "2027-01-15",
+  "rosterConfirmBy": "2026-11-08",
+  "rosterCopy": {
+    "headline": "You're signed up",
+    "counterNote": "The roster has {cap} spots. Coach Chris confirms the final roster by {confirmBy}.",
+    "rostered": "Coach Chris confirms the final roster by {confirmBy}.",
+    "waitlist": "We've had more than {cap} sign-ups, so you're #{position} on the waitlist. Coach Chris confirms the final roster by {confirmBy}."
+  },
+  "contactEmail": "Steve@MinsterSolutions.com",
+  "headCoach": "Chris Oguin",
+  "payment": "Cash at practice for now. Venmo and check options are coming soon.",
+  "waiverUrl": "/bandits/bbtl-2026-waiver.pdf",
+  "practice": {
+    "day": "Wednesday",
+    "time": "6:30 PM",
+    "location": "Sgt. Jerry Mundy Memorial Park",
+    "address": "300 Mundy Memorial Dr, Mt. Juliet, TN 37122",
+    "dates": ["2026-10-28", "2026-11-04", "2026-11-11", "2026-11-18", "2026-11-25"],
+    "notes": { "2026-11-11": "Last practice before BBTL", "2026-11-25": "Night before Thanksgiving" }
+  },
+  "eligibility": { "cutoff": "2026-07-01", "bornOnOrAfter": "2012-07-02" },
+  "tournaments": [
+    {
+      "id": "bbtl",
+      "name": "Battle Between the Lakes",
+      "checkIn": "2026-11-13",
+      "start": "2026-11-13",
+      "gamesStart": "2026-11-14",
+      "end": "2026-11-15",
+      "gamesNote": "2-game guarantee",
+      "where": "Mt. Juliet · fields TBD",
+      "rosterDue": "2026-11-08",
+      "note": "Brackets are set by a livestreamed random drawing during tournament week."
+    },
+    {
+      "id": "tdc",
+      "name": "Turkey Day Classic",
+      "fullName": "Battle in Nashville – Turkey Day Classic",
+      "start": "2026-11-27",
+      "end": "2026-11-29",
+      "startNote": "Bracket play starts Friday",
+      "idCheck": "2 hrs before first game",
+      "where": "Mundy Memorial Park",
+      "note": "Thanksgiving weekend. Please tell us on the sign-up form if your player can't make it."
+    }
+  ],
+  "gear": [
+    { "n": 1, "name": "Helmet", "tag": "own-or-loaner", "note": "Loaners are limited, from West Wilson Middle School. Request one on the form." },
+    { "n": 2, "name": "Mouthguard", "tag": "byo" },
+    { "n": 3, "name": "Shoulder pads", "tag": "byo" },
+    { "n": 4, "name": "Team jersey", "tag": "provided", "note": "White and gold. Choose your size on the form." },
+    { "n": 5, "name": "Black football pants", "tag": "byo", "note": "Must be black." },
+    { "n": 6, "name": "Socks", "tag": "byo" },
+    { "n": 7, "name": "Cleats", "tag": "byo" }
+  ],
+  "gameday": {
+    "tdcGate": [
+      "Adults $15 a day, or a $25 weekend pass bought by Nov 21",
+      "Kids 5–13 $10 a day; 4 and under free",
+      "No cash at the gate; cards and phone payments only",
+      "No outside food. Only team water and Gatorade coolers"
+    ],
+    "sideline": [
+      "Cheer for the kids and respect the officials",
+      "Parents and spectators stay off the field",
+      "Abusive behavior can get a person removed, and can hurt the team",
+      "No cheerleaders on the field at Battle Between the Lakes"
+    ]
+  },
+  "faq": [
+    { "q": "How do I pay the ${fee}?", "a": "{payment} The fee covers the team jersey." },
+    { "q": "Will my player get the number they want?", "a": "We'll try. Numbers are assigned in sign-up order using each player's three choices." },
+    { "q": "What if the roster is full?", "a": "You can still sign up. Sign-ups past {cap} go on a waitlist, and the coach confirms the final roster by {confirmBy}." },
+    { "q": "Why do you need my player's weight?", "a": "The tournament roster requires it. There's no weight limit for 13U." }
+  ]
+}

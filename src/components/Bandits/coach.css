@@ -1,0 +1,234 @@
+/* Coach dashboard — phone-first (used at practice). Tokens and focus ring from
+   BanditsLayout. Prefixed .cd- (global stylesheet). */
+
+.cd-wrap,
+.cd-auth {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.cd-auth { max-width: 560px; padding-top: 2.5rem; }
+@media (max-width: 400px) {
+  .cd-wrap, .cd-auth { padding-left: 1rem; padding-right: 1rem; }
+}
+
+.cd-h1 {
+  margin: 0;
+  font-family: var(--b-display);
+  font-weight: 700;
+  font-size: clamp(1.9rem, 5vw, 2.5rem);
+  text-transform: uppercase;
+  line-height: 1.05;
+}
+.cd-h2 {
+  margin: 0;
+  font-family: var(--b-display);
+  font-weight: 600;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+}
+.cd-muted { margin: 0; color: var(--b-text-2); }
+.cd-small { font-size: 0.9rem; }
+.cd-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.cd-warn { color: #B42318; }
+.cd-err { margin: 0.25rem 0 0; color: #B42318; font-weight: 600; font-size: 0.95rem; }
+
+.cd-topbar { display: flex; flex-wrap: wrap; gap: 0.75rem 1rem; align-items: center; justify-content: space-between; }
+.cd-who { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; min-width: 0; }
+.cd-who .cd-muted { overflow-wrap: anywhere; }
+
+/* Buttons */
+.cd-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 1.1rem;
+  border-radius: 4px;
+  border: 2px solid var(--b-black);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+}
+.cd-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.cd-btn-sm { padding: 0 0.85rem; font-size: 0.95rem; }
+.cd-btn-dark { background: var(--b-black); color: var(--b-white); }
+.cd-btn-gold { background: var(--b-gold); border-color: var(--b-gold); color: var(--b-black); }
+.cd-btn-outline { background: var(--b-white); color: var(--b-black); }
+.cd-btn-danger { background: #B42318; border-color: #B42318; color: var(--b-white); }
+.cd-linkbtn {
+  min-height: 44px;
+  padding: 0 0.25rem;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  color: inherit;
+  cursor: pointer;
+}
+.cd-export-warn { margin: 0; padding: 0.6rem 0.85rem; border-radius: 4px; background: var(--b-cream); border-left: 4px solid var(--b-gold); font-weight: 600; }
+.cd-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+
+/* Login */
+.cd-login { display: flex; flex-direction: column; gap: 0.5rem; }
+.cd-login label { font-weight: 600; }
+.cd-login input,
+.cd-field input,
+.cd-field textarea {
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 0 0.75rem;
+  border: 1px solid var(--b-border);
+  border-radius: 4px;
+  font: inherit;
+  background: var(--b-white);
+  color: var(--b-black);
+}
+.cd-field textarea { padding: 0.6rem 0.75rem; width: 100%; resize: vertical; }
+.cd-note,
+.cd-alert {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  background: var(--b-cream);
+  border-left: 4px solid var(--b-gold);
+}
+.cd-alert { background: #FEF3F2; border-left-color: #B42318; }
+.cd-alert p { margin: 0; }
+
+/* Notices */
+.cd-live:empty { display: none; }
+.cd-notice { margin: 0; padding: 0.25rem 0.25rem 0.25rem 1rem; border-radius: 4px; display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0.75rem; }
+.cd-notice-ok { background: #ECFDF3; border-left: 4px solid #067647; }
+.cd-notice-error { background: #FEF3F2; border-left: 4px solid #B42318; }
+
+/* Sections */
+.cd-section {
+  background: var(--b-white);
+  border-top: 6px solid var(--b-black);
+  border-radius: 6px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-width: 0;
+}
+@media (max-width: 400px) {
+  .cd-section { padding: 1rem 0.85rem; }
+}
+
+/* Summary tiles */
+.cd-tiles {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(140px, 100%), 1fr));
+  gap: 0.6rem;
+}
+@media (max-width: 400px) {
+  .cd-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.cd-tile { background: var(--b-sand); border-radius: 6px; padding: 0.6rem 0.75rem; }
+.cd-tile dt { font-size: 0.85rem; font-weight: 600; color: var(--b-text-2); }
+.cd-tile dd { margin: 0; font-family: var(--b-display); font-weight: 700; font-size: 1.6rem; line-height: 1.1; }
+.cd-tile-warn { background: var(--b-cream); box-shadow: inset 4px 0 0 var(--b-gold); }
+
+/* Filter */
+.cd-filter { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.cd-filter button {
+  min-height: 44px;
+  padding: 0 0.85rem;
+  border: 2px solid var(--b-black);
+  border-radius: 4px;
+  background: var(--b-white);
+  color: var(--b-black);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.cd-filter button[aria-pressed='true'] { background: var(--b-black); color: var(--b-gold); }
+
+/* Player rows */
+.cd-players { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+.cd-player { border: 2px solid #DDDDDD; border-radius: 6px; background: var(--b-white); min-width: 0; }
+.cd-player-flag { border-color: var(--b-gold); background: var(--b-cream); }
+.cd-player-out { opacity: 0.75; }
+.cd-player-head {
+  width: 100%;
+  min-height: 48px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.6rem;
+  padding: 0.5rem 0.75rem;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.cd-seq { color: var(--b-text-2); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+.cd-name { font-weight: 700; font-size: 1.1rem; }
+.cd-badges { display: flex; flex-wrap: wrap; gap: 0.3rem; flex: 1 1 auto; }
+.cd-chevron { margin-left: auto; color: var(--b-text-2); }
+.cd-badge {
+  display: inline-block;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid #BBBBBB;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.cd-badge-num { background: var(--b-black); color: var(--b-gold); border-color: var(--b-black); text-transform: none; }
+.cd-badge-flag { background: var(--b-gold); border-color: var(--b-gold); color: var(--b-black); text-transform: none; }
+
+.cd-checks { display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0 0.75rem 0.75rem; }
+.cd-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  padding: 0 0.75rem;
+  border: 2px solid #BBBBBB;
+  border-radius: 999px;
+  background: var(--b-white);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  user-select: none;
+}
+.cd-chip input { width: 20px; height: 20px; margin: 0; accent-color: var(--b-black); cursor: pointer; }
+.cd-chip-on { border-color: var(--b-black); background: var(--b-sand); }
+
+/* Details */
+.cd-details { border-top: 1px solid #DDDDDD; padding: 0.75rem; display: flex; flex-direction: column; gap: 1rem; }
+.cd-dl { margin: 0; display: grid; gap: 0.4rem; }
+.cd-dl > div { display: grid; grid-template-columns: minmax(0, 9rem) minmax(0, 1fr); gap: 0.75rem; }
+.cd-dl dt { font-weight: 600; color: var(--b-text-2); }
+.cd-dl dd { margin: 0; overflow-wrap: anywhere; }
+.cd-dl a { display: inline-flex; align-items: center; min-height: 44px; } /* tap-to-call at practice */
+@media (max-width: 480px) {
+  .cd-dl > div { grid-template-columns: minmax(0, 1fr); gap: 0; }
+}
+.cd-edit { display: flex; flex-direction: column; gap: 0.85rem; }
+.cd-field { display: flex; flex-direction: column; gap: 0.35rem; }
+.cd-field > label { font-weight: 600; }
+.cd-inline { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.cd-inline input { width: 5rem; }
+
+/* Tables */
+.cd-table { border-collapse: collapse; width: 100%; max-width: 520px; }
+.cd-table caption { text-align: left; font-weight: 700; padding-bottom: 0.25rem; }
+.cd-table th,
+.cd-table td { text-align: left; padding: 0.4rem 0.5rem; border-bottom: 1px solid #E5E5E5; }
+.cd-table thead th { font-size: 0.85rem; color: var(--b-text-2); }
+.cd-sizes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 1rem; }
+.cd-sizes td { text-align: right; font-variant-numeric: tabular-nums; }
+
+.cd-retention { margin: 0; text-align: center; color: var(--b-text-2); font-size: 0.9rem; }

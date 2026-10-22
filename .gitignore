@@ -46,3 +46,7 @@ ai-accelerator-capstone-*.md
 
 # cobra/radio videos live in the steveminster-site-media public Blob store
 public/images/off-the-clock/cobra/radio/*.mp4
+
+# Bandits planning spec + design-tool sources (local reference only)
+BANDITS_INTEGRATION_README.md
+bandits-design-reference/

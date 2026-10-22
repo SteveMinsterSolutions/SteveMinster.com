@@ -1,0 +1,233 @@
+/* SignupForm styles — ported from Signup.dc.html. Tokens (--b-*) and the focus
+   ring come from BanditsLayout. Everything is prefixed .sf- (global stylesheet). */
+
+.sf-form,
+.sf-done {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.sf-done { padding-top: 3rem; }
+@media (max-width: 400px) {
+  .sf-form, .sf-done { padding-left: 1rem; padding-right: 1rem; }
+}
+
+.sf-title {
+  margin: 0;
+  font-family: var(--b-display);
+  font-weight: 700;
+  font-size: clamp(2.25rem, 5vw, 3.25rem);
+  text-transform: uppercase;
+  line-height: 1;
+}
+.sf-lede { margin: 0.75rem 0 0; color: var(--b-text-2); }
+
+/* Sections */
+.sf-section {
+  margin: 0;
+  min-width: 0;
+  border: 0;
+  border-top: 6px solid var(--b-black);
+  background: var(--b-white);
+  border-radius: 6px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.sf-section-gold { border-top-color: var(--b-gold); gap: 0.4rem; }
+.sf-section > legend {
+  float: left;
+  width: 100%;
+  padding: 0;
+  margin: 0 0 0.25rem;
+  font-family: var(--b-display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+}
+@media (max-width: 400px) {
+  .sf-section { padding: 1.25rem 1rem; }
+}
+
+.sf-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: 1rem;
+}
+.sf-grid-wide { grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); }
+.sf-narrow { max-width: 260px; }
+
+/* Fields */
+.sf-field { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
+.sf-field > label,
+.sf-label { font-weight: 600; }
+.sf-hint { font-weight: 400; color: var(--b-text-2); }
+.sf-field input,
+.sf-field select,
+.sf-field textarea {
+  min-height: 44px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 0.75rem;
+  border: 1px solid var(--b-border);
+  border-radius: 4px;
+  font: inherit;
+  font-weight: 400;
+  color: var(--b-black);
+  background: var(--b-white);
+}
+.sf-field textarea { padding: 0.6rem 0.75rem; resize: vertical; }
+.sf-field [aria-invalid='true'] { border: 2px solid #B42318; }
+
+.sf-err { margin: 0; color: #B42318; font-weight: 600; font-size: 0.95rem; }
+.sf-warn,
+.sf-note {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  background: var(--b-cream);
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+.sf-warn { border-left: 4px solid var(--b-gold); font-weight: 600; }
+.sf-muted { margin: 0; color: var(--b-text-2); }
+
+/* Youth / Adult toggle */
+.sf-toggle { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.sf-toggle button {
+  min-height: 44px;
+  padding: 0 1.5rem;
+  border: 2px solid var(--b-black);
+  border-radius: 4px;
+  background: var(--b-white);
+  color: var(--b-black);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.sf-toggle button[aria-pressed='true'] { background: var(--b-black); color: var(--b-gold); }
+
+/* Number choices */
+.sf-numbers {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  max-width: 420px;
+}
+.sf-num > label { font-weight: 400; color: var(--b-text-2); }
+
+/* Checkboxes & radios: the whole row is the label, ≥44px tall */
+.sf-radios { margin: 0; padding: 0; border: 0; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+.sf-radios > legend { padding: 0; margin-bottom: 0.25rem; }
+.sf-check {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  min-height: 44px;
+  padding: 0.6rem 0.5rem;
+  margin: 0 -0.5rem;
+  box-sizing: border-box;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.sf-check:hover { background: var(--b-sand); }
+.sf-check input {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin: 1px 0 0;
+  accent-color: var(--b-black);
+  cursor: pointer;
+}
+
+/* Honeypot: off-screen, not display:none (some bots skip hidden fields) */
+.sf-hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+/* Error summary */
+.sf-summary-wrap:focus { outline: none; }
+.sf-summary-wrap:focus-visible .sf-summary { outline: 3px solid var(--b-black); outline-offset: 2px; }
+.sf-summary {
+  background: #FEF3F2;
+  border: 2px solid #B42318;
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+}
+.sf-summary-title { margin: 0; font-weight: 700; }
+.sf-summary-msg { margin: 0.5rem 0 0; }
+.sf-summary ul { margin: 0.5rem 0 0; padding-left: 1.25rem; list-style: disc; }
+.sf-summary li { margin: 0.25rem 0; }
+.bandits .sf-summary a { color: #7A1A12; }
+
+/* Submit */
+.sf-submit {
+  min-height: 56px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--b-black);
+  color: var(--b-gold);
+  font-family: var(--b-display);
+  font-weight: 600;
+  font-size: 1.35rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.sf-submit:disabled { opacity: 0.7; cursor: progress; }
+.sf-questions { margin: 0; text-align: center; color: var(--b-text-2); font-size: 0.95rem; }
+.sf-questions a { display: inline-flex; align-items: center; min-height: 44px; }
+
+/* Success / closed */
+.sf-done-hero {
+  background: var(--b-black);
+  color: var(--b-white);
+  border-radius: 6px;
+  padding: 2rem;
+  border-bottom: 6px solid var(--b-gold);
+}
+@media (max-width: 400px) {
+  .sf-done-hero { padding: 1.5rem 1.25rem; }
+}
+.sf-eyebrow {
+  margin: 0;
+  font-family: var(--b-display);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--b-gold);
+}
+.sf-done-title {
+  margin: 0.5rem 0 0;
+  font-family: var(--b-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 3rem);
+  text-transform: uppercase;
+  line-height: 1;
+}
+.sf-done-lede { margin: 1rem 0 0; color: #E6E6E6; }
+.bandits .sf-done-lede a { color: var(--b-gold); }
+.sf-card { background: var(--b-white); border-radius: 6px; padding: 1.5rem; }
+.sf-card-title {
+  margin: 0 0 1rem;
+  font-family: var(--b-display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+}
+.sf-list { margin: 0; padding-left: 1.25rem; list-style: disc; display: flex; flex-direction: column; gap: 0.5rem; }
+.sf-actions { display: flex; flex-wrap: wrap; gap: 1rem; }
+.sf-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 1.5rem;
+  border-radius: 4px;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+.bandits .sf-btn-gold { background: var(--b-gold); color: var(--b-black); border: 0; }
+.sf-btn-outline { border: 2px solid var(--b-black); background: var(--b-white); color: var(--b-black); }
