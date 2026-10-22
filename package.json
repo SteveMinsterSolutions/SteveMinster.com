@@ -10,7 +10,7 @@
     "assemble:stage1": "node scripts/assemble-stage1.mjs",
     "assemble:stage2": "node scripts/assemble-stage2.mjs",
     "assemble:stage3": "node scripts/assemble-stage3.mjs",
-    "test:bandits": "node --test src/lib/bandits/eligibility.test.ts src/lib/bandits/dates.test.ts src/lib/bandits/validate.test.ts"
+    "test:bandits": "node --test src/lib/bandits/eligibility.test.ts src/lib/bandits/dates.test.ts src/lib/bandits/validate.test.ts src/lib/bandits/coach.test.ts"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",
