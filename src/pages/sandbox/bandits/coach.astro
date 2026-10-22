@@ -1,0 +1,42 @@
+---
+// src/pages/sandbox/bandits/coach.astro
+// Staff-only coach dashboard. noindex, no sandbox card, no links from public pages.
+// Client-only island: it is all auth-gated, so there's nothing useful to prerender.
+import BanditsLayout from '../../../components/Bandits/BanditsLayout.astro';
+import CoachDashboard from '../../../components/Bandits/CoachDashboard.tsx';
+import bandits from '../../../data/bandits.json';
+---
+
+<BanditsLayout title={`Coach dashboard — ${bandits.team.name}`} description="Staff only." noindex ground="sand">
+  <header class="cd-header on-dark">
+    <div class="cd-header-inner">
+      <span class="cd-brand">{bandits.team.name} · Staff</span>
+    </div>
+  </header>
+  <main>
+    <CoachDashboard client:only="react" />
+  </main>
+</BanditsLayout>
+
+<style>
+  .cd-header {
+    background: var(--b-black);
+    color: var(--b-white);
+    border-bottom: 6px solid var(--b-gold);
+  }
+  .cd-header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+  }
+  .cd-brand {
+    font-family: var(--b-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+</style>
