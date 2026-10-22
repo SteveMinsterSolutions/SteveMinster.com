@@ -76,7 +76,7 @@ create table if not exists public.bandits_signups (
   updated_at             timestamptz not null default now()
 );
 
--- one sign-up per player (names are trimmed by bandits_register, so " Everett" = "Everett")
+-- one sign-up per player (names are trimmed by bandits_register, so " Test" = "Test")
 create unique index if not exists bandits_signups_player_uniq
   on public.bandits_signups (lower(player_first), lower(player_last), dob);
 
