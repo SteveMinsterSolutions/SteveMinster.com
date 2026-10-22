@@ -59,8 +59,8 @@ const fill = (s: string) => s.replaceAll('{fee}', String(fee)).replaceAll('{paym
         </div>
       </div>
       <div class="counter">
-        <p class="counter-n" id="spots-rostered">—</p>
-        <p class="counter-label">of <span id="spots-cap">{rosterCap}</span> roster spots filled</p>
+        <p class="counter-n" data-spots="rostered">—</p>
+        <p class="counter-label">of <span data-spots="cap">{rosterCap}</span> roster spots filled</p>
         <p class="counter-note">Once the roster is full, new sign-ups join a waitlist in the order received.</p>
       </div>
     </div>
@@ -197,14 +197,7 @@ const fill = (s: string) => s.replaceAll('{fee}', String(fee)).replaceAll('{paym
 </BanditsLayout>
 
 <script>
-  // Live roster counter. Shows "—" until the count arrives; stays "—" on failure.
-  fetch('/api/bandits/spots')
-    .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-    .then((s: { rostered: number; cap: number }) => {
-      document.getElementById('spots-rostered')!.textContent = String(s.rostered);
-      document.getElementById('spots-cap')!.textContent = String(s.cap);
-    })
-    .catch(() => {});
+  import '../../../components/Bandits/spots-counter';
 </script>
 
 <style>
