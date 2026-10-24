@@ -27,6 +27,7 @@
     --lapis-deep: #1B3357;
     --gold: #D8B45A;
     --on-lapis: #1E1A14;
+    --season: #3F8A4C; /* 4.1:1 on dark vellum; the light green is 2.7:1 there */
     color-scheme: dark;
   }
 }
@@ -40,6 +41,7 @@
   --lapis-deep: #1B3357;
   --gold: #D8B45A;
   --on-lapis: #1E1A14;
+  --season: #3F8A4C;
   color-scheme: dark;
 }
 

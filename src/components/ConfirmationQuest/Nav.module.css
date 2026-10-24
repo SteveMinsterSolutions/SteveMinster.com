@@ -1,0 +1,93 @@
+/* Fixed to the bottom for thumbs. A lapis rule with a gold hairline beneath it echoes
+   the page frame. Six items fit at 320px without truncation. */
+.nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  background: var(--vellum);
+  border-top: 1px solid var(--lapis);
+  box-shadow: inset 0 3px 0 -2px var(--gold);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.list {
+  display: flex;
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 0 4px;
+  list-style: none;
+}
+
+/* Every item is at least 44px wide. Candidates' five items share the bar; for adults
+   the first five size to their labels and Approve takes the remaining width. */
+.item {
+  flex: 1 1 auto;
+  min-width: 44px;
+}
+.withApprove .item:not(.approve) {
+  flex: 0 0 auto;
+}
+.approve {
+  flex: 1 1 auto;
+}
+
+.link {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 56px;
+  padding: 20px 5px 8px;
+  box-sizing: border-box;
+  font-family: var(--cq-sans);
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  color: var(--ink-faded);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.link:hover {
+  color: var(--ink);
+}
+.link[aria-current='page'] {
+  color: var(--ink);
+  font-weight: 600;
+}
+/* The ribbon: hangs from the rule above the current label, notched at its tail. */
+.link[aria-current='page']::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 10px;
+  height: 15px;
+  margin-left: -5px;
+  background: var(--season);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 72%, 0 100%);
+}
+.link:focus-visible {
+  outline: 2px solid var(--lapis);
+  outline-offset: -4px;
+}
+
+.count {
+  margin-left: 2px;
+  font-family: var(--cq-serif);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--rubric);
+  transform: translateY(-3px);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

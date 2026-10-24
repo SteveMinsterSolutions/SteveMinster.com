@@ -6,6 +6,9 @@ import { supabase, redirectError, type Player } from './supabase';
 import { authMessage } from './authErrors';
 import SignIn from './SignIn';
 import SignedInNotice from './SignedInNotice';
+import Game, { GameFrame } from './Game';
+import { HomeLeaf } from './Home';
+import { todayCentral, addDays } from './dates';
 import book from './book.module.css';
 
 type PlayerState =
@@ -78,11 +81,7 @@ function LiveApp() {
         </SignedInNotice>
       );
     case 'found':
-      return (
-        <SignedInNotice heading={`Signed in as ${player.player.display_name}`}>
-          <p className={book.prose}>The rest of the game is still being built.</p>
-        </SignedInNotice>
-      );
+      return <Game player={player.player} email={session.user.email} />;
   }
 }
 
@@ -128,7 +127,56 @@ function devPreview() {
       );
     case 'not-set-up':
       return <NotSetUp email={sample} />;
+    case 'home-candidate':
+      return homePreview('candidate', 140, { name: 'Fall 2026', points: 90 }, 3, null);
+    case 'home-adult':
+      return homePreview('adult', 1240, { name: 'Fall 2026', points: 310 }, null, 3, [0, null]);
+    case 'home-adult-none':
+      return homePreview('adult', 0, null, null, 0, []);
+    case 'home-wisdom':
+      return homePreview('candidate', 3400, { name: 'Fall 2026', points: 1020 }, 9, null);
     default:
       return null;
   }
+}
+
+// Sample data only: these names belong to no player.
+function homePreview(
+  role: 'candidate' | 'adult',
+  lifetime: number,
+  season: { name: string; points: number } | null,
+  dueInDays: number | null,
+  pendingCount: number | null,
+  linked: (number | null)[] = [],
+) {
+  const today = todayCentral();
+  const isAdult = role === 'adult';
+  const due = (days: number | null, title = 'Retreat day') =>
+    days === null ? null : { title, dueOn: addDays(today, days) };
+  const sampleNames = ['Sample Candidate', 'Second Sample'];
+  return (
+    <GameFrame view="home" isAdult={isAdult} pendingCount={pendingCount} onNavigate={() => {}}>
+      <HomeLeaf
+        player={{
+          display_name: isAdult ? 'Sample Sponsor' : 'Sample Candidate',
+          is_candidate: !isAdult,
+          level_scale: 1,
+        }}
+        email="reader@example.com"
+        today={today}
+        data={{
+          lifetime,
+          season,
+          ownNext: isAdult ? null : due(dueInDays),
+          candidates: linked.map((days, i) => ({
+            id: String(i),
+            name: sampleNames[i],
+            next: due(days, i ? 'Service project' : 'Retreat day'),
+          })),
+        }}
+        pendingCount={pendingCount}
+        onOpenApprove={() => {}}
+      />
+    </GameFrame>
+  );
 }

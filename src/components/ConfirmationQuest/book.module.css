@@ -26,6 +26,17 @@
     padding: 48px 40px;
   }
 }
+/* Room for the fixed bottom nav (56px plus the home-indicator inset). */
+.folio.withNav {
+  min-height: calc(100dvh - 12px - 57px - env(safe-area-inset-bottom));
+  margin-bottom: calc(63px + env(safe-area-inset-bottom));
+}
+@media (min-width: 40rem) {
+  .folio.withNav {
+    min-height: calc(100dvh - 48px - 57px - env(safe-area-inset-bottom));
+    margin-bottom: calc(81px + env(safe-area-inset-bottom));
+  }
+}
 
 .leaf {
   position: relative; /* above the frame's pseudo-element */
