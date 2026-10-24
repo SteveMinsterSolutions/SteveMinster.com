@@ -1,0 +1,18 @@
+{
+  "id": "/sandbox/confirmation-quest/",
+  "name": "Confirmation Quest",
+  "short_name": "Quest",
+  "description": "A private game for Confirmation candidates and their sponsors.",
+  "start_url": "/sandbox/confirmation-quest/",
+  "scope": "/sandbox/confirmation-quest/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F4ECD8",
+  "theme_color": "#F4ECD8",
+  "icons": [
+    { "src": "/sandbox/confirmation-quest/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/sandbox/confirmation-quest/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/sandbox/confirmation-quest/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/sandbox/confirmation-quest/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

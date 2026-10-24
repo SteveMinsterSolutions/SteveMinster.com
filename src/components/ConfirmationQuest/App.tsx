@@ -4,6 +4,7 @@ import { useEffect, useState, type ReactElement } from 'react';
 import type { Session } from '@supabase/supabase-js';
 import { supabase, redirectError, type Player } from './supabase';
 import { authMessage } from './authErrors';
+import { registerServiceWorker } from './registerServiceWorker';
 import SignIn from './SignIn';
 import SignedInNotice from './SignedInNotice';
 import Game, { GameFrame } from './Game';
@@ -26,6 +27,7 @@ export default function App() {
   const [preview, setPreview] = useState<ReactElement | null>(null);
   useEffect(() => {
     if (import.meta.env.DEV) setPreview(devPreview());
+    registerServiceWorker();
   }, []);
   if (preview) return preview;
   return <LiveApp />;

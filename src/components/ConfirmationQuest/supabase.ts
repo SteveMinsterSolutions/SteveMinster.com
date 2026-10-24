@@ -5,6 +5,18 @@ import { createClient } from '@supabase/supabase-js';
 const url = import.meta.env.PUBLIC_CQ_SUPABASE_URL;
 const key = import.meta.env.PUBLIC_CQ_SUPABASE_PUBLISHABLE_KEY;
 
+/** The page's one canonical address. The service worker's scope ends in this slash. */
+export const PAGE_PATH = '/sandbox/confirmation-quest/';
+
+// Visits to the no-slash address get the slash added in place, with the query and the
+// hash (which may hold #access_token=…) kept intact. This runs before the client below
+// is created, so Supabase still reads the hash. No page load happens; the slash form is
+// what the service worker controls and what the installed app opens.
+if (typeof window !== 'undefined' && window.location.pathname === PAGE_PATH.slice(0, -1)) {
+  const { search, hash } = window.location;
+  window.history.replaceState(window.history.state, '', PAGE_PATH + search + hash);
+}
+
 export interface RedirectError {
   code: string | null;
   description: string;
@@ -37,9 +49,9 @@ export const supabase = createClient(url, key, {
   auth: { flowType: 'implicit', detectSessionInUrl: true, persistSession: true },
 });
 
-/** Where auth redirects land: this page, exactly as the player opened it. */
+/** Where auth redirects land: this page, always in its slash form. */
 export function pageUrl(): string {
-  return window.location.origin + window.location.pathname;
+  return window.location.origin + PAGE_PATH;
 }
 
 export interface Player {
