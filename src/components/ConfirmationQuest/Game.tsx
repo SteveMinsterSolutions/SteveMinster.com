@@ -2,7 +2,7 @@
 // (the hash stays free for Supabase's auth redirects). Adults also carry the count
 // of activities waiting for their approval, shown in the nav and on Home.
 import { useCallback, useEffect, useState, type ReactNode } from 'react';
-import { supabase, type Player } from './supabase';
+import { getSupabase, type Player } from './supabase';
 import Nav, { type View } from './Nav';
 import Home from './Home';
 import book from './book.module.css';
@@ -52,7 +52,7 @@ export default function Game({ player, email }: Props) {
   useEffect(() => {
     if (!isAdult) return;
     let cancelled = false;
-    supabase.rpc('pending_approvals').then(({ data, error }) => {
+    getSupabase().rpc('pending_approvals').then(({ data, error }) => {
       if (cancelled) return;
       // A failed count stays unknown here; the Approve page shows the error itself.
       if (!error && Array.isArray(data)) setPendingCount(data.length);

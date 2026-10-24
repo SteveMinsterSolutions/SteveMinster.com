@@ -1,7 +1,7 @@
 // Home: the player's illuminated name, their gift (level), their points, what's
 // coming up, and for adults how many activities wait for their approval.
 import { useEffect, useState } from 'react';
-import { supabase, type Player } from './supabase';
+import { getSupabase, type Player } from './supabase';
 import { todayCentral, addDays, dueWords } from './dates';
 import { GIFTS, ORDINALS, levelFor, type Level } from './levels';
 import { useSignOut } from './useSignOut';
@@ -42,6 +42,7 @@ function nextFor(milestones: MilestoneRow[], parish: string | null, completed: S
 }
 
 async function loadHome(player: Player, today: string): Promise<HomeData> {
+  const supabase = getSupabase();
   // An adult's "coming up" is about their linked candidates, so find them first.
   let candidateIds = [player.id];
   if (!player.is_candidate) {

@@ -2,7 +2,7 @@
 // player's row. No players row means "not set up yet", and nothing else.
 import { useEffect, useState, type ReactElement } from 'react';
 import type { Session } from '@supabase/supabase-js';
-import { supabase, redirectError, type Player } from './supabase';
+import { getSupabase, isConfigured, redirectError, type Player } from './supabase';
 import { authMessage } from './authErrors';
 import { registerServiceWorker } from './registerServiceWorker';
 import SignIn from './SignIn';
@@ -30,7 +30,18 @@ export default function App() {
     registerServiceWorker();
   }, []);
   if (preview) return preview;
+  // Same answer at build time and in the browser (the vars are inlined), so the
+  // server-rendered page and the hydrated one agree.
+  if (!isConfigured) return <NotConfigured />;
   return <LiveApp />;
+}
+
+function NotConfigured() {
+  return (
+    <main className={book.folio}>
+      <p className={`${book.leaf} ${book.prose}`}>The game isn’t configured on this deployment.</p>
+    </main>
+  );
 }
 
 function LiveApp() {
@@ -41,7 +52,7 @@ function LiveApp() {
   useEffect(() => {
     // Fires INITIAL_SESSION on subscribe, so no separate getSession() is needed.
     // Keep this callback synchronous: Supabase calls made inside it can deadlock.
-    const { data } = supabase.auth.onAuthStateChange((_event, next) => setSession(next));
+    const { data } = getSupabase().auth.onAuthStateChange((_event, next) => setSession(next));
     return () => data.subscription.unsubscribe();
   }, []);
 
@@ -49,7 +60,7 @@ function LiveApp() {
     if (!userId) return;
     let cancelled = false;
     setPlayer({ kind: 'loading' });
-    supabase
+    getSupabase()
       .from('players')
       .select('id, display_name, is_candidate, is_admin, parish, level_scale')
       .eq('id', userId)

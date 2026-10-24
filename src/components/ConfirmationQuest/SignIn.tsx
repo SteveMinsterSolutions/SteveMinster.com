@@ -2,7 +2,7 @@
 // Inside the installed app (display-mode: standalone) the code leads, because on
 // iPhone a link opened from Mail signs in to Safari, not to the app.
 import { useId, useState, type FormEvent } from 'react';
-import { supabase, pageUrl } from './supabase';
+import { getSupabase, pageUrl } from './supabase';
 import { authMessage } from './authErrors';
 import IlluminatedTitle from './IlluminatedTitle';
 import Fleuron from './Fleuron';
@@ -47,7 +47,7 @@ export default function SignIn({ initialError = null, preview }: Props) {
   async function signInWithGoogle() {
     setError(null);
     setBusy('google');
-    const { error: err } = await supabase.auth.signInWithOAuth({
+    const { error: err } = await getSupabase().auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: pageUrl() },
     });
@@ -67,7 +67,7 @@ export default function SignIn({ initialError = null, preview }: Props) {
     }
     setError(null);
     setBusy('send');
-    const { error: err } = await supabase.auth.signInWithOtp({
+    const { error: err } = await getSupabase().auth.signInWithOtp({
       email: address,
       options: { shouldCreateUser: false, emailRedirectTo: pageUrl() },
     });
@@ -93,7 +93,7 @@ export default function SignIn({ initialError = null, preview }: Props) {
     }
     setError(null);
     setBusy('verify');
-    const { error: err } = await supabase.auth.verifyOtp({ email: address, token, type: 'email' });
+    const { error: err } = await getSupabase().auth.verifyOtp({ email: address, token, type: 'email' });
     // On success, App hears the auth change and moves on.
     if (err) {
       setError({ text: authMessage(err), field: 'code' });
