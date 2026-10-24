@@ -39,3 +39,36 @@
 .small {
   font-size: 9.5px;
 }
+
+/* Pressed on: it comes down large and tilted, overshoots, and settles. */
+.stamp {
+  transform-origin: 50% 50%;
+  animation: stamp 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes stamp {
+  0% {
+    opacity: 0;
+    transform: scale(1.8) rotate(-14deg);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.92) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stamp {
+    animation: settle 160ms ease-out both;
+  }
+}
+@keyframes settle {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

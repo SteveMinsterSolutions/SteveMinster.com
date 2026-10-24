@@ -6,6 +6,7 @@ import { getSupabase, type Player } from './supabase';
 import Nav, { type View } from './Nav';
 import Home from './Home';
 import LogActivity from './LogActivity';
+import Approvals from './Approvals';
 import book from './book.module.css';
 
 const VIEWS: View[] = ['home', 'log', 'quiz', 'boards', 'prayers', 'approve'];
@@ -16,11 +17,10 @@ function viewFromUrl(isAdult: boolean): View {
   return v;
 }
 
-const UNBUILT: Record<Exclude<View, 'home' | 'log'>, string> = {
+const UNBUILT: Record<Exclude<View, 'home' | 'log' | 'approve'>, string> = {
   quiz: 'Daily quiz',
   boards: 'Leaderboards',
   prayers: 'Prayers',
-  approve: 'Approvals',
 };
 
 interface Props {
@@ -73,6 +73,8 @@ export default function Game({ player, email }: Props) {
         />
       ) : view === 'log' ? (
         <LogActivity player={player} />
+      ) : view === 'approve' ? (
+        <Approvals player={player} onCount={setPendingCount} />
       ) : (
         <>
           <h1 className={book.heading}>{UNBUILT[view]}</h1>

@@ -10,6 +10,7 @@ import SignedInNotice from './SignedInNotice';
 import Game, { GameFrame } from './Game';
 import { HomeLeaf } from './Home';
 import { LogLeaf } from './LogActivity';
+import { ApprovalsLeaf, type Outcome, type PendingRow } from './Approvals';
 import type { ActivityType, ActivityRow } from './activities';
 import { todayCentral, addDays } from './dates';
 import book from './book.module.css';
@@ -156,6 +157,16 @@ function devPreview() {
       return logPreview(false, { typeCode: 'service-hours', hours: '2.5', supervisedBy: 'Parish coordinator', note: 'Food pantry sorting.', withCandidate: 'c1' });
     case 'log-empty':
       return logPreview(true, undefined, []);
+    case 'approve':
+      return approvePreview();
+    case 'approve-decided':
+      return approvePreview({
+        settled: { 1: { kind: 'approved', points: 25 }, 2: { kind: 'approved', points: 0 }, 4: { kind: 'rejected' } },
+        confirming: 5,
+        errors: { 6: 'This wasn’t approved. The server said: Failed to fetch. Try again; if it keeps happening, tell the game admin.' },
+      });
+    case 'approve-empty':
+      return approvePreview(undefined, []);
     case 'home-wisdom':
       return homePreview('candidate', 3400, { name: 'Fall 2026', points: 1020 }, 9, null);
     default:
@@ -260,3 +271,37 @@ function logPreview(
   );
 }
 
+// Sample pending rows for Approvals previews. Approving here resolves with the type's points.
+function approvePreview(preview?: Parameters<typeof ApprovalsLeaf>[0]['preview'], rows?: PendingRow[]) {
+  const today = todayCentral();
+  const types = new Map(SAMPLE_TYPES.map((t) => [t.code, t]));
+  const row = (id: number, who: 'c1' | 'c2' | 'a1', type_code: string, days: number, extra: Partial<PendingRow> = {}): PendingRow => ({
+    id, player_id: who, display_name: who === 'c1' ? 'Sample Candidate' : who === 'c2' ? 'Second Sample' : 'Sample Sponsor',
+    is_candidate: who !== 'a1', type_code, type_name: types.get(type_code)!.name, occurred_on: addDays(today, -days),
+    hours: null, note: null, supervised_by: null, with_candidate: null, created_at: '', ...extra,
+  });
+  const pending = rows ?? [
+    row(1, 'c1', 'mass-sunday', 6),
+    row(2, 'c1', 'mass-sunday', 5),
+    row(3, 'c2', 'service-hours', 4, { hours: 2.5, supervised_by: 'Parish coordinator', note: 'Sorted cans at the food pantry and helped load the truck.' }),
+    row(4, 'c1', 'youth-night', 3),
+    row(5, 'a1', 'service-hours', 2, { hours: 1, supervised_by: 'Parish coordinator', with_candidate: 'c1' }),
+    row(6, 'c2', 'reconciliation', 1),
+    row(7, 'c1', 'retreat', 0, { note: 'The whole weekend.' }),
+  ];
+  const onDecide = async (r: PendingRow, ok: boolean) => {
+    await new Promise((done) => setTimeout(done, 400));
+    const t = types.get(r.type_code)!;
+    const outcome: Outcome = ok ? { kind: 'approved', points: t.per_hour ? Math.round(t.points * (r.hours ?? 0)) : t.points } : { kind: 'rejected' };
+    return { outcome };
+  };
+  return (
+    <GameFrame view="approve" isAdult pendingCount={pending.length - Object.keys(preview?.settled ?? {}).length} onNavigate={() => {}}>
+      <ApprovalsLeaf
+        data={{ rows: pending, types: SAMPLE_TYPES, names: { c1: 'Sample Candidate', c2: 'Second Sample' }, sponsoring: ['c1'] }}
+        onDecide={onDecide}
+        preview={preview}
+      />
+    </GameFrame>
+  );
+}

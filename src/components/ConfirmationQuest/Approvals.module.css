@@ -1,0 +1,150 @@
+.group {
+  margin-top: 28px;
+}
+.group:first-of-type {
+  margin-top: 8px;
+}
+
+/* The player's name in rubric, with how many of theirs are still waiting. */
+.player {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 6px;
+  font-family: var(--cq-serif);
+  font-weight: 500;
+  font-size: 1.3125rem;
+  line-height: 1.3;
+  color: var(--rubric);
+}
+.count {
+  flex: none;
+  font-family: var(--cq-sans);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--ink-faded);
+}
+
+/* The same ruled ledger as Log activity. */
+.ledger {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 3px double color-mix(in srgb, var(--ink-faded) 70%, transparent);
+}
+.entry {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr 36px;
+  gap: 10px;
+  align-items: start;
+  padding: 12px 0 14px;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink-faded) 40%, transparent);
+}
+.date {
+  padding-top: 1px;
+  font-weight: 500;
+  color: var(--rubric);
+  white-space: nowrap;
+}
+.what {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+.name {
+  line-height: 1.35;
+}
+.detail {
+  font-family: var(--cq-sans);
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--ink-faded);
+}
+.note {
+  margin-top: 4px;
+  font-style: italic;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.entryError {
+  margin: 8px 0 0;
+  font-family: var(--cq-sans);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+/* The buttons take the row under the entry, seal column included, so two fit at 320. */
+.actions {
+  grid-column: 2 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+}
+.ask {
+  flex-basis: 100%;
+  font-family: var(--cq-sans);
+  font-size: 0.875rem;
+  color: var(--ink);
+}
+.btn {
+  box-sizing: border-box;
+  min-height: 44px;
+  min-width: 6.25rem;
+  padding: 8px 14px;
+  border: 1px solid var(--lapis);
+  border-radius: 3px;
+  font-family: var(--cq-serif);
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+}
+.btn:focus-visible {
+  outline: 2px solid var(--lapis);
+  outline-offset: 2px;
+}
+.btn:disabled {
+  cursor: progress;
+  opacity: 0.65;
+}
+.approve {
+  background: var(--lapis);
+  color: var(--on-lapis);
+}
+.approve:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+.quiet {
+  background: transparent;
+  color: var(--ink);
+}
+.quiet:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--lapis) 8%, transparent);
+}
+.reject {
+  border-color: var(--rubric);
+  background: var(--rubric);
+  color: var(--vellum);
+}
+
+.result {
+  margin-top: 8px;
+  font-family: var(--cq-sans);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--ink);
+}
+.result:focus {
+  outline: none;
+}
+.result:focus-visible {
+  outline: 2px solid var(--lapis);
+  outline-offset: 2px;
+}
+.earned {
+  font-weight: 600;
+}

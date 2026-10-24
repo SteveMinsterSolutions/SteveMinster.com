@@ -1,11 +1,13 @@
 // A status seal: an empty ink ring while pending, a gold wax seal bearing the points
 // once approved, a rubric seal struck through when rejected. Original drawing. The
 // status is always written beside it, so the seal itself is hidden from screen readers.
+// stamp presses the approved seal on as it appears (a plain fade with reduced motion).
 import styles from './Seal.module.css';
 
 interface Props {
   status: 'pending' | 'approved' | 'rejected';
   points?: number | null;
+  stamp?: boolean;
 }
 
 // A wax seal's uneven rim: twelve soft lobes around the circle.
@@ -19,7 +21,7 @@ const RIM = (() => {
   return `M${pts.join('L')}Z`;
 })();
 
-export default function Seal({ status, points }: Props) {
+export default function Seal({ status, points, stamp }: Props) {
   if (status === 'pending') {
     return (
       <svg className={styles.seal} viewBox="0 0 36 36" aria-hidden="true" focusable="false">
@@ -38,7 +40,7 @@ export default function Seal({ status, points }: Props) {
   }
   const label = String(points ?? 0);
   return (
-    <svg className={styles.seal} viewBox="0 0 36 36" aria-hidden="true" focusable="false">
+    <svg className={`${styles.seal} ${stamp ? styles.stamp : ''}`} viewBox="0 0 36 36" aria-hidden="true" focusable="false">
       <path d={RIM} className={styles.approvedWax} />
       <circle cx="18" cy="18" r="11" className={styles.innerRule} />
       <text x="18" y="18" className={`${styles.points} ${label.length > 2 ? styles.small : ''}`}>
