@@ -1,0 +1,9 @@
+.leaf {
+  max-width: 26rem;
+  padding-top: 24px;
+}
+.signOut {
+  margin-top: 12px;
+  width: auto;
+  min-width: 10rem;
+}

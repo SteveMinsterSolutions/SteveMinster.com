@@ -1,0 +1,92 @@
+/* The initial spans two lines of the 36px title, as a two-line drop cap would. */
+.title {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--cq-serif);
+  font-weight: 500;
+  font-size: 2.25rem;
+  line-height: 1.1;
+  color: var(--ink);
+}
+.center {
+  justify-content: center;
+}
+
+.initial {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 80px;
+  height: 80px;
+}
+.frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.ground {
+  fill: var(--lapis-deep);
+}
+.rule {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1;
+}
+.vine {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+}
+.leaf {
+  fill: var(--gold);
+  stroke: none;
+}
+
+.letter {
+  position: relative;
+  font-family: var(--cq-display);
+  font-weight: 700;
+  font-size: 2.75rem;
+  line-height: 1;
+  color: var(--gold);
+  transform: translateY(2px); /* Cinzel caps sit high in their box */
+}
+
+/* The page's one unprompted motion: a single gilding sheen across the initial. */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .letter {
+    background-image: linear-gradient(
+      105deg,
+      var(--gold) 0%,
+      var(--gold) 42%,
+      #FFF3CC 50%,
+      var(--gold) 58%,
+      var(--gold) 100%
+    );
+    background-size: 300% 100%;
+    background-position: 0% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gild 1.6s ease-out 0.35s 1 both;
+  }
+}
+@keyframes gild {
+  from { background-position: 100% 0; }
+  to { background-position: 0% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .letter {
+    animation: none;
+  }
+}
+
+.rest {
+  padding-top: 2px;
+  min-width: 0;
+}

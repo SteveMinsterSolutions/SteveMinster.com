@@ -1,0 +1,55 @@
+/* Confirmation Quest tokens. Imported only by src/pages/sandbox/confirmation-quest.astro,
+   so these globals ship on that page and nowhere else. */
+:root {
+  --vellum: #F4ECD8;
+  --ink: #2A2118;
+  --ink-faded: #5E5040;
+  --rubric: #A8321E;
+  --lapis: #1F4E8C;
+  --lapis-deep: #1F4E8C; /* drop-cap ground; stays dark in dark mode */
+  --gold: #B8902F;
+  --season: #2F6B3A;
+  --on-lapis: #F4ECD8;
+
+  --cq-serif: 'EB Garamond', Garamond, 'Times New Roman', serif;
+  --cq-display: 'Cinzel Decorative', 'EB Garamond', serif;
+  --cq-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --vellum: #1E1A14;
+    --ink: #EFE6D2;
+    --ink-faded: #B8AC95;
+    --rubric: #D9623F;
+    --lapis: #6E9BD6;
+    --lapis-deep: #1B3357;
+    --gold: #D8B45A;
+    --on-lapis: #1E1A14;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --vellum: #1E1A14;
+  --ink: #EFE6D2;
+  --ink-faded: #B8AC95;
+  --rubric: #D9623F;
+  --lapis: #6E9BD6;
+  --lapis-deep: #1B3357;
+  --gold: #D8B45A;
+  --on-lapis: #1E1A14;
+  color-scheme: dark;
+}
+
+body.cq {
+  margin: 0;
+  background: var(--vellum);
+  color: var(--ink);
+  font-family: var(--cq-serif);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+  overflow-wrap: break-word;
+}

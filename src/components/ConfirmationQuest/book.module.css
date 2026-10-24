@@ -1,0 +1,183 @@
+/* Shared leaf styles: the page frame, headings, fields, buttons and notices. */
+
+/* One frame per page: a lapis hairline with a gold hairline set inside it. */
+.folio {
+  position: relative;
+  box-sizing: border-box;
+  max-width: 36rem;
+  min-height: calc(100dvh - 12px);
+  margin: 6px auto;
+  padding:
+    calc(28px + env(safe-area-inset-top)) calc(14px + env(safe-area-inset-right))
+    calc(28px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left));
+  border: 1px solid var(--lapis);
+}
+.folio::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px solid var(--gold);
+  pointer-events: none;
+}
+@media (min-width: 40rem) {
+  .folio {
+    margin: 24px auto;
+    min-height: calc(100dvh - 48px);
+    padding: 48px 40px;
+  }
+}
+
+.leaf {
+  position: relative; /* above the frame's pseudo-element */
+  max-width: 34rem;
+  margin: 0 auto;
+}
+
+.heading {
+  margin: 0 0 0.5em;
+  font-family: var(--cq-serif);
+  font-weight: 500;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  color: var(--rubric);
+}
+
+.prose {
+  margin: 0 0 1em;
+}
+
+.fine {
+  margin: 0;
+  font-family: var(--cq-sans);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--ink-faded);
+}
+
+/* Fields */
+.field {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 14px;
+}
+.label {
+  font-family: var(--cq-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 12px;
+  border: 1px solid var(--ink-faded);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--cq-serif);
+  font-size: 1.125rem; /* 18px: keeps iOS from zooming on focus */
+}
+.input::placeholder {
+  color: var(--ink-faded);
+  opacity: 0.8;
+}
+.input[aria-invalid='true'] {
+  border-color: var(--rubric);
+}
+.code {
+  letter-spacing: 0.2em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Buttons: square-ish, never pill. Primary is filled lapis. */
+.button,
+.buttonQuiet {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 16px;
+  border: 1px solid var(--lapis);
+  border-radius: 3px;
+  font-family: var(--cq-serif);
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+  text-decoration: none;
+}
+.button {
+  background: var(--lapis);
+  color: var(--on-lapis);
+}
+.buttonQuiet {
+  background: transparent;
+  color: var(--ink);
+}
+.button:hover {
+  filter: brightness(1.08);
+}
+.buttonQuiet:hover {
+  background: color-mix(in srgb, var(--lapis) 8%, transparent);
+}
+.button:disabled,
+.buttonQuiet:disabled {
+  cursor: progress;
+  opacity: 0.65;
+}
+
+/* A text-only action, for "I already have a code" and similar. */
+.link {
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: var(--lapis);
+  font-family: var(--cq-sans);
+  font-size: 0.875rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.button:focus-visible,
+.buttonQuiet:focus-visible,
+.link:focus-visible,
+.input:focus-visible {
+  outline: 2px solid var(--lapis);
+  outline-offset: 2px;
+}
+
+/* Notices are rubricated paragraphs: a red pilcrow marks them. */
+.notice,
+.error {
+  margin: 0 0 14px;
+  padding-left: 1.1em;
+  text-indent: -1.1em;
+}
+.notice::before,
+.error::before {
+  content: '¶';
+  display: inline-block;
+  width: 1.1em;
+  text-indent: 0;
+  color: var(--rubric);
+}
+.error {
+  color: var(--rubric);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

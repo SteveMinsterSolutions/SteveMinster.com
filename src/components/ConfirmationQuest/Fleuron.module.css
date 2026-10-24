@@ -1,0 +1,9 @@
+.fleuron {
+  display: flex;
+  justify-content: center;
+  margin: 22px 0;
+  color: var(--rubric);
+}
+.fleuron svg {
+  display: block;
+}
