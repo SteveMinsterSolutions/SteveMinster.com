@@ -9,6 +9,7 @@ import LogActivity from './LogActivity';
 import Approvals from './Approvals';
 import Leaderboards from './Leaderboards';
 import Prayers from './Prayers';
+import Quiz from './Quiz';
 import book from './book.module.css';
 
 const VIEWS: View[] = ['home', 'log', 'quiz', 'boards', 'prayers', 'approve'];
@@ -18,10 +19,6 @@ function viewFromUrl(isAdult: boolean): View {
   if (!v || !VIEWS.includes(v) || (v === 'approve' && !isAdult)) return 'home';
   return v;
 }
-
-const UNBUILT: Record<Exclude<View, 'home' | 'log' | 'approve' | 'boards' | 'prayers'>, string> = {
-  quiz: 'Daily quiz',
-};
 
 interface Props {
   player: Player;
@@ -80,10 +77,7 @@ export default function Game({ player, email }: Props) {
       ) : view === 'approve' ? (
         <Approvals player={player} onCount={setPendingCount} />
       ) : (
-        <>
-          <h1 className={book.heading}>{UNBUILT[view]}</h1>
-          <p className={book.prose}>This page is still being built.</p>
-        </>
+        <Quiz />
       )}
     </GameFrame>
   );

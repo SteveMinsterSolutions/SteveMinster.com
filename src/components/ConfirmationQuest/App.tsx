@@ -10,6 +10,7 @@ import SignedInNotice from './SignedInNotice';
 import Game, { GameFrame } from './Game';
 import { HomeLeaf } from './Home';
 import { LogLeaf } from './LogActivity';
+import { QuizLeaf, type Graded, type QuizQuestion } from './Quiz';
 import { PrayersLeaf, type Linked, type Recited } from './Prayers';
 import { BoardsLeaf, type Board, type BoardRow } from './Leaderboards';
 import { ApprovalsLeaf, type Outcome, type PendingRow } from './Approvals';
@@ -189,6 +190,20 @@ function devPreview() {
       return prayersPreview(true, 1);
     case 'prayers-unlinked':
       return prayersPreview(true, 0);
+    case 'quiz':
+      return quizPreview();
+    case 'quiz-chosen':
+      return quizPreview(1, { chosen: 2 });
+    case 'quiz-right':
+      return quizPreview(0, { chosen: 1, graded: { correct: true, explanation: SAMPLE_EXPLANATION, source_ref: 'Sample reference 1285', points: 10 } });
+    case 'quiz-wrong':
+      return quizPreview(0, { chosen: 3, graded: { correct: false, explanation: SAMPLE_EXPLANATION, source_ref: 'Sample reference 1285', points: 0 } });
+    case 'quiz-capped':
+      return quizPreview(2, { chosen: 0, graded: { correct: true, explanation: 'A sample explanation for the capped case.', source_ref: null, points: 0 } });
+    case 'quiz-error':
+      return quizPreview(1, { chosen: 1, error: 'You’ve answered this one today. New questions tomorrow.' });
+    case 'quiz-done':
+      return quizPreview(3);
     case 'home-wisdom':
       return homePreview('candidate', 3400, { name: 'Fall 2026', points: 1020 }, 9, null);
     default:
@@ -425,5 +440,30 @@ function HeardPreview({ linked, initial, preview }: { linked: Linked[]; initial:
         },
       }}
     />
+  );
+}
+
+// Illustrative questions for Daily quiz previews; live ones come from daily_quiz().
+const SAMPLE_EXPLANATION =
+  'A sample explanation: it says why the right answer is right, in two or three sentences, without naming the option letter.';
+const sampleQuestions = (answered: number): QuizQuestion[] =>
+  [
+    { prompt: 'Which sacrament is this sample question about?', options: ['Baptism', 'Confirmation', 'Eucharist', 'Marriage'], difficulty: 2 },
+    { prompt: 'A second sample question, a little longer, to see how a prompt wraps on a narrow phone?', options: ['First option', 'Second option', 'A third option with longer text that wraps onto a second line', 'Fourth option'], difficulty: 1 },
+    { prompt: 'A third sample question?', options: ['Yes', 'No', 'Sometimes'], difficulty: 3 },
+  ].map((q, i) => ({ id: i + 1, category: 'sacraments', answered_today: i < answered, ...q }));
+
+function quizPreview(answered = 0, preview?: { chosen?: number; graded?: Graded; error?: string }) {
+  return (
+    <GameFrame view="quiz" isAdult={false} pendingCount={null} onNavigate={() => {}}>
+      <QuizLeaf
+        questions={sampleQuestions(answered)}
+        preview={preview}
+        onAnswer={async (_q, chosen) => {
+          await new Promise((done) => setTimeout(done, 400));
+          return { graded: { correct: chosen === 1, explanation: SAMPLE_EXPLANATION, source_ref: 'Sample reference 1285', points: chosen === 1 ? 10 : 0 } };
+        }}
+      />
+    </GameFrame>
   );
 }

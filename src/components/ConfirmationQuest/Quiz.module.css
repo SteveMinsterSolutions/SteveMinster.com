@@ -1,0 +1,150 @@
+/* Today's three as rings: gold once answered, a rubric ring on the current one. */
+.tally {
+  display: flex;
+  gap: 10px;
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+.dot {
+  width: 14px;
+  height: 14px;
+  box-sizing: border-box;
+  border: 1.25px dashed var(--ink-faded);
+  border-radius: 50%;
+}
+.current {
+  border: 2px solid var(--rubric);
+}
+.answered {
+  border: 1px solid color-mix(in srgb, var(--ink) 55%, transparent);
+  background: var(--gold);
+}
+
+.form {
+  margin-top: 18px;
+}
+.question {
+  margin: 0 0 16px;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.legend {
+  display: block;
+  padding: 0;
+  margin: 0 0 14px;
+}
+.meta {
+  display: block;
+  font-family: var(--cq-sans);
+  font-size: 0.875rem;
+  color: var(--ink-faded);
+}
+.prompt {
+  margin: 4px 0 0;
+  font-family: var(--cq-serif);
+  font-weight: 500;
+  font-size: 1.375rem;
+  line-height: 1.3;
+  color: var(--ink);
+}
+.prompt:focus,
+.verdict:focus {
+  outline: none;
+}
+
+/* Options are full-width rows, each one a tap target, lettered in rubric. */
+.options {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.option {
+  display: grid;
+  grid-template-columns: 1.5rem 1fr;
+  column-gap: 8px;
+  align-items: baseline;
+  min-height: 48px;
+  box-sizing: border-box;
+  padding: 11px 12px;
+  border: 1px solid color-mix(in srgb, var(--ink-faded) 60%, transparent);
+  border-radius: 3px;
+  cursor: pointer;
+}
+.option input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.option:has(input:focus-visible) {
+  outline: 2px solid var(--lapis);
+  outline-offset: 2px;
+}
+.option:has(input:disabled) {
+  cursor: default;
+}
+.letter {
+  font-family: var(--cq-serif);
+  font-weight: 500;
+  color: var(--rubric);
+}
+.text {
+  line-height: 1.4;
+}
+.chosen {
+  border-color: var(--lapis);
+  box-shadow: inset 3px 0 0 var(--lapis);
+}
+/* After grading, only the player's own choice is marked, in words as well as color. */
+.right {
+  border-color: var(--season);
+  box-shadow: inset 3px 0 0 var(--season);
+}
+.wrong {
+  border-color: var(--rubric);
+  box-shadow: inset 3px 0 0 var(--rubric);
+}
+.mark {
+  grid-column: 2;
+  margin-top: 4px;
+  font-family: var(--cq-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* The teaching: set off by a double rule, like a gloss at the foot of the page. */
+.feedback {
+  margin: 4px 0 20px;
+  padding-top: 14px;
+  border-top: 3px double color-mix(in srgb, var(--ink-faded) 70%, transparent);
+}
+.verdict {
+  margin: 0 0 6px;
+  font-family: var(--cq-serif);
+  font-weight: 500;
+  font-size: 1.3125rem;
+  color: var(--rubric);
+}
+.explanation {
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+.source {
+  margin: 0 0 8px;
+  font-style: italic;
+  color: var(--ink-faded);
+}
+.points {
+  margin: 0;
+  font-family: var(--cq-sans);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.next {
+  margin-top: 4px;
+}
