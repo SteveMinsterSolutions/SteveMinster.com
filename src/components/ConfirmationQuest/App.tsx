@@ -9,6 +9,8 @@ import SignIn from './SignIn';
 import SignedInNotice from './SignedInNotice';
 import Game, { GameFrame } from './Game';
 import { HomeLeaf } from './Home';
+import { LogLeaf } from './LogActivity';
+import type { ActivityType, ActivityRow } from './activities';
 import { todayCentral, addDays } from './dates';
 import book from './book.module.css';
 
@@ -146,6 +148,14 @@ function devPreview() {
       return homePreview('adult', 1240, { name: 'Fall 2026', points: 310 }, null, 3, [0, null]);
     case 'home-adult-none':
       return homePreview('adult', 0, null, null, 0, []);
+    case 'log-candidate':
+      return logPreview(true);
+    case 'log-adult':
+      return logPreview(false);
+    case 'log-service':
+      return logPreview(false, { typeCode: 'service-hours', hours: '2.5', supervisedBy: 'Parish coordinator', note: 'Food pantry sorting.', withCandidate: 'c1' });
+    case 'log-empty':
+      return logPreview(true, undefined, []);
     case 'home-wisdom':
       return homePreview('candidate', 3400, { name: 'Fall 2026', points: 1020 }, 9, null);
     default:
@@ -193,3 +203,60 @@ function homePreview(
     </GameFrame>
   );
 }
+
+// Sample activity types and rows for Log previews. Codes and names are illustrative.
+function sampleType(code: string, name: string, category: string, points: number, extra: Partial<ActivityType> = {}): ActivityType {
+  return {
+    code, name, category, points, per_hour: false, weekly_cap: null, monthly_cap: null, lifetime_cap: null,
+    candidate_only: false, allows_note: true, requires_supervisor: false, active: true, sort: 0, ...extra,
+  };
+}
+const SAMPLE_TYPES: ActivityType[] = [
+  sampleType('mass-sunday', 'Sunday Mass', 'mass', 25, { weekly_cap: 1 }),
+  sampleType('mass-weekday', 'Weekday Mass', 'mass', 15, { weekly_cap: 2 }),
+  sampleType('youth-night', 'Youth night', 'youth', 20, { weekly_cap: 1 }),
+  sampleType('service-hours', 'Service hours', 'service', 10, { per_hour: true, requires_supervisor: true }),
+  sampleType('reconciliation', 'Reconciliation', 'sacrament', 30, { monthly_cap: 1, allows_note: false }),
+  sampleType('candidate-class', 'Candidate class', 'learning', 20, { candidate_only: true }),
+  sampleType('retreat', 'Retreat', 'event', 100),
+  sampleType('prayer-our-father', 'Our Father', 'prayer', 25, { lifetime_cap: 1 }),
+];
+
+function logPreview(
+  isCandidate: boolean,
+  preview?: Parameters<typeof LogLeaf>[0]['preview'],
+  rows?: ActivityRow[],
+) {
+  const today = todayCentral();
+  const row = (id: number, type_code: string, days: number, status: ActivityRow['status'], points: number | null, extra: Partial<ActivityRow> = {}): ActivityRow => ({
+    id, type_code, occurred_on: addDays(today, -days), hours: null, note: null, supervised_by: null,
+    with_candidate: null, status, points_awarded: points, created_at: '', ...extra,
+  });
+  const recent = rows ?? [
+    row(1, 'mass-sunday', 0, 'pending', null),
+    row(2, 'service-hours', 2, 'approved', 25, { hours: 2.5, with_candidate: 'c1' }),
+    row(3, 'mass-sunday', 4, 'approved', 0),
+    row(4, 'mass-sunday', 6, 'approved', 25),
+    row(5, 'youth-night', 9, 'rejected', 0),
+    row(6, 'reconciliation', 12, 'approved', 30),
+    row(7, 'retreat', 20, 'approved', 100),
+  ];
+  return (
+    <GameFrame view="log" isAdult={!isCandidate} pendingCount={isCandidate ? null : 2} onNavigate={() => {}}>
+      <LogLeaf
+        isCandidate={isCandidate}
+        today={today}
+        data={{
+          types: SAMPLE_TYPES,
+          sponsored: isCandidate ? [] : [{ id: 'c1', name: 'Sample Candidate' }],
+          recent,
+          gameStart: addDays(today, -60),
+        }}
+        onSubmit={async () => null}
+        onWithdraw={async () => null}
+        preview={preview}
+      />
+    </GameFrame>
+  );
+}
+

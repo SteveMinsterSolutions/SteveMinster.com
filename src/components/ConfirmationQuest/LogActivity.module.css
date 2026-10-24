@@ -1,0 +1,136 @@
+.form {
+  margin-top: 8px;
+}
+
+/* Native select with a drawn caret, so it matches the other fields. */
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 40px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--ink-faded) 50%),
+    linear-gradient(135deg, var(--ink-faded) 50%, transparent 50%);
+  background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+.select option,
+.select optgroup {
+  background: var(--vellum);
+  color: var(--ink);
+}
+
+.short {
+  max-width: 8rem;
+}
+.note {
+  min-height: 5.5rem;
+  resize: vertical;
+  line-height: 1.45;
+}
+.optional {
+  font-weight: 400;
+  color: var(--ink-faded);
+}
+.gap {
+  margin: -4px 0 14px;
+}
+
+/* "I did this with …": the whole row is the label, so the target is full width. */
+.check {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  margin: 0 0 14px;
+  font-size: 1.0625rem;
+  cursor: pointer;
+}
+.check input {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  flex: none;
+  accent-color: var(--lapis);
+}
+
+.submit {
+  margin-top: 4px;
+}
+
+.recent {
+  margin-top: 40px;
+}
+.subhead {
+  margin: 0 0 6px;
+  font-family: var(--cq-serif);
+  font-weight: 500;
+  font-size: 1.3125rem;
+  line-height: 1.3;
+  color: var(--rubric);
+}
+
+/* The ledger: a double rule at the head, then one hairline between entries. */
+.ledger {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 3px double color-mix(in srgb, var(--ink-faded) 70%, transparent);
+}
+.entry {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr 36px;
+  gap: 10px;
+  align-items: start;
+  padding: 12px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink-faded) 40%, transparent);
+}
+.date {
+  padding-top: 1px;
+  font-weight: 500;
+  color: var(--rubric);
+  white-space: nowrap;
+}
+.what {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+.name {
+  line-height: 1.35;
+}
+.detail,
+.status {
+  font-family: var(--cq-sans);
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--ink-faded);
+}
+.status {
+  color: var(--ink);
+}
+
+.action {
+  min-height: 32px;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: var(--lapis);
+  font-family: var(--cq-sans);
+  font-size: 0.875rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.action:focus-visible {
+  outline: 2px solid var(--lapis);
+  outline-offset: 2px;
+}
+.confirm {
+  font-family: var(--cq-sans);
+  font-size: 0.875rem;
+  color: var(--ink);
+}
+.confirm .action + .action {
+  margin-left: 12px;
+}

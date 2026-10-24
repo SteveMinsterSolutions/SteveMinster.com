@@ -1,0 +1,41 @@
+.seal {
+  display: block;
+  width: 36px;
+  height: 36px;
+  flex: none;
+}
+.pendingRing {
+  fill: none;
+  stroke: var(--ink-faded);
+  stroke-width: 1.25;
+  stroke-dasharray: 3 2.5;
+}
+.approvedWax {
+  fill: var(--gold);
+}
+.rejectedWax {
+  fill: var(--rubric);
+}
+.innerRule {
+  fill: none;
+  stroke: var(--vellum);
+  stroke-width: 0.8;
+  opacity: 0.7;
+}
+.strike {
+  stroke: var(--vellum);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+/* Dark ink on gold in both modes (the light vellum on gold is too faint). */
+.points {
+  fill: #2A2118;
+  font-family: var(--cq-sans);
+  font-size: 12px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.small {
+  font-size: 9.5px;
+}

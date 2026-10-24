@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { getSupabase, type Player } from './supabase';
 import Nav, { type View } from './Nav';
 import Home from './Home';
+import LogActivity from './LogActivity';
 import book from './book.module.css';
 
 const VIEWS: View[] = ['home', 'log', 'quiz', 'boards', 'prayers', 'approve'];
@@ -15,8 +16,7 @@ function viewFromUrl(isAdult: boolean): View {
   return v;
 }
 
-const UNBUILT: Record<Exclude<View, 'home'>, string> = {
-  log: 'Log activity',
+const UNBUILT: Record<Exclude<View, 'home' | 'log'>, string> = {
   quiz: 'Daily quiz',
   boards: 'Leaderboards',
   prayers: 'Prayers',
@@ -71,6 +71,8 @@ export default function Game({ player, email }: Props) {
           pendingCount={isAdult ? pendingCount : null}
           onOpenApprove={() => navigate('approve')}
         />
+      ) : view === 'log' ? (
+        <LogActivity player={player} />
       ) : (
         <>
           <h1 className={book.heading}>{UNBUILT[view]}</h1>
