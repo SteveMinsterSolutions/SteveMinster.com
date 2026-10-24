@@ -22,3 +22,8 @@ export function dueWords(iso: string, today: string): string {
     timeZone: 'UTC',
   });
 }
+
+/** "Oct 24". */
+export function shortDate(iso: string): string {
+  return new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+}

@@ -4,6 +4,7 @@
 // entries stay on the page with their seal and result until the adult leaves it.
 import { useEffect, useRef, useState } from 'react';
 import { getSupabase, type Player } from './supabase';
+import { shortDate } from './dates';
 import { TYPE_COLUMNS, capWords, type ActivityType } from './activities';
 import Seal from './Seal';
 import book from './book.module.css';
@@ -158,9 +159,6 @@ export default function Approvals({ player, onCount }: Props) {
   }
   return <ApprovalsLeaf data={load.data} refreshError={refreshError} onDecide={decide} />;
 }
-
-const shortDate = (iso: string) =>
-  new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 
 interface Settled {
   row: PendingRow;

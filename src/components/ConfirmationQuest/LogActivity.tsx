@@ -3,7 +3,7 @@
 // recent activities as a ruled ledger with their seals; pending ones can be withdrawn.
 import { useCallback, useEffect, useId, useState, type FormEvent } from 'react';
 import { getSupabase, type Player } from './supabase';
-import { todayCentral } from './dates';
+import { shortDate, todayCentral } from './dates';
 import {
   CATEGORY_LABELS,
   ROW_COLUMNS,
@@ -425,9 +425,6 @@ export function LogLeaf({ isCandidate, data, today, onSubmit, onWithdraw, previe
     </>
   );
 }
-
-const shortDate = (iso: string) =>
-  new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 
 interface LedgerProps {
   rows: ActivityRow[];

@@ -1,0 +1,133 @@
+/* Linked candidates, when there is more than one: the chosen one filled lapis. */
+.people {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 18px;
+}
+.person {
+  min-height: 44px;
+  padding: 6px 14px;
+  border: 1px solid color-mix(in srgb, var(--ink-faded) 60%, transparent);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--cq-serif);
+  font-size: 1.0625rem;
+  cursor: pointer;
+}
+.person[aria-pressed='true'] {
+  border-color: var(--lapis);
+  background: var(--lapis);
+  color: var(--on-lapis);
+}
+.person:focus-visible {
+  outline: 2px solid var(--lapis);
+  outline-offset: 2px;
+}
+
+.tally {
+  margin: 0 0 4px;
+  font-size: 1.1875rem;
+}
+
+/* The same ruled ledger as Log activity: name and status, the seal in the margin. */
+.ledger {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 3px double color-mix(in srgb, var(--ink-faded) 70%, transparent);
+}
+.entry {
+  display: grid;
+  grid-template-columns: 1fr 36px;
+  gap: 10px;
+  align-items: start;
+  padding: 12px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink-faded) 40%, transparent);
+}
+.what {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+.name {
+  line-height: 1.35;
+}
+.status {
+  font-family: var(--cq-sans);
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--ink-faded);
+}
+.result {
+  margin-top: 6px;
+  font-family: var(--cq-sans);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--ink);
+}
+.result:focus {
+  outline: none;
+}
+.result:focus-visible {
+  outline: 2px solid var(--lapis);
+  outline-offset: 2px;
+}
+.entryError {
+  margin: 8px 0 0;
+  font-family: var(--cq-sans);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+}
+.ask {
+  flex-basis: 100%;
+  font-family: var(--cq-sans);
+  font-size: 0.875rem;
+  color: var(--ink);
+}
+.btn {
+  box-sizing: border-box;
+  min-height: 44px;
+  min-width: 6.25rem;
+  padding: 8px 14px;
+  border: 1px solid var(--lapis);
+  border-radius: 3px;
+  font-family: var(--cq-serif);
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+}
+.btn:focus-visible {
+  outline: 2px solid var(--lapis);
+  outline-offset: 2px;
+}
+.btn:disabled {
+  cursor: progress;
+  opacity: 0.65;
+}
+.primary {
+  background: var(--lapis);
+  color: var(--on-lapis);
+}
+.primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+.quiet {
+  background: transparent;
+  color: var(--ink);
+}
+.quiet:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--lapis) 8%, transparent);
+}

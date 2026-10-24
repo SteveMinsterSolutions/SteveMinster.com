@@ -8,6 +8,7 @@ import Home from './Home';
 import LogActivity from './LogActivity';
 import Approvals from './Approvals';
 import Leaderboards from './Leaderboards';
+import Prayers from './Prayers';
 import book from './book.module.css';
 
 const VIEWS: View[] = ['home', 'log', 'quiz', 'boards', 'prayers', 'approve'];
@@ -18,9 +19,8 @@ function viewFromUrl(isAdult: boolean): View {
   return v;
 }
 
-const UNBUILT: Record<Exclude<View, 'home' | 'log' | 'approve' | 'boards'>, string> = {
+const UNBUILT: Record<Exclude<View, 'home' | 'log' | 'approve' | 'boards' | 'prayers'>, string> = {
   quiz: 'Daily quiz',
-  prayers: 'Prayers',
 };
 
 interface Props {
@@ -73,6 +73,8 @@ export default function Game({ player, email }: Props) {
         />
       ) : view === 'log' ? (
         <LogActivity player={player} />
+      ) : view === 'prayers' ? (
+        <Prayers player={player} />
       ) : view === 'boards' ? (
         <Leaderboards player={player} />
       ) : view === 'approve' ? (

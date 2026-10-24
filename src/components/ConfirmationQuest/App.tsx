@@ -10,6 +10,7 @@ import SignedInNotice from './SignedInNotice';
 import Game, { GameFrame } from './Game';
 import { HomeLeaf } from './Home';
 import { LogLeaf } from './LogActivity';
+import { PrayersLeaf, type Linked, type Recited } from './Prayers';
 import { BoardsLeaf, type Board, type BoardRow } from './Leaderboards';
 import { ApprovalsLeaf, type Outcome, type PendingRow } from './Approvals';
 import type { ActivityType, ActivityRow } from './activities';
@@ -176,6 +177,18 @@ function devPreview() {
       return boardsPreview('candidates', true);
     case 'boards-empty':
       return boardsPreview('pairs', false, true);
+    case 'prayers-candidate':
+      return prayersPreview(false);
+    case 'prayers-adult':
+      return prayersPreview(true, 2, {
+        confirming: 'prayer-04',
+        results: { 'c1:prayer-02': '+25 for Sample Candidate and +5 to you as their sponsor' },
+        errors: { 'c1:prayer-06': 'Sample Candidate has already recited this one.' },
+      });
+    case 'prayers-adult-one':
+      return prayersPreview(true, 1);
+    case 'prayers-unlinked':
+      return prayersPreview(true, 0);
     case 'home-wisdom':
       return homePreview('candidate', 3400, { name: 'Fall 2026', points: 1020 }, 9, null);
     default:
@@ -231,7 +244,8 @@ function sampleType(code: string, name: string, category: string, points: number
     candidate_only: false, allows_note: true, requires_supervisor: false, active: true, sort: 0, ...extra,
   };
 }
-const SAMPLE_TYPES: ActivityType[] = [
+// Functions, not module constants, so the build drops them along with devPreview.
+const sampleTypes = (): ActivityType[] => [
   sampleType('mass-sunday', 'Sunday Mass', 'mass', 25, { weekly_cap: 1 }),
   sampleType('mass-weekday', 'Weekday Mass', 'mass', 15, { weekly_cap: 2 }),
   sampleType('youth-night', 'Youth night', 'youth', 20, { weekly_cap: 1 }),
@@ -267,7 +281,7 @@ function logPreview(
         isCandidate={isCandidate}
         today={today}
         data={{
-          types: SAMPLE_TYPES,
+          types: sampleTypes(),
           sponsored: isCandidate ? [] : [{ id: 'c1', name: 'Sample Candidate' }],
           recent,
           gameStart: addDays(today, -60),
@@ -283,7 +297,7 @@ function logPreview(
 // Sample pending rows for Approvals previews. Approving here resolves with the type's points.
 function approvePreview(preview?: Parameters<typeof ApprovalsLeaf>[0]['preview'], rows?: PendingRow[]) {
   const today = todayCentral();
-  const types = new Map(SAMPLE_TYPES.map((t) => [t.code, t]));
+  const types = new Map(sampleTypes().map((t) => [t.code, t]));
   const row = (id: number, who: 'c1' | 'c2' | 'a1', type_code: string, days: number, extra: Partial<PendingRow> = {}): PendingRow => ({
     id, player_id: who, display_name: who === 'c1' ? 'Sample Candidate' : who === 'c2' ? 'Second Sample' : 'Sample Sponsor',
     is_candidate: who !== 'a1', type_code, type_name: types.get(type_code)!.name, occurred_on: addDays(today, -days),
@@ -307,7 +321,7 @@ function approvePreview(preview?: Parameters<typeof ApprovalsLeaf>[0]['preview']
   return (
     <GameFrame view="approve" isAdult pendingCount={pending.length - Object.keys(preview?.settled ?? {}).length} onNavigate={() => {}}>
       <ApprovalsLeaf
-        data={{ rows: pending, types: SAMPLE_TYPES, names: { c1: 'Sample Candidate', c2: 'Second Sample' }, sponsoring: ['c1'] }}
+        data={{ rows: pending, types: sampleTypes(), names: { c1: 'Sample Candidate', c2: 'Second Sample' }, sponsoring: ['c1'] }}
         onDecide={onDecide}
         preview={preview}
       />
@@ -350,5 +364,66 @@ function boardsPreview(board: Board, week = false, empty = false) {
         preview={{ board, week }}
       />
     </GameFrame>
+  );
+}
+
+// Illustrative prayer list for Prayers previews; the live list comes from activity_types.
+const samplePrayers = () => [
+  'Sign of the Cross', 'Our Father', 'Hail Mary', 'Glory Be', 'Apostles’ Creed', 'Act of Contrition',
+  'Morning Offering', 'Grace Before Meals', 'Angel of God', 'Hail Holy Queen', 'Memorare',
+  'Prayer to the Holy Spirit', 'Saint Michael Prayer', 'Angelus', 'Eternal Rest',
+].map((name, i) => sampleType(`prayer-${String(i + 1).padStart(2, '0')}`, name, 'prayer', 25, { lifetime_cap: 1, sort: i }));
+
+function prayersPreview(isAdult: boolean, linkedCount = 0, preview?: Parameters<typeof PrayersLeaf>[0]['preview']) {
+  const today = todayCentral();
+  const initial: Recited = {
+    'prayer-01': { date: addDays(today, -40), points: 25 },
+    'prayer-02': { date: addDays(today, -21), points: 25 },
+    'prayer-03': { date: addDays(today, -21), points: 25 },
+    'prayer-06': { date: addDays(today, -3), points: 25 },
+    'prayer-09': { date: addDays(today, -1), points: 25 },
+  };
+  const linked: Linked[] = [
+    { id: 'c1', name: 'Sample Candidate', sponsor: true },
+    { id: 'c2', name: 'Second Sample', sponsor: false },
+  ].slice(0, linkedCount);
+  return (
+    <GameFrame view="prayers" isAdult={isAdult} pendingCount={isAdult ? 2 : null} onNavigate={() => {}}>
+      {isAdult && !linkedCount ? (
+        <>
+          <h1 className={book.heading}>Prayers</h1>
+          <p className={book.prose}>
+            You aren’t linked to a candidate yet, so there are no prayers to record. Ask the game admin to link you.
+          </p>
+        </>
+      ) : isAdult ? (
+        <HeardPreview linked={linked} initial={initial} preview={preview} />
+      ) : (
+        <PrayersLeaf prayers={samplePrayers()} recited={initial} />
+      )}
+    </GameFrame>
+  );
+}
+
+// Stateful so a recording in the preview turns the ring into a seal, as the live page does.
+function HeardPreview({ linked, initial, preview }: { linked: Linked[]; initial: Recited; preview?: Parameters<typeof PrayersLeaf>[0]['preview'] }) {
+  const [chosenId, setChosenId] = useState(linked[0].id);
+  const [byCandidate, setByCandidate] = useState<Record<string, Recited>>({ c1: initial, c2: { 'prayer-01': initial['prayer-01'] } });
+  return (
+    <PrayersLeaf
+      prayers={samplePrayers()}
+      recited={byCandidate[chosenId]}
+      preview={preview}
+      adult={{
+        linked,
+        chosen: linked.find((c) => c.id === chosenId)!,
+        onChoose: setChosenId,
+        onRecord: async (code) => {
+          await new Promise((done) => setTimeout(done, 400));
+          setByCandidate((b) => ({ ...b, [chosenId]: { ...b[chosenId], [code]: { date: todayCentral(), points: 25 } } }));
+          return { points: 25 };
+        },
+      }}
+    />
   );
 }
