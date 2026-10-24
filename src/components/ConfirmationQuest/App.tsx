@@ -10,6 +10,7 @@ import SignedInNotice from './SignedInNotice';
 import Game, { GameFrame } from './Game';
 import { HomeLeaf } from './Home';
 import { LogLeaf } from './LogActivity';
+import { BoardsLeaf, type Board, type BoardRow } from './Leaderboards';
 import { ApprovalsLeaf, type Outcome, type PendingRow } from './Approvals';
 import type { ActivityType, ActivityRow } from './activities';
 import { todayCentral, addDays } from './dates';
@@ -167,6 +168,14 @@ function devPreview() {
       });
     case 'approve-empty':
       return approvePreview(undefined, []);
+    case 'boards':
+      return boardsPreview('individual');
+    case 'boards-pairs':
+      return boardsPreview('pairs');
+    case 'boards-week':
+      return boardsPreview('candidates', true);
+    case 'boards-empty':
+      return boardsPreview('pairs', false, true);
     case 'home-wisdom':
       return homePreview('candidate', 3400, { name: 'Fall 2026', points: 1020 }, 9, null);
     default:
@@ -301,6 +310,44 @@ function approvePreview(preview?: Parameters<typeof ApprovalsLeaf>[0]['preview']
         data={{ rows: pending, types: SAMPLE_TYPES, names: { c1: 'Sample Candidate', c2: 'Second Sample' }, sponsoring: ['c1'] }}
         onDecide={onDecide}
         preview={preview}
+      />
+    </GameFrame>
+  );
+}
+
+// Sample standings for Leaderboard previews; the viewer is "Sample Sponsor".
+function boardsPreview(board: Board, week = false, empty = false) {
+  const person = (key: string, name: string, points: number, weekPoints: number): BoardRow => ({
+    key, name, points, weekPoints, rank: 0, weekRank: 0, mine: name.startsWith('Sample Sponsor'),
+  });
+  // rank() semantics: ties share a rank and the next rank skips.
+  const ranked = (rows: BoardRow[]) =>
+    rows.map((r) => ({
+      ...r,
+      rank: 1 + rows.filter((o) => o.points > r.points).length,
+      weekRank: 1 + rows.filter((o) => o.weekPoints > r.weekPoints).length,
+    }));
+  const sample: Record<Board, BoardRow[]> = {
+    individual: ranked([
+      person('c1', 'Sample Candidate', 1240, 85), person('c2', 'Second Sample', 1180, 120), person('c3', 'Third Sample', 960, 40),
+      person('a1', 'Sample Sponsor', 410, 25), person('a2', 'Sample Parent', 410, 0), person('a3', 'Another Adult', 0, 0),
+    ]),
+    pairs: ranked([
+      person('p1', 'Sample Sponsor and Sample Candidate', 1655, 110),
+      person('p2', 'Sample Parent and Second Sample', 1310, 145),
+      person('p3', 'Another Adult and Third Sample', 960, 40),
+    ]),
+    candidates: ranked([
+      person('c1', 'Sample Candidate', 1240, 85), person('c2', 'Second Sample', 1180, 120), person('c3', 'Third Sample', 960, 40),
+    ]),
+  };
+  return (
+    <GameFrame view="boards" isAdult pendingCount={2} onNavigate={() => {}}>
+      <BoardsLeaf
+        seasons={[{ code: 'fall-2026', name: 'Fall 2026' }, { code: 'lifetime', name: 'Lifetime' }]}
+        initialSeason="fall-2026"
+        loadBoard={async (b) => (empty ? sample[b].map((r) => ({ ...r, points: 0, weekPoints: 0, rank: 1, weekRank: 1 })) : sample[b])}
+        preview={{ board, week }}
       />
     </GameFrame>
   );

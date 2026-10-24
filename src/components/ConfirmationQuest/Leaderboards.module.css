@@ -1,0 +1,171 @@
+/* Board tabs: plain words, the chosen one underlined in rubric. */
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin: 0 0 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink-faded) 40%, transparent);
+}
+.tab {
+  min-height: 44px;
+  padding: 8px 10px;
+  margin-bottom: -1px;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: none;
+  color: var(--ink-faded);
+  font-family: var(--cq-serif);
+  font-size: 1.125rem;
+  cursor: pointer;
+}
+.tab:first-child {
+  padding-left: 0;
+}
+.tab[aria-selected='true'] {
+  border-bottom-color: var(--rubric);
+  color: var(--ink);
+}
+.tab:focus-visible,
+.season:focus-visible {
+  outline: 2px solid var(--lapis);
+  outline-offset: 2px;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin: 0 0 18px;
+}
+.seasons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.season {
+  min-height: 44px;
+  padding: 6px 12px;
+  border: 1px solid color-mix(in srgb, var(--ink-faded) 60%, transparent);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--cq-sans);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.season[aria-pressed='true'] {
+  border-color: var(--lapis);
+  background: var(--lapis);
+  color: var(--on-lapis);
+}
+.week {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-family: var(--cq-sans);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.week input {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--lapis);
+}
+
+/* The scroll: a sheet hung between two gold rods with turned knobs. */
+.roller {
+  position: relative;
+  height: 10px;
+  margin: 0 6px;
+  border: 1px solid color-mix(in srgb, var(--ink) 55%, transparent);
+  border-radius: 5px;
+  background: var(--gold);
+}
+.roller::before,
+.roller::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  width: 8px;
+  height: 16px;
+  border: 1px solid color-mix(in srgb, var(--ink) 55%, transparent);
+  border-radius: 4px;
+  background: var(--gold);
+}
+.roller::before {
+  left: -7px;
+}
+.roller::after {
+  right: -7px;
+}
+.sheet {
+  margin: 0 12px;
+  padding: 4px 12px 6px;
+  border-left: 1px solid color-mix(in srgb, var(--ink-faded) 55%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--ink-faded) 55%, transparent);
+  background: color-mix(in srgb, var(--gold) 7%, var(--vellum));
+}
+.quiet {
+  margin: 14px 0;
+}
+
+.ranks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.row {
+  display: grid;
+  grid-template-columns: 3rem 1fr auto;
+  gap: 8px;
+  align-items: baseline;
+  padding: 10px 0;
+}
+.row + .row {
+  border-top: 1px solid color-mix(in srgb, var(--ink-faded) 30%, transparent);
+}
+.rank {
+  font-family: var(--cq-serif);
+  font-weight: 500;
+  font-size: 1.125rem;
+  letter-spacing: 0.04em;
+  color: var(--rubric);
+  white-space: nowrap;
+}
+.who {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.name {
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.points {
+  font-family: var(--cq-sans);
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.mine .name,
+.mine .points {
+  font-weight: 600;
+}
+/* Your own row: heavier, with a small gold lozenge before the name. */
+.mark {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin: 0 8px 0.2em 0;
+  border: 1px solid color-mix(in srgb, var(--ink) 55%, transparent);
+  background: var(--gold);
+  transform: rotate(45deg);
+  vertical-align: middle;
+}
+
+.after {
+  margin-top: 12px;
+}
