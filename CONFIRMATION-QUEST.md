@@ -69,7 +69,7 @@ Hide from the Log screen: `category = 'prayer'` (recorded by adults on the Praye
 | `record_prayer` | `p_candidate, p_prayer` (a `prayer-*` code) | int: 25 | the linked adult who heard it |
 | `daily_quiz` | `p_count` (default 3) | rows: `id, category, difficulty, prompt, options, answered_today` — stable for the day | everyone |
 | `answer_question` | `p_question, p_chosen` (0-based) | one row: `correct, explanation, source_ref, points` | everyone, once per question per day |
-| `complete_milestone` | `p_player, p_code, p_completed_on?` | int | adults — **Phase 2 UI, don't build** |
+| `complete_milestone` | `p_player, p_code, p_completed_on?` | int | adults (Milestones view) |
 
 Errors come back as Postgres exceptions with plain messages (`'not pending'`, `'already recited'`, `'already answered today'`, `'only adults approve'`). Show the message; don't retry.
 
@@ -132,4 +132,4 @@ Type (Google Fonts): Cinzel Decorative for drop caps and level titles only; EB G
 
 ## Out of scope (Phase 1)
 
-Badges UI, milestone completion UI, Codex pages and learning games, level-up cards, AI draft review, exports, season accent by liturgical calendar, the `/sandbox` index card, any SQL or backend change.
+Badges UI, Codex pages and learning games, level-up cards, AI draft review, exports, season accent by liturgical calendar, the `/sandbox` index card, any SQL or backend change.

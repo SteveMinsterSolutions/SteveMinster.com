@@ -99,9 +99,10 @@ interface Props {
   email?: string;
   pendingCount: number | null;
   onOpenApprove: () => void;
+  onOpenMilestones: () => void;
 }
 
-export default function Home({ player, email, pendingCount, onOpenApprove }: Props) {
+export default function Home({ player, email, pendingCount, onOpenApprove, onOpenMilestones }: Props) {
   const [today] = useState(todayCentral);
   const [load, setLoad] = useState<Load>({ kind: 'loading' });
 
@@ -136,6 +137,7 @@ export default function Home({ player, email, pendingCount, onOpenApprove }: Pro
       today={today}
       pendingCount={pendingCount}
       onOpenApprove={onOpenApprove}
+      onOpenMilestones={onOpenMilestones}
     />
   );
 }
@@ -147,6 +149,7 @@ interface LeafProps {
   today: string;
   pendingCount: number | null;
   onOpenApprove: () => void;
+  onOpenMilestones: () => void;
 }
 
 const fmt = (n: number) => n.toLocaleString('en-US');
@@ -155,7 +158,7 @@ const dueSentence = (due: Due | null, today: string) =>
 /** Keep a name's last word with the one before it ("Fall 2026" never splits). */
 const keepTail = (s: string) => s.replace(/ (\S+)$/, ' $1');
 
-export function HomeLeaf({ player, email, data, today, pendingCount, onOpenApprove }: LeafProps) {
+export function HomeLeaf({ player, email, data, today, pendingCount, onOpenApprove, onOpenMilestones }: LeafProps) {
   const level = levelFor(data.lifetime, Number(player.level_scale));
   const { signOut, busy, error } = useSignOut();
 
@@ -201,6 +204,13 @@ export function HomeLeaf({ player, email, data, today, pendingCount, onOpenAppro
               </div>
             ))}
           </dl>
+        )}
+        {(player.is_candidate || data.candidates.length > 0) && (
+          <p className={book.prose}>
+            <button type="button" className={styles.inlineLink} onClick={onOpenMilestones}>
+              See all milestones
+            </button>
+          </p>
         )}
       </section>
 

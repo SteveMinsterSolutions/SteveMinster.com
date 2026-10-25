@@ -10,6 +10,7 @@ import SignedInNotice from './SignedInNotice';
 import Game, { GameFrame } from './Game';
 import { HomeLeaf } from './Home';
 import { LogLeaf } from './LogActivity';
+import { MilestonesLeaf, type Candidate, type Completed, type Milestone } from './Milestones';
 import { QuizLeaf, type Graded, type QuizQuestion } from './Quiz';
 import { PrayersLeaf, type Linked, type Recited } from './Prayers';
 import { BoardsLeaf, type Board, type BoardRow } from './Leaderboards';
@@ -204,6 +205,16 @@ function devPreview() {
       return quizPreview(1, { chosen: 1, error: 'You’ve answered this one today. New questions tomorrow.' });
     case 'quiz-done':
       return quizPreview(3);
+    case 'milestones-candidate':
+      return milestonesPreview(0);
+    case 'milestones-adult':
+      return milestonesPreview(2, {
+        step: { code: 'm4', stage: 'confirm', date: todayCentral() },
+        results: { 'c1:m2': '+50 for Sample Candidate, and the Sample Badge badge' },
+        errors: { 'c1:m5': 'Sample Candidate already has this one.' },
+      });
+    case 'milestones-date':
+      return milestonesPreview(1, { step: { code: 'm4', stage: 'date', date: todayCentral() } });
     case 'home-wisdom':
       return homePreview('candidate', 3400, { name: 'Fall 2026', points: 1020 }, 9, null);
     default:
@@ -247,6 +258,7 @@ function homePreview(
         }}
         pendingCount={pendingCount}
         onOpenApprove={() => {}}
+        onOpenMilestones={() => {}}
       />
     </GameFrame>
   );
@@ -463,6 +475,42 @@ function quizPreview(answered = 0, preview?: { chosen?: number; graded?: Graded;
           await new Promise((done) => setTimeout(done, 400));
           return { graded: { correct: chosen === 1, explanation: SAMPLE_EXPLANATION, source_ref: 'Sample reference 1285', points: chosen === 1 ? 10 : 0 } };
         }}
+      />
+    </GameFrame>
+  );
+}
+
+// Illustrative milestones for previews; live ones come from the milestones table.
+function milestonesPreview(linkedCount: number, preview?: Parameters<typeof MilestonesLeaf>[0]['preview']) {
+  const today = todayCentral();
+  const m = (code: string, title: string, days: number | null, points: number, badge: string | null = null): Milestone => ({
+    code, title, due_on: days === null ? null : addDays(today, days), parish: null, points, badge,
+  });
+  const milestones = [
+    m('m1', 'Sample milestone one', -45, 25),
+    m('m2', 'Sample milestone with a badge', -20, 50, 'Sample Badge'),
+    m('m3', 'Sample milestone three', -6, 25),
+    m('m4', 'Sample letter to the bishop', 9, 50),
+    m('m5', 'Sample service project', 30, 75),
+    m('m6', 'Sample milestone with no date', null, 25),
+  ];
+  const completed: Completed = { m1: addDays(today, -44), m2: addDays(today, -2), m5: addDays(today, -1) };
+  const linked: Candidate[] = [
+    { id: 'c1', name: 'Sample Candidate', parish: null },
+    { id: 'c2', name: 'Second Sample', parish: null },
+  ].slice(0, linkedCount);
+  return (
+    <GameFrame view="milestones" isAdult={linkedCount > 0} pendingCount={linkedCount ? 2 : null} onNavigate={() => {}}>
+      <MilestonesLeaf
+        milestones={milestones}
+        completed={linkedCount ? { m1: completed.m1, m2: completed.m2, m5: completed.m5 } : { m1: completed.m1 }}
+        today={today}
+        preview={preview}
+        adult={
+          linkedCount
+            ? { linked, chosen: linked[0], onChoose: () => {}, onMark: async () => ({ points: 50 }) }
+            : undefined
+        }
       />
     </GameFrame>
   );

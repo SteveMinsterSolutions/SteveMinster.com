@@ -10,9 +10,10 @@ import Approvals from './Approvals';
 import Leaderboards from './Leaderboards';
 import Prayers from './Prayers';
 import Quiz from './Quiz';
+import Milestones from './Milestones';
 import book from './book.module.css';
 
-const VIEWS: View[] = ['home', 'log', 'quiz', 'boards', 'prayers', 'approve'];
+const VIEWS: View[] = ['home', 'log', 'quiz', 'boards', 'prayers', 'approve', 'milestones'];
 
 function viewFromUrl(isAdult: boolean): View {
   const v = new URLSearchParams(window.location.search).get('v') as View | null;
@@ -67,9 +68,12 @@ export default function Game({ player, email }: Props) {
           email={email}
           pendingCount={isAdult ? pendingCount : null}
           onOpenApprove={() => navigate('approve')}
+          onOpenMilestones={() => navigate('milestones')}
         />
       ) : view === 'log' ? (
         <LogActivity player={player} />
+      ) : view === 'milestones' ? (
+        <Milestones player={player} />
       ) : view === 'prayers' ? (
         <Prayers player={player} />
       ) : view === 'boards' ? (
@@ -98,7 +102,8 @@ export function GameFrame({ view, isAdult, pendingCount, onNavigate, children }:
       <main className={`${book.folio} ${book.withNav}`}>
         <div className={book.leaf}>{children}</div>
       </main>
-      <Nav view={view} isAdult={isAdult} pendingCount={pendingCount} onNavigate={onNavigate} />
+      {/* Milestones opens from Home and has no nav item, so Home stays marked. */}
+      <Nav view={view === 'milestones' ? 'home' : view} isAdult={isAdult} pendingCount={pendingCount} onNavigate={onNavigate} />
     </>
   );
 }

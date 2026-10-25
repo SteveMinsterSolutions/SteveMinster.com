@@ -3,7 +3,8 @@
 // with the pending count as a small rubric numeral.
 import styles from './Nav.module.css';
 
-export type View = 'home' | 'log' | 'quiz' | 'boards' | 'prayers' | 'approve';
+// Milestones has no nav item: Home's "See all milestones" opens it.
+export type View = 'home' | 'log' | 'quiz' | 'boards' | 'prayers' | 'approve' | 'milestones';
 
 interface Props {
   view: View;
