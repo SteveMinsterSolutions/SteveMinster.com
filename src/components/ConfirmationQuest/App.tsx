@@ -159,6 +159,10 @@ function devPreview() {
       return logPreview(false);
     case 'log-service':
       return logPreview(false, { typeCode: 'service-hours', hours: '2.5', supervisedBy: 'Parish coordinator', note: 'Food pantry sorting.', withCandidate: 'c1' });
+    case 'log-self-approved':
+      return logPreview(false, { notice: { text: 'Logged Sunday Mass. +25 points.', seal: 25 } });
+    case 'log-self-capped':
+      return logPreview(false, { notice: { text: 'Logged Sunday Mass. 0 points (weekly cap).', seal: 0 } });
     case 'log-empty':
       return logPreview(true, undefined, []);
     case 'approve':
@@ -313,7 +317,7 @@ function logPreview(
           recent,
           gameStart: addDays(today, -60),
         }}
-        onSubmit={async () => null}
+        onSubmit={async (a) => ({ row: { id: 99, ...a, hours: a.hours ?? null, note: a.note ?? null, supervised_by: a.supervised_by ?? null, with_candidate: a.with_candidate ?? null, status: 'pending', points_awarded: null, created_at: '' } })}
         onWithdraw={async () => null}
         preview={preview}
       />

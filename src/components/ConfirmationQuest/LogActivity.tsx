@@ -8,6 +8,7 @@ import {
   CATEGORY_LABELS,
   ROW_COLUMNS,
   TYPE_COLUMNS,
+  capWords,
   statusWords,
   typeHint,
   type ActivityRow,
@@ -103,17 +104,22 @@ export default function LogActivity({ player }: { player: Player }) {
     setLoad((prev) => (prev.kind === 'ready' ? { kind: 'ready', data: { ...prev.data, recent: update(prev.data.recent) } } : prev));
   }, []);
 
-  async function submit(activity: NewActivity): Promise<string | null> {
+  async function submit(activity: NewActivity): Promise<Submitted> {
     // The one direct write: the player's own row, pending. status, points_awarded and
     // reviewed_* are never sent; the database sets them.
-    const { data, error } = await getSupabase()
+    const supabase = getSupabase();
+    const { data, error } = await supabase
       .from('activities')
       .insert({ player_id: player.id, ...activity })
       .select(ROW_COLUMNS)
       .single();
-    if (error) return `The activity wasn’t logged. The server said: ${error.message}`;
-    setRecent((rows) => [data as ActivityRow, ...rows].slice(0, RECENT_LIMIT));
-    return null;
+    if (error) return { error: `The activity wasn’t logged. The server said: ${error.message}` };
+    // Some types approve an adult's own row as it is inserted (adult_self_approve), so
+    // read the row back by id to learn its status and points.
+    const fresh = await supabase.from('activities').select(ROW_COLUMNS).eq('id', (data as ActivityRow).id).single();
+    const row = (fresh.error ? data : fresh.data) as ActivityRow;
+    setRecent((rows) => [row, ...rows].slice(0, RECENT_LIMIT));
+    return fresh.error ? { row, unread: true } : { row };
   }
 
   async function withdraw(id: number): Promise<string | null> {
@@ -156,14 +162,23 @@ export default function LogActivity({ player }: { player: Player }) {
   );
 }
 
+/** The inserted row, re-read (unread: the re-read failed, so status is the insert's). */
+export type Submitted = { row: ActivityRow; unread?: boolean } | { error: string };
+
+interface Notice {
+  text: string;
+  /** Points on the gold seal, when the row came back approved. */
+  seal?: number;
+}
+
 interface LeafProps {
   isCandidate: boolean;
   data: LogData;
   today: string;
-  onSubmit: (activity: NewActivity) => Promise<string | null>;
+  onSubmit: (activity: NewActivity) => Promise<Submitted>;
   onWithdraw: (id: number) => Promise<string | null>;
   /** Dev-only screenshots: start with a type chosen and fields filled. */
-  preview?: { typeCode?: string; hours?: string; supervisedBy?: string; note?: string; withCandidate?: string };
+  preview?: { typeCode?: string; hours?: string; supervisedBy?: string; note?: string; withCandidate?: string; notice?: Notice };
 }
 
 type Field = 'type' | 'date' | 'hours' | 'supervisedBy';
@@ -178,7 +193,7 @@ export function LogLeaf({ isCandidate, data, today, onSubmit, onWithdraw, previe
   const [withCandidate, setWithCandidate] = useState(preview?.withCandidate ?? '');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<{ text: string; field?: Field } | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
+  const [notice, setNotice] = useState<Notice | null>(preview?.notice ?? null);
 
   const typeByCode = new Map(data.types.map((t) => [t.code, t]));
   // Prayers are recorded by the adult who heard them; candidate-only types are hidden from adults.
@@ -230,17 +245,28 @@ export function LogLeaf({ isCandidate, data, today, onSubmit, onWithdraw, previe
 
     setError(null);
     setBusy(true);
-    const failure = await onSubmit(activity);
+    const result = await onSubmit(activity);
     setBusy(false);
-    if (failure) {
-      setError({ text: failure });
+    if ('error' in result) {
+      setError({ text: result.error });
       return;
     }
-    setNotice(
-      isCandidate
-        ? `Logged ${t.name}. Your sponsor or parent will review it.`
-        : `Logged ${t.name}. Another adult will review it.`,
-    );
+    const { row } = result;
+    if (isCandidate) {
+      setNotice({ text: `Logged ${t.name}. Your sponsor or parent will review it.` });
+    } else if (row.status === 'approved') {
+      const pts = row.points_awarded ?? 0;
+      const why = capWords(t);
+      setNotice({
+        // No-break spaces keep "+25 points" on one line.
+        text: pts > 0 ? `Logged ${t.name}. +${pts} points.` : `Logged ${t.name}. 0 points${why ? ` (${why})` : ''}.`,
+        seal: pts,
+      });
+    } else if (result.unread) {
+      setNotice({ text: `Logged ${t.name}. Its status didn’t load; it shows in your recent activities after a reload.` });
+    } else {
+      setNotice({ text: `Logged ${t.name}. Another adult will review it.` });
+    }
     setTypeCode('');
     setDate(today);
     setHours('');
@@ -263,9 +289,12 @@ export function LogLeaf({ isCandidate, data, today, onSubmit, onWithdraw, previe
           </p>
         )}
         {notice && (
-          <p className={book.notice} role="status">
-            {notice}
-          </p>
+          <div className={notice.seal !== undefined ? styles.sealed : undefined}>
+            <p className={book.notice} role="status">
+              {notice.text}
+            </p>
+            {notice.seal !== undefined && <Seal status="approved" points={notice.seal} stamp />}
+          </div>
         )}
 
         <div className={book.field}>

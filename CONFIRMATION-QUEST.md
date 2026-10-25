@@ -37,7 +37,7 @@ A candidate can never approve anything. An adult never approves their own activi
 | `players` | `id, display_name, is_candidate, is_admin, parish, level_scale` — everyone |
 | `player_links` | `adult_id, candidate_id, kind ('sponsor'\|'parent')` — everyone |
 | `seasons` | `code, name, starts_on, ends_on` — current season = the one containing today |
-| `activity_types` | `code, name, category, points, per_hour, weekly_cap, monthly_cap, lifetime_cap, candidate_only, allows_note, requires_supervisor, active, sort` |
+| `activity_types` | `code, name, category, points, per_hour, weekly_cap, monthly_cap, lifetime_cap, candidate_only, allows_note, requires_supervisor, active, sort, adult_self_approve` |
 | `activities` | Your own rows + your linked candidates' rows. Includes `status`, `points_awarded`, `note` |
 | `milestones`, `player_milestones` | For the "what's next" banner |
 | `points_ledger` | Everyone's rows (no notes) |
@@ -59,6 +59,8 @@ await supabase.from('activities').insert({
 A player may delete their own row while it is `pending`. Never send `status`, `points_awarded` or `reviewed_*`.
 
 Hide from the Log screen: `category = 'prayer'` (recorded by adults on the Prayers screen) and `candidate_only` types when the player is an adult.
+
+When an adult logs a type with `adult_self_approve = true` (Sunday Mass, Holy Day Mass), the database approves the row as it is inserted, caps included; Log re-reads the row by id and shows the points it was given.
 
 **RPCs** (`supabase.rpc(name, args)`):
 
