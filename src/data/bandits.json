@@ -16,6 +16,10 @@
   "headCoach": "Chris Oguin",
   "payment": "Cash at practice for now. Venmo and check options are coming soon.",
   "waiverUrl": "/bandits/bbtl-2026-waiver.pdf",
+  "tdcIdLinks": {
+    "stateId": "https://www.tn.gov/safety/driver-services/idonly.html",
+    "nsid": "https://app.nationalsportsid.com/register?type=2"
+  },
   "practice": {
     "day": "Wednesday",
     "time": "6:30 PM",

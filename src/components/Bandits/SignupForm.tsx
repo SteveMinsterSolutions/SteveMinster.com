@@ -390,7 +390,11 @@ function Checklist({ heading }: { heading: string }) {
         <li>${bandits.fee} fee. {bandits.payment}</li>
         <li>Waiver, printed and signed in ink. <a href={bandits.waiverUrl}>Download it here</a></li>
         <li>Copy of your player's birth certificate</li>
-        <li>Turkey Day ID: NSID, state ID, or passport</li>
+        <li>
+          Turkey Day ID:{' '}
+          <a href={bandits.tdcIdLinks.nsid} target="_blank" rel="noopener noreferrer">NSID<span className="b-sr"> (opens in new tab)</span></a>,{' '}
+          <a href={bandits.tdcIdLinks.stateId} target="_blank" rel="noopener noreferrer">state ID<span className="b-sr"> (opens in new tab)</span></a>, or passport
+        </li>
         <li>Black pants, shoulder pads, mouthguard, socks, cleats, and a helmet if you have one</li>
       </ul>
     </div>
