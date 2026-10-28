@@ -68,6 +68,15 @@ const { title, description = 'Wilson County Bandits 13U tackle football, Fall 20
   .bandits .on-dark :focus-visible {
     outline-color: var(--b-gold);
   }
+  /* Visually hidden, still read by screen readers (e.g. "(opens in new tab)"). */
+  .bandits .b-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
   .bandits .wrap {
     max-width: 1120px;
     margin: 0 auto;
