@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chapter 6 Practice</title>
+<meta name="description" content="Algebra 1 Chapter 6 inequalities practice quiz — 16 questions.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --blue: #2D7DD2;
+    --lime: #97D700;
+    --ink: #0F172A;
+    --slate: #475569;
+    --line: #E2E8F0;
+    --tint: #F1F5F9;
+    --white: #FFFFFF;
+    --good: #2F8F3A;
+    --good-bg: #EEF8E6;
+    --bad: #C2410C;
+    --bad-bg: #FFF1EB;
+    --head: "Space Grotesk", "Arial Black", Arial, sans-serif;
+    --body: "Inter", Calibri, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--tint);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 16px 16px 40px; }
+
+  header { padding: 8px 0 16px; }
+  .eyebrow { font-size: 13px; font-weight: 600; color: var(--blue); text-transform: uppercase; letter-spacing: .06em; }
+  h1 { font-family: var(--head); font-weight: 700; color: var(--navy); font-size: 28px; line-height: 1.15; margin: 4px 0 8px; }
+  .rule { width: 56px; height: 4px; background: var(--lime); border-radius: 2px; }
+
+  .progress { display: flex; align-items: center; gap: 12px; margin: 16px 0 12px; font-size: 14px; color: var(--slate); }
+  .bar { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .bar > span { display: block; height: 100%; width: 0; background: var(--blue); transition: width .3s ease; }
+
+  .card { background: var(--white); border: 1px solid var(--line); border-radius: 14px; padding: 20px; box-shadow: 0 1px 2px rgba(15,23,42,.05); }
+  .topic { display: inline-block; font-size: 12px; font-weight: 600; color: var(--navy); background: var(--tint); border-radius: 999px; padding: 3px 10px; margin-bottom: 10px; }
+  .prompt { font-size: 19px; font-weight: 600; margin: 0 0 16px; }
+  .math { font-family: "Cambria Math", "Times New Roman", serif; font-style: normal; white-space: nowrap; }
+
+  .options { display: grid; gap: 10px; }
+  .opt {
+    display: flex; align-items: center; gap: 12px; width: 100%;
+    min-height: 54px; padding: 12px 14px;
+    background: var(--white); border: 2px solid var(--line); border-radius: 10px;
+    font: inherit; font-size: 17px; color: var(--ink); text-align: left; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .opt:hover:not(:disabled) { border-color: var(--blue); }
+  .opt .letter { flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--tint); color: var(--navy); font-weight: 700; font-size: 14px; display: grid; place-items: center; }
+  .opt:disabled { cursor: default; }
+  .opt.correct { border-color: var(--good); background: var(--good-bg); }
+  .opt.correct .letter { background: var(--good); color: #fff; }
+  .opt.wrong { border-color: var(--bad); background: var(--bad-bg); }
+  .opt.wrong .letter { background: var(--bad); color: #fff; }
+  .opt.dim { opacity: .55; }
+
+  .hint-btn { margin-top: 14px; background: none; border: none; padding: 6px 0; font: inherit; font-size: 15px; font-weight: 600; color: var(--blue); cursor: pointer; }
+  .hint { display: none; margin-top: 6px; padding: 10px 12px; background: var(--tint); border-radius: 8px; font-size: 15px; color: var(--slate); }
+  .hint.show { display: block; }
+
+  .feedback { display: none; margin-top: 16px; padding: 14px; border-radius: 10px; border-left: 4px solid; font-size: 16px; }
+  .feedback.show { display: block; }
+  .feedback.good { background: var(--good-bg); border-color: var(--good); }
+  .feedback.bad { background: var(--bad-bg); border-color: var(--bad); }
+  .feedback strong { display: block; margin-bottom: 4px; }
+
+  .actions { display: flex; gap: 10px; margin-top: 16px; }
+  .btn {
+    flex: 1; min-height: 52px; border: none; border-radius: 10px;
+    font: inherit; font-size: 17px; font-weight: 700; cursor: pointer;
+    background: var(--navy); color: #fff;
+  }
+  .btn.secondary { background: var(--white); color: var(--navy); border: 2px solid var(--navy); }
+  .btn:disabled { opacity: .4; cursor: default; }
+  .btn.hidden { display: none; }
+
+  .score { text-align: center; }
+  .score .big { font-family: var(--head); font-weight: 700; font-size: 64px; color: var(--navy); line-height: 1; margin: 8px 0 4px; }
+  .score .verdict { font-size: 18px; font-weight: 600; margin: 8px 0 4px; }
+  .score .sub { color: var(--slate); margin: 0 0 8px; }
+  .score .pill { display: inline-block; margin-top: 8px; background: var(--lime); color: var(--navy); font-weight: 700; font-size: 14px; padding: 4px 12px; border-radius: 999px; }
+  .review { margin-top: 20px; text-align: left; }
+  .review h2 { font-family: var(--head); font-size: 18px; color: var(--navy); margin: 0 0 8px; }
+  .review ul { margin: 0; padding-left: 20px; }
+  .review li { margin: 6px 0; }
+  .review .t { color: var(--slate); font-size: 14px; }
+
+  .tips { margin-top: 20px; background: var(--white); border: 1px solid var(--line); border-left: 4px solid var(--lime); border-radius: 10px; padding: 14px 16px; font-size: 15px; }
+  .tips h2 { font-family: var(--head); font-size: 16px; color: var(--navy); margin: 0 0 6px; }
+  .tips ul { margin: 0; padding-left: 18px; }
+  .tips li { margin: 4px 0; }
+
+  footer { margin-top: 24px; text-align: center; font-size: 13px; color: var(--slate); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Algebra 1 · Chapter 6</div>
+    <h1>Inequalities practice</h1>
+    <div class="rule"></div>
+  </header>
+
+  <div class="progress" id="progress">
+    <span id="count">Question 1 of 16</span>
+    <div class="bar"><span id="barFill"></span></div>
+  </div>
+
+  <main class="card" id="card"></main>
+
+  <section class="tips" id="tips">
+    <h2>Quick reminders</h2>
+    <ul>
+      <li>Multiply or divide by a negative? <b>Flip the sign.</b></li>
+      <li><b>AND</b> = the overlap in between. <b>OR</b> = two pieces pointing outward.</li>
+      <li>Isolate the absolute value first. <span class="math">|x| &lt; a</span> → AND, <span class="math">|x| &gt; a</span> → OR.</li>
+      <li>Solid line for ≤ or ≥, dashed for &lt; or &gt;. Shade above for greater than, below for less than.</li>
+      <li>"Within 5 of 40" → <span class="math">|x − 40| ≤ 5</span></li>
+    </ul>
+  </section>
+
+  <footer>Tip: work each problem on paper before you tap an answer.</footer>
+</div>
+
+<script>
+const QUESTIONS = [
+  { topic: "Multi-step", prompt: "Solve: <span class='math'>−2x + 5 &gt; 13</span>",
+    options: ["x &gt; −4", "x &lt; −4", "x &gt; 9", "x &lt; −9"], answer: 1,
+    hint: "What happens to the sign when you divide by a negative?",
+    explain: "Subtract 5 to get −2x &gt; 8. Dividing by −2 flips the sign, so <b>x &lt; −4</b>." },
+  { topic: "Multi-step", prompt: "Solve: <span class='math'>3(x − 2) ≤ 5x + 4</span>",
+    options: ["x ≤ −5", "x ≥ −5", "x ≥ 5", "x ≤ 1"], answer: 1,
+    hint: "Distribute first, then get the x terms on one side.",
+    explain: "Distribute: 3x − 6 ≤ 5x + 4. Subtract 3x and 4: −10 ≤ 2x, so <b>x ≥ −5</b>." },
+  { topic: "Compound (AND)", prompt: "Solve: <span class='math'>−4 &lt; 2x + 2 ≤ 10</span>",
+    options: ["−3 &lt; x ≤ 4", "−1 &lt; x ≤ 6", "−3 ≤ x &lt; 4", "x &lt; −3 or x ≥ 4"], answer: 0,
+    hint: "Do the same step to all three parts.",
+    explain: "Subtract 2 from all three parts: −6 &lt; 2x ≤ 8. Divide by 2: <b>−3 &lt; x ≤ 4</b>." },
+  { topic: "Compound (OR)", prompt: "Solve: <span class='math'>2x − 1 &lt; −5</span> OR <span class='math'>3x + 4 ≥ 19</span>",
+    options: ["−2 &lt; x ≤ 5", "x &lt; −2 or x ≥ 5", "x &lt; −3 or x ≥ 5", "x &gt; −2 or x ≤ 5"], answer: 1,
+    hint: "Solve each piece on its own.",
+    explain: "First piece: 2x &lt; −4, so x &lt; −2. Second: 3x ≥ 15, so x ≥ 5. Answer: <b>x &lt; −2 or x ≥ 5</b>." },
+  { topic: "Absolute value", prompt: "Solve: <span class='math'>|x − 3| ≥ 4</span>",
+    options: ["−1 ≤ x ≤ 7", "x ≤ −1 or x ≥ 7", "x ≤ −7 or x ≥ 1", "x ≥ 7"], answer: 1,
+    hint: "Is a 'greater than' absolute value an AND or an OR?",
+    explain: "Greater than means OR. x − 3 ≥ 4 gives x ≥ 7; x − 3 ≤ −4 gives x ≤ −1. Answer: <b>x ≤ −1 or x ≥ 7</b>." },
+  { topic: "Absolute value", prompt: "Solve: <span class='math'>−2|x + 1| ≥ −8</span>",
+    options: ["x ≤ −5 or x ≥ 3", "−5 ≤ x ≤ 3", "−3 ≤ x ≤ 5", "x ≥ 3"], answer: 1,
+    hint: "Isolate the absolute value first — and watch the sign.",
+    explain: "Divide by −2 and flip: |x + 1| ≤ 4. That's an AND: −4 ≤ x + 1 ≤ 4, so <b>−5 ≤ x ≤ 3</b>." },
+  { topic: "Word problem", prompt: "A thermostat is set to 70°F and keeps the temperature within 2 degrees of that setting. Which inequality gives the possible temperatures, t?",
+    options: ["|t − 2| ≤ 70", "|t − 70| ≥ 2", "|t − 70| ≤ 2", "|t + 70| ≤ 2"], answer: 2,
+    hint: "'Within' means at most that far away.",
+    explain: "Target number inside the bars, allowed distance on the other side. 'Within' means ≤: <b>|t − 70| ≤ 2</b> (68° to 72°)." },
+  { topic: "Graphing", prompt: "Which point is a solution to <span class='math'>y &lt; 2x − 1</span>?",
+    options: ["(0, 0)", "(1, 1)", "(3, 1)", "(−1, 0)"], answer: 2,
+    hint: "Plug each point in and see if the statement is true.",
+    explain: "For (3, 1): is 1 &lt; 2(3) − 1 = 5? Yes. Note (1, 1) lands exactly on the dashed line, so it doesn't count." },
+  { topic: "Multi-step", prompt: "Solve: <span class='math'>5 − 3x ≤ 20</span>",
+    options: ["x ≤ −5", "x ≥ −5", "x ≥ 5", "x ≤ −25/3"], answer: 1,
+    hint: "Subtract 5 first, then divide — carefully.",
+    explain: "Subtract 5: −3x ≤ 15. Divide by −3 and flip: <b>x ≥ −5</b>." },
+  { topic: "Multi-step", prompt: "Solve: <span class='math'>2(x + 4) &gt; 4x − 6</span>",
+    options: ["x &gt; 7", "x &lt; 7", "x &lt; 1", "x &gt; −7"], answer: 1,
+    hint: "Distribute, then move the x terms to the side with the bigger coefficient.",
+    explain: "Distribute: 2x + 8 &gt; 4x − 6. Subtract 2x and add 6: 14 &gt; 2x, so 7 &gt; x, which is <b>x &lt; 7</b>." },
+  { topic: "Compound (AND)", prompt: "Solve: <span class='math'>−9 ≤ −3x + 3 &lt; 12</span>",
+    options: ["−3 &lt; x ≤ 4", "4 ≤ x &lt; −3", "−4 ≤ x &lt; 3", "x ≤ −3 or x &gt; 4"], answer: 0,
+    hint: "Dividing all three parts by a negative flips BOTH signs.",
+    explain: "Subtract 3: −12 ≤ −3x &lt; 9. Divide by −3 and flip both: 4 ≥ x &gt; −3. Written smallest to largest: <b>−3 &lt; x ≤ 4</b>." },
+  { topic: "Absolute value", prompt: "Solve: <span class='math'>|2x − 4| &lt; 10</span>",
+    options: ["x &lt; 7", "−7 &lt; x &lt; 3", "−3 &lt; x &lt; 7", "x &lt; −3 or x &gt; 7"], answer: 2,
+    hint: "Less than means AND — sandwich it between −10 and 10.",
+    explain: "−10 &lt; 2x − 4 &lt; 10. Add 4: −6 &lt; 2x &lt; 14. Divide by 2: <b>−3 &lt; x &lt; 7</b>." },
+  { topic: "Absolute value", prompt: "Solve: <span class='math'>|x + 2| − 3 &gt; 5</span>",
+    options: ["x &lt; −10 or x &gt; 6", "−10 &lt; x &lt; 6", "x &lt; −6 or x &gt; 10", "x &gt; 6"], answer: 0,
+    hint: "Get the absolute value alone before you split it.",
+    explain: "Add 3: |x + 2| &gt; 8. Greater than means OR: x + 2 &gt; 8 gives x &gt; 6; x + 2 &lt; −8 gives x &lt; −10." },
+  { topic: "Word problem", prompt: "A phone plan costs $40 a month plus $5 for each GB of data. If the monthly bill can be <b>at most</b> $70, what is the most data, in GB, that can be used?",
+    options: ["6 GB", "7 GB", "14 GB", "22 GB"], answer: 0,
+    hint: "Write it as 40 + 5g ≤ 70.",
+    explain: "40 + 5g ≤ 70. Subtract 40: 5g ≤ 30. Divide by 5: g ≤ 6, so the most is <b>6 GB</b>." },
+  { topic: "Graphing", prompt: "A boundary line passes through (0, −2) with a slope of 3. The line is <b>dashed</b> and the region <b>above</b> it is shaded. Which inequality is graphed?",
+    options: ["y ≥ 3x − 2", "y &gt; 3x − 2", "y &lt; 3x − 2", "y &gt; −2x + 3"], answer: 1,
+    hint: "Dashed tells you the symbol has no 'or equal to.' Above tells you the direction.",
+    explain: "The line is y = 3x − 2. Dashed means &lt; or &gt;, and shaded above means greater than: <b>y &gt; 3x − 2</b>." },
+  { topic: "Word problem", prompt: "A family buys adult movie tickets (a) for $12 and child tickets (c) for $8. They can spend <b>no more than</b> $96 and need <b>at least</b> 9 tickets. Which system represents this?",
+    options: ["12a + 8c ≥ 96 and a + c ≤ 9", "12a + 8c ≤ 96 and a + c ≥ 9", "a + c ≤ 96 and 12a + 8c ≥ 9", "12a + 8c ≤ 9 and a + c ≥ 96"], answer: 1,
+    hint: "Money goes with the prices. The ticket count is just a + c.",
+    explain: "Money: 12a + 8c ≤ 96 ('no more than'). Tickets: a + c ≥ 9 ('at least')." }
+];
+
+const LETTERS = ["A", "B", "C", "D"];
+let order = QUESTIONS.map((_, i) => i);
+let pos = 0, correct = 0, missed = [], answered = false;
+
+const card = document.getElementById("card");
+const countEl = document.getElementById("count");
+const barFill = document.getElementById("barFill");
+const progress = document.getElementById("progress");
+
+function render() {
+  const q = QUESTIONS[order[pos]];
+  answered = false;
+  progress.style.display = "flex";
+  countEl.textContent = `Question ${pos + 1} of ${order.length}`;
+  barFill.style.width = `${(pos / order.length) * 100}%`;
+
+  card.innerHTML = `
+    <span class="topic">${q.topic}</span>
+    <p class="prompt">${q.prompt}</p>
+    <div class="options">
+      ${q.options.map((o, i) => `
+        <button class="opt" data-i="${i}">
+          <span class="letter">${LETTERS[i]}</span><span class="math">${o}</span>
+        </button>`).join("")}
+    </div>
+    <button class="hint-btn" id="hintBtn">Show hint</button>
+    <div class="hint" id="hint">${q.hint}</div>
+    <div class="feedback" id="fb"></div>
+    <div class="actions">
+      <button class="btn hidden" id="next">${pos + 1 === order.length ? "See my score" : "Next question"}</button>
+    </div>`;
+
+  card.querySelectorAll(".opt").forEach(b => b.addEventListener("click", () => choose(+b.dataset.i)));
+  document.getElementById("hintBtn").addEventListener("click", e => {
+    document.getElementById("hint").classList.add("show");
+    e.target.style.display = "none";
+  });
+  document.getElementById("next").addEventListener("click", next);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function choose(i) {
+  if (answered) return;
+  answered = true;
+  const q = QUESTIONS[order[pos]];
+  const right = i === q.answer;
+  if (right) correct++; else missed.push(order[pos]);
+
+  card.querySelectorAll(".opt").forEach((b, j) => {
+    b.disabled = true;
+    if (j === q.answer) b.classList.add("correct");
+    else if (j === i) b.classList.add("wrong");
+    else b.classList.add("dim");
+  });
+
+  const fb = document.getElementById("fb");
+  fb.className = `feedback show ${right ? "good" : "bad"}`;
+  fb.innerHTML = `<strong>${right ? "Nice — that's right." : "Not quite. Here's how it works:"}</strong>${q.explain}`;
+  document.getElementById("hintBtn").style.display = "none";
+  const nb = document.getElementById("next");
+  nb.classList.remove("hidden");
+  nb.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function next() {
+  pos++;
+  if (pos < order.length) render(); else finish();
+}
+
+function finish() {
+  progress.style.display = "none";
+  const total = order.length;
+  const pct = Math.round((correct / total) * 100);
+  let verdict = "Keep going — review the reminders below and try the missed ones again.";
+  if (pct === 100) verdict = "Perfect score. You're locked in.";
+  else if (pct >= 85) verdict = "Great work — you're ready for Friday.";
+  else if (pct >= 70) verdict = "Solid. Retry the ones you missed to lock them in.";
+
+  const topics = [...new Set(missed.map(i => QUESTIONS[i].topic))];
+  card.innerHTML = `
+    <div class="score">
+      <div class="big">${correct}/${total}</div>
+      <p class="verdict">${verdict}</p>
+      <p class="sub">${pct}% correct</p>
+      ${pct === 100 ? `<span class="pill">Ready for the test</span>` : ""}
+    </div>
+    ${missed.length ? `
+      <div class="review">
+        <h2>Spend a few minutes on</h2>
+        <ul>${topics.map(t => `<li>${t} <span class="t">(${missed.filter(i => QUESTIONS[i].topic === t).length} missed)</span></li>`).join("")}</ul>
+      </div>` : ""}
+    <div class="actions">
+      ${missed.length ? `<button class="btn" id="retry">Retry missed (${missed.length})</button>` : ""}
+      <button class="btn ${missed.length ? "secondary" : ""}" id="restart">Start over</button>
+    </div>`;
+
+  const r = document.getElementById("retry");
+  if (r) r.addEventListener("click", () => start(missed.slice()));
+  document.getElementById("restart").addEventListener("click", () => start(QUESTIONS.map((_, i) => i)));
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function start(list) {
+  order = list; pos = 0; correct = 0; missed = [];
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
