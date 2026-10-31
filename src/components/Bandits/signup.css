@@ -216,6 +216,8 @@
   font-size: 1.5rem;
   text-transform: uppercase;
 }
+.sf-waiver-note { margin: 0 0 1rem; }
+.sf-card .sf-err { margin-top: 0.75rem; }
 .sf-list { margin: 0; padding-left: 1.25rem; list-style: disc; display: flex; flex-direction: column; gap: 0.5rem; }
 .sf-actions { display: flex; flex-wrap: wrap; gap: 1rem; }
 .sf-btn {

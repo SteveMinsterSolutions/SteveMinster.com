@@ -16,6 +16,21 @@
   "headCoach": "Chris Oguin",
   "payment": "Cash at practice for now. Venmo and check options are coming soon.",
   "waiverUrl": "/bandits/bbtl-2026-waiver.pdf",
+  "waiver": {
+    "coachTeam": "Chris Oguin, Wilson County Bandits",
+    "ageDivision": "13U",
+    "fontSize": 10,
+    "fieldsNote": "PDF points from the bottom-left of the 612x792 page. y is the text baseline, 3pt above the printed line; w is the room before the text shrinks to fit. Signature and Date stay blank.",
+    "fields": {
+      "playerName":    { "x": 114, "y": 641, "w": 454 },
+      "guardianPhone": { "x": 161, "y": 617, "w": 407 },
+      "coachTeam":     { "x": 152, "y": 593, "w": 268 },
+      "ageDivision":   { "x": 507, "y": 593, "w": 61 },
+      "guardianName":  { "x": 159, "y": 569, "w": 409 },
+      "printedName":   { "x": 117, "y": 116, "w": 233 },
+      "relationship":  { "x": 439, "y": 116, "w": 129 }
+    }
+  },
   "tdcIdLinks": {
     "stateId": "https://www.tn.gov/safety/driver-services/idonly.html",
     "nsid": "https://app.nationalsportsid.com/register?type=2"

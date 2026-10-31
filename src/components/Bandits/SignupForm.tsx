@@ -7,6 +7,8 @@ import {
 import { OK_FROM } from '../../lib/bandits/eligibility';
 import { fill } from '../../lib/bandits/copy';
 import { dayShort, dayLong, dayMonthLong, monthDayRange, fullDate, formatDobInput, usDateToIso } from '../../lib/bandits/dates';
+import { downloadWaivers } from '../../lib/bandits/download';
+import type { WaiverPerson } from '../../lib/bandits/waiver';
 import './signup.css';
 
 /**
@@ -17,7 +19,7 @@ import './signup.css';
  */
 
 type Values = Record<string, string | boolean>;
-type Result = { status: 'rostered' | 'waitlist'; position: number | null; followUp: boolean; first: string };
+type Result = { status: 'rostered' | 'waitlist'; position: number | null; followUp: boolean; first: string; waiver: WaiverPerson };
 
 const PLAYER_FIELDS: Values = {
   player_first: '', player_last: '', dob: '', grade: '', school: '', weight_lbs: '', years_played: '', positions: '',
@@ -171,7 +173,10 @@ export default function SignupForm({ initiallyClosed = false }: { initiallyClose
       });
       const body = await res.json().catch(() => ({}));
       if (res.ok && body.ok) {
-        setResult({ status: body.status, position: body.position, followUp: !!body.eligibilityFollowUp, first: String(values.player_first).trim() });
+        const waiver = Object.fromEntries(
+          (['player_first', 'player_last', 'guardian_name', 'guardian_phone', 'guardian_relationship'] as const).map((k) => [k, String(values[k])]),
+        ) as WaiverPerson;
+        setResult({ status: body.status, position: body.position, followUp: !!body.eligibilityFollowUp, first: String(values.player_first).trim(), waiver });
         topRef.current?.scrollIntoView();
         return;
       }
@@ -401,6 +406,32 @@ function Checklist({ heading }: { heading: string }) {
   );
 }
 
+/** Pre-filled waiver built in the browser from what was just submitted; nothing is sent anywhere. */
+function WaiverDownload({ person }: { person: WaiverPerson }) {
+  const [state, setState] = useState<'idle' | 'busy' | 'error'>('idle');
+  async function go() {
+    setState('busy');
+    try {
+      await downloadWaivers([person]);
+      setState('idle');
+    } catch {
+      setState('error');
+    }
+  }
+  return (
+    <div className="sf-card">
+      <h2 className="sf-card-title">Your waiver</h2>
+      <p className="sf-waiver-note">We filled in your player's name and your details. Print it, then sign and date it in ink.</p>
+      <button type="button" className="sf-btn sf-btn-gold" onClick={go} disabled={state === 'busy'} aria-disabled={state === 'busy'}>
+        {state === 'busy' ? 'Preparing…' : 'Download your pre-filled waiver'}
+      </button>
+      <div aria-live="polite">
+        {state === 'error' && <p className="sf-err">Couldn't build the waiver. <a href={bandits.waiverUrl}>Download the blank one</a> and fill it in by hand.</p>}
+      </div>
+    </div>
+  );
+}
+
 function SuccessPanel({ result, onAnother }: { result: Result; onAnother: () => void }) {
   const rostered = result.status === 'rostered';
   return (
@@ -418,6 +449,7 @@ function SuccessPanel({ result, onAnother }: { result: Result; onAnother: () => 
         {result.followUp && <p className="sf-done-lede"><strong>We'll be in touch about eligibility.</strong></p>}
       </div>
       <Checklist heading={rostered ? `Bring to practice by ${dayShort(bandits.paperworkDue)}` : "If a spot opens, here's what you'll need"} />
+      <WaiverDownload person={result.waiver} />
       <div className="sf-actions">
         <a className="sf-btn sf-btn-gold" href="/sandbox/bandits">Back to team info</a>
         <button type="button" className="sf-btn sf-btn-outline" onClick={onAnother}>Sign up another player</button>
