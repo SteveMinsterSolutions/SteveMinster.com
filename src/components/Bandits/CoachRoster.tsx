@@ -7,6 +7,7 @@ import {
 import { suggestNumbers, type Suggestion } from '../../lib/bandits/numbers';
 import { fullDate } from '../../lib/bandits/dates';
 import { missingNumbers } from '../../lib/bandits/bbtl-roster';
+import { saveBlob, downloadWaivers } from '../../lib/bandits/download';
 
 /**
  * CoachRoster — the signed-in coach dashboard views (README §9): summary,
@@ -187,6 +188,7 @@ export default function CoachRoster({ api, email, onSignOut }: { api: Api; email
                     onSave={save}
                     rosterFull={stats.rostered >= cap}
                     cap={cap}
+                    setNotice={setNotice}
                   />
                 ))}
               </ul>
@@ -232,9 +234,9 @@ function Summary({ stats, cap }: { stats: Record<string, number>; cap: number })
   );
 }
 
-function PlayerRow({ p, showStatus, open, onToggle, onSave, rosterFull, cap }: {
+function PlayerRow({ p, showStatus, open, onToggle, onSave, rosterFull, cap, setNotice }: {
   p: Player; showStatus: boolean; open: boolean; onToggle: () => void;
-  onSave: (id: string, patch: Patch) => Promise<boolean>; rosterFull: boolean; cap: number;
+  onSave: (id: string, patch: Patch) => Promise<boolean>; rosterFull: boolean; cap: number; setNotice: (n: Notice) => void;
 }) {
   const flag = p.eligibility_flag !== 'ok';
   const detailsId = `cd-details-${p.id}`;
@@ -264,18 +266,19 @@ function PlayerRow({ p, showStatus, open, onToggle, onSave, rosterFull, cap }: {
         </div>
       )}
 
-      {open && <Details id={detailsId} p={p} onSave={onSave} rosterFull={rosterFull} cap={cap} />}
+      {open && <Details id={detailsId} p={p} onSave={onSave} rosterFull={rosterFull} cap={cap} setNotice={setNotice} />}
     </li>
   );
 }
 
-function Details({ id, p, onSave, rosterFull, cap }: {
-  id: string; p: Player; onSave: (id: string, patch: Patch) => Promise<boolean>; rosterFull: boolean; cap: number;
+function Details({ id, p, onSave, rosterFull, cap, setNotice }: {
+  id: string; p: Player; onSave: (id: string, patch: Patch) => Promise<boolean>; rosterFull: boolean; cap: number; setNotice: (n: Notice) => void;
 }) {
   const [num, setNum] = useState(p.assigned_number == null ? '' : String(p.assigned_number));
   const [numError, setNumError] = useState<string | null>(null);
   const [notes, setNotes] = useState(p.staff_notes ?? '');
   const [confirmWithdraw, setConfirmWithdraw] = useState(false);
+  const [waiverBusy, setWaiverBusy] = useState(false);
   useEffect(() => setNum(p.assigned_number == null ? '' : String(p.assigned_number)), [p.assigned_number]);
   useEffect(() => setNotes(p.staff_notes ?? ''), [p.staff_notes]);
 
@@ -286,6 +289,17 @@ function Details({ id, p, onSave, rosterFull, cap }: {
     setNumError(null);
     onSave(p.id, { assigned_number: v === '' ? null : Number(v) });
   };
+
+  async function waiver() {
+    setWaiverBusy(true);
+    try {
+      await downloadWaivers([p]);
+    } catch {
+      setNotice({ kind: 'error', text: `${name(p)}: couldn't build the waiver. Try again.` });
+    } finally {
+      setWaiverBusy(false);
+    }
+  }
 
   const rows: [string, ReactNode][] = [
     ['Status', `${p.status} · signed up ${new Date(p.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`],
@@ -337,6 +351,9 @@ function Details({ id, p, onSave, rosterFull, cap }: {
         </div>
 
         <div className="cd-actions">
+          <button type="button" className="cd-btn cd-btn-outline cd-btn-sm" disabled={waiverBusy} onClick={waiver}>
+            {waiverBusy ? 'Preparing…' : 'Waiver'}
+          </button>
           {p.status === 'waitlist' && (
             <>
               <button type="button" className="cd-btn cd-btn-gold cd-btn-sm" disabled={rosterFull}
@@ -450,6 +467,7 @@ function ExportsPanel({ api, players, setNotice }: { api: Api; players: Player[]
   const [busy, setBusy] = useState<string | null>(null);
   const [manual, setManual] = useState<string | null>(null);
   const active = players.filter((p) => p.status !== 'withdrawn');
+  const rostered = players.filter((p) => p.status === 'rostered');
   const unnumbered = missingNumbers(players);
 
   // The export routes need the Authorization header, so a plain <a href> can't
@@ -461,15 +479,21 @@ function ExportsPanel({ api, players, setNotice }: { api: Api; players: Player[]
       if (!res.ok) throw new Error();
       const blob = await res.blob();
       const filename = /filename="([^"]+)"/.exec(res.headers.get('Content-Disposition') ?? '')?.[1] ?? `bandits-${type}.csv`;
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1000);
+      saveBlob(blob, filename);
     } catch (e) {
       if ((e as Error).message !== 'signed_out') setNotice({ kind: 'error', text: "Couldn't download the export. Try again." });
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  // Built in the browser from the roster already loaded above; nothing new is fetched but the blank PDF.
+  async function waivers() {
+    setBusy('waivers');
+    try {
+      await downloadWaivers(rostered, 'bbtl-waivers.pdf');
+    } catch {
+      setNotice({ kind: 'error', text: "Couldn't build the waivers. Try again." });
     } finally {
       setBusy(null);
     }
@@ -512,6 +536,7 @@ function ExportsPanel({ api, players, setNotice }: { api: Api; players: Player[]
         <button type="button" className="cd-btn cd-btn-dark" disabled={!!busy} onClick={() => download('bbtl')} aria-describedby={unnumbered ? 'cd-bbtl-warn' : undefined}>{busy === 'bbtl' ? 'Preparing…' : 'BBTL roster (CSV)'}</button>
         <button type="button" className="cd-btn cd-btn-outline" disabled={!!busy} onClick={() => download('full')}>{busy === 'full' ? 'Preparing…' : 'Full export (CSV)'}</button>
         <button type="button" className="cd-btn cd-btn-outline" disabled={!!busy} onClick={() => download('contacts')}>{busy === 'contacts' ? 'Preparing…' : 'Contacts (CSV)'}</button>
+        <button type="button" className="cd-btn cd-btn-outline" disabled={!!busy || rostered.length === 0} onClick={waivers}>{busy === 'waivers' ? 'Preparing…' : 'Print all waivers'}</button>
       </div>
       {unnumbered > 0 && (
         <p id="cd-bbtl-warn" className="cd-export-warn">

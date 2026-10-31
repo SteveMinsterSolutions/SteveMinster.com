@@ -24,7 +24,8 @@ const STAFF_ROLES = ['Head coach', 'Assistant coach', 'Assistant coach', 'Assist
 /** 2013-05-01 → 05/01/2013 */
 export const usDate = (iso: string) => `${iso.slice(5, 7)}/${iso.slice(8, 10)}/${iso.slice(0, 4)}`;
 
-const byLastName = (a: RosterPlayer, b: RosterPlayer) =>
+type Named = Pick<RosterPlayer, 'player_first' | 'player_last'>;
+export const byLastName = (a: Named, b: Named) =>
   a.player_last.localeCompare(b.player_last, 'en', { sensitivity: 'base' }) ||
   a.player_first.localeCompare(b.player_first, 'en', { sensitivity: 'base' });
 
