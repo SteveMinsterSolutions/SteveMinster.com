@@ -2,7 +2,7 @@
   "team": { "name": "Wilson County Bandits", "division": "13U", "season": "Fall 2026", "town": "Mt. Juliet, TN", "colors": "White & gold, black trim" },
   "fee": 55,
   "rosterCap": 22,
-  "signupDeadline": "2026-11-01",
+  "signupDeadline": "2026-11-04",
   "paperworkDue": "2026-11-04",
   "dataPurgeBy": "2027-01-15",
   "rosterConfirmBy": "2026-11-08",
@@ -37,11 +37,13 @@
   },
   "practice": {
     "day": "Wednesday",
-    "time": "6:30 PM",
+    "time": "6:30–8:00 PM",
     "location": "Sgt. Jerry Mundy Memorial Park",
     "address": "300 Mundy Memorial Dr, Mt. Juliet, TN 37122",
-    "dates": ["2026-10-28", "2026-11-04", "2026-11-11", "2026-11-18", "2026-11-25"],
-    "notes": { "2026-11-11": "Last practice before BBTL", "2026-11-25": "Night before Thanksgiving" }
+    "dates": ["2026-10-28", "2026-11-04", "2026-11-06", "2026-11-11", "2026-11-18", "2026-11-25"],
+    "tentative": ["2026-11-06"],
+    "notes": { "2026-11-11": "Last practice before BBTL", "2026-11-25": "Night before Thanksgiving" },
+    "rideNote": "Need a ride to practice? Let us know and we'll do our best to help."
   },
   "eligibility": { "cutoff": "2026-07-01", "bornOnOrAfter": "2012-07-02" },
   "tournaments": [
@@ -52,8 +54,11 @@
       "start": "2026-11-13",
       "gamesStart": "2026-11-14",
       "end": "2026-11-15",
+      "checkInNote": "Check-in & armbands, 5:00–9:00 PM at Mundy Park",
+      "arriveBy": "All teams must arrive by 9:00 PM.",
       "gamesNote": "2-game guarantee",
-      "where": "Mt. Juliet · fields TBD",
+      "where": "Games at West Wilson Middle School (WWMS)",
+      "rules": "Continuous clock, 5-minute halftime.",
       "rosterDue": "2026-11-08",
       "note": "Brackets are set by a livestreamed random drawing during tournament week."
     },
@@ -79,6 +84,19 @@
     { "n": 7, "name": "Cleats", "tag": "byo" }
   ],
   "gameday": {
+    "bbtlGate": [
+      "Weekend pass $25 per person, sold only at Friday check-in",
+      "Daily gate fee $15 per person",
+      "Ages 6 and under free",
+      "Venmo or phone payments only; no cash",
+      "Lose your pass and you'll pay the gate fee again"
+    ],
+    "armbands": [
+      "Players get an armband at check-in",
+      "Armbands stay on all weekend",
+      "A player without an armband can't play",
+      "If it falls off, bring it to the team mom right away"
+    ],
     "tdcGate": [
       "Adults $15 a day, or a $25 weekend pass bought by Nov 21",
       "Kids 5–13 $10 a day; 4 and under free",
@@ -96,6 +114,7 @@
     { "q": "How do I pay the ${fee}?", "a": "{payment} The fee covers the team jersey." },
     { "q": "Will my player get the number they want?", "a": "We'll try. Numbers are assigned in sign-up order using each player's three choices." },
     { "q": "What if the roster is full?", "a": "You can still sign up. Sign-ups past {cap} go on a waitlist, and the coach confirms the final roster by {confirmBy}." },
+    { "q": "My player needs a helmet. What do I do?", "a": "Choose \"Please request a loaner\" under Helmet on the sign-up form. If you've already signed up, tell the team mom." },
     { "q": "Why do you need my player's weight?", "a": "The tournament roster requires it. There's no weight limit for 13U." }
   ]
 }

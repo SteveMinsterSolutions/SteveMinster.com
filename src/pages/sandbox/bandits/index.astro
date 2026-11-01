@@ -18,9 +18,10 @@ const tdc = tournament('tdc');
 const signupHref = '/sandbox/bandits/signup';
 const mapsHref = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(practice.address)}`;
 
+// Off-day practices (e.g. a Friday) show the weekday so they don't read as another Wednesday.
 const practices = practice.dates.map((d, i) => ({
-  when: monthDay(d),
-  what: (practice.notes as Record<string, string>)[d] ?? `Practice ${i + 1}`,
+  when: dayLong(d).startsWith(practice.day) ? monthDay(d) : dayShort(d),
+  what: `${(practice.notes as Record<string, string>)[d] ?? `Practice ${i + 1}`}${practice.tentative.includes(d) ? ' (tentative)' : ''}`,
 }));
 ---
 
@@ -85,6 +86,7 @@ const practices = practice.dates.map((d, i) => ({
           <ul class="rows">
             {practices.map((p) => <li><span>{p.when}</span><span class="muted">{p.what}</span></li>)}
           </ul>
+          <p class="card-foot">{practice.rideNote}</p>
           <p class="card-foot"><a href={mapsHref} class="map-link">{practice.location}, {practice.address}</a></p>
         </div>
 
@@ -92,10 +94,11 @@ const practices = practice.dates.map((d, i) => ({
           <p class="card-eyebrow">Tournament 1</p>
           <h3>{bbtl.name}</h3>
           <ul class="rows">
-            <li><span>{dayShort(bbtl.checkIn)}</span><span class="muted">Check-in &amp; weigh-in</span></li>
+            <li><span>{dayShort(bbtl.checkIn)}</span><span class="muted">{bbtl.checkInNote}. <strong class="arrive">{bbtl.arriveBy}</strong></span></li>
             <li><span>{dayRange(bbtl.gamesStart, bbtl.end)}</span><span class="muted">Games · {bbtl.gamesNote}</span></li>
             <li><span>Where</span><span class="muted">{bbtl.where}</span></li>
           </ul>
+          <p class="card-foot muted">{bbtl.rules}</p>
           <p class="card-foot muted">{bbtl.note}</p>
         </div>
 
@@ -172,8 +175,16 @@ const practices = practice.dates.map((d, i) => ({
       <h2>For families on game day</h2>
       <div class="cards">
         <div class="panel">
+          <p class="panel-title">{bbtl.name} gate</p>
+          <ul>{gameday.bbtlGate.map((t) => <li>{t}</li>)}</ul>
+        </div>
+        <div class="panel">
           <p class="panel-title">{tdc.name} gate</p>
           <ul>{gameday.tdcGate.map((t) => <li>{t}</li>)}</ul>
+        </div>
+        <div class="panel">
+          <p class="panel-title">Player armbands</p>
+          <ul>{gameday.armbands.map((t) => <li>{t}</li>)}</ul>
         </div>
         <div class="panel">
           <p class="panel-title">Sideline expectations</p>
@@ -376,6 +387,7 @@ const practices = practice.dates.map((d, i) => ({
   .rows li span:last-child { text-align: right; }
   .card-dark .rows li { border-bottom-color: #333333; }
   .card-dark .muted { color: #CFCFCF; }
+  .card-dark .arrive { color: var(--b-white); }
   .card-foot { margin: 1rem 0 0; font-size: 0.95rem; }
   .map-link { display: inline-flex; align-items: center; min-height: 44px; }
 
