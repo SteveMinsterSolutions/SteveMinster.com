@@ -15,6 +15,8 @@ import { QuizLeaf, type Graded, type QuizQuestion } from './Quiz';
 import { PrayersLeaf, type Linked, type Recited } from './Prayers';
 import { BoardsLeaf, type Board, type BoardRow } from './Leaderboards';
 import { ApprovalsLeaf, type Outcome, type PendingRow } from './Approvals';
+import { SealsLeaf, type Subject } from './Seals';
+import { sealsFor, type Badge, type Earned } from './badges';
 import type { ActivityType, ActivityRow } from './activities';
 import { todayCentral, addDays } from './dates';
 import book from './book.module.css';
@@ -221,6 +223,26 @@ function devPreview() {
       return milestonesPreview(1, { step: { code: 'm4', stage: 'date', date: todayCentral() } });
     case 'home-wisdom':
       return homePreview('candidate', 3400, { name: 'Fall 2026', points: 1020 }, 9, null);
+    case 'home-seals-0':
+      return homePreview('candidate', 140, { name: 'Fall 2026', points: 90 }, 3, null, [], 0);
+    case 'home-seals-3':
+      return homePreview('candidate', 640, { name: 'Fall 2026', points: 410 }, 3, null, [], 3);
+    case 'home-seals-all':
+      return homePreview('candidate', 2650, { name: 'Fall 2026', points: 1300 }, 3, null, [], 9);
+    case 'home-adult-seals':
+      return homePreview('adult', 1240, { name: 'Fall 2026', points: 310 }, null, 3, [0, null], 2);
+    case 'seals-0':
+      return sealsPreview('candidate', 0);
+    case 'seals-3':
+      return sealsPreview('candidate', 3);
+    case 'seals-all':
+      return sealsPreview('candidate', 9);
+    case 'seals-adult':
+      return sealsPreview('adult', 3);
+    case 'seals-adult-one':
+      return sealsPreview('adult-one', 3);
+    case 'seals-gallery':
+      return sealsPreview('gallery', 0);
     default:
       return null;
   }
@@ -234,9 +256,11 @@ function homePreview(
   dueInDays: number | null,
   pendingCount: number | null,
   linked: (number | null)[] = [],
+  sealCount = 0,
 ) {
   const today = todayCentral();
   const isAdult = role === 'adult';
+  const now = previewNow();
   const due = (days: number | null, title = 'Retreat day') =>
     days === null ? null : { title, dueOn: addDays(today, days) };
   const sampleNames = ['Sample Candidate', 'Second Sample'];
@@ -244,6 +268,7 @@ function homePreview(
     <GameFrame view="home" isAdult={isAdult} pendingCount={pendingCount} onNavigate={() => {}}>
       <HomeLeaf
         player={{
+          id: 'me',
           display_name: isAdult ? 'Sample Sponsor' : 'Sample Candidate',
           is_candidate: !isAdult,
           level_scale: 1,
@@ -259,11 +284,72 @@ function homePreview(
             name: sampleNames[i],
             next: due(days, i ? 'Service project' : 'Retreat day'),
           })),
+          seals: sealsFor(sampleBadges(), SAMPLE_PARISH, sampleEarned(sealCount, now), true),
         }}
+        now={now}
         pendingCount={pendingCount}
         onOpenApprove={() => {}}
         onOpenMilestones={() => {}}
+        onOpenSeals={() => {}}
       />
+    </GameFrame>
+  );
+}
+
+// Illustrative seals for previews; live ones come from the badges table. Three belong to
+// another parish, so a candidate here sees nine. The last icon code is unknown on
+// purpose, to show the plain-cross fallback.
+const SAMPLE_PARISH = 'sample-parish';
+function sampleBadges(): Badge[] {
+  const b = (code: string, icon: string, name: string, description: string, points: number, parish: string | null = null) => ({
+    code, icon, name, description, points, parish,
+  });
+  return [
+    b('b1', 'seal-candle', 'First Flame', 'Log your first activity.', 0),
+    b('b2', 'seal-cross', 'Taking Up the Cross', 'Keep a Lenten practice all season.', 50),
+    b('b3', 'seal-bell', 'Called by the Bell', 'Go to Mass four Sundays in a row.', 25),
+    b('b4', 'seal-quill', 'Keeper of the Creed', 'Answer twenty quiz questions right.', 25),
+    b('b5', 'seal-hands', 'Steady Hands', 'Give ten hours of service.', 50),
+    b('b6', 'seal-halo', 'Patron Found', 'Choose your Confirmation saint.', 25),
+    b('b7', 'seal-chalice', 'At the Altar', 'Serve at Mass three times.', 50),
+    b('b8', 'seal-laurel', 'Perfect Week', 'Take the daily quiz seven days running.', 25),
+    b('b9', 'seal-dove', 'Gift of the Spirit', 'Be confirmed.', 100),
+    b('b10', 'seal-scroll', 'Letter Sealed', 'Send your letter to the bishop.', 50, 'other-parish'),
+    b('b11', 'seal-keys', 'Keys of the Kingdom', 'Reach the gift of Knowledge.', 25, 'other-parish'),
+    b('b12', 'seal-mystery', 'Sample Fallback', 'An icon code the page doesn’t know.', 0, 'other-parish'),
+  ];
+}
+// Pinned so "New" (the last 7 days) is the same in every screenshot.
+const previewNow = () => Date.parse(`${todayCentral()}T18:00:00Z`);
+/** The first n of the candidate's nine, earned 1, 3, 9, 16… days ago. */
+function sampleEarned(n: number, now: number, codes = ['b6', 'b1', 'b3', 'b5', 'b4', 'b7', 'b2', 'b8', 'b9']): Earned {
+  const ago = [1, 3, 9, 16, 22, 30, 41, 55, 70, 84, 98, 112];
+  return Object.fromEntries(codes.slice(0, n).map((c, i) => [c, new Date(now - ago[i] * 86_400_000).toISOString()]));
+}
+
+function sealsPreview(kind: 'candidate' | 'adult' | 'adult-one' | 'gallery', count: number) {
+  const now = previewNow();
+  const badges = sampleBadges();
+  const isAdult = kind !== 'candidate';
+  const me: Subject = { id: 'me', name: null, parish: isAdult ? null : SAMPLE_PARISH, earnedOnly: isAdult };
+  const linked: Subject[] =
+    kind === 'adult'
+      ? [
+          { id: 'c1', name: 'Sample Candidate', parish: SAMPLE_PARISH, earnedOnly: false },
+          { id: 'c2', name: 'Second Sample', parish: SAMPLE_PARISH, earnedOnly: false },
+        ]
+      : kind === 'adult-one'
+        ? [{ id: 'c1', name: 'Sample Candidate', parish: SAMPLE_PARISH, earnedOnly: false }]
+        : [];
+  const earned: Record<string, Earned> =
+    kind === 'gallery'
+      ? { me: sampleEarned(12, now, badges.map((x) => x.code)) }
+      : isAdult
+        ? { me: sampleEarned(2, now, ['b3', 'b2']), c1: sampleEarned(count, now), c2: sampleEarned(7, now) }
+        : { me: sampleEarned(count, now) };
+  return (
+    <GameFrame view="home" isAdult={isAdult} pendingCount={isAdult ? 2 : null} onNavigate={() => {}}>
+      <SealsLeaf viewerId="preview" badges={badges} subjects={[...linked, me]} earned={earned} now={now} />
     </GameFrame>
   );
 }

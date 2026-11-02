@@ -95,3 +95,58 @@
 .footer {
   margin-top: 40px;
 }
+
+/* Seals: earned ones on a single line, names under them. */
+.sealsSection {
+  margin-top: 26px;
+}
+.sealRowBox {
+  min-height: 84px;
+  margin: 8px 0 2px;
+}
+.sealRow {
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sealItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: none;
+  width: 64px;
+}
+.sealName {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  margin-top: 4px;
+  font-family: var(--cq-serif);
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  text-align: center;
+}
+/* "+N more": a faint ring the size of a seal, opening the Seals page. */
+.more {
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  margin-top: -2px;
+  padding: 0;
+  border: 1px dashed color-mix(in srgb, var(--ink-faded) 70%, transparent);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--lapis);
+  font-family: var(--cq-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.1;
+  cursor: pointer;
+}
+.more:focus-visible {
+  outline: 2px solid var(--lapis);
+  outline-offset: 2px;
+}

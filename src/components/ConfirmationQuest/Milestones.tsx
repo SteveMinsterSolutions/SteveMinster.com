@@ -64,7 +64,7 @@ async function loadCompleted(playerId: string): Promise<Completed> {
 }
 
 /** Every linked candidate, sponsor or parent link, by name. */
-async function loadLinked(me: Player): Promise<Candidate[]> {
+export async function loadLinked(me: Player): Promise<Candidate[]> {
   const supabase = getSupabase();
   const links = await supabase.from('player_links').select('candidate_id').eq('adult_id', me.id);
   if (links.error) throw new Error(links.error.message);

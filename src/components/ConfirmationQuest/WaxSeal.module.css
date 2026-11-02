@@ -1,0 +1,78 @@
+.seal {
+  display: block;
+  flex: none;
+  overflow: visible;
+}
+
+/* Earned: rubric wax, gold rim, a pale-gold emblem. The wax keeps the light rubric in
+   both modes (the dark rubric is too light for the gold to read on it). */
+.earned .wax {
+  fill: #A8321E;
+  stroke: var(--gold);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+.earned .ring {
+  fill: none;
+  stroke: #F1D98F;
+  stroke-width: 0.6;
+  opacity: 0.45;
+}
+.earned .emblem {
+  fill: none;
+  stroke: #F1D98F;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.earned .solid {
+  fill: #F1D98F;
+}
+
+/* Not yet earned: the same seal as a faint ink outline. */
+.open .wax {
+  fill: none;
+  stroke: var(--ink-faded);
+  stroke-width: 1;
+  stroke-linejoin: round;
+  opacity: 0.5;
+}
+.open .ring {
+  display: none;
+}
+.open .emblem {
+  fill: none;
+  stroke: var(--ink-faded);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.5;
+}
+.open .solid {
+  fill: none;
+}
+
+/* The status seal's stamp: down large and tilted, overshoot, settle. */
+.stamp {
+  transform-origin: 50% 50%;
+  animation: stamp 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes stamp {
+  0% {
+    opacity: 0;
+    transform: scale(1.8) rotate(-14deg);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.92) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stamp {
+    animation: none;
+  }
+}

@@ -40,6 +40,8 @@ A candidate can never approve anything. An adult never approves their own activi
 | `activity_types` | `code, name, category, points, per_hour, weekly_cap, monthly_cap, lifetime_cap, candidate_only, allows_note, requires_supervisor, active, sort, adult_self_approve` |
 | `activities` | Your own rows + your linked candidates' rows. Includes `status`, `points_awarded`, `note` |
 | `milestones`, `player_milestones` | For the "what's next" banner |
+| `badges` | `code, name, description, icon, points, active, parish`. `active = false` hides a badge everywhere; `parish` null = everyone, otherwise only that parish's players |
+| `player_badges` | `player_id, badge_code, awarded_at` — awarded by the database only (milestones and `check_badges`); the client never writes them |
 | `points_ledger` | Everyone's rows (no notes) |
 | `quiz_attempts` | Your own only |
 | `questions_live` | `id, key, category, difficulty, prompt, options` — no answer, explanation or source |
@@ -97,6 +99,11 @@ Errors come back as Postgres exceptions with plain messages (`'not pending'`, `'
 
 **Levels** (Seven Gifts), thresholds × the player's `level_scale`, from lifetime points: Fear of the Lord 0 · Piety 250 · Knowledge 600 · Fortitude 1,000 · Counsel 1,600 · Understanding 2,400 · Wisdom 3,300. Show the gift name and progress to the next one. (Level-up cards are Phase 2.)
 
+## Phase 2 screens built
+
+- **Milestones** (from Home's "See all milestones").
+- **Seals** (badges UI). Home shows the player's earned seals on one line below the level and points (names under, "+N more" when they don't fit) with a "See all seals" link; candidates with none see "No seals yet. Your first one is closer than you think."; adults with none get no section. The Seals view (`?v=seals`, Home stays marked in the nav) lists a candidate's active badges for their parish: earned ones as gold-rimmed rubric wax seals with the date, the rest as faint ink outlines with the description as the goal, and a tally ("3 of 9 seals."). Adults pick a linked candidate or "Yours" (earned only; no locked ones). Seals earned in the last 7 days carry a "New" mark and stamp on once, the first time they're seen on that device (seen codes in `localStorage` under `cq-seals-seen:<viewer>:<player>`; no storage or reduced motion = no stamp). Emblems are original SVG, chosen by `icon`: `seal-candle, seal-hands, seal-chalice, seal-scroll, seal-cross, seal-halo, seal-bell, seal-quill, seal-keys, seal-dove, seal-laurel`; unknown codes get a plain cross.
+
 ## Look and feel
 
 Run the `frontend-design` skill before building screens. A living illuminated book: vellum pages, ink text, red rubrics, lapis and gold.
@@ -134,4 +141,4 @@ Type (Google Fonts): Cinzel Decorative for drop caps and level titles only; EB G
 
 ## Out of scope (Phase 1)
 
-Badges UI, Codex pages and learning games, level-up cards, AI draft review, exports, season accent by liturgical calendar, the `/sandbox` index card, any SQL or backend change.
+Codex pages and learning games, level-up cards, AI draft review, exports, season accent by liturgical calendar, the `/sandbox` index card, any SQL or backend change.

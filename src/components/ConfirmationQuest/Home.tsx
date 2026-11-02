@@ -1,12 +1,14 @@
 // Home: the player's illuminated name, their gift (level), their points, what's
 // coming up, and for adults how many activities wait for their approval.
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { getSupabase, type Player } from './supabase';
 import { todayCentral, addDays, dueWords } from './dates';
 import { GIFTS, ORDINALS, levelFor, type Level } from './levels';
 import { useSignOut } from './useSignOut';
 import IlluminatedTitle from './IlluminatedTitle';
 import Fleuron from './Fleuron';
+import WaxSeal from './WaxSeal';
+import { loadBadges, loadEarned, sealsFor, isNew, useStampOnce, type SealEntry } from './badges';
 import book from './book.module.css';
 import styles from './Home.module.css';
 
@@ -22,6 +24,8 @@ export interface HomeData {
   ownNext: Due | null;
   /** Adults: each linked candidate's next milestone, by name. Empty when none are linked. */
   candidates: { id: string; name: string; next: Due | null }[];
+  /** The player's own earned seals, newest first. */
+  seals: SealEntry[];
 }
 
 type Load = { kind: 'loading' } | { kind: 'ready'; data: HomeData } | { kind: 'error'; message: string };
@@ -51,7 +55,7 @@ async function loadHome(player: Player, today: string): Promise<HomeData> {
     candidateIds = [...new Set(links.data.map((l) => l.candidate_id as string))];
   }
 
-  const [seasons, board, milestones, done, people] = await Promise.all([
+  const [seasons, board, milestones, done, people, badges, earned] = await Promise.all([
     supabase
       .from('seasons')
       .select('code, name')
@@ -70,6 +74,8 @@ async function loadHome(player: Player, today: string): Promise<HomeData> {
     player.is_candidate
       ? Promise.resolve({ data: [] as { id: string; display_name: string; parish: string | null }[], error: null })
       : supabase.from('players').select('id, display_name, parish').in('id', candidateIds),
+    loadBadges(),
+    loadEarned([player.id]),
   ]);
   const failed = seasons.error ?? board.error ?? milestones.error ?? done.error ?? people.error;
   if (failed) throw new Error(failed.message);
@@ -91,6 +97,7 @@ async function loadHome(player: Player, today: string): Promise<HomeData> {
       .data!.slice()
       .sort((a, b) => a.display_name.localeCompare(b.display_name))
       .map((c) => ({ id: c.id, name: c.display_name, next: nextFor(rows, c.parish, completedBy(c.id)) })),
+    seals: sealsFor(badges, player.parish, earned[player.id] ?? {}, true),
   };
 }
 
@@ -100,9 +107,10 @@ interface Props {
   pendingCount: number | null;
   onOpenApprove: () => void;
   onOpenMilestones: () => void;
+  onOpenSeals: () => void;
 }
 
-export default function Home({ player, email, pendingCount, onOpenApprove, onOpenMilestones }: Props) {
+export default function Home({ player, email, pendingCount, onOpenApprove, onOpenMilestones, onOpenSeals }: Props) {
   const [today] = useState(todayCentral);
   const [load, setLoad] = useState<Load>({ kind: 'loading' });
 
@@ -138,18 +146,22 @@ export default function Home({ player, email, pendingCount, onOpenApprove, onOpe
       pendingCount={pendingCount}
       onOpenApprove={onOpenApprove}
       onOpenMilestones={onOpenMilestones}
+      onOpenSeals={onOpenSeals}
     />
   );
 }
 
 interface LeafProps {
-  player: Pick<Player, 'display_name' | 'is_candidate' | 'level_scale'>;
+  player: Pick<Player, 'id' | 'display_name' | 'is_candidate' | 'level_scale'>;
   email?: string;
   data: HomeData;
   today: string;
   pendingCount: number | null;
   onOpenApprove: () => void;
   onOpenMilestones: () => void;
+  onOpenSeals: () => void;
+  /** Dev previews pin the clock so "new" is stable. */
+  now?: number;
 }
 
 const fmt = (n: number) => n.toLocaleString('en-US');
@@ -158,7 +170,17 @@ const dueSentence = (due: Due | null, today: string) =>
 /** Keep a name's last word with the one before it ("Fall 2026" never splits). */
 const keepTail = (s: string) => s.replace(/ (\S+)$/, ' $1');
 
-export function HomeLeaf({ player, email, data, today, pendingCount, onOpenApprove, onOpenMilestones }: LeafProps) {
+export function HomeLeaf({
+  player,
+  email,
+  data,
+  today,
+  pendingCount,
+  onOpenApprove,
+  onOpenMilestones,
+  onOpenSeals,
+  now,
+}: LeafProps) {
   const level = levelFor(data.lifetime, Number(player.level_scale));
   const { signOut, busy, error } = useSignOut();
 
@@ -184,6 +206,24 @@ export function HomeLeaf({ player, email, data, today, pendingCount, onOpenAppro
         {fmt(data.lifetime)} {data.lifetime === 1 ? 'point' : 'points'} in all
         {data.season ? `, ${fmt(data.season.points)} of them in ${keepTail(data.season.name)}.` : '.'}
       </p>
+
+      {(player.is_candidate || data.seals.length > 0) && (
+        <section className={styles.sealsSection} aria-labelledby="cq-seals">
+          <h2 id="cq-seals" className={styles.subhead}>
+            Seals
+          </h2>
+          {data.seals.length === 0 ? (
+            <p className={book.prose}>No seals yet. Your first one is closer than you think.</p>
+          ) : (
+            <SealRow playerId={player.id} seals={data.seals} now={now ?? Date.now()} onMore={onOpenSeals} />
+          )}
+          <p className={book.prose}>
+            <button type="button" className={styles.inlineLink} onClick={onOpenSeals}>
+              See all seals
+            </button>
+          </p>
+        </section>
+      )}
 
       <Fleuron />
 
@@ -295,5 +335,67 @@ function GiftRoundels({ level }: { level: Level }) {
         return <circle key={g.name} cx={cx} cy={13} r={r} className={styles.ahead} />;
       })}
     </svg>
+  );
+}
+
+// Earned seals on one line: as many as fit, then "+N more" (which opens the Seals page)
+// in the last place. The width is measured before paint, so the row never reflows.
+const SEAL_ITEM = 64;
+const SEAL_GAP = 6;
+
+function SealRow({ playerId, seals, now, onMore }: { playerId: string; seals: SealEntry[]; now: number; onMore: () => void }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState<number | null>(null);
+  useLayoutEffect(() => {
+    const el = ref.current!;
+    setWidth(el.getBoundingClientRect().width);
+    const ro = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  const fit = width === null ? 0 : Math.max(1, Math.floor((width + SEAL_GAP) / (SEAL_ITEM + SEAL_GAP)));
+  const shown = seals.length <= fit ? seals : seals.slice(0, fit - 1);
+  return (
+    <div ref={ref} className={styles.sealRowBox}>
+      {width !== null && <SealRowItems playerId={playerId} shown={shown} more={seals.length - shown.length} now={now} onMore={onMore} />}
+    </div>
+  );
+}
+
+function SealRowItems({
+  playerId,
+  shown,
+  more,
+  now,
+  onMore,
+}: {
+  playerId: string;
+  shown: SealEntry[];
+  more: number;
+  now: number;
+  onMore: () => void;
+}) {
+  // Mounted once the width is known, so only seals actually shown are counted as seen.
+  const stamp = useStampOnce(
+    playerId,
+    playerId,
+    shown.filter((s) => isNew(s.awardedAt, now)).map((s) => s.code),
+  );
+  return (
+    <ul className={styles.sealRow} aria-label="Your seals">
+      {shown.map((s) => (
+        <li key={s.code} className={styles.sealItem}>
+          <WaxSeal icon={s.icon} earned size={40} stamp={stamp.has(s.code)} />
+          <span className={styles.sealName}>{s.name}</span>
+        </li>
+      ))}
+      {more > 0 && (
+        <li className={styles.sealItem}>
+          <button type="button" className={styles.more} onClick={onMore}>
+            +{more} more
+          </button>
+        </li>
+      )}
+    </ul>
   );
 }
