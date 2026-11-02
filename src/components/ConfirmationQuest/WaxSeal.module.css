@@ -28,6 +28,16 @@
 .earned .solid {
   fill: #F1D98F;
 }
+/* Solid shapes with no stroke, so close parts (fingers) keep their gaps; cut is a
+   detail cut back into them in the wax colour (the heart on the palm, an eye). */
+.earned .flat {
+  fill: #F1D98F;
+  stroke: none;
+}
+.earned .cut {
+  fill: #A8321E;
+  stroke: none;
+}
 
 /* Not yet earned: the same seal as a faint ink outline. */
 .open .wax {
@@ -48,8 +58,14 @@
   stroke-linejoin: round;
   opacity: 0.5;
 }
-.open .solid {
+.open .solid,
+.open .flat,
+.open .cut {
   fill: none;
+}
+.open .flat,
+.open .cut {
+  stroke-width: 0.9;
 }
 
 /* The status seal's stamp: down large and tilted, overshoot, settle. */
