@@ -248,3 +248,35 @@ test('firstNameOnly', () => {
   assert.equal(firstNameOnly(''), null);
   assert.equal(firstNameOnly(null), null);
 });
+
+// ─── Follow-page text ────────────────────────────────────────────────────────
+import { agoClock, leadLine, resultLine } from './format.ts';
+import type { PublicBout } from './snapshot.ts';
+
+const pb = (o: Partial<PublicBout>): PublicBout => ({
+  id: 'x', level: 'V', weight: 122, order: 1, status: 'final', period: 'P3',
+  our_name: 'Test', opp_name: 'Sam', score: { us: 0, them: 0, byPeriod: [] },
+  result_type: 'DEC', winner: 'us', result_time: null, team_pts_us: 0, team_pts_them: 0, ...o,
+});
+
+test('result lines', () => {
+  assert.equal(resultLine(pb({ result_type: 'MD', score: { us: 11, them: 3, byPeriod: [] }, team_pts_us: 4 }), 'Opp'),
+    '122 · Test def. Sam · MD 11–3 · +4 Warriors');
+  assert.equal(resultLine(pb({ weight: 106, result_type: 'FALL', winner: 'them', result_time: '1:38', team_pts_them: 6 }), 'Opp'),
+    '106 · Sam def. Test · Fall 1:38 · +6 Opp');
+  assert.equal(resultLine(pb({ weight: 90, result_type: 'FOR', opp_name: null, team_pts_us: 6 }), 'Opp'),
+    '90 · Test by forfeit · +6 Warriors');
+  assert.equal(resultLine(pb({ weight: 260, result_type: 'FOR', winner: 'them', our_name: null, opp_name: null, team_pts_them: 6 }), 'Opp'),
+    '260 · Opp by forfeit · +6 Opp');
+  assert.equal(resultLine(pb({ result_type: 'DFF', winner: null }), 'Opp'), '122 · Double forfeit');
+  assert.equal(resultLine(pb({ level: 'JV', result_type: 'DEC', score: { us: 4, them: 2, byPeriod: [] }, team_pts_us: 3 }), 'Opp'),
+    '122 · Test def. Sam · Dec 4–2 · Exhibition');
+});
+
+test('lead line and clock', () => {
+  assert.equal(leadLine(24, 18, 'Opp'), 'Warriors lead by 6');
+  assert.equal(leadLine(18, 24, 'Opp'), 'Opp leads by 6');
+  assert.equal(leadLine(3, 3, 'Opp'), 'Tied');
+  assert.equal(agoClock(3200), '0:03');
+  assert.equal(agoClock(75000), '1:15');
+});

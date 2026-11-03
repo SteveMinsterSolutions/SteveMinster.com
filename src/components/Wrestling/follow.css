@@ -1,0 +1,89 @@
+/* Warriors follow page (/sandbox/warriors-wrestling). Read in bleachers, one glance at a time.
+   Shares tokens with the scorer (wrestling.css). The one loud thing: the dual score.
+   The one new device: the weight ladder (who won each weight, in wrestle order). */
+
+.wf { max-width: 620px; margin: 0 auto; padding: 0 16px calc(28px + env(safe-area-inset-bottom)); }
+.wf-pad { padding: 1.5rem 0; }
+.wf-quiet { color: var(--wr-mist); margin: .2rem 0 .6rem; }
+.wf-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.wf-link { background: none; border: 0; padding: 0; min-height: 44px; color: var(--wr-mist); font: 600 1rem var(--wr-ui); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.wf *:focus-visible { outline: 3px solid var(--wr-gold); outline-offset: 2px; }
+
+/* Header: the dual score */
+.wf-head { padding: calc(4px + env(safe-area-inset-top)) 0 14px; border-bottom: 1px solid var(--wr-rule); }
+.wf-head-meta { display: flex; justify-content: space-between; align-items: center; gap: 1rem; color: var(--wr-mist); font-weight: 600; }
+.wf-score { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: .25rem 0 0; font-weight: inherit; }
+.wf-score-team { display: flex; flex-direction: column; min-width: 0; }
+.wf-score-team.is-them { align-items: flex-end; text-align: right; }
+.wf-score-team b { font: 900 clamp(5.5rem, 30vw, 9rem)/.82 var(--wr-display); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.wf-score-team.is-us b { color: var(--wr-chalk); text-shadow: 0 0 0 transparent; }
+.wf-score-team.is-us .wf-score-name { color: #9DB8FF; }
+.wf-score-team.is-them b { color: #C9D1E3; }
+.wf-score-name { font: 700 1.25rem/1.2 var(--wr-ui); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; color: var(--wr-mist); }
+.wf-score-team .wf-score-name { order: -1; }
+.wf-lead { margin: .55rem 0 0; font: 800 1.45rem/1.15 var(--wr-display); color: var(--wr-gold); }
+.wf-updated { margin: .5rem 0 0; color: var(--wr-mist); font-size: .9rem; font-variant-numeric: tabular-nums; }
+.wf-updated.is-stale { color: var(--wr-alert); font-weight: 600; }
+
+/* The weight ladder */
+.wf-ladder { list-style: none; padding: 0; margin: .85rem 0 0; display: grid; grid-template-columns: repeat(15, 1fr); gap: 3px; }
+.wf-ladder li { height: 30px; border-radius: 4px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 2px; font: 800 .62rem/1 var(--wr-display); color: var(--wr-mist); }
+.wf-ladder li.is-pending { box-shadow: inset 0 0 0 1px var(--wr-rule); }
+.wf-ladder li.is-us { background: var(--wr-royal); color: var(--wr-chalk); }
+.wf-ladder li.is-them { background: var(--wr-steel); color: #C9D1E3; }
+.wf-ladder li.is-none { background: repeating-linear-gradient(135deg, transparent 0 4px, var(--wr-rule) 4px 5px); }
+.wf-ladder li.is-live { box-shadow: inset 0 0 0 2px var(--wr-gold); color: var(--wr-gold); }
+@media (min-width: 420px) { .wf-ladder li { font-size: .75rem; height: 34px; } }
+
+/* On the mat now */
+.wf-mat { margin-top: 16px; padding: 12px 12px 10px; border-radius: 12px; background: var(--wr-panel); border-top: 3px solid var(--wr-gold); }
+.wf-mat-head { display: flex; align-items: baseline; gap: .6rem; }
+.wf-mat-wt { font: 900 2rem/1 var(--wr-display); color: var(--wr-gold); }
+.wf-mat-tag { font-weight: 700; color: var(--wr-chalk); }
+.wf-mat-period { margin-left: auto; font: 800 1.2rem var(--wr-display); color: var(--wr-gold); }
+.wf-mat-score { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
+.wf-mat-score > div { display: flex; flex-direction: column; border-radius: 8px; padding: .35rem .6rem 0; min-width: 0; }
+.wf-mat-score .is-us { background: var(--wr-royal); }
+.wf-mat-score .is-them { background: var(--wr-steel); align-items: flex-end; }
+.wf-mat-score span { font-weight: 700; font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.wf-mat-score b { font: 900 4rem/.9 var(--wr-display); font-variant-numeric: tabular-nums; }
+.wf-grid { width: 100%; border-collapse: collapse; margin-top: 8px; table-layout: fixed; font-variant-numeric: tabular-nums; }
+.wf-grid th, .wf-grid td { border: 1px solid var(--wr-rule); height: 28px; text-align: center; padding: 0 4px; }
+.wf-grid thead th { color: var(--wr-mist); font-weight: 600; font-size: .85rem; }
+.wf-grid tbody th { width: 34%; text-align: left; font-weight: 700; font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wf-grid tr.is-us th { color: #9DB8FF; }
+.wf-grid tr.is-them th { color: var(--wr-mist); }
+.wf-grid td { font: 800 1.1rem var(--wr-display); }
+.wf-grid .is-now { background: rgba(255, 198, 41, .12); }
+.wf-grid thead .is-now { color: var(--wr-gold); }
+
+/* Lists */
+.wf-sec { margin-top: 22px; }
+.wf-h2 { font: 800 1.45rem/1.1 var(--wr-display); margin: 0 0 .4rem; }
+.wf-results, .wf-next, .wf-season { list-style: none; margin: 0; padding: 0; }
+.wf-result { padding: .6rem 0 .6rem .7rem; border-bottom: 1px solid var(--wr-rule); font-weight: 600; line-height: 1.3; border-left: 4px solid transparent; }
+.wf-result.is-won { border-left-color: var(--wr-royal); }
+.wf-result.is-lost { border-left-color: var(--wr-steel); }
+.wf-result.is-pending { color: var(--wr-mist); }
+.wf-result b { font-family: var(--wr-display); }
+.wf-next li { display: grid; grid-template-columns: 3rem 1fr auto; gap: .6rem; align-items: baseline; padding: .45rem 0; border-bottom: 1px solid var(--wr-rule); font-weight: 600; }
+.wf-next li b { font: 800 1.35rem var(--wr-display); }
+.wf-next li span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Season */
+.wf-season-title { font: 900 2.6rem/1 var(--wr-display); margin: .75rem 0 .2rem; }
+.wf-record { margin: 0; color: var(--wr-mist); font-weight: 600; font-size: 1.1rem; }
+.wf-record b { color: var(--wr-gold); font: 900 1.6rem var(--wr-display); margin-right: .25rem; }
+.wf-season { margin-top: 8px; }
+.wf-season-row {
+  width: 100%; min-height: 60px; display: grid; grid-template-columns: 6.5rem 1fr auto; gap: .6rem; align-items: center;
+  background: none; border: 0; border-bottom: 1px solid var(--wr-rule); color: var(--wr-chalk); font: 600 1.05rem var(--wr-ui); text-align: left; padding: 0 .2rem; cursor: pointer;
+}
+.wf-season-date { color: var(--wr-mist); }
+.wf-season-opp { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wf-season-res { font: 800 1.15rem var(--wr-display); font-variant-numeric: tabular-nums; }
+.wf-season-res.is-w { color: #9DB8FF; }
+.wf-season-res.is-l, .wf-season-res.is-t, .wf-season-res.is-setup { color: var(--wr-mist); }
+.wf-season-res.is-live { color: var(--wr-gold); }
+
+.wf-foot { margin-top: 36px; text-align: center; color: var(--wr-gold); font: 800 1.1rem var(--wr-display); letter-spacing: .02em; }

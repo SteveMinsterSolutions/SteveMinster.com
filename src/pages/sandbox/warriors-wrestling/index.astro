@@ -1,0 +1,13 @@
+---
+// /sandbox/warriors-wrestling — parent follow page. Unlisted: noindex,nofollow, not in the
+// nav or sitemap, no code needed. Live dual by default; ?dual=<id> for a specific one.
+import WrestlingLayout from '../../../components/Wrestling/WrestlingLayout.astro';
+import FollowApp from '../../../components/Wrestling/FollowApp';
+import '../../../components/Wrestling/wrestling.css';
+import '../../../components/Wrestling/follow.css';
+---
+
+<WrestlingLayout title="Warriors wrestling">
+  <FollowApp client:only="react" />
+  <noscript><p style="padding:1rem">Live scores need JavaScript.</p></noscript>
+</WrestlingLayout>
