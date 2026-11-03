@@ -192,3 +192,4 @@
 .wr-bottombar .wr-btn { min-height: 60px; font-size: 1.2rem; }
 .wr-final-note { margin-top: 1rem; padding: 1rem; background: var(--wr-panel); border-radius: var(--wr-radius); font-weight: 700; font-size: 1.15rem; }
 .wr-final-note p { margin: 0; }
+.wr-board-links { display: flex; justify-content: space-between; }

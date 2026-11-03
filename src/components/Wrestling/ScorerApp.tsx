@@ -441,6 +441,7 @@ function DualBoard(props: {
   const [swapFor, setSwapFor] = useState<Bout | null>(null);
   const [deduct, setDeduct] = useState(false);
   const [confirm, setConfirm] = useState<{ text: string; go: () => void } | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const score = dualScore(bouts, adjustments, dual.tiebreak_side);
   const varsity = bouts.filter((b) => b.level === 'V').sort((a, b) => a.bout_order - b.bout_order);
@@ -504,7 +505,14 @@ function DualBoard(props: {
   return (
     <div className="wr-board">
       <div className="wr-dualscore">
-        <button className="wr-link" onClick={props.onSwitchDual}>All duals</button>
+        <div className="wr-board-links">
+          <button className="wr-link" onClick={props.onSwitchDual}>All duals</button>
+          <button className="wr-link" onClick={async () => {
+            const url = `${location.origin}/sandbox/warriors-wrestling?dual=${dual.id}`;
+            try { await navigator.clipboard.writeText(url); setCopied(true); setTimeout(() => setCopied(false), 2500); }
+            catch { window.open(url, '_blank', 'noopener'); }
+          }}>{copied ? 'Link copied' : 'Copy follow link'}</button>
+        </div>
         <div className="wr-dualscore-row">
           <div className="wr-team is-us"><span>Warriors</span><b>{score.us}</b></div>
           <div className="wr-team is-them"><span>{dual.opponent}</span><b>{score.them}</b></div>
