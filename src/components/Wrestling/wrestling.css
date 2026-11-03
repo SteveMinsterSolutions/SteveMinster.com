@@ -1,0 +1,46 @@
+/* Warriors wrestling — shared tokens and base (scorer + follow pages).
+   Night royal ground for gym lighting; royal for Warriors, gold only for live/now/confirm,
+   steel for the opponent (neutral by design). */
+:root {
+  --wr-night: #0A1A3F;      /* page ground: deep royal, reads as dark under gym lights */
+  --wr-panel: #13285E;      /* raised surfaces */
+  --wr-panel-2: #1A3373;    /* pressed / open rows */
+  --wr-rule: #2A4590;       /* hairlines on night */
+  --wr-royal: #2B5BE0;      /* Warriors */
+  --wr-royal-hi: #4C78F0;
+  --wr-gold: #FFC629;       /* live, now, confirm */
+  --wr-gold-ink: #241A00;   /* text on gold */
+  --wr-chalk: #F3F5FA;      /* primary text */
+  --wr-mist: #A9B6D3;       /* secondary text (4.5:1+ on night) */
+  --wr-steel: #3B465E;      /* opponent */
+  --wr-steel-hi: #56627E;
+  --wr-alert: #FF8A7A;
+  --wr-display: 'Big Shoulders Display', Impact, 'Arial Narrow', sans-serif;
+  --wr-ui: 'Barlow Semi Condensed', 'Arial Narrow', system-ui, sans-serif;
+  --wr-tap: 56px;
+  --wr-radius: 10px;
+}
+
+html { background: var(--wr-night); }
+body.wr {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--wr-night);
+  color: var(--wr-chalk);
+  font-family: var(--wr-ui);
+  font-size: 1.0625rem;
+  line-height: 1.4;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+.wr *:focus-visible { outline: 3px solid var(--wr-gold); outline-offset: 2px; }
+.wr-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.wr-quiet { color: var(--wr-mist); margin: .25rem 0 .75rem; }
+.wr-error { color: var(--wr-alert); margin: .5rem 0; font-weight: 600; }
+.wr-h1 { font-family: var(--wr-display); font-weight: 800; font-size: 2.25rem; line-height: 1; margin: 1.25rem 0 .75rem; letter-spacing: .01em; }
+.wr-h2 { font-family: var(--wr-display); font-weight: 700; font-size: 1.5rem; line-height: 1.1; margin: 1.5rem 0 .5rem; }
+.wr-tag-test {
+  font-style: normal; font-weight: 700; font-size: .8rem; margin-left: .5rem; padding: .1rem .45rem;
+  border-radius: 4px; background: var(--wr-gold); color: var(--wr-gold-ink); vertical-align: 2px;
+}
+@media (prefers-reduced-motion: reduce) { .wr * { transition: none !important; animation: none !important; } }
