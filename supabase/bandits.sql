@@ -278,6 +278,8 @@ grant execute on function public.bandits_register(jsonb)     to service_role;
 
 -- ─────────────────────────────────────────────────────────────────────────────
 -- Retention — delete roster data after the season (target: Jan 15, 2027).
+-- Not covered: the wr_* tables (Warriors wrestling, supabase/wrestling.sql) share this
+-- project but are NOT part of this purge. Leave them alone.
 -- ─────────────────────────────────────────────────────────────────────────────
 -- delete from public.bandits_signups;
 -- delete from public.bandits_staff;

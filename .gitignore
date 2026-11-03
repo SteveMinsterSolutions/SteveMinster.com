@@ -50,3 +50,9 @@ public/images/off-the-clock/cobra/radio/*.mp4
 # Bandits planning spec + design-tool sources (local reference only)
 BANDITS_INTEGRATION_README.md
 bandits-design-reference/
+
+# Wrestling scorer planning spec + licensed rule summary (local reference only), and the
+# dashboard-only roster file (real names never go in the repo)
+WRESTLING_INTEGRATION_README.md
+NFHS_SCORING_RULES.md
+*-DASHBOARD-ONLY.sql
